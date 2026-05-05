@@ -1,0 +1,46 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Zoho
+providerId: zoho
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - CRM
+description: Zoho CRM REST API limits scale with edition.
+sources:
+  - https://www.zoho.com/crm/zohocrm-pricing.html
+  - https://www.zoho.com/crm/developer/docs/api/v2/api-limits.html
+headers:
+  limit: X-RATELIMIT-LIMIT
+  remaining: X-RATELIMIT-REMAINING
+  reset: X-RATELIMIT-RESET
+responseCodes:
+  throttled: 429
+limits:
+  - name: API credits/day (Standard)
+    scope: org
+    metric: credits_per_day
+    limit: 5000
+    timeFrame: day
+  - name: API credits/day (Professional)
+    scope: org
+    metric: credits_per_day
+    limit: 10000
+    timeFrame: day
+  - name: API credits/day (Enterprise)
+    scope: org
+    metric: credits_per_day
+    limit: 25000
+    timeFrame: day
+  - name: API credits/day (Ultimate)
+    scope: org
+    metric: credits_per_day
+    limit: 50000
+    timeFrame: day
+  - name: Per-user concurrency
+    scope: user
+    metric: concurrent
+    limit: 10

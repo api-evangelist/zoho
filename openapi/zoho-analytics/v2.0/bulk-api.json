@@ -1,0 +1,3025 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Zoho Analytics Bulk API",
+      "version": "v2",
+      "description": "API for Zoho Analytics Bulk Operations, including data import and export."
+    },
+    "servers": [
+      {
+        "url": "https://analyticsapi.zoho.com"
+      }
+    ],
+    "security": [
+      {
+        "iam-oauth2-schema": [
+          "ZohoAnalytics.data.read",
+          "ZohoAnalytics.data.create",
+          "ZohoAnalytics.data.update",
+          "ZohoAnalytics.data.delete",
+          "ZohoAnalytics.data.all"
+        ]
+      }
+    ],
+    "tags": [
+      {
+        "name": "Bulk Import - Synchronous",
+        "description": "Synchronous operations for importing data."
+      },
+      {
+        "name": "Bulk Import - Asynchronous",
+        "description": "Asynchronous operations for importing data in bulk."
+      },
+      {
+        "name": "Bulk Import - Batch",
+        "description": "Operations for importing large data files in batches."
+      },
+      {
+        "name": "Bulk Export - Synchronous",
+        "description": "Synchronous operations for exporting data."
+      },
+      {
+        "name": "Bulk Export - Asynchronous",
+        "description": "Asynchronous operations for exporting data in bulk."
+      }
+    ],
+    "paths": {
+      "/restapi/v2/workspaces/{workspace-id}/data": {
+        "post": {
+          "tags": [
+            "Bulk Import - Synchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Import Data into a New Table (Synchronous)",
+          "description": "Use the Bulk APIs to create a new table and import data into it synchronously. ",
+          "operationId": "importDataNewTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "jsonConfig": {
+                  "summary": "JSON",
+                  "value": "{\"tableName\":\"Sales\",\"fileType\":\"json\",\"autoIdentify\":true}"
+                },
+                "csvConfig": {
+                  "summary": "CSV",
+                  "value": "{\"tableName\":\"Sales\",\"fileType\":\"csv\",\"autoIdentify\":true}"
+                }
+              },
+              "description": "JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "Provide either FILE (as a binary file) or DATA (as raw text). Only one should be sent.",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported. Only one of FILE or DATA should be provided."
+                    },
+                    "DATA": {
+                      "type": "string",
+                      "description": "Raw data (CSV or JSON) to be imported. Only one of FILE or DATA should be provided.",
+                      "examples": [
+                        "[{\"Region\":\"East\"},{\"Region\":\"West\"}]"
+                      ]
+                    }
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "The raw data to be imported (plain text body)."
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful import data response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ImportSuccessResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Import data",
+                        "data": {
+                          "viewId": "1767024000003153002",
+                          "importSummary": {
+                            "importType": "APPEND",
+                            "totalColumnCount": 7,
+                            "selectedColumnCount": 7,
+                            "totalRowCount": 101,
+                            "successRowCount": 101,
+                            "warnings": 0,
+                            "importOperation": "created"
+                          },
+                          "columnDetails": {
+                            "Date": "Date",
+                            "Region": "Plain Text",
+                            "Product Category": "Plain Text",
+                            "Product": "Plain Text",
+                            "Customer Name": "Plain Text",
+                            "Sales": "Currency",
+                            "Cost": "Currency"
+                          },
+                          "importErrors": ""
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/data": {
+        "post": {
+          "tags": [
+            "Bulk Import - Synchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Import Data into an Existing Table (Synchronous)",
+          "description": "Use Bulk APIs to import data into an existing specified table synchronously.",
+          "operationId": "importDataExistingTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "JSON": {
+                  "summary": "JSON",
+                  "value": {
+                    "importType": "append",
+                    "fileType": "json",
+                    "autoIdentify": "true"
+                  }
+                },
+                "CSV": {
+                  "summary": "CSV",
+                  "value": {
+                    "importType": "append",
+                    "fileType": "csv",
+                    "autoIdentify": "true"
+                  }
+                }
+              },
+              "description": "JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigExistingTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "Provide either FILE (as a binary file) or DATA (as raw text). Only one should be sent.",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported. Only one of FILE or DATA should be provided."
+                    },
+                    "DATA": {
+                      "type": "string",
+                      "description": "Raw data (CSV or JSON) to be imported. Only one of FILE or DATA should be provided.",
+                      "examples": [
+                        "[{\"Region\":\"East\"},{\"Region\":\"West\"}]"
+                      ]
+                    }
+                  }
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "The raw data to be imported (plain text body)."
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful import data response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ExistImportSuccessResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Import data",
+                        "data": {
+                          "viewId": "1767024000003153002",
+                          "importSummary": {
+                            "importType": "APPEND",
+                            "totalColumnCount": 7,
+                            "selectedColumnCount": 7,
+                            "totalRowCount": 101,
+                            "successRowCount": 101,
+                            "warnings": 0,
+                            "importOperation": "updated"
+                          },
+                          "columnDetails": {
+                            "Date": "Date",
+                            "Region": "Plain Text",
+                            "Product Category": "Plain Text",
+                            "Product": "Plain Text",
+                            "Customer Name": "Plain Text",
+                            "Sales": "Currency",
+                            "Cost": "Currency"
+                          },
+                          "importErrors": ""
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Bulk Export - Synchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Export Data from a View (Synchronous)",
+          "description": "Use Bulk APIs to export data from the specified view synchronously.\n\nNote: Export Data API is restricted for certain resources (given below). For these cases, use the Asynchronous Export APIs instead:\n\n  - Tables having more than one million rows.\n  - Tables and Views from live connect workspaces.\n  - Dashboard and QueryTable view types.",
+          "operationId": "exportDataView",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "criteria": {
+                  "summary": "Using Filter Criteria",
+                  "value": "{\"criteria\":\"\\\"SalesTable\\\".\\\"Region\\\"='East'\"}"
+                },
+                "format": {
+                  "summary": "Using Response Format",
+                  "value": "{\"responseFormat\":\"json\"}"
+                }
+              },
+              "description": "JSONObject with configuration to export data from the specified view. (Refer `ExportConfig` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful export data response. The content type will vary based on `responseFormat` in CONFIG.",
+              "content": {
+                "text/csv": {},
+                "application/json": {},
+                "application/xml": {},
+                "application/vnd.ms-excel": {},
+                "application/pdf": {},
+                "text/html": {},
+                "image/png": {},
+                "image/jpeg": {}
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/data/batch": {
+        "post": {
+          "tags": [
+            "Bulk Import - Batch"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Batch Import Data into New Table",
+          "description": "Initiate an import job to create a new table and import data in batches into the created table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure.",
+          "operationId": "batchImportNewTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "first": {
+                  "summary": "First Call",
+                  "value": "{\"tableName\":\"SalesTable\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"start\",\"isLastBatch\":\"false\"}"
+                },
+                "followup": {
+                  "summary": "Follow Up Call",
+                  "value": "{\"tableName\":\"SalesTable\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"1694703482470_1767024000008426012_SalesTable\",\"isLastBatch\":\"false\"}"
+                },
+                "last": {
+                  "summary": "Last Call",
+                  "value": "{\"tableName\":\"SalesTable\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"1694703482470_1767024000008426012_SalesTable\",\"isLastBatch\":\"true\"}"
+                }
+              },
+              "description": "JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "The data file for the batch import. Max allowed file size is 100 MB. ",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported as a batch."
+                    }
+                  },
+                  "required": [
+                    "FILE"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful batch import response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BatchImportSuccessResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk import job",
+                        "data": {
+                          "batchKey": "1694703482470_1767024000008426012_SalesTable",
+                          "jobId": "1767024000008787011"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/views/{view-id}/data/batch": {
+        "post": {
+          "tags": [
+            "Bulk Import - Batch"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Batch Import Data into Existing Table",
+          "description": "Initiate an import job to import data present in multiple batch files into the specified existing table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure.",
+          "operationId": "batchImportExistingTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "first": {
+                  "summary": "First Call",
+                  "value": "{\"importType\":\"append\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"start\",\"isLastBatch\":\"false\"}"
+                },
+                "followup": {
+                  "summary": "Follow Up Call",
+                  "value": "{\"importType\":\"append\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"1694703482470_1767024000008426012_SalesTable\",\"isLastBatch\":\"false\"}"
+                },
+                "last": {
+                  "summary": "Last Call",
+                  "value": "{\"importType\":\"append\",\"autoIdentify\":\"true\",\"onError\":\"setcolumnempty\",\"batchKey\":\"1694703482470_1767024000008426012\",\"isLastBatch\":\"true\"}"
+                }
+              },
+              "description": "JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigExistingTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "The data file for the batch import. Max allowed file size is 100 MB. ",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported as a batch."
+                    }
+                  },
+                  "required": [
+                    "FILE"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful batch import response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/BatchImportSuccessResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk import job",
+                        "data": {
+                          "batchKey": "1694703618038_1767024000008742002",
+                          "jobId": "1767024000008787011"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/data": {
+        "get": {
+          "tags": [
+            "Bulk Export - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Create Export Job using SQL Query (Asynchronous)",
+          "description": "Create an export job using an SQL SELECT statement to initiate data export asynchronously.\n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB IN PROGRESS\n     → Export is currently being processed. Continue polling.\n   - 1003: ERROR OCCURRED\n     → An error occurred. Stop polling and investigate the error.\n   - 1004: JOB COMPLETED\n     → Export process completed. Proceed to download.\n   - 1005: JOB NOT FOUND\n     → Provided JOBID is invalid. Stop polling and verify the JOBID.\n\n3. Download Exported Data:\n  - Once JOBCODE is 1004, use the Download Exported Data API to download the exported file.\n\nLimitations:\n- Exported file will be available only for 1 hour after job completion.\n- Maximum 5 concurrent export jobs are allowed per organization.",
+          "operationId": "createExportJobSQLQuery",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "sample": {
+                  "summary": "Sample",
+                  "value": "{\"sqlQuery\":\"select * from Sales\"}"
+                }
+              },
+              "description": "JSONObject with configuration to create a export data. (Refer `ExportJobConfigSQLQuery` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful bulk export response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ExportJobCreationResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk export job",
+                        "data": {
+                          "jobId": "1767024000008787011"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Bulk Import - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Create Import Job for a New Table (Asynchronous)",
+          "description": "Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.\n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported.",
+          "operationId": "createImportJobNewTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "jsonConfig": {
+                  "summary": "JSON",
+                  "value": "{\"tableName\":\"Sales\",\"fileType\":\"json\",\"autoIdentify\":true}"
+                },
+                "csvConfig": {
+                  "summary": "CSV",
+                  "value": "{\"tableName\":\"Sales\",\"fileType\":\"csv\",\"autoIdentify\":true}"
+                }
+              },
+              "description": "JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "The file to be imported. Format should be multipart/form-data. ",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported."
+                    }
+                  },
+                  "required": [
+                    "FILE"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful import job creation response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ImportJobCreationResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk import job",
+                        "data": {
+                          "jobId": "1767024000003153087"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/views/{view-id}/data": {
+        "get": {
+          "tags": [
+            "Bulk Export - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Create Export Job using View ID (Asynchronous)",
+          "description": "Create an export job to initiate data export for the mentioned view asynchronously. \n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB IN PROGRESS\n     → Export is currently being processed. Continue polling.\n   - 1003: ERROR OCCURRED\n     → An error occurred. Stop polling and investigate the error.\n   - 1004: JOB COMPLETED\n     → Export process completed. Proceed to download.\n   - 1005: JOB NOT FOUND\n     → Provided JOBID is invalid. Stop polling and verify the JOBID.\n\n3. Download Exported Data:\n  - Once JOBCODE is 1004, use the Download Exported Data API to download the exported file.\n\nLimitations:\n- Exported file will be available only for 1 hour after job completion.\n- Maximum 5 concurrent export jobs are allowed per organization.",
+          "operationId": "createExportJobViewId",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "criteria": {
+                  "summary": "Using Filter Criteria",
+                  "value": "{\"criteria\":\"\\\"SalesTable\\\".\\\"Region\\\"='East'\"}"
+                },
+                "format": {
+                  "summary": "Using Response Format",
+                  "value": "{\"responseFormat\":\"json\"}"
+                }
+              },
+              "description": "JSONObject with configuration to initiate export job for the specified view. (Refer `ExportJobConfigViewId` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful export job creation response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ExportJobCreationResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk export job",
+                        "data": {
+                          "jobId": "1767024000008787011"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Bulk Import - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.create"
+              ]
+            }
+          ],
+          "summary": "Create Import Job for an Existing Table (Asynchronous)",
+          "description": "Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB. \n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported.",
+          "operationId": "createImportJobExistingTable",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "in": "query",
+              "name": "CONFIG",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "jsonConfig": {
+                  "summary": "JSON",
+                  "value": "{\"importType\":\"append\",\"fileType\":\"json\",\"autoIdentify\":\"true\"}"
+                },
+                "csvConfig": {
+                  "summary": "CSV",
+                  "value": "{\"importType\":\"append\",\"fileType\":\"csv\",\"autoIdentify\":\"true\"}"
+                }
+              },
+              "description": "JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigExitingTable` schema). Value must be stringified and URL-encoded."
+            }
+          ],
+          "requestBody": {
+            "description": "The file to be imported. Format should be multipart/form-data. ",
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "FILE": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "The file to be imported."
+                    }
+                  },
+                  "required": [
+                    "FILE"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful import job creation response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ImportJobCreationResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Create bulk import job",
+                        "data": {
+                          "jobId": "1767024000003153087"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/importjobs/{job-id}": {
+        "get": {
+          "tags": [
+            "Bulk Import - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Get Import Job Details",
+          "description": "Returns details of the specified asynchronous import job.",
+          "operationId": "getImportJobDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/job-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response with import job details",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ImportJobDetailsResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Fetch import job info",
+                        "data": {
+                          "jobId": "1767024000003153087",
+                          "jobCode": "1004",
+                          "jobStatus": "JOB COMPLETED",
+                          "jobInfo": {
+                            "viewId": "1767024000003154002",
+                            "importSummary": {
+                              "importType": "APPEND",
+                              "totalColumnCount": 7,
+                              "selectedColumnCount": 7,
+                              "totalRowCount": 755,
+                              "successRowCount": 755,
+                              "warnings": 0,
+                              "importOperation": "created"
+                            },
+                            "columnDetails": {
+                              "Date": "Date",
+                              "Region": "Plain Text",
+                              "Product Category": "Plain Text",
+                              "Product": "Plain Text",
+                              "Customer Name": "Plain Text",
+                              "Sales": "Currency",
+                              "Cost": "Currency"
+                            },
+                            "importErrors": ""
+                          },
+                          "expiryTime": "1623764592309"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/exportjobs/{job-id}": {
+        "get": {
+          "tags": [
+            "Bulk Export - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Get Export Job Details",
+          "description": "Returns details of the specified asynchronous export job.",
+          "operationId": "getExportJobDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/job-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response with export job details",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ExportJobDetailsResponse"
+                  },
+                  "examples": {
+                    "Default": {
+                      "value": {
+                        "status": "success",
+                        "summary": "Fetch export job info",
+                        "data": {
+                          "jobId": "35130000001391001",
+                          "jobCode": "1004",
+                          "jobStatus": "JOB COMPLETED",
+                          "downloadUrl": "https://analyticsapi.zoho.com/restapi/v2/bulk/workspaces/35130000001242001/exportjobs/35130000001391001/data",
+                          "expiryTime": "1623765872891"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/bulk/workspaces/{workspace-id}/exportjobs/{job-id}/data": {
+        "get": {
+          "tags": [
+            "Bulk Export - Asynchronous"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.data.read"
+              ]
+            }
+          ],
+          "summary": "Download Exported Data",
+          "description": "Download data for the bulk export job.",
+          "operationId": "downloadExportedData",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/job-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful download of exported data. The content type will vary based on the format specified during job creation.",
+              "content": {
+                "text/csv": {},
+                "application/json": {},
+                "application/xml": {},
+                "application/vnd.ms-excel": {},
+                "application/pdf": {},
+                "text/html": {},
+                "image/png": {},
+                "image/jpeg": {}
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "iam-oauth2-schema": {
+          "type": "oauth2",
+          "flows": {
+            "authorizationCode": {
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "scopes": {
+                "ZohoAnalytics.data.read": "Read data from Zoho Analytics.",
+                "ZohoAnalytics.data.delete": "Delete data from Zoho Analytics.",
+                "ZohoAnalytics.data.update": "Update data in Zoho Analytics.",
+                "ZohoAnalytics.data.create": "Create data in Zoho Analytics.",
+                "ZohoAnalytics.data.all": "Full access to data in Zoho Analytics.",
+                "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+              }
+            }
+          }
+        }
+      },
+      "parameters": {
+        "org-id": {
+          "name": "ZANALYTICS-ORGID",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Organization ID (can be obtained using Get Organizations API)."
+        },
+        "workspace-id": {
+          "name": "workspace-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the workspace."
+        },
+        "view-id": {
+          "name": "view-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the view."
+        },
+        "job-id": {
+          "name": "job-id",
+          "in": "path",
+          "description": "The unique identifier of the import/export job.",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      },
+      "schemas": {
+        "ImportConfigNewTable": {
+          "type": "object",
+          "description": "Configuration for importing data into a new table.",
+          "required": [
+            "tableName",
+            "fileType",
+            "autoIdentify"
+          ],
+          "properties": {
+            "tableName": {
+              "type": "string",
+              "description": "The name of the table."
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "description": "The format of the file to be imported."
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "To specify whether to auto identify the CSV format."
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ],
+              "description": "Controls the action to be taken in case there is an error during import."
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Controls the columns that need to be imported."
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows that are to be skipped from the top in the CSV file being imported."
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "The thousand separator in the data. 0 - COMMA, 1 - DOT, 2 - SPACE, 3 - SINGLE QUOTE."
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "description": "The decimal separator in the data. 0 - DOT, 1 - COMMA."
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "The format of date fields when it cannot be auto recognized. Example: dd-MMM-YYYY."
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "description": "For importing multiple date fields with different formats. Key: column name, Value: format."
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "If found at the beginning of the row, that CSV row will be skipped. Example: '#'.",
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "The delimiter used to separate fields in CSV. 0 - COMMA, 1 - TAB, 2 - SEMICOLON, 3 - SPACE."
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Text qualifier. 0 - NONE, 1 - SINGLE QUOTE, 2 - DOUBLE QUOTE."
+            },
+            "retainColumnNames": {
+              "type": "boolean",
+              "description": "Controls how column names are constructed from the JSON file. Default: false."
+            }
+          }
+        },
+        "ImportConfigExistingTable": {
+          "type": "object",
+          "properties": {
+            "importType": {
+              "type": "string",
+              "enum": [
+                "append",
+                "truncateadd",
+                "updateadd"
+              ]
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ]
+            },
+            "autoIdentify": {
+              "type": "boolean"
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ]
+            },
+            "matchingColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Mandatory for 'updateadd' import type. Columns to be matched to update existing rows. "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "skipTop": {
+              "type": "integer"
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "dateFormat": {
+              "type": "string"
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "description": "An object where each key is a column name and the value is the corresponding date format for that column.",
+              "additionalProperties": {
+                "type": "object"
+              },
+              "examples": [
+                {
+                  "columnName1": "dd-MMM-YYYY",
+                  "columnName2": "MM/dd/yyyy"
+                }
+              ]
+            },
+            "columnDataTypes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "columnName": {
+                    "type": "string"
+                  },
+                  "dataType": {
+                    "type": "string",
+                    "enum": [
+                      "PLAIN",
+                      "MULTI_LINE",
+                      "EMAIL",
+                      "NUMBER",
+                      "POSITIVE_NUMBER",
+                      "DECIMAL_NUMBER",
+                      "CURRENCY",
+                      "PERCENT",
+                      "DATE",
+                      "BOOLEAN",
+                      "URL",
+                      "AUTO_NUMBER",
+                      "GEO"
+                    ]
+                  },
+                  "geoRole": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "commentChar": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "retainColumnNames": {
+              "type": "boolean"
+            }
+          }
+        },
+        "ImportSuccessResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "viewId": {
+                  "type": "string"
+                },
+                "importSummary": {
+                  "type": "object",
+                  "properties": {
+                    "importType": {
+                      "type": "string"
+                    },
+                    "totalColumnCount": {
+                      "type": "integer"
+                    },
+                    "selectedColumnCount": {
+                      "type": "integer"
+                    },
+                    "totalRowCount": {
+                      "type": "integer"
+                    },
+                    "successRowCount": {
+                      "type": "integer"
+                    },
+                    "warnings": {
+                      "type": "integer"
+                    },
+                    "importOperation": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "columnDetails": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "importErrors": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "ExistImportSuccessResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "importSummary": {
+                  "type": "object",
+                  "properties": {
+                    "importType": {
+                      "type": "string"
+                    },
+                    "totalColumnCount": {
+                      "type": "integer"
+                    },
+                    "selectedColumnCount": {
+                      "type": "integer"
+                    },
+                    "totalRowCount": {
+                      "type": "integer"
+                    },
+                    "successRowCount": {
+                      "type": "integer"
+                    },
+                    "warnings": {
+                      "type": "integer"
+                    },
+                    "importOperation": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "columnDetails": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "importErrors": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "ExportConfig": {
+          "type": "object",
+          "description": "Configuration for exporting data from a view using Bulk Export APIs.",
+          "properties": {
+            "responseFormat": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json",
+                "xml",
+                "xls",
+                "pdf",
+                "html",
+                "image"
+              ],
+              "description": "The format of the data to be exported."
+            },
+            "criteria": {
+              "type": "string",
+              "description": "Only rows matching the specified criteria will be exported. Example: `\"SalesTable\".\"Region\"='East'`"
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Columns that need to be exported. Example: [\"column1\", \"column2\"]"
+            },
+            "showHiddenCols": {
+              "type": "boolean",
+              "description": "Whether hidden columns should be included in the export. Default: false"
+            },
+            "showPersonalCols": {
+              "type": "boolean",
+              "description": "Whether personal data columns should be included in the export. Default: false"
+            },
+            "generateTOC": {
+              "type": "boolean",
+              "description": "Generate Table Of Contents (Only for dashboards). Default: false"
+            },
+            "dashboardLayout": {
+              "type": "integer",
+              "description": "Layout type for dashboards. 0: New page per report, 1: Layout as in dashboard"
+            },
+            "delimiter": {
+              "type": "integer",
+              "description": "CSV: Field delimiter. 0: COMMA, 1: TAB, 2: SEMICOLON, 3: SPACE"
+            },
+            "recordDelimiter": {
+              "type": "integer",
+              "description": "CSV: Record delimiter. 0: DOS, 1: UNIX, 2: MAC"
+            },
+            "quoted": {
+              "type": "integer",
+              "description": "CSV: Quote character. 0: SINGLE, 1: DOUBLE"
+            },
+            "includeHeader": {
+              "type": "boolean",
+              "description": "CSV: Include column headers in the output. Default: true"
+            },
+            "keyValueFormat": {
+              "type": "boolean",
+              "description": "JSON: Return JSON as key-value pairs. Default: true"
+            },
+            "paperSize": {
+              "type": "integer",
+              "description": "PDF: Paper size. 0: LETTER, 1: LEGAL, 2: TABLOID, 3: A3, 4: A4, 5: AUTO"
+            },
+            "paperStyle": {
+              "type": "string",
+              "description": "PDF: Orientation. Allowed: Portrait, Landscape"
+            },
+            "showTitle": {
+              "type": "integer",
+              "description": "PDF: Title position. 0: TOP, 1: BOTTOM, 2: NONE"
+            },
+            "showDesc": {
+              "type": "integer",
+              "description": "PDF: Description position. 0: TOP, 1: BOTTOM, 2: NONE"
+            },
+            "exportLanguage": {
+              "type": "integer",
+              "description": "PDF: Export language. 0: ENGLISH, 1: CHINESE, 2: JAPANESE, 3: EUROPEAN, 4: KOREAN"
+            },
+            "zoomFactor": {
+              "type": "integer",
+              "description": "PDF: Zoom factor from 0 to 100. Default: 100"
+            },
+            "topMargin": {
+              "type": "number",
+              "description": "PDF: Top margin (0 to 1 inches)"
+            },
+            "bottomMargin": {
+              "type": "number",
+              "description": "PDF: Bottom margin (0 to 1 inches)"
+            },
+            "leftMargin": {
+              "type": "number",
+              "description": "PDF: Left margin (0 to 1 inches)"
+            },
+            "rightMargin": {
+              "type": "number",
+              "description": "PDF: Right margin (0 to 1 inches)"
+            },
+            "leftHeader": {
+              "type": "integer",
+              "description": "PDF: Left header content (0-5)"
+            },
+            "rightHeader": {
+              "type": "integer",
+              "description": "PDF: Right header content (0-5)"
+            },
+            "centerHeader": {
+              "type": "integer",
+              "description": "PDF: Center header content (0-5)"
+            },
+            "leftFooter": {
+              "type": "integer",
+              "description": "PDF: Left footer content (0-5)"
+            },
+            "rightFooter": {
+              "type": "integer",
+              "description": "PDF: Right footer content (0-5)"
+            },
+            "centerFooter": {
+              "type": "integer",
+              "description": "PDF: Center footer content (0-5)"
+            },
+            "leftHeaderText": {
+              "type": "string",
+              "description": "PDF: Custom text for left header"
+            },
+            "rightHeaderText": {
+              "type": "string",
+              "description": "PDF: Custom text for right header"
+            },
+            "centerHeaderText": {
+              "type": "string",
+              "description": "PDF: Custom text for center header"
+            },
+            "leftFooterText": {
+              "type": "string",
+              "description": "PDF: Custom text for left footer"
+            },
+            "rightFooterText": {
+              "type": "string",
+              "description": "PDF: Custom text for right footer"
+            },
+            "centerFooterText": {
+              "type": "string",
+              "description": "PDF: Custom text for center footer"
+            },
+            "includeTitle": {
+              "type": "integer",
+              "description": "HTML: Title position. 0: TOP, 1: BOTTOM, 2: NONE"
+            },
+            "includeDesc": {
+              "type": "integer",
+              "description": "HTML: Description position. 0: TOP, 1: BOTTOM, 2: NONE"
+            },
+            "width": {
+              "type": "integer",
+              "description": "IMAGE: Width of the exported image. Default: 500"
+            },
+            "height": {
+              "type": "integer",
+              "description": "IMAGE: Height of the exported image. Default: 400"
+            },
+            "title": {
+              "type": "boolean",
+              "description": "IMAGE: Include view name. Default: true"
+            },
+            "description": {
+              "type": "boolean",
+              "description": "IMAGE: Include view description. Default: true"
+            },
+            "legend": {
+              "type": "boolean",
+              "description": "IMAGE: Include chart legend. Default: true"
+            },
+            "imageFormat": {
+              "type": "string",
+              "enum": [
+                "png",
+                "jpg"
+              ],
+              "description": "IMAGE: Format of the exported image. Default: png"
+            }
+          },
+          "required": [
+            "responseFormat"
+          ]
+        },
+        "BatchImportConfigNewTable": {
+          "type": "object",
+          "required": [
+            "batchKey",
+            "isLastBatch",
+            "tableName",
+            "autoIdentify"
+          ],
+          "properties": {
+            "batchKey": {
+              "type": "string",
+              "description": "Key to identify the batch import job. For the initial request, use \"start\"."
+            },
+            "isLastBatch": {
+              "type": "boolean",
+              "description": "Specifies whether this is the last batch.\nDefault value - false."
+            },
+            "tableName": {
+              "type": "string",
+              "description": "The name of the table."
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "Whether to auto-identify the CSV format."
+            },
+            "onError": {
+              "type": "string",
+              "description": "Controls the action to be taken on error during import.",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ]
+            },
+            "selectedColumns": {
+              "type": "array",
+              "description": "Columns to import.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows to skip from the top of the CSV."
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "description": "Thousand separator in data.\n0 - COMMA, 1 - DOT, 2 - SPACE, 3 - SINGLE QUOTE",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "description": "Decimal separator in data.\n0 - DOT, 1 - COMMA",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "Format of date fields if not auto-detected.\nExample: dd-MMM-YYYY"
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "description": "Date format for specific columns.\nKey: column name, Value: date format",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "callbackUrl": {
+              "type": "string",
+              "description": "Valid HTTP POST URL to receive import job completion status.",
+              "format": "uri"
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "Rows starting with this character are skipped. Example: '#'",
+              "minLength": 1,
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "description": "Field delimiter.\n0 - COMMA, 1 - TAB, 2 - SEMICOLON, 3 - SPACE",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "quoted": {
+              "type": "integer",
+              "description": "Text qualifier.\n0 - NONE, 1 - SINGLE QUOTE, 2 - DOUBLE QUOTE",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        "BatchImportConfigExistingTable": {
+          "type": "object",
+          "required": [
+            "batchKey",
+            "isLastBatch",
+            "importType",
+            "autoIdentify"
+          ],
+          "properties": {
+            "batchKey": {
+              "type": "string",
+              "description": "Key to identify the batch import job. For the initial request, use \"start\"."
+            },
+            "isLastBatch": {
+              "type": "boolean",
+              "description": "Specifies whether this is the last batch.\nDefault value - false."
+            },
+            "importType": {
+              "type": "string",
+              "enum": [
+                "append",
+                "truncateadd",
+                "updateadd"
+              ]
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "Whether to auto-identify the CSV format."
+            },
+            "onError": {
+              "type": "string",
+              "description": "Controls the action to be taken on error during import.",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ]
+            },
+            "matchingColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Mandatory for 'updateadd' import type. Columns to be matched to update existing rows. "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "description": "Columns to import.",
+              "items": {
+                "type": "string"
+              }
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows to skip from the top of the CSV."
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "description": "Thousand separator in data.\n0 - COMMA, 1 - DOT, 2 - SPACE, 3 - SINGLE QUOTE",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "description": "Decimal separator in data.\n0 - DOT, 1 - COMMA",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "Format of date fields if not auto-detected.\nExample: dd-MMM-YYYY"
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "description": "Date format for specific columns.\nKey: column name, Value: date format",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "callbackUrl": {
+              "type": "string",
+              "description": "Valid HTTP POST URL to receive import job completion status.",
+              "format": "uri"
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "Rows starting with this character are skipped. Example: '#'",
+              "minLength": 1,
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "description": "Field delimiter.\n0 - COMMA, 1 - TAB, 2 - SEMICOLON, 3 - SPACE",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "quoted": {
+              "type": "integer",
+              "description": "Text qualifier.\n0 - NONE, 1 - SINGLE QUOTE, 2 - DOUBLE QUOTE",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            }
+          }
+        },
+        "BatchImportSuccessResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jobId": {
+                  "type": "string",
+                  "description": "The unique identifier of the batch import job."
+                },
+                "batchKey": {
+                  "type": "string",
+                  "description": "The key to identify the next batch."
+                }
+              }
+            }
+          }
+        },
+        "BulkImportConfigNewTable": {
+          "type": "object",
+          "description": "Configuration for importing data into a new table.",
+          "required": [
+            "tableName",
+            "fileType",
+            "autoIdentify"
+          ],
+          "properties": {
+            "tableName": {
+              "type": "string",
+              "description": "The name of the table."
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "description": "The format of the file to be imported."
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "To specify whether to auto identify the CSV format."
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ],
+              "description": "Controls the action to be taken in case there is an error during import."
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Controls the columns that need to be imported."
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows that are to be skipped from the top in the CSV file being imported."
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "The thousand separator in the data. 0 - COMMA, 1 - DOT, 2 - SPACE, 3 - SINGLE QUOTE."
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "description": "The decimal separator in the data. 0 - DOT, 1 - COMMA."
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "The format of date fields when it cannot be auto recognized. Example: dd-MMM-YYYY."
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              },
+              "description": "For importing multiple date fields with different formats. Key: column name, Value: format."
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "If found at the beginning of the row, that CSV row will be skipped. Example: '#'.",
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "The delimiter used to separate fields in CSV. 0 - COMMA, 1 - TAB, 2 - SEMICOLON, 3 - SPACE."
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Text qualifier. 0 - NONE, 1 - SINGLE QUOTE, 2 - DOUBLE QUOTE."
+            },
+            "retainColumnNames": {
+              "type": "boolean",
+              "description": "Controls how column names are constructed from the JSON file. Default: false."
+            },
+            "callbackUrl": {
+              "type": "string",
+              "format": "url",
+              "description": "URL to which a callback will be sent upon completion of the import operation."
+            }
+          }
+        },
+        "BulkImportConfigExistingTable": {
+          "type": "object",
+          "properties": {
+            "importType": {
+              "type": "string",
+              "enum": [
+                "append",
+                "truncateadd",
+                "updateadd"
+              ]
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ]
+            },
+            "autoIdentify": {
+              "type": "boolean"
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ]
+            },
+            "matchingColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Mandatory for 'updateadd' import type. Columns to be matched to update existing rows. "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "skipTop": {
+              "type": "integer"
+            },
+            "thousandSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "decimalSeparator": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            },
+            "dateFormat": {
+              "type": "string"
+            },
+            "columnDateFormat": {
+              "type": "object",
+              "description": "An object where each key is a column name and the value is the corresponding date format for that column.",
+              "additionalProperties": {
+                "type": "object"
+              },
+              "examples": [
+                {
+                  "columnName1": "dd-MMM-YYYY",
+                  "columnName2": "MM/dd/yyyy"
+                }
+              ]
+            },
+            "columnDataTypes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "columnName": {
+                    "type": "string"
+                  },
+                  "dataType": {
+                    "type": "string",
+                    "enum": [
+                      "PLAIN",
+                      "MULTI_LINE",
+                      "EMAIL",
+                      "NUMBER",
+                      "POSITIVE_NUMBER",
+                      "DECIMAL_NUMBER",
+                      "CURRENCY",
+                      "PERCENT",
+                      "DATE",
+                      "BOOLEAN",
+                      "URL",
+                      "AUTO_NUMBER",
+                      "GEO"
+                    ]
+                  },
+                  "geoRole": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "commentChar": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ]
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            "retainColumnNames": {
+              "type": "boolean"
+            },
+            "callbackUrl": {
+              "type": "string",
+              "format": "url",
+              "description": "URL to which a callback will be sent upon completion of the import operation."
+            }
+          }
+        },
+        "ImportJobConfigNewTable": {
+          "type": "object",
+          "description": "Configuration for creating an asynchronous import job into a new table.",
+          "properties": {
+            "tableName": {
+              "type": "string",
+              "description": "The name of the new table.",
+              "examples": [
+                "New Table"
+              ]
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "description": "The format of the file to be imported."
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "To specify whether to auto identify the CSV format."
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ],
+              "description": "Controls the action to be taken in case there is an error during import. "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Controls the columns that need to be imported. Sample: [\"column1\",\"column2\"] "
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows that are to be skipped from the top in the CSV file being imported. "
+            },
+            "thousandSeparator": {
+              "type": "string",
+              "description": "The character used to separate thousands in numeric values. "
+            },
+            "decimalSeparator": {
+              "type": "string",
+              "description": "The character used to separate decimals in numeric values. "
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "The format of the date columns. "
+            },
+            "encoding": {
+              "type": "string",
+              "description": "The encoding of the file. "
+            },
+            "quoteChar": {
+              "type": "string",
+              "description": "The character used for quoting text fields. "
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "The character used to indicate a comment line. "
+            },
+            "nullValue": {
+              "type": "string",
+              "description": "The string that represents a null value. "
+            },
+            "trimSpaces": {
+              "type": "boolean",
+              "description": "To specify whether to trim leading and trailing spaces in column values. "
+            },
+            "callbackUrl": {
+              "type": "string",
+              "description": "A valid URL, that should allow HTTP Post method. The Import Summary is posted to this URL on successful completion of import or on failure of import. "
+            }
+          },
+          "required": [
+            "tableName",
+            "fileType",
+            "autoIdentify"
+          ]
+        },
+        "ImportJobConfigExistingTable": {
+          "type": "object",
+          "description": "Configuration for creating an asynchronous import job into an existing table.",
+          "properties": {
+            "importType": {
+              "type": "string",
+              "enum": [
+                "append",
+                "truncateadd",
+                "updateadd"
+              ],
+              "description": "Controls the type of import. "
+            },
+            "fileType": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json"
+              ],
+              "description": "The format of the file to be imported. "
+            },
+            "autoIdentify": {
+              "type": "boolean",
+              "description": "To specify whether to auto identify the CSV format. "
+            },
+            "onError": {
+              "type": "string",
+              "enum": [
+                "abort",
+                "skiprow",
+                "setcolumnempty"
+              ],
+              "description": "Controls the action to be taken in case there is an error during import. "
+            },
+            "matchingColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Mandatory for 'updateadd' import type. Columns to be matched to update existing rows. "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Controls the columns that need to be imported. Sample: [\"column1\",\"column2\"] "
+            },
+            "skipTop": {
+              "type": "integer",
+              "description": "Number of rows that are to be skipped from the top in the CSV file being imported. "
+            },
+            "thousandSeparator": {
+              "type": "string",
+              "description": "The character used to separate thousands in numeric values. "
+            },
+            "decimalSeparator": {
+              "type": "string",
+              "description": "The character used to separate decimals in numeric values. "
+            },
+            "dateFormat": {
+              "type": "string",
+              "description": "The format of the date columns. "
+            },
+            "encoding": {
+              "type": "string",
+              "description": "The encoding of the file. "
+            },
+            "quoteChar": {
+              "type": "string",
+              "description": "The character used for quoting text fields. "
+            },
+            "commentChar": {
+              "type": "string",
+              "description": "The character used to indicate a comment line. "
+            },
+            "nullValue": {
+              "type": "string",
+              "description": "The string that represents a null value. "
+            },
+            "trimSpaces": {
+              "type": "boolean",
+              "description": "To specify whether to trim leading and trailing spaces in column values. "
+            },
+            "callbackUrl": {
+              "type": "string",
+              "description": "A valid URL, that should allow HTTP Post method. The Import Summary is posted to this URL on successful completion of import or on failure of import. "
+            }
+          },
+          "required": [
+            "importType",
+            "fileType",
+            "autoIdentify"
+          ]
+        },
+        "ImportJobCreationResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jobId": {
+                  "type": "string",
+                  "description": "The unique ID of the import job."
+                }
+              }
+            }
+          }
+        },
+        "ImportJobDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jobId": {
+                  "type": "string"
+                },
+                "jobCode": {
+                  "type": "string",
+                  "description": "Numeric code indicating the job status (e.g., 1001: JOB NOT INITIATED, 1002: JOB IN PROGRESS, 1003: ERROR OCCURRED, 1004: JOB COMPLETED, 1005: JOB NOT FOUND). "
+                },
+                "jobStatus": {
+                  "type": "string",
+                  "description": "Human-readable status message (e.g., 'JOB COMPLETED'). "
+                },
+                "jobInfo": {
+                  "type": "object",
+                  "properties": {
+                    "viewId": {
+                      "type": "string"
+                    },
+                    "importSummary": {
+                      "type": "object",
+                      "properties": {
+                        "importType": {
+                          "type": "string"
+                        },
+                        "totalColumnCount": {
+                          "type": "integer"
+                        },
+                        "selectedColumnCount": {
+                          "type": "integer"
+                        },
+                        "totalRowCount": {
+                          "type": "integer"
+                        },
+                        "successRowCount": {
+                          "type": "integer"
+                        },
+                        "warnings": {
+                          "type": "integer"
+                        },
+                        "importOperation": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "columnDetails": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ExportJobConfigSQLQuery": {
+          "type": "object",
+          "required": [
+            "sqlQuery",
+            "responseFormat"
+          ],
+          "properties": {
+            "sqlQuery": {
+              "type": "string",
+              "description": "SQL SELECT Query. Use to export data from a single Table, Query Table, or join multiple tables."
+            },
+            "responseFormat": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json",
+                "xml",
+                "xls",
+                "pdf",
+                "html"
+              ],
+              "description": "The format of the data to be exported."
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of columns to export. Example: [\"column1\", \"column2\"]"
+            },
+            "showHiddenCols": {
+              "type": "boolean",
+              "default": false,
+              "description": "Export columns hidden in the table."
+            },
+            "showPersonalCols": {
+              "type": "boolean",
+              "default": false,
+              "description": "Export columns marked as personal data."
+            },
+            "callbackUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Callback URL to post job status (on success/failure). Must accept HTTP POST."
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "CSV delimiter: 0=COMMA, 1=TAB, 2=SEMICOLON, 3=SPACE"
+            },
+            "recordDelimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Record delimiter: 0=DOS, 1=UNIX, 2=MAC"
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "description": "Quote character: 0=SINGLE, 1=DOUBLE"
+            },
+            "includeHeader": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include column headers in the CSV output."
+            },
+            "keyValueFormat": {
+              "type": "boolean",
+              "default": true,
+              "description": "Output JSON in columnName-value pairs."
+            },
+            "paperSize": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "description": "PDF paper size: 0=LETTER, 1=LEGAL, 2=TABLOID, 3=A3, 4=A4, 5=AUTO"
+            },
+            "paperStyle": {
+              "type": "string",
+              "enum": [
+                "Portrait",
+                "Landscape"
+              ],
+              "description": "PDF orientation."
+            },
+            "showTitle": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Title positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "showDesc": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Description positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "exportLanguage": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "description": "PDF language: 0=ENGLISH, 1=CHINESE, 2=JAPANESE, 3=EUROPEAN, 4=KOREAN"
+            },
+            "zoomFactor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 100,
+              "description": "PDF zoom factor (0-100)."
+            },
+            "topMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "bottomMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "leftMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "rightMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "leftHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "rightHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "centerHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "leftFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "rightFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "centerFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "leftHeaderText": {
+              "type": "string"
+            },
+            "rightHeaderText": {
+              "type": "string"
+            },
+            "centerHeaderText": {
+              "type": "string"
+            },
+            "leftFooterText": {
+              "type": "string"
+            },
+            "rightFooterText": {
+              "type": "string"
+            },
+            "centerFooterText": {
+              "type": "string"
+            },
+            "includeTitle": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "HTML title positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "includeDesc": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "HTML description positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            }
+          }
+        },
+        "ExportJobConfigViewId": {
+          "type": "object",
+          "required": [
+            "responseFormat"
+          ],
+          "properties": {
+            "responseFormat": {
+              "type": "string",
+              "enum": [
+                "csv",
+                "json",
+                "xml",
+                "xls",
+                "pdf",
+                "html"
+              ],
+              "description": "The format of the data to be exported."
+            },
+            "criteria": {
+              "type": "string",
+              "description": "If criteria is sent, then the rows matching the criteria alone are exported. Sample: {\"criteria\":\"\\\"SalesTable\\\".\\\"Region\\\"='East'\"} "
+            },
+            "selectedColumns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "List of columns to export. Example: [\"column1\", \"column2\"]"
+            },
+            "showHiddenCols": {
+              "type": "boolean",
+              "default": false,
+              "description": "Export columns hidden in the table."
+            },
+            "showPersonalCols": {
+              "type": "boolean",
+              "default": false,
+              "description": "Export columns marked as personal data."
+            },
+            "callbackUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Callback URL to post job status (on success/failure). Must accept HTTP POST."
+            },
+            "delimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "description": "CSV delimiter: 0=COMMA, 1=TAB, 2=SEMICOLON, 3=SPACE"
+            },
+            "recordDelimiter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Record delimiter: 0=DOS, 1=UNIX, 2=MAC"
+            },
+            "quoted": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ],
+              "description": "Quote character: 0=SINGLE, 1=DOUBLE"
+            },
+            "includeHeader": {
+              "type": "boolean",
+              "default": true,
+              "description": "Include column headers in the CSV output."
+            },
+            "keyValueFormat": {
+              "type": "boolean",
+              "default": true,
+              "description": "Output JSON in columnName-value pairs."
+            },
+            "paperSize": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ],
+              "description": "PDF paper size: 0=LETTER, 1=LEGAL, 2=TABLOID, 3=A3, 4=A4, 5=AUTO"
+            },
+            "paperStyle": {
+              "type": "string",
+              "enum": [
+                "Portrait",
+                "Landscape"
+              ],
+              "description": "PDF orientation."
+            },
+            "showTitle": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Title positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "showDesc": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "Description positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "exportLanguage": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4
+              ],
+              "description": "PDF language: 0=ENGLISH, 1=CHINESE, 2=JAPANESE, 3=EUROPEAN, 4=KOREAN"
+            },
+            "zoomFactor": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 100,
+              "description": "PDF zoom factor (0-100)."
+            },
+            "topMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "bottomMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "leftMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "rightMargin": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "leftHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "rightHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "centerHeader": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "leftFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "rightFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "centerFooter": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5
+              ]
+            },
+            "leftHeaderText": {
+              "type": "string"
+            },
+            "rightHeaderText": {
+              "type": "string"
+            },
+            "centerHeaderText": {
+              "type": "string"
+            },
+            "leftFooterText": {
+              "type": "string"
+            },
+            "rightFooterText": {
+              "type": "string"
+            },
+            "centerFooterText": {
+              "type": "string"
+            },
+            "includeTitle": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "HTML title positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            },
+            "includeDesc": {
+              "type": "integer",
+              "enum": [
+                0,
+                1,
+                2
+              ],
+              "description": "HTML description positioning: 0=TOP, 1=BOTTOM, 2=NONE"
+            }
+          }
+        },
+        "ExportJobCreationResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jobId": {
+                  "type": "string",
+                  "description": "The unique ID of the export job."
+                }
+              }
+            }
+          }
+        },
+        "ExportJobDetailsResponse": {
+          "type": "object",
+          "description": "Response for checking the status of an export job.",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "jobId": {
+                  "type": "string",
+                  "description": "Unique identifier for the export job."
+                },
+                "jobCode": {
+                  "type": "string",
+                  "description": "Numeric code indicating the job status.\n\nPossible values:\n- `1001`: JOB NOT INITIATED\n- `1002`: JOB IN PROGRESS\n- `1003`: ERROR OCCURRED\n- `1004`: JOB COMPLETED\n- `1005`: JOB NOT FOUND"
+                },
+                "jobStatus": {
+                  "type": "string",
+                  "description": "Human-readable status message describing the current job state."
+                },
+                "downloadUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "URL to download the exported data after job completion."
+                },
+                "expiryTime": {
+                  "type": "string",
+                  "description": "Epoch timestamp indicating when the download URL will expire (in milliseconds)."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,1812 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Zoho Analytics API",
+      "version": "v2",
+      "description": "API for managing data in Zoho Analytics workspaces and views."
+    },
+    "servers": [
+      {
+        "url": "https://analyticsapi.zoho.com"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Embed APIs",
+        "description": "Embed APIs let you dynamically integrate Zoho Analytics reports and dashboards into your websites and applications."
+      }
+    ],
+    "paths": {
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get View URL",
+          "description": "Returns the URL to access the specified view.",
+          "operationId": "getViewUrl",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": false,
+              "style": "form",
+              "explode": false,
+              "schema": {
+                "$ref": "#/components/schemas/GetViewUrlConfig"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetViewUrlResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish/embed": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Embed URL",
+          "description": "Returns embed URL to access the specified view.",
+          "operationId": "getEmbedUrl",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": false,
+              "style": "form",
+              "explode": false,
+              "schema": {
+                "$ref": "#/components/schemas/GetEmbedUrlConfig"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetEmbedUrlResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish/privatelink": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Private URL",
+          "description": "Returns private URL to access the specified view.",
+          "operationId": "getPrivateUrl",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": false,
+              "style": "form",
+              "explode": false,
+              "schema": {
+                "$ref": "#/components/schemas/GetPrivateUrlConfig"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetPrivateUrlResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.update"
+              ]
+            }
+          ],
+          "summary": "Create Private URL",
+          "description": "Create a private URL for the specified view.",
+          "operationId": "createPrivateUrl",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/CreatePrivateUrlConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreatePrivateUrlResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.delete"
+              ]
+            }
+          ],
+          "summary": "Remove Private Access",
+          "description": "Remove private link access for the specified view.",
+          "operationId": "removePrivateAccess",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish/public": {
+        "post": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.create"
+              ]
+            }
+          ],
+          "summary": "Make Views Public",
+          "description": "Make the specified view publicly accessible.",
+          "operationId": "makeViewsPublic",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/MakeViewsPublicConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/MakeViewsPublicResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.delete"
+              ]
+            }
+          ],
+          "summary": "Remove Public Permission",
+          "operationId": "removePublicPermission",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish/config": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Publish Configurations",
+          "operationId": "getPublishConfigurations",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetPublishConfigurationsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.update"
+              ]
+            }
+          ],
+          "summary": "Update Publish Configurations",
+          "operationId": "updatePublishConfigurations",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/UpdatePublishConfigurationsConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/slides": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Slideshows",
+          "operationId": "getSlideshows",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSlideshowsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.create"
+              ]
+            }
+          ],
+          "summary": "Create Slideshow",
+          "description": "Create a slideshow in the specified workspace.",
+          "operationId": "createSlideshow",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/CreateSlideshowConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/CreateSlideshowResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/slides/{slide-id}": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Slideshow Details",
+          "operationId": "getSlideshowDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/slide-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSlideshowDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.update"
+              ]
+            }
+          ],
+          "summary": "Update Slideshow",
+          "description": "Update details of the specified slideshow.",
+          "operationId": "updateSlideshow",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/slide-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/UpdateSlideshowConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.delete"
+              ]
+            }
+          ],
+          "summary": "Delete Slideshow",
+          "description": "Delete a specified slideshow in the workspace.",
+          "operationId": "deleteSlideshow",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/slide-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/slides/{slide-id}/publish": {
+        "get": {
+          "tags": [
+            "Embed APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.embed.read"
+              ]
+            }
+          ],
+          "summary": "Get Slideshow URL",
+          "operationId": "getSlideshowUrl",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/slide-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "description": "CONFIG JSON as stringified and URL-encoded",
+              "schema": {
+                "type": "string",
+                "examples": [
+                  "{\"includeTitle\":true,\"includeDesc\":true,\"includeSocialWidgets\":false,\"autoplay\":true,\"withCustomDomain\":false,\"slideInterval\":25}"
+                ]
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSlideshowUrlResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "parameters": {
+        "org-id": {
+          "name": "ZANALYTICS-ORGID",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Organization ID (can be obtained using Get Organizations API)."
+        },
+        "workspace-id": {
+          "name": "workspace-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the workspace."
+        },
+        "view-id": {
+          "name": "view-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the view."
+        },
+        "slide-id": {
+          "name": "slide-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the slide."
+        }
+      },
+      "securitySchemes": {
+        "iam-oauth2-schema": {
+          "type": "oauth2",
+          "flows": {
+            "authorizationCode": {
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "scopes": {
+                "ZohoAnalytics.embed.read": "Read embedded content from Zoho Analytics.",
+                "ZohoAnalytics.embed.create": "Create embedded content in Zoho Analytics.",
+                "ZohoAnalytics.embed.update": "Update embedded content in Zoho Analytics.",
+                "ZohoAnalytics.embed.delete": "De;lete embedded content from Zoho Analytics.",
+                "ZohoAnalytics.embed.all": "Full access to embedded content in Zoho Analytics.",
+                "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+              }
+            }
+          }
+        }
+      },
+      "schemas": {
+        "GetViewUrlConfig": {
+          "type": "object",
+          "properties": {
+            "criteria": {
+              "type": "string",
+              "description": "If criteria is sent, then the rows matching the criteria alone are visible, else all the rows are visible."
+            },
+            "includeTitle": {
+              "type": "boolean",
+              "default": true,
+              "description": "To display the view name in the embedded mode."
+            },
+            "includeDesc": {
+              "type": "boolean",
+              "default": true,
+              "description": "To display the view description in the embedded mode."
+            },
+            "includeToolBar": {
+              "type": "boolean",
+              "default": false,
+              "description": "To include the toolbar in the embedded mode."
+            },
+            "includeSearchBox": {
+              "type": "boolean",
+              "default": false,
+              "description": "To include the search box in the table."
+            },
+            "includeDatatypeSymbol": {
+              "type": "boolean",
+              "default": false,
+              "description": "To include the datatype symbol in the table column."
+            },
+            "legendPosition": {
+              "type": "string",
+              "enum": [
+                "RIGHT",
+                "LEFT",
+                "TOPLEFT",
+                "TOPRIGHT",
+                "TOPCENTER",
+                "BOTTOMLEFT",
+                "BOTTOMRIGHT",
+                "BOTTOMCENTER",
+                "NONE"
+              ],
+              "description": "Controls to display the position of the legend."
+            },
+            "domainName": {
+              "type": "string",
+              "description": "Provide the custom domain to obtain the view URL with the corresponding domain address."
+            }
+          },
+          "examples": [
+            {
+              "criteria": "\"TABLENAME\".\"COLUMNNAME\"='VALUE'"
+            }
+          ],
+          "required": []
+        },
+        "GetViewUrlResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "viewUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get view url",
+              "data": {
+                "viewUrl": "https://analyticsapi.zoho.com/open-view/1767024000003145011?ZDB_THEME_NAME=blue"
+              }
+            }
+          ]
+        },
+        "GetEmbedUrlConfig": {
+          "type": "object",
+          "properties": {
+            "criteria": {
+              "type": "string"
+            },
+            "includeTitle": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeDesc": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeToolBar": {
+              "type": "boolean",
+              "default": false
+            },
+            "includeSearchBox": {
+              "type": "boolean",
+              "default": false
+            },
+            "includeDatatypeSymbol": {
+              "type": "boolean",
+              "default": false
+            },
+            "legendPosition": {
+              "type": "string",
+              "enum": [
+                "RIGHT",
+                "LEFT",
+                "TOPLEFT",
+                "TOPRIGHT",
+                "TOPCENTER",
+                "BOTTOMLEFT",
+                "BOTTOMRIGHT",
+                "BOTTOMCENTER",
+                "NONE"
+              ]
+            },
+            "validityPeriod": {
+              "type": "integer",
+              "default": 3600
+            },
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "export": {
+                  "type": "boolean"
+                },
+                "vud": {
+                  "type": "boolean"
+                },
+                "drillDown": {
+                  "type": "boolean"
+                },
+                "insight": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "vudColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "drillColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "language": {
+              "type": "string",
+              "default": "english"
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "examples": [
+            {
+              "criteria": "\"TABLENAME\".\"COLUMNNAME\"='VALUE'",
+              "includeToolBar": true,
+              "permissions": {
+                "read": "true",
+                "export": "true"
+              }
+            }
+          ]
+        },
+        "GetEmbedUrlResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "embedUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get embed url",
+              "data": {
+                "embedUrl": "https://analyticsapi.zoho.com/open-view/1767024000003145011?OS=FS&RSCONFIG=******"
+              }
+            }
+          ]
+        },
+        "GetPrivateUrlConfig": {
+          "type": "object",
+          "properties": {
+            "domainName": {
+              "type": "string",
+              "description": "Provide the custom domain to obtain the private URL with the corresponding domain address."
+            }
+          },
+          "required": []
+        },
+        "GetPrivateUrlResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "privateUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get private url",
+              "data": {
+                "privateUrl": "https://analyticsapi.zoho.com/open-view/1767024000003145011/eee1191ea88d52e486aaecf5f748dc56"
+              }
+            }
+          ]
+        },
+        "CreatePrivateUrlConfig": {
+          "type": "object",
+          "properties": {
+            "criteria": {
+              "type": "string"
+            },
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "vud": {
+                  "type": "boolean"
+                },
+                "export": {
+                  "type": "boolean"
+                },
+                "drillDown": {
+                  "type": "boolean"
+                },
+                "insight": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "regenerateKey": {
+              "type": "boolean"
+            },
+            "vudColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "drillColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "includeAllColsForVUD": {
+              "type": "boolean"
+            },
+            "password": {
+              "type": "string"
+            },
+            "removePassword": {
+              "type": "boolean"
+            },
+            "expiryDate": {
+              "type": "string"
+            },
+            "removeExpiryDate": {
+              "type": "boolean"
+            }
+          },
+          "examples": [
+            {
+              "criteria": "\"SalesTable\".\"Region\"='East'",
+              "permissions": {
+                "vud": true,
+                "export": true
+              },
+              "regenerateKey": false,
+              "vudColumns": [
+                {
+                  "tableName": "table1",
+                  "columnNames": [
+                    "column1",
+                    "column2"
+                  ]
+                }
+              ],
+              "drillColumns": [
+                {
+                  "tableName": "table1",
+                  "columnNames": [
+                    "column1",
+                    "column2"
+                  ]
+                }
+              ],
+              "includeAllColsForVUD": false,
+              "password": "zylker123",
+              "removePassword": false,
+              "expiryDate": "2025-12-31",
+              "removeExpiryDate": false
+            }
+          ]
+        },
+        "CreatePrivateUrlResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "privateUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Create private url",
+              "data": {
+                "privateUrl": "https://analyticsapi.zoho.com/open-view/1767024000003145011/eee1191ea88d52e486aaecf5f748dc56"
+              }
+            }
+          ]
+        },
+        "MakeViewsPublicConfig": {
+          "type": "object",
+          "properties": {
+            "publicPermLevel": {
+              "type": "integer"
+            },
+            "permissions": {
+              "type": "object",
+              "properties": {
+                "vud": {
+                  "type": "boolean"
+                },
+                "export": {
+                  "type": "boolean"
+                },
+                "drillDown": {
+                  "type": "boolean"
+                },
+                "insight": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "vudColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "drillColumns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "tableName": {
+                    "type": "string"
+                  },
+                  "columnNames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "criteria": {
+              "type": "string"
+            },
+            "inheritParentFilterCriteria": {
+              "type": "boolean"
+            }
+          },
+          "examples": [
+            {
+              "publicPermLevel": 1,
+              "permissions": {
+                "vud": true,
+                "export": true
+              },
+              "vudColumns": [
+                {
+                  "tableName": "table1",
+                  "columnNames": [
+                    "column1",
+                    "column2"
+                  ]
+                }
+              ],
+              "drillColumns": [
+                {
+                  "tableName": "table1",
+                  "columnNames": [
+                    "column1",
+                    "column2"
+                  ]
+                }
+              ],
+              "criteria": "\"SalesTable\".\"Region\"='East'",
+              "inheritParentFilterCriteria": true
+            }
+          ]
+        },
+        "MakeViewsPublicResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "publicUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Make view public",
+              "data": {
+                "publicUrl": "https://analytics.zoho.com/open-view/1767024000008125004"
+              }
+            }
+          ]
+        },
+        "UpdatePublishConfigurationsConfig": {
+          "type": "object",
+          "properties": {
+            "URLCriteria": {
+              "type": "string"
+            },
+            "includeTitle": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeDesc": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeToolBar": {
+              "type": "boolean",
+              "default": false
+            },
+            "includeSearchBox": {
+              "type": "boolean",
+              "default": false
+            },
+            "includeDatatypeSymbol": {
+              "type": "boolean",
+              "default": false
+            },
+            "includeSocialWidgets": {
+              "type": "boolean",
+              "default": false
+            },
+            "isListed": {
+              "type": "boolean",
+              "default": false
+            },
+            "isInteractive": {
+              "type": "boolean",
+              "default": true
+            },
+            "autoRefresh": {
+              "type": "integer",
+              "default": -1
+            },
+            "width": {
+              "type": "integer",
+              "default": 800
+            },
+            "height": {
+              "type": "integer",
+              "default": 600
+            },
+            "includeAskZia": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "examples": [
+            {
+              "includeTitle": true,
+              "includeDesc": true,
+              "includeToolBar": false
+            }
+          ]
+        },
+        "GetPublishConfigurationsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "publicViewConfig": {
+                  "type": "object",
+                  "properties": {
+                    "publicPermLevel": {
+                      "type": "integer"
+                    },
+                    "isListed": {
+                      "type": "boolean"
+                    },
+                    "isOrgPublicAllowed": {
+                      "type": "boolean"
+                    },
+                    "orgName": {
+                      "type": "string"
+                    },
+                    "isBussOrgPublicAllowed": {
+                      "type": "boolean"
+                    },
+                    "businessOrgName": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "privateLinkConfig": {
+                  "type": "object",
+                  "properties": {
+                    "isPrivate": {
+                      "type": "boolean"
+                    },
+                    "isExpired": {
+                      "type": "boolean"
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "expiryDate": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "publishConfig": {
+                  "type": "object",
+                  "properties": {
+                    "includeTitle": {
+                      "type": "boolean"
+                    },
+                    "includeDesc": {
+                      "type": "boolean"
+                    },
+                    "includeToolBar": {
+                      "type": "boolean"
+                    },
+                    "includeSocialWidgets": {
+                      "type": "boolean"
+                    },
+                    "includeSearchBox": {
+                      "type": "boolean"
+                    },
+                    "includeDatatypeSymbol": {
+                      "type": "boolean"
+                    },
+                    "includeShowHideOption": {
+                      "type": "boolean"
+                    },
+                    "isInteractive": {
+                      "type": "boolean"
+                    },
+                    "legendPosition": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "autoRefresh": {
+                      "type": "integer"
+                    },
+                    "URLCriteria": {
+                      "type": "string"
+                    },
+                    "includeAskZia": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get publish configurations",
+              "data": {
+                "publicViewConfig": {
+                  "publicPermLevel": 1,
+                  "isListed": false,
+                  "isOrgPublicAllowed": true,
+                  "orgName": "sathishkumar.ks",
+                  "isBussOrgPublicAllowed": true,
+                  "businessOrgName": "Zoho Corporation Private Limited"
+                },
+                "privateLinkConfig": {
+                  "isPrivate": false,
+                  "isExpired": false,
+                  "password": "-1",
+                  "expiryDate": "-1"
+                },
+                "publishConfig": {
+                  "includeTitle": true,
+                  "includeDesc": true,
+                  "includeToolBar": false,
+                  "includeSocialWidgets": false,
+                  "includeSearchBox": false,
+                  "includeDatatypeSymbol": false,
+                  "includeShowHideOption": false,
+                  "isInteractive": true,
+                  "legendPosition": "RIGHT",
+                  "width": 800,
+                  "height": 600,
+                  "autoRefresh": -1,
+                  "URLCriteria": "",
+                  "includeAskZia": true
+                }
+              }
+            }
+          ]
+        },
+        "GetSlideshowsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "slideshows": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "slideName": {
+                        "type": "string"
+                      },
+                      "slideId": {
+                        "type": "string"
+                      },
+                      "accessType": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "slideName",
+                      "slideId",
+                      "accessType"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "success": {
+                "value": {
+                  "status": "success",
+                  "summary": "Get slideshows",
+                  "data": {
+                    "slideshows": [
+                      {
+                        "slideName": "Slideshows 1",
+                        "slideId": "1767024000003149001",
+                        "accessType": 0
+                      },
+                      {
+                        "slideName": "Slideshows 2",
+                        "slideId": "1767024000003120002",
+                        "accessType": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "GetSlideshowDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "slideInfo": {
+                  "type": "object",
+                  "properties": {
+                    "slideId": {
+                      "type": "string"
+                    },
+                    "slideKey": {
+                      "type": "string"
+                    },
+                    "slideName": {
+                      "type": "string"
+                    },
+                    "accessType": {
+                      "type": "integer"
+                    },
+                    "viewIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "slideId",
+                    "slideKey",
+                    "slideName",
+                    "accessType",
+                    "viewIds"
+                  ]
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "success": {
+                "value": {
+                  "status": "success",
+                  "summary": "Get slideshow details",
+                  "data": {
+                    "slideInfo": {
+                      "slideId": "1767024000003149001",
+                      "slideKey": "9a4c1042011ce02fc4a3182fa75a22a9",
+                      "slideName": "Slideshows 1",
+                      "accessType": 0,
+                      "viewIds": [
+                        "1767024000003013087",
+                        "1767024000003015001",
+                        "1767024000003011002"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "GetSlideshowUrlResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "success"
+              ]
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "slideUrl": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "slideUrl"
+              ]
+            }
+          },
+          "examples": [
+            {
+              "success": {
+                "value": {
+                  "status": "success",
+                  "summary": "Get slideshow url",
+                  "data": {
+                    "slideUrl": "https://analyticsapi.zoho.com/ZDBSlideshow.cc?SLIDEID=1767024000003139001&SLIDEKEY=9c4a1042011ce02fc4a3182fa75a22a9&AUTOPLAY=true&INTERVAL=25&INCLUDETITLE=true&INCLUDEDESC=true&SOCIALWIDGETS=false"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "CreateSlideshowConfig": {
+          "type": "object",
+          "properties": {
+            "slideName": {
+              "type": "string",
+              "description": "Name of the slideshow."
+            },
+            "viewIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "View ids to be included in the slideshow."
+            },
+            "accessType": {
+              "type": "integer",
+              "description": "Access type of the slideshow. 0: With Login, 1: Without login, 2: Sort",
+              "default": 0
+            }
+          },
+          "required": [
+            "slideName",
+            "viewIds"
+          ],
+          "examples": [
+            {
+              "slideName": "Sales Overview",
+              "viewIds": [
+                "1767024000003013087",
+                "1767024000003015001"
+              ],
+              "accessType": 0
+            }
+          ]
+        },
+        "CreateSlideshowResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "slideId": {
+                  "type": "string"
+                },
+                "slideUrl": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Create slideshow",
+              "data": {
+                "slideId": "1767024000003151001",
+                "slideUrl": "https://analyticsapi.zoho.com/ZDBSlideshow.cc?SLIDEID=1767024000003151001&SLIDEKEY=69ba2ec9bfbe548f494bdf798087db41&AUTOPLAY=true&INTERVAL=25&INCLUDETITLE=true&INCLUDEDESC=true&SOCIALWIDGETS=false"
+              }
+            }
+          ]
+        },
+        "UpdateSlideshowConfig": {
+          "type": "object",
+          "properties": {
+            "slideName": {
+              "type": "string",
+              "description": "The new name of the slideshow."
+            },
+            "viewIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Updated view ids to be included in the slideshow."
+            },
+            "regenerateSlideKey": {
+              "type": "boolean",
+              "description": "Generate new slide key. If true, previous URL will be disabled.",
+              "default": false
+            },
+            "accessType": {
+              "type": "integer",
+              "description": "Access type of the slideshow. 0: With Login, 1: Without login, 2: Sort",
+              "default": 0
+            }
+          },
+          "examples": [
+            {
+              "slideName": "Updated Sales Slideshow",
+              "viewIds": [
+                "1767024000003013087"
+              ],
+              "regenerateSlideKey": true,
+              "accessType": 1
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/schemas/Error"
+        }
+      }
+    }
+  }

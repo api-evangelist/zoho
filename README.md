@@ -6,17 +6,17 @@ Zoho is a comprehensive cloud software suite offering 55+ integrated business ap
 ## Scope
 
 - **Type:** Index 
-- **Position:** Consuming 
+- **Position:** Consumer 
 - **Access:** 3rd-Party 
 
 ## Tags:
 
- - API, CRM, Finance, Collaboration, Human Resources, Project Management, Customer Service, Email, Analytics
+ - Analytics, Collaboration, CRM, Customer Service, Email, Finance, Human Resources, Project Management
 
 ## Timestamps
 
 - **Created:** 2025-02-08 
-- **Modified:** 2026-03-03 
+- **Modified:** 2026-05-03 
 
 ## APIs
 
@@ -28,7 +28,7 @@ The Zoho Inventory API allows you to perform all the operations that you do with
 
 #### Tags:
 
- - Inventory, Warehouse, Stock
+ - Inventory, Stock, Warehouse
 
 #### Properties
 
@@ -42,14 +42,14 @@ The Zoho CRM API provides REST endpoints and client libraries for Java, PHP, Pyt
 
 #### Tags:
 
- - CRM, Sales, Leads, Contacts
+ - Contacts, CRM, Leads, Sales
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/crm/developer/docs/api/)
-- [API Reference](https://www.zoho.com/crm/developer/docs/api/v8/)
-- [SDKs](https://www.zoho.com/crm/developer/api.html)
-- [Getting Started](https://www.zoho.com/crm/developer/docs/)
+- [APIReference](https://www.zoho.com/crm/developer/docs/api/v8/)
+- [SDK](https://www.zoho.com/crm/developer/api.html)
+- [GettingStarted](https://www.zoho.com/crm/developer/docs/)
 
 ### Zoho Books
 The Zoho Books API allows you to perform all the operations that you do with the web client. It is built using REST principles which ensures predictable URLs for accessing resources, and uses HTTP response codes to indicate API errors.
@@ -59,12 +59,12 @@ The Zoho Books API allows you to perform all the operations that you do with the
 
 #### Tags:
 
- - Accounting, Finance, Invoices, Books
+ - Accounting, Books, Finance, Invoices
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/books/api/v3/introduction/)
-- [Postman Collections](https://www.zoho.com/books/api/v3/apicollection/)
+- [PostmanCollection](https://www.zoho.com/books/api/v3/apicollection/)
 
 ### Zoho Invoice
 The Zoho Invoice API allows you to perform all the operations that you do with the web client. It is built using REST principles and supports managing invoices, customers, items, and payments programmatically.
@@ -74,7 +74,7 @@ The Zoho Invoice API allows you to perform all the operations that you do with t
 
 #### Tags:
 
- - Invoicing, Finance, Billing
+ - Billing, Finance, Invoicing
 
 #### Properties
 
@@ -88,13 +88,13 @@ The Zoho Billing API allows you to perform all operations from the web client an
 
 #### Tags:
 
- - Billing, Subscriptions, Payments
+ - Billing, Payments, Subscriptions
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/billing/api/v1/introduction/)
 - [Authentication](https://www.zoho.com/billing/api/v1/oauth/)
-- [Postman Collections](https://www.zoho.com/billing/api/v1/apicollection/)
+- [PostmanCollection](https://www.zoho.com/billing/api/v1/apicollection/)
 
 ### Zoho Expense
 The Zoho Expense API allows you to manage expenses, expense reports, receipts, trips, and users programmatically. It is built using REST principles and supports integration with third-party applications.
@@ -119,12 +119,12 @@ The Zoho Desk API provides REST endpoints to integrate your help desk with third
 
 #### Tags:
 
- - Help Desk, Customer Support, Tickets
+ - Customer Support, Help Desk, Tickets
 
 #### Properties
 
 - [Documentation](https://desk.zoho.com/DeskAPIDocument)
-- [Developer Portal](https://www.zoho.com/desk/developers/)
+- [DeveloperPortal](https://www.zoho.com/desk/developers/)
 
 ### Zoho People
 The Zoho People API allows you to integrate HR modules with third-party applications, extracting employee data and form data in XML or JSON format. It is independent of programming languages and available in Essential HR, Professional, Premium, and Enterprise plans.
@@ -134,7 +134,7 @@ The Zoho People API allows you to integrate HR modules with third-party applicat
 
 #### Tags:
 
- - Human Resources, HR, Employees
+ - Employees, HR, Human Resources
 
 #### Properties
 
@@ -148,7 +148,7 @@ The Zoho Recruit API provides REST endpoints with JSON format and OAuth2.0 authe
 
 #### Tags:
 
- - Recruitment, HR, Hiring, Candidates
+ - Candidates, Hiring, HR, Recruitment
 
 #### Properties
 
@@ -167,7 +167,7 @@ The Zoho Projects API allows you to understand and integrate Zoho Projects servi
 #### Properties
 
 - [Documentation](https://projects.zoho.com/api-docs)
-- [Getting Started](https://www.zoho.com/projects/help/rest-api/projects-api.html)
+- [GettingStarted](https://www.zoho.com/projects/help/rest-api/projects-api.html)
 
 ### Zoho Mail
 The Zoho Mail REST API allows developers to fetch email conversations and integrate Zoho Mail into applications, managing accounts, folders, labels, messages, signatures, threads, and organizational policies.
@@ -182,8 +182,8 @@ The Zoho Mail REST API allows developers to fetch email conversations and integr
 #### Properties
 
 - [Documentation](https://www.zoho.com/mail/help/api/overview.html)
-- [API Reference](https://www.zoho.com/mail/help/api/)
-- [Getting Started](https://www.zoho.com/mail/help/api/getting-started-with-api.html)
+- [APIReference](https://www.zoho.com/mail/help/api/)
+- [GettingStarted](https://www.zoho.com/mail/help/api/getting-started-with-api.html)
 
 ### Zoho Sign
 The Zoho Sign API helps developers integrate document signing capabilities within applications, enabling users to send, sign, and manage documents programmatically through REST endpoints.
@@ -193,7 +193,7 @@ The Zoho Sign API helps developers integrate document signing capabilities withi
 
 #### Tags:
 
- - E-Signatures, Documents, Signing
+ - Documents, E-Signatures, Signing
 
 #### Properties
 
@@ -212,7 +212,7 @@ The Zoho Analytics API is built using REST principles and provides programmatic 
 #### Properties
 
 - [Documentation](https://www.zoho.com/analytics/api/v2/introduction.html)
-- [API Reference](https://www.zoho.com/analytics/api/v2/)
+- [APIReference](https://www.zoho.com/analytics/api/v2/)
 
 ### Zoho Campaigns
 The Zoho Campaigns API provides programmatic access to email marketing capabilities, allowing integration with Zoho CRM and third-party applications for managing campaigns, contacts, and marketing automation.
@@ -222,7 +222,7 @@ The Zoho Campaigns API provides programmatic access to email marketing capabilit
 
 #### Tags:
 
- - Email Marketing, Campaigns, Marketing Automation
+ - Campaigns, Email Marketing, Marketing Automation
 
 #### Properties
 
@@ -241,7 +241,7 @@ The Zoho SalesIQ API provides JavaScript APIs for customizing chat widgets and R
 #### Properties
 
 - [Documentation](https://www.zoho.com/salesiq/help/developer-section/)
-- [API Reference](https://www.zoho.com/salesiq/help/developer-section/rest-api-v2.html)
+- [APIReference](https://www.zoho.com/salesiq/help/developer-section/rest-api-v2.html)
 
 ### Zoho Creator
 The Zoho Creator API provides RESTful endpoints to interface with Zoho Creator applications, allowing you to fetch, add, update, and delete data, as well as manage forms and reports programmatically.
@@ -251,7 +251,7 @@ The Zoho Creator API provides RESTful endpoints to interface with Zoho Creator a
 
 #### Tags:
 
- - Low-Code, Application Development, Custom Apps
+ - Application Development, Custom Apps, Low-Code
 
 #### Properties
 
@@ -265,12 +265,12 @@ The Zoho Cliq REST API v2 allows developers to extend their web applications by 
 
 #### Tags:
 
- - Team Chat, Messaging, Collaboration
+ - Collaboration, Messaging, Team Chat
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/cliq/help/restapi/v2/)
-- [Developer Portal](https://www.zoho.com/cliq/help/developers.html)
+- [DeveloperPortal](https://www.zoho.com/cliq/help/developers.html)
 
 ### Zoho Meeting
 The Zoho Meeting API allows you to integrate online meeting and webinar capabilities with third-party applications and websites. It is based on REST and provides JSON responses for managing meetings programmatically.
@@ -280,12 +280,12 @@ The Zoho Meeting API allows you to integrate online meeting and webinar capabili
 
 #### Tags:
 
- - Video Conferencing, Meetings, Webinars
+ - Meetings, Video Conferencing, Webinars
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/meeting/api-integration.html)
-- [SDKs](https://www.zoho.com/meeting/api-integration/sdk.html)
+- [SDK](https://www.zoho.com/meeting/api-integration/sdk.html)
 
 ### Zoho Connect
 The Zoho Connect API allows users and developers to extend web applications by programmatically fetching and editing data from different modules in Connect, including feeds, tasks, and groups.
@@ -295,7 +295,7 @@ The Zoho Connect API allows users and developers to extend web applications by p
 
 #### Tags:
 
- - Social Intranet, Collaboration, Team Communication
+ - Collaboration, Social Intranet, Team Communication
 
 #### Properties
 
@@ -310,7 +310,7 @@ The Zoho WorkDrive API provides programmatic access to cloud file management, al
 
 #### Tags:
 
- - File Management, Cloud Storage, Document Management
+ - Cloud Storage, Document Management, File Management
 
 #### Properties
 
@@ -338,7 +338,7 @@ The Zoho Bookings API allows developers to integrate online scheduling and appoi
 
 #### Tags:
 
- - Scheduling, Appointments, Bookings
+ - Appointments, Bookings, Scheduling
 
 #### Properties
 
@@ -366,7 +366,7 @@ The Zoho Assist API allows you to integrate remote support and screen sharing ca
 
 #### Tags:
 
- - Remote Support, Screen Sharing, Remote Access
+ - Remote Access, Remote Support, Screen Sharing
 
 #### Properties
 
@@ -395,12 +395,12 @@ The Zoho Writer API provides endpoints to create add-ons that interact with docu
 
 #### Tags:
 
- - Word Processing, Documents, Writing
+ - Documents, Word Processing, Writing
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/writer/help/api/v1/getting-started.html)
-- [API Reference](https://www.zoho.com/writer/help/api/v1/document-api.html)
+- [APIReference](https://www.zoho.com/writer/help/api/v1/document-api.html)
 
 ### Zoho Sheet
 The Zoho Sheet Data API provides programmatic access to read or update spreadsheets in Zoho Sheet, allowing integration with third-party applications for spreadsheet management and data manipulation.
@@ -410,12 +410,12 @@ The Zoho Sheet Data API provides programmatic access to read or update spreadshe
 
 #### Tags:
 
- - Spreadsheets, Data, Collaboration
+ - Collaboration, Data, Spreadsheets
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/sheet/help/api/v2/)
-- [Developer Portal](https://www.zoho.com/sheet/developers.html)
+- [DeveloperPortal](https://www.zoho.com/sheet/developers.html)
 
 ### Zoho Calendar
 The Zoho Calendar API provides REST endpoints to customize calendar features, allowing you to manage calendars, events, and sharing capabilities programmatically with OAuth 2.0 authentication.
@@ -440,12 +440,12 @@ The Zoho Vault API provides REST endpoints to integrate password management func
 
 #### Tags:
 
- - Password Management, Security, Secrets
+ - Password Management, Secrets, Security
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/vault/api/)
-- [Developer Portal](https://www.zoho.com/vault/developers.html)
+- [DeveloperPortal](https://www.zoho.com/vault/developers.html)
 
 ### Zoho Catalyst
 The Zoho Catalyst API provides programmatic access to serverless application development features, including data store operations, file storage management, and function execution for building and deploying cloud applications.
@@ -455,7 +455,7 @@ The Zoho Catalyst API provides programmatic access to serverless application dev
 
 #### Tags:
 
- - Serverless, Cloud Platform, Application Development
+ - Application Development, Cloud Platform, Serverless
 
 #### Properties
 
@@ -469,12 +469,12 @@ The Zoho Bigin API provides REST endpoints for building integrations with Bigin 
 
 #### Tags:
 
- - CRM, Small Business, Pipelines
+ - CRM, Pipelines, Small Business
 
 #### Properties
 
 - [Documentation](https://www.bigin.com/developer/docs/apis/v2/)
-- [Developer Portal](https://www.bigin.com/developer-center.html)
+- [DeveloperPortal](https://www.bigin.com/developer-center.html)
 
 ### Zoho ZeptoMail
 The Zoho ZeptoMail API provides REST endpoints for sending transactional emails such as OTPs, password resets, invoices, and more from your application. It supports template-based and batch email sending with client libraries for multiple languages.
@@ -484,12 +484,12 @@ The Zoho ZeptoMail API provides REST endpoints for sending transactional emails 
 
 #### Tags:
 
- - Transactional Email, Email Delivery, SMTP
+ - Email Delivery, SMTP, Transactional Email
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/zeptomail/help/api-home.html)
-- [API Reference](https://www.zoho.com/zeptomail/help/api-index.html)
+- [APIReference](https://www.zoho.com/zeptomail/help/api-index.html)
 
 ### Zoho Office Integrator
 The Zoho Office Integrator API allows you to embed Zoho's document editors for Writer, Sheet, and Show into third-party web applications and services, providing collaborative document editing capabilities.
@@ -499,7 +499,7 @@ The Zoho Office Integrator API allows you to embed Zoho's document editors for W
 
 #### Tags:
 
- - Office Suite, Document Editing, Embed
+ - Document Editing, Embed, Office Suite
 
 #### Properties
 
@@ -513,24 +513,24 @@ The Zoho PDF Editor API provides REST endpoints for inserting images, splitting 
 
 #### Tags:
 
- - PDF, Document Editing, PDF Management
+ - Document Editing, PDF, PDF Management
 
 #### Properties
 
 - [Documentation](https://www.zoho.com/pdfeditor/help/api/getting-started.html)
-- [API Reference](https://www.zoho.com/pdfeditor/help/api/v1/pdf-api.html)
+- [APIReference](https://www.zoho.com/pdfeditor/help/api/v1/pdf-api.html)
 
 ## Common Properties
 
-- [Developer Portal](https://www.zoho.com/developer/)
+- [DeveloperPortal](https://www.zoho.com/developer/)
 - [Authentication](https://www.zoho.com/developer/rest-api.html)
-- [Getting Started](https://www.zoho.com/developer/help/extensions/getting-started.html)
-- [Sign Up](https://www.zoho.com/developer/signup.html)
+- [GettingStarted](https://www.zoho.com/developer/help/extensions/getting-started.html)
+- [SignUp](https://www.zoho.com/developer/signup.html)
 - [Blog](https://www.zoho.com/blog/developer)
-- [Status](https://zohostatus.com/)
-- [Privacy Policy](https://www.zoho.com/privacy.html)
-- [Terms of Service](https://www.zoho.com/terms.html)
-- [GitHub Organization](https://github.com/ZohoDevelopers)
+- [StatusPage](https://zohostatus.com/)
+- [PrivacyPolicy](https://www.zoho.com/privacy.html)
+- [TermsOfService](https://www.zoho.com/terms.html)
+- [GitHubOrganization](https://github.com/ZohoDevelopers)
 - [Pricing](https://www.zoho.com/one/pricing/)
 
 ## Maintainers

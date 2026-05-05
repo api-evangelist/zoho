@@ -1,0 +1,134 @@
+{
+  "components": {
+    "securitySchemes": {
+      "iam-oauth2-schema": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+            "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+            "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+            "scopes": {
+              "ZohoAnalytics.data.read": "Read data from Zoho Analytics.",
+              "ZohoAnalytics.data.delete": "Delete data from Zoho Analytics.",
+              "ZohoAnalytics.data.update": "Update data in Zoho Analytics.",
+              "ZohoAnalytics.data.create": "Create data in Zoho Analytics.",
+              "ZohoAnalytics.data.all": "Full access to data in Zoho Analytics.",
+              "ZohoAnalytics.modeling.delete": "Delete modeling objects in Zoho Analytics.",
+              "ZohoAnalytics.modeling.update": "Update modeling objects in Zoho Analytics.",
+              "ZohoAnalytics.modeling.create": "Create modeling objects in Zoho Analytics.",
+              "ZohoAnalytics.modeling.all": "Full access to modeling objects in Zoho Analytics.",
+              "ZohoAnalytics.metadata.read": "Read metadata from Zoho Analytics.",
+              "ZohoAnalytics.metadata.all": "Full access to metadata in Zoho Analytics.",
+              "ZohoAnalytics.share.delete": "Delete shared items in Zoho Analytics.",
+              "ZohoAnalytics.share.read": "Read shared items in Zoho Analytics.",
+              "ZohoAnalytics.share.create": "Create shared items in Zoho Analytics.",
+              "ZohoAnalytics.share.all": "Full access to shared items in Zoho Analytics.",
+              "ZohoAnalytics.embed.read": "Read embedded content from Zoho Analytics.",
+              "ZohoAnalytics.embed.all": "Full access to embedded content in Zoho Analytics.",
+              "ZohoAnalytics.usermanagement.read": "Read user management data in Zoho Analytics.",
+              "ZohoAnalytics.usermanagement.delete": "Delete user management data in Zoho Analytics.",
+              "ZohoAnalytics.usermanagement.update": "Update user management data in Zoho Analytics.",
+              "ZohoAnalytics.usermanagement.create": "Create user management data in Zoho Analytics.",
+              "ZohoAnalytics.usermanagement.all": "Full access to user management in Zoho Analytics.",
+              "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "failure"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "errorCode": {
+                "type": "integer"
+              },
+              "errorMessage": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "CommonErrorResponse": {
+        "description": "Common error response for various issues.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "Invalid OAuth Token": {
+                "$ref": "#/components/examples/InvalidOAuthTokenExample"
+              },
+              "Less Than Min Occurance": {
+                "$ref": "#/components/examples/LessThanMinOccuranceExample"
+              },
+              "Workspace Not Found": {
+                "$ref": "#/components/examples/WorkspaceNotFoundExample"
+              },
+              "Internal Server Error": {
+                "$ref": "#/components/examples/InternalServerErrorExample"
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "InvalidOAuthTokenExample": {
+        "value": {
+          "status": "failure",
+          "summary": "INVALID_OAUTHTOKEN",
+          "data": {
+            "errorCode": 8535,
+            "errorMessage": "Invalid Oauthtoken"
+          }
+        }
+      },
+      "LessThanMinOccuranceExample": {
+        "value": {
+          "status": "failure",
+          "summary": "LESS_THAN_MIN_OCCURANCE",
+          "data": {
+            "errorCode": 8504,
+            "errorMessage": "The parameter CONFIG is not proper(Has not been sent or is less than required count)"
+          }
+        }
+      },
+      "WorkspaceNotFoundExample": {
+        "value": {
+          "status": "failure",
+          "summary": "META_OBJECT_NOT_PRESENT",
+          "data": {
+            "errorCode": 7103,
+            "errorMessage": "Workspace not found! Please check whether the workspace exists."
+          }
+        }
+      },
+      "InternalServerErrorExample": {
+        "value": {
+          "status": "failure",
+          "summary": "COMMON_INTERNAL_SERVER_ERROR",
+          "data": {
+            "errorCode": 7005,
+            "errorMessage": "Sorry, an unexpected error occurred when performing this operation. Please contact support for additional information."
+          }
+        }
+      }
+    }
+  }
+}

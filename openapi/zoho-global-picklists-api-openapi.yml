@@ -1,0 +1,707 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Global Picklists API
+  version: 1.0.0
+tags:
+- name: Global Picklists
+paths:
+  /settings/global_picklists/{id}/actions/replace_picklist_values:
+    post:
+      summary: Replace picklist values for a global picklist
+      operationId: replacePicklistValues
+      tags:
+      - Global Picklists
+      description: Schedules or executes replacement of picklist values for the specified global picklist. You can specify either `id`, `display_value`, or both for `old_value` and `new_value`. If both are provided, the system validates them for consistency. The `from` (old) value can be non-existent in the current picklist, but the `to` (new) value must be in the **used** state of the picklist option.
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body for replacing picklist values in a global picklist.
+              properties:
+                replace_picklist_values:
+                  type: array
+                  description: Array of picklist value replacement pairs.
+                  maxItems: 1
+                  items:
+                    type: object
+                    description: Represents a single picklist value replacement pair.
+                    properties:
+                      old_value:
+                        type: object
+                        description: The existing picklist value to be replaced.
+                        properties:
+                          id:
+                            $ref: '#/components/schemas/Id'
+                          display_value:
+                            $ref: '#/components/schemas/PickListDisplayValue'
+                        additionalProperties: false
+                      new_value:
+                        type: object
+                        description: The new picklist value that will replace the old one.
+                        properties:
+                          id:
+                            $ref: '#/components/schemas/Id'
+                          display_value:
+                            $ref: '#/components/schemas/PickListDisplayValue'
+                        additionalProperties: false
+                    required:
+                    - old_value
+                    - new_value
+                    additionalProperties: false
+              required:
+              - replace_picklist_values
+              additionalProperties: false
+      responses:
+        '200':
+          description: OK — Replacement completed immediately since the global set is not associated with any fields.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response object for immediate replacement completion.
+                properties:
+                  replace_picklist_values:
+                    type: array
+                    description: Array of replacement operation results.
+                    maxItems: 1
+                    items:
+                      type: object
+                      description: Replacement operation result object.
+                      properties:
+                        code:
+                          type: string
+                          description: Indicates that the replacement operation completed successfully.
+                          maxLength: 50
+                        details:
+                          type: object
+                          description: Additional details about the replacement operation.
+                          additionalProperties: false
+                        message:
+                          type: string
+                          description: Human-readable message about the replacement operation.
+                          maxLength: 255
+                        status:
+                          type: string
+                          description: Status of the replacement operation.
+                          maxLength: 50
+                      required:
+                      - code
+                      - details
+                      - message
+                      - status
+                      additionalProperties: false
+                required:
+                - replace_picklist_values
+                additionalProperties: false
+        '202':
+          description: Accepted — Replacement scheduled successfully for associated fields.
+          content:
+            application/json:
+              schema:
+                description: response object for scheduled replacement of picklist values.
+                type: object
+                properties:
+                  replace_picklist_values:
+                    maxItems: 1
+                    type: array
+                    description: Array of replacement operation results.
+                    items:
+                      type: object
+                      description: Replacement operation result object.
+                      properties:
+                        code:
+                          type: string
+                          description: Indicates that the replacement operation has been scheduled.
+                          maxLength: 50
+                        details:
+                          type: object
+                          description: Additional details about the replacement operation.
+                          properties:
+                            job_id:
+                              type: string
+                              description: The ID of the scheduled replacement job.
+                              maxLength: 100
+                          required:
+                          - job_id
+                          additionalProperties: false
+                        message:
+                          type: string
+                          description: Human-readable message about the replacement operation.
+                          maxLength: 255
+                        status:
+                          type: string
+                          description: Status of the replacement operation.
+                          maxLength: 50
+                      required:
+                      - code
+                      - details
+                      - message
+                      - status
+                      additionalProperties: false
+                required:
+                - replace_picklist_values
+                additionalProperties: false
+        '400':
+          description: Bad Request — Invalid data, missing fields, ambiguity, or disallowed actions, or if limits exceeded.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  description: Error response with array of replacement operation errors.
+                  properties:
+                    replace_picklist_values:
+                      type: array
+                      description: Array of replacement operation error details.
+                      maxItems: 1
+                      items:
+                        type: object
+                        description: Replacement operation error object.
+                        additionalProperties: false
+                        properties:
+                          code:
+                            type: string
+                            description: Error code indicating the type of validation or constraint failure.
+                            enum:
+                            - INVALID_DATA
+                            - AMBIGUITY_DURING_PROCESSING
+                            - MANDATORY_NOT_FOUND
+                            - EXPECTED_FIELD_MISSING
+                            - NOT_ALLOWED
+                            - LIMIT_EXCEEDED
+                          details:
+                            type: object
+                            description: Additional error-specific details.
+                            additionalProperties: false
+                            properties:
+                              api_name:
+                                type: string
+                                description: name of the field causing the error.
+                                maxLength: 100
+                              json_path:
+                                type: string
+                                description: JSON path to the field causing the error.
+                                maxLength: 255
+                              ambiguity_due_to:
+                                type: array
+                                description: if both id and display_value are provided and they don't match
+                                maxItems: 30
+                                items:
+                                  type: object
+                                  description: Field causing ambiguity.
+                                  additionalProperties: false
+                                  properties:
+                                    api_name:
+                                      type: string
+                                      description: name of the ambiguous field.
+                                      maxLength: 100
+                                    json_path:
+                                      type: string
+                                      description: JSON path to the ambiguous field.
+                                      maxLength: 255
+                              expected_fields:
+                                type: array
+                                description: List of expected fields that are missing.
+                                maxItems: 10
+                                items:
+                                  type: object
+                                  description: Expected field information.
+                                  additionalProperties: false
+                                  properties:
+                                    api_name:
+                                      type: string
+                                      description: name of the expected field.
+                                      maxLength: 100
+                                    json_path:
+                                      type: string
+                                      description: JSON path to where the field is expected.
+                                      maxLength: 255
+                              limit_due_to:
+                                type: array
+                                description: List of picklist values that caused the limit to be exceeded.
+                                maxItems: 10
+                                items:
+                                  type: object
+                                  description: Field causing limit exceeded error.
+                                  additionalProperties: false
+                                  properties:
+                                    api_name:
+                                      type: string
+                                      description: API name of the field causing limit issue.
+                                      maxLength: 100
+                                    json_path:
+                                      type: string
+                                      description: JSON path to the field causing limit issue.
+                                      maxLength: 255
+                              limit:
+                                type: integer
+                                description: The maximum allowed limit that has been exceeded. if this exists in details, limit_due_to will also be present.
+                                format: int32
+                          message:
+                            type: string
+                            description: Human-readable message describing the error.
+                            maxLength: 255
+                          status:
+                            type: string
+                            description: Status of the error response.
+                            enum:
+                            - error
+                        required:
+                        - code
+                        - details
+                        - message
+                        - status
+                  required:
+                  - replace_picklist_values
+                  additionalProperties: false
+                - type: object
+                  description: Top-level validation or system restriction errors.
+                  additionalProperties: false
+                  properties:
+                    code:
+                      type: string
+                      description: Error code indicating invalid data or disallowed action.
+                      enum:
+                      - INVALID_DATA
+                      - NOT_ALLOWED
+                    details:
+                      type: object
+                      description: Additional details about the top-level error.
+                      additionalProperties: false
+                      properties:
+                        resource_path_index:
+                          type: integer
+                          description: Index in the resource path indicating the error location.
+                          format: int32
+                          enum:
+                          - 2
+                      required:
+                      - resource_path_index
+                    message:
+                      type: string
+                      description: Human-readable error message describing the issue.
+                      maxLength: 255
+                    status:
+                      type: string
+                      description: Status of the error response.
+                      maxLength: 50
+                  required:
+                  - code
+                  - message
+                  - status
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.settings.global_picklist.ALL
+  /settings/global_picklists/{id}/actions/replaced_values:
+    get:
+      summary: Get picklist values which is in replace scheduler
+      operationId: getReplacedValues
+      tags:
+      - Global Picklists
+      description: Retrieves picklist values that are currently being replaced through a replace scheduler for the given global picklist ID.
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: OK — Replace scheduler in progress. Returns values which are currently being replaced.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response object containing picklist values that are currently being replaced.
+                properties:
+                  replaced_values:
+                    type: array
+                    description: Array of picklist values that are currently being replaced.
+                    maxItems: 500
+                    items:
+                      type: object
+                      description: Object representing a replaced picklist value.
+                      properties:
+                        display_value:
+                          $ref: '#/components/schemas/PickListDisplayValue'
+                        reference_value:
+                          $ref: '#/components/schemas/PickListReferenceValue'
+                      required:
+                      - display_value
+                      - reference_value
+                      additionalProperties: false
+                required:
+                - replaced_values
+                additionalProperties: false
+        '204':
+          description: No Content — No replace scheduler is currently in progress for the given picklist.
+        '400':
+          description: Bad Request — Invalid data or not allowed action.
+          content:
+            application/json:
+              schema:
+                description: Error response object containing code, message, details, and status.
+                type: object
+                properties:
+                  code:
+                    type: string
+                    enum:
+                    - INVALID_DATA
+                    - NOT_ALLOWED
+                    description: 'Error code indicating the failure reason. Possible values: INVALID_DATA, NOT_ALLOWED.'
+                  details:
+                    description: Details about the error, including the resource path index.
+                    type: object
+                    properties:
+                      resource_path_index:
+                        type: integer
+                        enum:
+                        - 2
+                        format: int32
+                        description: This value is always 2.
+                    required:
+                    - resource_path_index
+                    additionalProperties: false
+                  message:
+                    type: string
+                    maxLength: 250
+                    description: 'Describes the reason for the failure. Examples: ''the id given seems to be invalid'' or ''global picklist deletion in progress.'''
+                  status:
+                    type: string
+                    description: Status of the error response.
+                    maxLength: 100
+                required:
+                - code
+                - message
+                - status
+                additionalProperties: false
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.settings.global_picklist.READ
+  /settings/global_picklists/{id}/actions/associations:
+    get:
+      summary: To get the fields associated with a global picklist
+      operationId: getGlobalPickListFieldAssociations
+      tags:
+      - Global Picklists
+      description: Retrieves associations of picklist values with modules, fields, and layouts for a given global picklist ID.
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - name: include_inner_details
+        in: query
+        required: false
+        description: 'Comma-separated list of nested details to include (e.g., `module.plural_label,module.module_name,layouts.status`). Allowed values: module.plural_label, module.module_name, layouts.status.'
+        schema:
+          type: array
+          items:
+            type: string
+            description: Allowed values for including nested details in the response.
+            enum:
+            - module.plural_label
+            - module.module_name
+            - layouts.status
+          maxItems: 3
+        style: form
+        explode: false
+      responses:
+        '200':
+          description: Successful response containing picklist associations.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response object containing associations of global picklist fields and modules.
+                properties:
+                  associations:
+                    type: array
+                    description: List of associations between global picklist and fields/modules/layouts.
+                    maxItems: 1000
+                    items:
+                      type: object
+                      description: Association object for a global picklist field.
+                      properties:
+                        field:
+                          type: object
+                          description: Field details associated with the global picklist.
+                          properties:
+                            api_name:
+                              $ref: '#/components/schemas/ApiName'
+                            id:
+                              $ref: '#/components/schemas/Id'
+                            field_label:
+                              $ref: '#/components/schemas/FieldLabel'
+                          required:
+                          - api_name
+                          - id
+                          additionalProperties: false
+                        module:
+                          type: object
+                          description: Module details associated with the field.
+                          properties:
+                            plural_label:
+                              $ref: '#/components/schemas/ModulepluralLabel'
+                            api_name:
+                              $ref: '#/components/schemas/ApiName'
+                            module_name:
+                              $ref: '#/components/schemas/ModuleName'
+                            id:
+                              $ref: '#/components/schemas/Id'
+                          required:
+                          - api_name
+                          - id
+                          additionalProperties: false
+                        layouts:
+                          type: array
+                          description: List of layouts associated with the field.
+                          maxItems: 100
+                          items:
+                            type: object
+                            description: Layout details.
+                            properties:
+                              name:
+                                $ref: '#/components/schemas/LayoutName'
+                              id:
+                                $ref: '#/components/schemas/Id'
+                              status:
+                                type: string
+                                description: Layout status.
+                                maxLength: 20
+                            required:
+                            - name
+                            - id
+                            additionalProperties: false
+                      required:
+                      - field
+                      - module
+                      - layouts
+                      additionalProperties: false
+                  info:
+                    type: object
+                    description: Pagination and record info for associations response.
+                    properties:
+                      per_page:
+                        type: integer
+                        description: Number of records per page.
+                        format: int32
+                      count:
+                        type: integer
+                        description: Number of records returned.
+                        format: int32
+                      page:
+                        type: integer
+                        description: Current page number.
+                        format: int32
+                      more_records:
+                        type: boolean
+                        description: Whether more records are available.
+                    required:
+                    - per_page
+                    - count
+                    - page
+                    - more_records
+                    additionalProperties: false
+                required:
+                - associations
+                - info
+                additionalProperties: false
+        '204':
+          description: if there is no picklist field associated with the global picklist.
+        '400':
+          description: Bad Request — Invalid data or not allowed action.
+          content:
+            application/json:
+              schema:
+                description: Error response object containing code, message, details, and status.
+                type: object
+                properties:
+                  code:
+                    type: string
+                    enum:
+                    - INVALID_DATA
+                    - NOT_ALLOWED
+                    description: 'Error code indicating the failure reason. Possible values: INVALID_DATA, NOT_ALLOWED.'
+                  details:
+                    type: object
+                    description: Additional details about the error.
+                    properties:
+                      resource_path_index:
+                        type: integer
+                        const: 2
+                        description: This value is always 2.
+                        format: int32
+                    required:
+                    - resource_path_index
+                    additionalProperties: false
+                  message:
+                    maxLength: 250
+                    type: string
+                    description: 'Describes the reason for the failure. Examples: ''the id given seems to be invalid'' or ''global picklist deletion in progress.'''
+                  status:
+                    type: string
+                    description: Status of the error response.
+                    maxLength: 100
+                required:
+                - code
+                - message
+                - status
+                additionalProperties: false
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.settings.global_picklist.READ
+components:
+  schemas:
+    LayoutName:
+      type: string
+      description: Name of the layout
+      maxLength: 50
+    PickListReferenceValue:
+      type: string
+      maxLength: 120
+      description: Reference value of the picklist field.
+    PickListDisplayValue:
+      type: string
+      maxLength: 120
+      description: The picklist display value(translated value if translation enabled).
+    FieldLabel:
+      type: string
+      description: Name of the field label.
+      maxLength: 100
+    ModuleName:
+      type: string
+      description: Name of the module
+      maxLength: 100
+    ModulepluralLabel:
+      type: string
+      description: Plural label of the module.
+      maxLength: 25
+    ApiName:
+      type: string
+      description: API name of the resource. It will start with alphabets and can contain alphanumeric characters and underscores.
+      pattern: ^[A-Za-z][A-Za-z0-9_]*$
+      maxLength: 50
+    Id:
+      type: string
+      description: Id of the resource.
+      format: int64
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Internal server error response object containing code, message, details, and status.
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error.
+                maxLength: 50
+              message:
+                type: string
+                description: Human-readable error message.
+                maxLength: 255
+              details:
+                type: object
+                description: Additional details about the error.
+                additionalProperties: true
+              status:
+                type: string
+                description: Status of the error response.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - details
+            - status
+            additionalProperties: false
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Error response object containing code, message, details, and status.
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error.
+                maxLength: 50
+              message:
+                type: string
+                description: Human-readable error message.
+                maxLength: 255
+              details:
+                type: object
+                description: Additional details about the error.
+                properties:
+                  permissions:
+                    type: array
+                    description: List of permissions required to access the resource.
+                    items:
+                      type: string
+                      enum:
+                      - Crm_Implied_Customize_Zoho_CRM
+                      description: Permission required to access the resource.
+                    maxItems: 1
+                additionalProperties: false
+              status:
+                type: string
+                description: Status of the error response.
+                enum:
+                - error
+                maxLength: 100
+            required:
+            - code
+            - message
+            - details
+            - status
+            additionalProperties: false
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: 'Number of records per page. Default and maximum: 200.'
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 200
+        format: int64
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Numeric id of the resource.
+      schema:
+        type: string
+        format: int64
+    Page:
+      name: page
+      in: query
+      required: false
+      description: 'Page number (positive integer). Default: 1.'
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

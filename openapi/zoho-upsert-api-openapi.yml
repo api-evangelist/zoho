@@ -1,0 +1,549 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Upsert API
+  version: 1.0.0
+tags:
+- name: Upsert
+paths:
+  /{module}/upsert:
+    post:
+      operationId: upsertRecords
+      summary: To insert a new or update an existing record based on duplicate check field
+      description: The Upsert API allows you to insert a new record or update an existing one based on duplicate check field values.
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Request body schema for upsert operations, allowing creation or update of records based on duplicate fields.
+              additionalProperties: false
+              required:
+              - data
+              properties:
+                data:
+                  type: array
+                  maxItems: 100
+                  description: List of records to be created or updated using the upsert operation.
+                  items:
+                    type: object
+                    description: Single record payload containing field-value pairs for upsert.
+                    additionalProperties: true
+                    properties:
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                        description: Unique identifier of the record. If null or omitted, a new record may be created.
+                trigger:
+                  type: array
+                  description: List of automation triggers to be executed during the upsert operation.
+                  maxItems: 10
+                  items:
+                    type: string
+                    description: Name of the trigger to be executed.
+                    maxLength: 50
+                duplicate_check_fields:
+                  type: array
+                  description: Defines the ordered list of fields used to detect duplicate records during upsert.
+                  maxItems: 10
+                  items:
+                    type: string
+                    description: API name of the field used for duplicate record verification.
+                    maxLength: 100
+                wf_trigger:
+                  type:
+                  - string
+                  - 'null'
+                  description: Workflow trigger identifier to be executed as part of the upsert operation.
+                lar_id:
+                  type:
+                  - string
+                  - 'null'
+                  description: Layout assignment rule identifier used to determine record layout during upsert.
+        required: true
+      responses:
+        '200':
+          description: Success Response containing the record id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordSuccessResponse'
+        '400':
+          description: Failure in Record Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordsErrorResponse'
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordUnathorizedResponse'
+        '403':
+          description: Forbidden - User lacks permission to add records in the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '412':
+          description: The record was modified after the time specified.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Root response object returned when a record update fails due to concurrent modification.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: List of error objects describing why the request failed.
+                    maxItems: 1
+                    items:
+                      type: object
+                      description: Error object representing a single record modification conflict.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable error code indicating the type of failure.
+                          enum:
+                          - ALREADY_MODIFIED
+                        message:
+                          type: string
+                          description: Human-readable explanation of the error.
+                          maxLength: 255
+                        status:
+                          type: string
+                          description: Overall execution status of the request.
+                          enum:
+                          - error
+                        details:
+                          type: object
+                          description: Additional metadata describing the record state at the time of conflict.
+                          additionalProperties: true
+                          properties:
+                            Modified_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was last modified.
+                            Created_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was originally created.
+                            id:
+                              type: string
+                              description: Unique identifier of the record that caused the conflict.
+                              format: int64
+                            Modified_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who last modified the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the modifying user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the modifying user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                            Created_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who originally created the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the creating user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the creating user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                      required:
+                      - code
+                      - message
+                      - status
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.CREATE
+      tags:
+      - Upsert
+components:
+  schemas:
+    RecordUnathorizedResponse:
+      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating that the request is not authorized.
+          items:
+            type: object
+            description: Error object representing an OAuth scope mismatch.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an OAuth scope mismatch.
+                enum:
+                - OAUTH_SCOPE_MISMATCH
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing why the OAuth token is unauthorized.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordInvalidURLResponse:
+      description: Response schema returned when the requested API endpoint URL pattern is invalid or unsupported.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating an invalid or unsupported API endpoint URL.
+          items:
+            type: object
+            description: Error object representing an invalid API URL pattern.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an invalid endpoint URL pattern.
+                enum:
+                - INVALID_URL_PATTERN
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing why the requested URL is invalid.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordSuccessResponse:
+      description: Standard success response schema for single or bulk record operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of successfully processed records with detailed metadata.
+          items:
+            type: object
+            description: Success object representing a single successfully processed record.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable code indicating a successful operation.
+                enum:
+                - SUCCESS
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable success message describing the operation outcome.
+              status:
+                type: string
+                description: Overall execution status of the operation.
+                enum:
+                - success
+              details:
+                type: object
+                description: Detailed metadata about the processed record.
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+                    format: int64
+                    description: Unique identifier of the record.
+                  Modified_Time:
+                    type: string
+                    format: date-time
+                    description: Timestamp indicating when the record was last modified.
+                  Created_Time:
+                    type: string
+                    format: date-time
+                    description: Timestamp indicating when the record was created.
+                  Created_By:
+                    type: object
+                    description: User who originally created the record.
+                    additionalProperties: false
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 100
+                        description: Display name of the creating user.
+                      id:
+                        type: string
+                        format: int64
+                        description: Unique identifier of the creating user.
+                    required:
+                    - name
+                    - id
+                  Modified_By:
+                    type: object
+                    description: User who last modified the record.
+                    additionalProperties: false
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 100
+                        description: Display name of the modifying user.
+                      id:
+                        type: string
+                        format: int64
+                        description: Unique identifier of the modifying user.
+                    required:
+                    - name
+                    - id
+                  $approval_state:
+                    type: string
+                    maxLength: 1024
+                    description: Approval state of the record in the approval workflow.
+                required:
+                - id
+                - Modified_Time
+                - Created_Time
+                - Created_By
+                - Modified_By
+                - $approval_state
+            required:
+            - code
+            - message
+            - status
+            - details
+      required:
+      - data
+    RecordInternalErrorResponse:
+      description: Schema for internal server error responses related to record operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing internal server failures.
+          items:
+            type: object
+            description: Error object representing an unexpected internal server error.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an internal server failure.
+                enum:
+                - INTERNAL_ERROR
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable description of the internal server error.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordPermissionResponse:
+      description: Response schema returned when a user lacks the necessary permissions to perform a record operation.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating insufficient user permissions.
+          items:
+            type: object
+            description: Error object representing a permission denial.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating the user does not have permission.
+                enum:
+                - NO_PERMISSION
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing the permission denial.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordsErrorResponse:
+      description: Standard error response schema returned when one or more record operations fail.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing individual record-level failures.
+          items:
+            type: object
+            description: Error object representing a failure encountered while processing a record.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code identifying the reason for the failure.
+                enum:
+                - INVALID_DATA
+                - INVALID_MODULE
+                - MULTIPLE_OR_MULTI_ERRORS
+                - DEPENDENT_FIELD_MISSING
+                - DEPENDENT_SERVICE_ERROR
+                - MANDATORY_NOT_FOUND
+                - DEPENDENT_MISMATCH
+                - INVALID_REQUEST_METHOD
+                - AUTHORIZATION_FAILED
+                - DUPLICATE_DATA
+                - LIMIT_EXCEEDED
+                - RECORD_LOCKED
+                - EXPECTED_FIELD_MISSING
+              details:
+                type: object
+                additionalProperties: true
+                description: Additional details associated with the error.
+                properties:
+                  resource_path_index:
+                    type: integer
+                    format: int32
+                    description: Position of the record in the request payload where the error occurred.
+                  api_name:
+                    type: string
+                    maxLength: 1024
+                    description: The API name of the field associated with the error.
+                  json_path:
+                    type: string
+                    maxLength: 1024
+                    description: JSONPath pointer to the field that caused the error.
+                  expected_fields:
+                    type: array
+                    maxItems: 100
+                    description: Used specifically when the error code is EXPECTED_FIELD_MISSING.
+                    items:
+                      type: object
+                      additionalProperties: false
+                      description: Additional information on the missing fields
+                      required:
+                      - api_name
+                      - json_path
+                      properties:
+                        api_name:
+                          maxLength: 1024
+                          type: string
+                          description: Name of the missing expected field.
+                        json_path:
+                          maxLength: 1024
+                          type: string
+                          description: JSONPath location of the expected field.
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation of the error.
+              status:
+                type: string
+                description: Indicates the outcome of the operation for the record.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+  parameters:
+    Module:
+      name: module
+      description: Specifies the module name
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 100
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

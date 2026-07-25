@@ -1,0 +1,283 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Emails API
+  version: 1.0.0
+tags:
+- name: Emails
+paths:
+  /{module}/{recordId}/Emails/actions/download_attachments:
+    get:
+      summary: Get Download Attachments Details
+      description: Fetches the binary content of an email attachment for a specific record.
+      operationId: downloadEmailAttachments
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/RecordId'
+      - $ref: '#/components/parameters/UserId'
+      - $ref: '#/components/parameters/MessageId'
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/Name'
+      responses:
+        '200':
+          description: Attachment downloaded successfully
+          content:
+            application/octet-stream:
+              schema:
+                description: Binary stream of the attachment file.
+                type: string
+                format: binary
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                description: Error response for validation or missing parameters.
+                oneOf:
+                - description: Generic validation error schema.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code
+                      maxLength: 50
+                    message:
+                      type: string
+                      description: Error message
+                      maxLength: 500
+                    details:
+                      type: object
+                      description: Context details
+                      additionalProperties: true
+                  required:
+                  - status
+                  - code
+                  - message
+                - description: Error for missing mandatory fields.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Status
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Code
+                      const: MANDATORY_NOT_FOUND
+                    message:
+                      type: string
+                      description: Message
+                      maxLength: 500
+                  required:
+                  - status
+                  - code
+                  - message
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.emails.READ
+        - ZohoCRM.modules.leads.READ
+      tags:
+      - Emails
+  /{module}/{recordId}/Emails/actions/download_inline_images:
+    get:
+      summary: Download inline images embedded in an email related to a record
+      operationId: getDownloadInlineImages
+      description: Download inline images embedded in an email related to a record.
+      parameters:
+      - $ref: '#/components/parameters/Module_2'
+      - $ref: '#/components/parameters/RecordId_2'
+      - $ref: '#/components/parameters/UserId_2'
+      - $ref: '#/components/parameters/MessageId_2'
+      - $ref: '#/components/parameters/Id_2'
+      responses:
+        '200':
+          description: The inline image file.
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+                description: The binary content of the image file
+        '400':
+          description: Bad Request - Error in parameters or module.
+          content:
+            application/json:
+              schema:
+                description: Error response object for failed image download
+                type: object
+                additionalProperties: false
+                properties:
+                  status:
+                    type: string
+                    description: Status of the request
+                    enum:
+                    - error
+                  code:
+                    type: string
+                    description: Error code identifying the issue
+                    enum:
+                    - INVALID_URL_PATTERN
+                    - INVALID_DATA
+                    - INVALID_REQUEST_METHOD
+                    - INVALID_TOKEN
+                    - INVALID_MODULE
+                  message:
+                    type: string
+                    description: Human-readable error message
+                    maxLength: 255
+                  details:
+                    type: object
+                    description: Additional error details
+                    additionalProperties: true
+                    properties:
+                      resource_path_index:
+                        type: integer
+                        format: int32
+                        description: Index of the resource path causing the error
+                required:
+                - status
+                - code
+                - message
+                - details
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.emails.READ
+        - ZohoCRM.modules.leads.all
+        - ZohoCRM.modules.contacts.all
+        - ZohoCRM.modules.deals.all
+      tags:
+      - Emails
+components:
+  parameters:
+    UserId:
+      name: user_id
+      in: query
+      required: true
+      description: The ID of the user.
+      schema:
+        type: string
+        maxLength: 20
+    Id:
+      name: id
+      in: query
+      required: true
+      description: The attachment ID.
+      schema:
+        type: string
+        maxLength: 100
+    MessageId:
+      name: message_id
+      in: query
+      required: true
+      description: The ID of the email message.
+      schema:
+        type: string
+        maxLength: 100
+    Module:
+      name: module
+      in: path
+      required: true
+      description: The API name of the CRM module.
+      schema:
+        type: string
+        maxLength: 100
+    RecordId:
+      name: recordId
+      in: path
+      required: true
+      description: The unique record ID.
+      schema:
+        type: string
+        maxLength: 20
+    Name:
+      name: name
+      in: query
+      required: true
+      description: The attachment name.
+      schema:
+        type: string
+        maxLength: 255
+    UserId_2:
+      name: user_id
+      in: query
+      required: true
+      description: The unique ID of the record owner.
+      schema:
+        type: string
+        maxLength: 100
+    Id_2:
+      name: id
+      in: query
+      required: true
+      description: The unique ID of the inline image attachment.
+      schema:
+        type: string
+        maxLength: 100
+    MessageId_2:
+      name: message_id
+      in: query
+      required: true
+      description: The message ID from the email response.
+      schema:
+        type: string
+        maxLength: 100
+    Module_2:
+      name: module
+      in: path
+      required: true
+      description: The API name of the module.
+      schema:
+        type: string
+        maxLength: 50
+    RecordId_2:
+      name: recordId
+      in: path
+      required: true
+      description: The unique ID of the record.
+      schema:
+        type: string
+        maxLength: 100
+  schemas:
+    ErrorResponse:
+      description: Standard Zoho CRM error response structure.
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          description: Status
+          enum:
+          - error
+        code:
+          type: string
+          description: Error code
+          maxLength: 100
+        message:
+          type: string
+          description: Error message
+          maxLength: 1000
+        details:
+          type: object
+          description: Details
+          additionalProperties: true
+      required:
+      - status
+      - code
+      - message
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

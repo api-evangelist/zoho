@@ -1,0 +1,2940 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Records API
+  version: 1.0.0
+tags:
+- name: Records
+paths:
+  /{moduleApiName}/actions/count:
+    get:
+      tags:
+      - Records
+      summary: Get Record Count in a Module
+      description: 'Fetches the total number of records in a specified module.
+
+        The count can be filtered using `cvid` (Custom View ID) or one of the search parameters (`criteria`, `phone`, `email`, `word`).
+
+
+        **Important Constraint (Zoho Documentation):**
+
+        You can only include **either** `cvid` **or** one of the search parameters (`criteria`, `phone`, `email`, `word`) in a single request. Combining `cvid` with any search parameter will result in an `AMBIGUITY_DURING_PROCESSING` error (HTTP 400).'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.ALL
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.pricebooks.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.salesorders.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.purchaseorders.READ
+        - ZohoSearch.securesearch.READ
+      operationId: getCount
+      parameters:
+      - $ref: '#/components/parameters/ModuleApiName'
+      - $ref: '#/components/parameters/Email'
+      - $ref: '#/components/parameters/Phone'
+      - $ref: '#/components/parameters/Word'
+      - $ref: '#/components/parameters/Cvid'
+      - $ref: '#/components/parameters/Criteria'
+      - $ref: '#/components/parameters/Converted'
+      - $ref: '#/components/parameters/Approved'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Type'
+      responses:
+        '200':
+          description: Successful response containing the total record count.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response containing the total number of records matching the provided filters (if any).
+                additionalProperties: false
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+                    description: Total number of matching records.
+                required:
+                - count
+        '400':
+          description: Bad Request - invalid module name, unsupported module, or ambiguous use of parameters.
+          content:
+            application/json:
+              schema:
+                description: Union schema for possible 400 Bad Request error responses for GET /{module_api_name}/actions/count.
+                oneOf:
+                - type: object
+                  description: Invalid request error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid request
+                      enum:
+                      - INVALID_REQUEST
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                      const: unable to process your request. please verify whether you have entered proper method name, parameter and parameter values.
+                    details:
+                      type: object
+                      description: Additional error details
+                      additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                - type: object
+                  description: Invalid request error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid request
+                      enum:
+                      - FIELD_TYPE_UNAVAILABLE
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                      enum:
+                      - this data type is not found in this module
+                    details:
+                      type: object
+                      description: Additional error details
+                      additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                - type: object
+                  description: Operation not supported error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      const: error
+                    code:
+                      type: string
+                      description: Error code indicating unsupported operation
+                      const: NOT_SUPPORTED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                      enum:
+                      - The module does not support this operation
+                      - module not suppoted for search
+                      - the given module is not supported for count
+                    details:
+                      type: object
+                      description: Additional error details including module information
+                      additionalProperties: false
+                      properties:
+                        module:
+                          type: string
+                          description: The module that does not support this operation
+                          maxLength: 100
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Missing required parameter error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating missing parameters
+                      enum:
+                      - EXPECTED_PARAM_MISSING
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details including missing parameter names
+                      additionalProperties: false
+                      properties:
+                        param_names:
+                          type: array
+                          description: List of missing parameter names
+                          maxItems: 50
+                          items:
+                            type: string
+                            description: Parameter name
+                            maxLength: 100
+                            enum:
+                            - criteria
+                            - email
+                            - phone
+                            - word
+                      required:
+                      - param_names
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid module error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid module
+                      enum:
+                      - INVALID_MODULE
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details including resource path information
+                      additionalProperties: false
+                      properties:
+                        resource_path_index:
+                          type: integer
+                          description: Index of the invalid resource path segment
+                          format: int32
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid query error response with various detail formats
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid query
+                      enum:
+                      - INVALID_QUERY
+                    message:
+                      type: string
+                      description: Human-readable error message describing the query issue
+                      enum:
+                      - Cannot use the restricted field.
+                      - Invalid query formed
+                      - invalid value for search
+                      - the field is not available for search
+                      - Please check the value of the field
+                      - special characters are not allowed
+                      - invalid operator found
+                      - no_masking_permission
+                      - More than one wildcard(*) not allowed in a searchword
+                    details:
+                      oneOf:
+                      - type: object
+                        description: Invalid Operator passed for datatype
+                        additionalProperties: false
+                        properties:
+                          operator:
+                            type: string
+                            description: The invalid operator used in the query
+                            maxLength: 50
+                        required:
+                        - operator
+                        - api_name
+                      - type: object
+                        description: Data type mismatch error details
+                        additionalProperties: false
+                        properties:
+                          expected_data_type:
+                            type: string
+                            description: The expected data type for the field
+                            maxLength: 100
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - expected_data_type
+                        - reason
+                        - api_name
+                      - type: object
+                        description: Data type mismatch error details
+                        additionalProperties: false
+                        properties:
+                          expected_data_type:
+                            type: string
+                            description: The expected data type for the field
+                            maxLength: 100
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                          value:
+                            type: string
+                            description: The invalid value provided in the query
+                            maxLength: 500
+                        required:
+                        - expected_data_type
+                        - reason
+                        - api_name
+                        - value
+                      - type: object
+                        description: Invalid operator error details
+                        additionalProperties: false
+                        properties:
+                          operator:
+                            type: string
+                            description: The invalid operator used in the query
+                            maxLength: 50
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - operator
+                        - reason
+                        - api_name
+                      - type: object
+                        description: General query error details
+                        additionalProperties: false
+                        properties:
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                          details:
+                            type: string
+                            description: Additional details about the error, only Zoho Search team
+                            maxLength: 1000
+                        required:
+                        - reason
+                        - api_name
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                        properties:
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                          value:
+                            type: string
+                            description: The invalid value provided in the query
+                            maxLength: 500
+                        required:
+                        - reason
+                        - api_name
+                        - value
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                        properties:
+                          param_name:
+                            type: string
+                            description: Name of the parameter causing the error
+                            maxLength: 500
+                            enum:
+                            - email
+                            - phone
+                            - word
+                        required:
+                        - param_name
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid query error response with various detail formats
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid query
+                      enum:
+                      - INVALID_DATA
+                    message:
+                      type: string
+                      description: Human-readable error message describing the query issue
+                      enum:
+                      - Cannot use the restricted field.
+                      - Invalid query formed
+                      - invalid value for search
+                      - the field is not available for search
+                      - Please check the value of the field
+                      - special characters are not allowed
+                      - invalid operator found
+                      - no_masking_permission
+                      - invalid data
+                      - More than one wildcard(*) not allowed in a searchword
+                      - provide atleast 2 letters for search
+                    details:
+                      oneOf:
+                      - type: object
+                        description: Data type mismatch error details
+                        additionalProperties: false
+                        properties:
+                          expected_data_type:
+                            type: string
+                            description: The expected data type for the field
+                            maxLength: 100
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - expected_data_type
+                        - reason
+                        - api_name
+                      - type: object
+                        description: Invalid operator error details
+                        additionalProperties: false
+                        properties:
+                          operator:
+                            type: string
+                            description: The invalid operator used in the query
+                            maxLength: 50
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - operator
+                        - reason
+                        - api_name
+                      - type: object
+                        description: General query error details
+                        additionalProperties: false
+                        properties:
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                          details:
+                            type: string
+                            description: Additional details about the error, only Zoho Search team
+                            maxLength: 1000
+                        required:
+                        - reason
+                        - api_name
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                        properties:
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                          value:
+                            type: string
+                            description: The invalid value provided in the query
+                            maxLength: 500
+                        required:
+                        - reason
+                        - api_name
+                        - value
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                        properties:
+                          param_name:
+                            type: string
+                            description: Name of the parameter causing the error
+                            maxLength: 500
+                        required:
+                        - param_name
+                      - type: object
+                        description: Invalid value error details
+                        additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid query error response for IN operator violations
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid query
+                      enum:
+                      - INVALID_QUERY
+                    message:
+                      type: string
+                      description: Human-readable error message describing the query issue
+                      enum:
+                      - Only 100 values are allowed in "IN" criteria
+                      - Invalid query formed
+                    details:
+                      type: object
+                      description: Additional error details including field information
+                      additionalProperties: false
+                      properties:
+                        param_name:
+                          type: string
+                          description: Name of the parameter causing the error
+                          maxLength: 100
+                      required:
+                      - api_name
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Limit reached error response when maximum record iteration exceeded
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating limit reached
+                      enum:
+                      - LIMIT_REACHED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      enum:
+                      - maximum response iteration limit reached
+                    details:
+                      type: object
+                      description: Additional error details including the limit value
+                      additionalProperties: false
+                      properties:
+                        limit:
+                          type: string
+                          description: Maximum number of records allowed
+                          enum:
+                          - '2000'
+                      required:
+                      - limit
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Criteria limit exceeded error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating criteria limit exceeded
+                      enum:
+                      - CRITERIA_LIMIT_EXCEEDED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      enum:
+                      - no of criterium that can be given exceed the limit 15
+                    details:
+                      type: object
+                      description: Additional error details
+                      additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Ambiguity during processing error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - error
+                      description: Indicates the response is an error.
+                    code:
+                      type: string
+                      enum:
+                      - AMBIGUITY_DURING_PROCESSING
+                      description: Error code representing ambiguity during request processing.
+                    message:
+                      type: string
+                      description: Detailed message describing the ambiguity in the request.
+                      maxLength: 512
+                      enum:
+                      - Please use either Cvid or Search Params. Combination of both the params is not allowed
+                    details:
+                      type: object
+                      description: Additional details about the ambiguity.
+                      additionalProperties: false
+                      properties:
+                        ambiguity_due_to:
+                          type: array
+                          description: List of parameters causing ambiguity.
+                          maxItems: 2
+                          items:
+                            type: object
+                            additionalProperties: false
+                            description: Parameter causing ambiguity.
+                            properties:
+                              param_name:
+                                type: string
+                                description: Name of the parameter causing ambiguity.
+                                maxLength: 100
+                            required:
+                            - param_name
+                - description: Error response when the requested operation or module is not supported.
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      enum:
+                      - error
+                      description: Indicates the response is an error.
+                    code:
+                      type: string
+                      enum:
+                      - API_NOT_SUPPORTED
+                      description: Error code representing unsupported operation or module.
+                    message:
+                      type: string
+                      description: Detailed message describing why the request is not supported.
+                      maxLength: 512
+                      enum:
+                      - api not supported in this version
+                    details:
+                      type: object
+                      description: Additional details including the unsupported module name.
+                      additionalProperties: false
+                      properties:
+                        supported_version:
+                          type: string
+                          description: The API version that supports this operation.
+                          maxLength: 100
+                          enum:
+                          - v2.1
+                  required:
+                  - status
+                  - code
+                  - message
+        '401':
+          description: Unauthorized (e.g., OAUTH_SCOPE_MISMATCH).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /{module}:
+    get:
+      operationId: getRecords
+      description: To get the list of available records from a module
+      summary: Get Records for a specific module
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/Fields'
+      - $ref: '#/components/parameters/TerritoryId'
+      - $ref: '#/components/parameters/Ids'
+      - $ref: '#/components/parameters/Cvid_2'
+      - $ref: '#/components/parameters/PerPage_2'
+      - $ref: '#/components/parameters/Page_2'
+      - $ref: '#/components/parameters/PageToken'
+      - $ref: '#/components/parameters/SortOrder'
+      - $ref: '#/components/parameters/SortBy'
+      - $ref: '#/components/parameters/Converted_2'
+      - $ref: '#/components/parameters/IncludeChild'
+      responses:
+        '200':
+          description: Successful response containing the list of records for the specified module
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordGETSucessResponse'
+        '204':
+          description: No Content - The request was successful, but no records found.
+        '400':
+          description: Bad Request - The request could not be processed due to invalid input, missing mandatory parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordGETErrorResponse'
+        '403':
+          description: Forbidden - User lacks permission to access the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.READ
+      tags:
+      - Records
+    post:
+      operationId: createRecords
+      summary: Create a Record in a specific module
+      description: Create a Record in a specific module
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: The request body for Records Post
+              $ref: '#/components/schemas/RecordsInputSchema'
+        required: true
+      responses:
+        '201':
+          description: Record is created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordSuccessResponse'
+        '400':
+          description: Bad Request - The request could not be processed due to invalid input, missing mandatory parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordsErrorResponse'
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordUnathorizedResponse'
+        '403':
+          description: Forbidden - User lacks permission add records to the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.CREATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.CREATE
+      tags:
+      - Records
+    put:
+      operationId: updateRecords
+      description: To update existing entities or records in a specified module.
+      summary: To update existing entities or records in a specified module
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Request body containing the updated resource data to modify the existing record.
+              $ref: '#/components/schemas/RecordsInputSchema'
+      responses:
+        '200':
+          description: Success Response containing the record id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordSuccessResponse'
+        '400':
+          description: Failure in Record Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordsErrorResponse'
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordUnathorizedResponse'
+        '403':
+          description: Forbidden - User lacks permission update records in the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '412':
+          description: The record was modified after the time specified.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Root response object returned when a record update fails due to concurrent modification.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: List of error objects describing why the request failed.
+                    maxItems: 1
+                    items:
+                      type: object
+                      description: Error object representing a single record modification conflict.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable error code indicating the type of failure.
+                          enum:
+                          - ALREADY_MODIFIED
+                        message:
+                          type: string
+                          description: Human-readable explanation of the error.
+                          maxLength: 1024
+                        status:
+                          type: string
+                          description: Overall execution status of the request.
+                          enum:
+                          - error
+                        details:
+                          type: object
+                          description: Additional metadata describing the record state at the time of conflict.
+                          additionalProperties: true
+                          properties:
+                            Modified_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was last modified.
+                            Created_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was originally created.
+                            id:
+                              type: string
+                              description: Unique identifier of the record that caused the conflict.
+                              format: int64
+                            Modified_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who last modified the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the modifying user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the modifying user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                            Created_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who originally created the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the creating user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the creating user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                      required:
+                      - code
+                      - message
+                      - status
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.UPDATE
+      tags:
+      - Records
+    delete:
+      operationId: deleteRecords
+      summary: Delete multiple records from a module
+      description: Permanently deletes one or more records from the specified module using comma-separated record IDs. Returns per-item results for bulk operations.
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/Ids'
+      responses:
+        '200':
+          description: Successful deletion. Returns a success status for each deleted record.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response schema returned when one or more records are successfully deleted.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: List of successfully deleted records with individual success details.
+                    maxItems: 100
+                    items:
+                      type: object
+                      description: Success object representing a single deleted record.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable code indicating successful deletion.
+                          enum:
+                          - SUCCESS
+                        details:
+                          type: object
+                          description: Additional metadata related to the deleted record.
+                          additionalProperties: true
+                          properties:
+                            id:
+                              type: string
+                              description: Unique identifier of the record that was deleted.
+                              format: int64
+                          required:
+                          - id
+                        message:
+                          type: string
+                          description: Human-readable confirmation message for the deletion.
+                          enum:
+                          - record deleted
+                        status:
+                          type: string
+                          description: Overall execution status of the delete operation for the record.
+                          enum:
+                          - success
+                      required:
+                      - code
+                      - details
+                      - message
+                      - status
+                required:
+                - data
+        '207':
+          description: Multi-status response indicating that some records were deleted successfully while others failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response returned when a bulk delete operation results in mixed success and failure outcomes.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: List of per-record results indicating whether each record deletion succeeded or failed.
+                    maxItems: 100
+                    items:
+                      oneOf:
+                      - type: object
+                        description: Represents a successfully deleted record.
+                        additionalProperties: false
+                        properties:
+                          status:
+                            type: string
+                            description: Indicates that the delete operation for the record was successful.
+                            enum:
+                            - success
+                          code:
+                            type: string
+                            description: Success code returned for a deleted record.
+                            enum:
+                            - SUCCESS
+                          message:
+                            type: string
+                            description: Message confirming successful deletion of the record.
+                            maxLength: 1024
+                          details:
+                            type: object
+                            description: Additional information about the deleted record.
+                            additionalProperties: false
+                            properties:
+                              id:
+                                type: string
+                                description: Unique identifier of the deleted record.
+                                format: int64
+                        required:
+                        - status
+                        - code
+                        - message
+                        - details
+                      - type: object
+                        additionalProperties: false
+                        description: Represents a record deletion failure.
+                        properties:
+                          status:
+                            type: string
+                            description: Indicates that the delete operation for the record failed.
+                            enum:
+                            - error
+                          code:
+                            type: string
+                            description: Error code describing why the record could not be deleted.
+                            enum:
+                            - INVALID_DATA
+                            - REQUIRED_PARAM_MISSING
+                          message:
+                            type: string
+                            description: Message explaining the reason for the deletion failure.
+                            maxLength: 1024
+                          details:
+                            type: object
+                            description: Additional context about the deletion error.
+                            additionalProperties: true
+                            properties:
+                              api_name:
+                                type: string
+                                description: API name associated with the error.
+                                maxLength: 255
+                              id:
+                                type: string
+                                format: int64
+                                description: Identifier of the record that failed to delete.
+                              param:
+                                type: string
+                                maxLength: 1024
+                                description: Request parameter that caused the error.
+                              param_name:
+                                type: string
+                                maxLength: 255
+                                description: Name of the invalid or missing parameter.
+                        required:
+                        - status
+                        - code
+                        - message
+                        - details
+        '400':
+          description: Bad request due to invalid module, missing parameters, or invalid record IDs.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  additionalProperties: false
+                  description: Response schema returned when one or more records fail to delete due to invalid data in a bulk delete operation.
+                  properties:
+                    data:
+                      type: array
+                      description: List of error objects for each record that failed to delete.
+                      maxItems: 100
+                      items:
+                        type: object
+                        description: Error object representing a single record deletion failure.
+                        additionalProperties: false
+                        properties:
+                          code:
+                            type: string
+                            description: Error code indicating lack of delete permission.
+                            enum:
+                            - NO_PERMISSION
+                          message:
+                            type: string
+                            maxLength: 1024
+                            description: Message explaining why the delete operation is forbidden.
+                          status:
+                            type: string
+                            description: Status indicating the failure of the request.
+                            enum:
+                            - error
+                          details:
+                            type: object
+                            description: Details indicating the failure of the request.
+                            additionalProperties: true
+                            properties:
+                              id:
+                                description: Failed ID
+                                format: int64
+                                type: string
+                        required:
+                        - status
+                        - code
+                        - message
+                        - details
+                - type: object
+                  additionalProperties: false
+                  description: Response schema returned when a record fails to delete due to various errors.
+                  properties:
+                    status:
+                      type: string
+                      description: Overall execution status of the request.
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating the reason for deletion failure.
+                      enum:
+                      - INVALID_DATA
+                      - INVALID_MODULE
+                      - REQUIRED_PARAM_MISSING
+                      - NOT_SUPPORTED
+                      - UNABLE_TO_PARSE_DATA_TYPE
+                      - INVALID_REQUEST_METHOD
+                      - AUTHORIZATION_FAILED
+                      - RECORD_LOCKED
+                      - NOT_APPROVED
+                    message:
+                      description: Human-readable message describing the error encountered during deletion.
+                      type: string
+                      maxLength: 1024
+                    details:
+                      type: object
+                      description: Additional context about the deletion error.
+                      additionalProperties: false
+                      properties:
+                        api_name:
+                          description: API name associated with the error.
+                          type: string
+                          maxLength: 255
+                        id:
+                          description: Identifier of the record that failed to delete.
+                          type: string
+                          format: int64
+                        param:
+                          description: Request parameter that caused the error.
+                          type: string
+                          maxLength: 1024
+                        param_name:
+                          description: Name of the invalid or missing parameter.
+                          type: string
+                          maxLength: 255
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+        '401':
+          description: Unauthorized response returned when the OAuth token does not contain the required delete scope.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response indicating an OAuth scope mismatch.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Error code representing the reason for authorization failure.
+                    enum:
+                    - OAUTH_SCOPE_MISMATCH
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable message describing the authorization error.
+                  status:
+                    type: string
+                    description: Status indicating the result of the API request.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '403':
+          description: Forbidden response returned when the user does not have permission to delete records.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                description: Error response indicating insufficient privileges to perform delete operation.
+                properties:
+                  code:
+                    type: string
+                    description: Error code indicating lack of delete permission.
+                    enum:
+                    - NO_PERMISSION
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Message explaining why the delete operation is forbidden.
+                  status:
+                    type: string
+                    description: Status indicating the failure of the request.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '404':
+          description: Response returned when the API endpoint URL is invalid or the requested resource does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response indicating an invalid URL pattern or missing resource.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Error code indicating an invalid URL or resource path.
+                    enum:
+                    - INVALID_URL_PATTERN
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Message describing the invalid URL or missing resource.
+                  status:
+                    type: string
+                    description: Status indicating request failure.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '500':
+          description: Response returned when an unexpected internal server error occurs during record deletion.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response indicating an internal server failure.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Error code representing an internal server error.
+                    enum:
+                    - INTERNAL_ERROR
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Message describing the internal server error.
+                  status:
+                    type: string
+                    description: Status indicating request failure due to server error.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.DELETE
+      tags:
+      - Records
+  /{module}/{recordID}:
+    get:
+      operationId: getRecord
+      description: To get the details of a specific record with its unique record ID.
+      summary: Get Record for a specific module with RecordId
+      parameters:
+      - $ref: '#/components/parameters/Record'
+      - $ref: '#/components/parameters/Module'
+      responses:
+        '200':
+          description: Successful response of the mentioned Record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordGETSucessResponse'
+        '204':
+          description: No Content - The request was successful, but no records found.
+        '400':
+          description: Bad Request - The request could not be processed due to invalid input, missing mandatory parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordGETErrorResponse'
+        '403':
+          description: Forbidden - User lacks permission to access the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.READ
+      tags:
+      - Records
+    put:
+      operationId: updateRecord
+      description: To update existing entities or records in a specified module with the recordID
+      summary: To update existing entities or records in a specified module with the recordID
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/Record'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Request body containing the updated resource data to modify the existing record.
+              $ref: '#/components/schemas/RecordsInputSchema'
+      responses:
+        '200':
+          description: Success Response containing the record id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordSuccessResponse'
+        '400':
+          description: Failure in Record Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordsErrorResponse'
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordUnathorizedResponse'
+        '403':
+          description: Forbidden - User lacks permission to update records the requested module, Records or This API is supported only for admin users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordPermissionResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInvalidURLResponse'
+        '412':
+          description: The record was modified after the time specified.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Root response object returned when a record update fails due to concurrent modification.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: List of error objects describing why the request failed.
+                    maxItems: 1
+                    items:
+                      type: object
+                      description: Error object representing a single record modification conflict.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable error code indicating the type of failure.
+                          enum:
+                          - ALREADY_MODIFIED
+                        message:
+                          type: string
+                          description: Human-readable explanation of the error.
+                          maxLength: 255
+                        status:
+                          type: string
+                          description: Overall execution status of the request.
+                          enum:
+                          - error
+                        details:
+                          type: object
+                          description: Additional metadata describing the record state at the time of conflict.
+                          additionalProperties: true
+                          properties:
+                            Modified_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was last modified.
+                            Created_Time:
+                              type: string
+                              format: date-time
+                              description: Timestamp indicating when the record was originally created.
+                            id:
+                              type: string
+                              description: Unique identifier of the record that caused the conflict.
+                              format: int64
+                            Modified_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who last modified the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the modifying user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the modifying user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                            Created_By:
+                              type: object
+                              additionalProperties: false
+                              description: User who originally created the record.
+                              properties:
+                                name:
+                                  type: string
+                                  description: Display name of the creating user.
+                                  maxLength: 255
+                                id:
+                                  type: string
+                                  description: Unique identifier of the creating user.
+                                  format: int64
+                              required:
+                              - name
+                              - id
+                      required:
+                      - code
+                      - message
+                      - status
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordInternalErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.UPDATE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.UPDATE
+      tags:
+      - Records
+    delete:
+      operationId: deleteRecord
+      summary: Delete a single record by ID
+      description: Permanently deletes a specific record from the module using its unique record ID.
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/Record'
+      responses:
+        '200':
+          description: Successful response returned when the specified record is deleted.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response schema returned after successfully deleting a record by ID.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    maxItems: 100
+                    description: List containing the result of the delete operation for the requested record.
+                    items:
+                      type: object
+                      description: Success object representing a deleted record.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable success code indicating the record was deleted.
+                          enum:
+                          - SUCCESS
+                        message:
+                          type: string
+                          maxLength: 1024
+                          description: Human-readable confirmation message for the delete operation.
+                        status:
+                          type: string
+                          description: Indicates the operation completed successfully.
+                          enum:
+                          - success
+                        details:
+                          type: object
+                          description: Additional information about the deleted record.
+                          additionalProperties: true
+                          properties:
+                            id:
+                              type: string
+                              format: int64
+                              description: Unique identifier of the deleted record.
+                          required:
+                          - id
+                      required:
+                      - code
+                      - message
+                      - status
+                      - details
+                required:
+                - data
+        '400':
+          description: Bad request response returned when record deletion fails due to invalid input, path parameters, or request constraints.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema returned for client-side errors encountered during delete-by-ID operations.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Machine-readable error code identifying the reason the delete request failed.
+                    enum:
+                    - INVALID_DATA
+                    - UNABLE_TO_PARSE_DATA_TYPE
+                    - INVALID_MODULE
+                    - INVALID_REQUEST_METHOD
+                    - AUTHORIZATION_FAILED
+                    - RECORD_LOCKED
+                    - NOT_APPROVED
+                    - REQUIRED_PARAM_MISSING
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable explanation describing why the delete request failed.
+                  details:
+                    type: object
+                    description: Additional contextual information related to the error.
+                    additionalProperties: false
+                    properties:
+                      resource_path_index:
+                        type: integer
+                        format: int32
+                        description: Index of the resource in the request path where the error occurred.
+                      id:
+                        type: string
+                        maxLength: 255
+                        description: Identifier of the record related to the error.
+                      param:
+                        type: string
+                        maxLength: 255
+                        description: Name of the parameter that caused the error.
+                  status:
+                    type: string
+                    description: Indicates that the delete operation resulted in an error.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '401':
+          description: Response returned when the request is unauthorized due to a missing or invalid OAuth scope required for record deletion.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema returned when OAuth scope validation fails for delete-by-ID operations.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Machine-readable error code indicating an OAuth scope mismatch.
+                    enum:
+                    - OAUTH_SCOPE_MISMATCH
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable message indicating the request is unauthorized.
+                  status:
+                    type: string
+                    description: Indicates the operation resulted in an authorization error.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '403':
+          description: Response returned when the user does not have permission to delete the requested record.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema returned when record deletion is blocked due to insufficient permissions.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    description: Machine-readable error code indicating permission denial.
+                    enum:
+                    - NO_PERMISSION
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable explanation indicating the user lacks delete permission.
+                  status:
+                    type: string
+                    description: Indicates the operation resulted in an error.
+                    enum:
+                    - error
+                required:
+                - code
+                - message
+                - status
+        '404':
+          description: Response returned when the API endpoint URL is invalid or the requested resource is not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema returned for invalid URL patterns during record deletion by ID.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    maxItems: 100
+                    description: List of error objects describing the invalid URL pattern.
+                    items:
+                      type: object
+                      description: Error object representing an invalid URL pattern or unsupported endpoint.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable error code indicating an invalid API endpoint URL.
+                          enum:
+                          - INVALID_URL_PATTERN
+                        message:
+                          type: string
+                          maxLength: 1024
+                          description: Human-readable explanation indicating the URL is incorrect or unsupported.
+                        status:
+                          type: string
+                          description: Indicates the operation resulted in an error.
+                          enum:
+                          - error
+                      required:
+                      - code
+                      - message
+                      - status
+                required:
+                - data
+        '500':
+          description: Internal server error response returned when record deletion fails due to an unexpected server-side issue.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response schema returned when an internal error occurs while deleting a record by ID.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    maxItems: 100
+                    description: List of error objects describing the internal server failure.
+                    items:
+                      type: object
+                      description: Error object representing an internal server error.
+                      additionalProperties: false
+                      properties:
+                        code:
+                          type: string
+                          description: Machine-readable error code indicating an internal server failure.
+                          enum:
+                          - INTERNAL_ERROR
+                        message:
+                          type: string
+                          maxLength: 1024
+                          description: Human-readable description of the internal server error.
+                        status:
+                          type: string
+                          description: Indicates the operation resulted in an error.
+                          enum:
+                          - error
+                      required:
+                      - code
+                      - message
+                      - status
+                required:
+                - data
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.DELETE
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.DELETE
+      tags:
+      - Records
+components:
+  parameters:
+    Email:
+      name: email
+      in: query
+      description: Searches for records using an email address. The API searches across all email fields in the specified module and returns matching records. (e.g., `p%2Bboyle@abc.com` for `p+boyle@abc.com`).
+      required: false
+      schema:
+        type: string
+        maxLength: 3000
+        description: The email address to filter records by. Note that special characters must be URL-encoded (e.g., `p%2Bboyle@abc.com` for `p+boyle@abc.com`).
+    PerPage:
+      name: per_page
+      in: query
+      description: The number of records to return per page.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 200
+        minimum: 1
+        maximum: 200
+        description: Number of records per page for pagination.
+    Phone:
+      name: phone
+      in: query
+      description: Searches for records using a phone number. The API searches across all phone fields in the specified module and returns matching records. (e.g., `9876543210`).
+      required: false
+      schema:
+        type: string
+        maxLength: 3000
+        description: The phone number to filter records by.
+    Type:
+      name: type
+      in: query
+      description: Filters users based on their type. This parameter is supported **only for the Users module**.
+      required: false
+      schema:
+        type: string
+        description: Specifies the user type to filter records by.
+        enum:
+        - AllUsers
+        - ActiveUsers
+        - DeactiveUsers
+        - ConfirmedUsers
+        - ConfirmedReportingUsers
+        - NotConfirmedUsers
+        - DeletedUsers
+        - ActiveConfirmedUsers
+        - AdminUsers
+        - ActiveConfirmedAdmins
+        - CurrentUser
+    Word:
+      name: word
+      in: query
+      required: false
+      description: Performs a global search within the specified module using the given word. The matchable records across multiple fields based on the search term. (e.g., `fin` to match records containing 'fin' in any searchable field).
+      schema:
+        type: string
+        maxLength: 3000
+        description: The word to filter records by.
+    ModuleApiName:
+      name: moduleApiName
+      in: path
+      required: true
+      description: The API name of the module to retrieve the record count for.
+      schema:
+        type: string
+        description: The API name of the module for which to retrieve the record count (e.g., `Leads`, `Accounts`).
+        maxLength: 5000
+    Approved:
+      name: approved
+      in: query
+      description: Filters leads based on their approval status.
+      required: false
+      schema:
+        type: string
+        enum:
+        - 'true'
+        - 'false'
+        - both
+        description: Set to true to count only converted leads; false to count only unconverted leads.
+    Cvid:
+      name: cvid
+      in: query
+      description: The ID of the custom view from which to get the record count.
+      required: false
+      schema:
+        type: string
+        maxLength: 3000
+        description: The Custom View ID to filter records by.
+    Page:
+      name: page
+      in: query
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
+        description: The page number for pagination.
+    Converted:
+      name: converted
+      in: query
+      description: Filters leads based on their conversion status.
+      required: false
+      schema:
+        type: string
+        enum:
+        - 'true'
+        - 'false'
+        - both
+        description: Set to true to count only converted leads; false to count only unconverted leads.
+    Criteria:
+      name: criteria
+      in: query
+      description: 'Performs search by following the shown criteria: `(({api_name}:{operator}:{value}) and/or ({api_name}:{operator}:{value}))`
+
+
+        Performs a search based on the following format:
+
+        `(({field_API_name}:{operator}:{value}) and/or ({field_API_name}:{operator}:{value}))`
+
+
+        Replace `{field_API_name}`, `{operator}`, and `{value}` with the appropriate field API name, condition, and value.
+
+
+        **Key Points:**
+
+        - You can search for a maximum of **10 criteria** (with same or different columns)
+
+        - The only operator that is supported for **encrypted fields** is `equals`
+
+        - When using the `equals` operator in the Search API, it behaves like `contains`, retrieving records that include the specified value
+
+
+        **Single Condition:**
+
+        If the condition is `(Company:equals:ABC)`, the response will include records with "ABC" as well as "ABC Inc" in the Company field.
+
+
+        **Multiple Conditions:**
+
+        `equals` still behaves like `contains`. For example, `((Company:equals:ABC) and (First_Name:starts_with:M))`, it retrieves records where the "First Name" starts with "M" and the "Company" contains "ABC" (e.g., "ABC" or "ABC Inc.").
+
+
+        **Note:** The above behaviour does not apply to the **picklist field type**.
+
+
+        **IN Operator:**
+
+        The `in` operator checks if a field''s value matches any value in a given list.
+
+        For example, `(Full_Name:in:Patricia,Boyle,Kate)`, it retrieves records where the Full Name is Patricia, Boyle, or Kate.
+
+
+        **Special Character Handling:**
+
+        When a single-line field value contains characters such as `{`, `}`, `[`, `]`, `^`, `:`, `-`, `/`, `!`, `?`, `*`, `_`, `@`, space, the Search API returns records with similar-looking values, even if the characters are not an exact match.
+
+
+        For example, if Record A has the field value `sales-team@zoho.com` and Record B has `sales_team@zoho.com`, a search using `equals:sales-team@zoho.com` may return both records.
+
+
+        **Escaping Special Characters:**
+
+        When using parentheses `()`, commas `,`, or a backslash `\` as the last character in a search value, follow these steps:
+
+        1. Escape special characters using a backslash `\`
+
+        2. Encode the value before making the API request. Select the value of the criteria, right-click the value, and choose the EncodeURIComponent option.
+
+
+        **Example 1: Escaping Parentheses and Commas**
+
+        - Search term: `((Last_Name:equals:Burns,B) and (First_Name:starts_with:M))`
+
+        - Escape the comma `\,`: `((Last_Name:equals:Burns\,B) and (First_Name:starts_with:M))`
+
+        - Encode the value: `((Last_Name:equals:Burns%5C%2CB) and (First_Name:starts_with:M))`
+
+
+        **Example 2: Escaping a Backslash at the End**
+
+        - Search term: `(Last_Name:equals:K\)`
+
+        - Escape the backslash `\\`: `(Last_Name:equals:K\\)`
+
+        - Encode the value: `(Last_Name:equals:K%5C%5C)`
+
+
+        **Supported Data Types:**
+
+        `picklist`, `owner_lookup`, `user_lookup`, `lookup`, `phone`, `email`, `date`, `datetime`, `text`, `textarea`, `integer`, `currency`, `decimal`, `multiselectpicklist`, `bigint`, `percent`, `formula`, `website`, `boolean`, `double`
+
+
+        **Supported Operators:**
+
+        `equals`, `starts_with`, `in`, `not_equal`, `greater_equal`, `greater_than`, `less_equal`, `less_than`, `between`
+
+
+        **Operator Compatibility by Data Type:**
+
+
+        | Data Type | equals | starts_with | in | not_equal | greater_equal | greater_than | less_equal | less_than | between |
+
+        |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+
+        | **text** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **textarea** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **email** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **phone** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **website** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **picklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **multiselectpicklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **owner_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **user_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **boolean** | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+
+        | **integer** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **bigint** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **currency** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **decimal** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **double** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **percent** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **date** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **datetime** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+        | **formula** | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+
+        **Legend:** ✓ = Supported, ✗ = Not Supported
+
+
+        **Note:** Refer to the Zoho CRM API documentation for the most up-to-date operator compatibility information.'
+      required: false
+      schema:
+        type: string
+        maxLength: 3000
+        description: Search criteria string with field API name, operator, and value
+    IncludeChild:
+      name: include_child
+      description: To include records from the child territories
+      in: query
+      schema:
+        type: boolean
+    Fields:
+      name: fields
+      description: Specify the API names of the fields you want to retrieve when fetching the records.
+      in: query
+      schema:
+        type: string
+        maxLength: 1024
+    PageToken:
+      name: page_token
+      description: To fetch more than 2000 records, you must include the "page_token" param in the request
+      in: query
+      schema:
+        type: string
+        maxLength: 100
+    PerPage_2:
+      name: per_page
+      description: Specify how many records to return per page
+      in: query
+      schema:
+        type: integer
+        format: int32
+    TerritoryId:
+      name: territory_id
+      description: Specify the territory ID to get the list of records that belongs to a specific territory
+      in: query
+      schema:
+        type: string
+        format: int64
+    SortBy:
+      name: sort_by
+      description: To sort the records based on the fields id, Created_Time, and Modified_Time. The default value is 'id'
+      in: query
+      schema:
+        type: string
+        enum:
+        - id
+        - Created_Time
+        - Modified_Time
+    Cvid_2:
+      name: cvid
+      description: Specify the custom view ID to get the list of records based on custom views
+      in: query
+      schema:
+        type: string
+        format: int64
+    Ids:
+      name: ids
+      description: To retrieve specific records based on their unique ID.
+      in: query
+      schema:
+        type: string
+        maxLength: 1024
+    Module:
+      name: module
+      description: Specifies the module name
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 100
+    SortOrder:
+      name: sort_order
+      description: To sort the available list of records in either ascending or descending order
+      in: query
+      schema:
+        type: string
+        enum:
+        - desc
+        - asc
+    Page_2:
+      name: page
+      description: To get the list of records from the respective pages
+      in: query
+      schema:
+        type: integer
+        format: int32
+    Converted_2:
+      name: converted
+      description: To get the list of converted records
+      in: query
+      schema:
+        type: string
+        enum:
+        - 'false'
+        - 'true'
+        - both
+    Record:
+      name: recordID
+      description: This ID is used to uniquely identify a record
+      in: path
+      required: true
+      schema:
+        type: string
+        format: int64
+  schemas:
+    ErrorResponse:
+      type: object
+      description: A standard error response from the Zoho CRM API.
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: The unique error code.
+          maxLength: 64
+        message:
+          type: string
+          description: A human-readable description of the error.
+          maxLength: 512
+        details:
+          type: object
+          description: Additional details about the error, often containing the field API name.
+          additionalProperties: false
+        status:
+          type: string
+          description: Indicates the response is an error.
+          enum:
+          - error
+    RecordUnathorizedResponse:
+      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating that the request is not authorized.
+          items:
+            type: object
+            description: Error object representing an OAuth scope mismatch.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an OAuth scope mismatch.
+                enum:
+                - OAUTH_SCOPE_MISMATCH
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing why the OAuth token is unauthorized.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordInternalErrorResponse:
+      description: Schema for internal server error responses related to record operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing internal server failures.
+          items:
+            type: object
+            description: Error object representing an unexpected internal server error.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an internal server failure.
+                enum:
+                - INTERNAL_ERROR
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable description of the internal server error.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordInvalidURLResponse:
+      description: Response schema returned when the requested API endpoint URL pattern is invalid or unsupported.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating an invalid or unsupported API endpoint URL.
+          items:
+            type: object
+            description: Error object representing an invalid API URL pattern.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an invalid endpoint URL pattern.
+                enum:
+                - INVALID_URL_PATTERN
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing why the requested URL is invalid.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordGETErrorResponse:
+      description: Error response schema returned when GET record or GET records operations fail due to validation, pagination, or processing errors.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing failures encountered while processing GET record(s) requests.
+          items:
+            type: object
+            description: Error object representing a single GET record(s) operation failure.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating the specific reason for the GET operation failure.
+                enum:
+                - INVALID_DATA
+                - TOKEN_BOUND_DATA_MISMATCH
+                - INVALID_MODULE
+                - REQUIRED_PARAM_MISSING
+                - LIMIT_EXCEEDED
+                - EXPIRED_VALUE
+                - DISCRETE_PAGINATION_LIMIT_EXCEEDED
+                - AMBIGUITY_DURING_PROCESSING
+                - PAGINATION_LIMIT_EXCEEDED
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable description explaining why the GET operation failed.
+              details:
+                type: object
+                description: Additional metadata providing context about the error.
+                additionalProperties: true
+                properties:
+                  resource_path_index:
+                    type: integer
+                    format: int32
+                    description: Index of the resource path segment where the error occurred.
+                required:
+                - resource_path_index
+              status:
+                type: string
+                description: Overall execution status of the GET request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordsErrorResponse:
+      description: Standard error response schema returned when one or more record operations fail.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing individual record-level failures.
+          items:
+            type: object
+            description: Error object representing a failure encountered while processing a record.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code identifying the reason for the failure.
+                enum:
+                - INVALID_DATA
+                - INVALID_MODULE
+                - MULTIPLE_OR_MULTI_ERRORS
+                - DEPENDENT_FIELD_MISSING
+                - DEPENDENT_SERVICE_ERROR
+                - MANDATORY_NOT_FOUND
+                - DEPENDENT_MISMATCH
+                - INVALID_REQUEST_METHOD
+                - AUTHORIZATION_FAILED
+                - DUPLICATE_DATA
+                - LIMIT_EXCEEDED
+                - RECORD_LOCKED
+                - EXPECTED_FIELD_MISSING
+              details:
+                type: object
+                additionalProperties: true
+                description: Additional details associated with the error.
+                properties:
+                  resource_path_index:
+                    type: integer
+                    format: int32
+                    description: Position of the record in the request payload where the error occurred.
+                  api_name:
+                    type: string
+                    maxLength: 1024
+                    description: The API name of the field associated with the error.
+                  json_path:
+                    type: string
+                    maxLength: 1024
+                    description: JSONPath pointer to the field that caused the error.
+                  expected_fields:
+                    type: array
+                    maxItems: 100
+                    description: Used specifically when the error code is EXPECTED_FIELD_MISSING.
+                    items:
+                      type: object
+                      additionalProperties: false
+                      description: Additional information on the missing fields
+                      required:
+                      - api_name
+                      - json_path
+                      properties:
+                        api_name:
+                          maxLength: 1024
+                          type: string
+                          description: Name of the missing expected field.
+                        json_path:
+                          maxLength: 1024
+                          type: string
+                          description: JSONPath location of the expected field.
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation of the error.
+              status:
+                type: string
+                description: Indicates the outcome of the operation for the record.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordGETSucessResponse:
+      description: Successful response schema returned for GET record or GET records API operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of records retrieved from the module.
+          items:
+            type: object
+            description: Represents a single record. This object may include both standard and custom fields.
+            additionalProperties: true
+            properties:
+              id:
+                type: string
+                format: int64
+                description: Unique identifier of the record.
+              Owner:
+                type: object
+                description: Details of the user who owns the record.
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                    maxLength: 100
+                    description: Name of the record owner.
+                  id:
+                    type: string
+                    format: int64
+                    description: Unique identifier of the record owner.
+                  email:
+                    type: string
+                    maxLength: 256
+                    description: Email address of the record owner.
+              Created_Time:
+                type: string
+                format: date-time
+                description: Timestamp indicating when the record was created.
+              Modified_Time:
+                type: string
+                format: date-time
+                description: Timestamp indicating when the record was last modified.
+              Created_By:
+                type: object
+                description: Details of the user who created the record.
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                    maxLength: 100
+                    description: Name of the user who created the record.
+                  id:
+                    type: string
+                    format: int64
+                    description: Unique identifier of the user who created the record.
+              Modified_By:
+                type: object
+                description: Details of the user who last modified the record.
+                additionalProperties: false
+                properties:
+                  name:
+                    type: string
+                    maxLength: 100
+                    description: Name of the user who last modified the record.
+                  id:
+                    type: string
+                    format: int64
+                    description: Unique identifier of the user who last modified the record.
+            required:
+            - id
+        info:
+          type: object
+          description: Pagination and metadata information for the GET records response.
+          additionalProperties: false
+          properties:
+            page:
+              type: integer
+              format: int32
+              description: Current page number.
+            call:
+              type: boolean
+              description: Indicates whether call fields are included in the response.
+            per_page:
+              type: integer
+              format: int32
+              description: Number of records returned per page.
+            count:
+              type: integer
+              format: int32
+              description: Number of records returned in the current page.
+            more_records:
+              type: boolean
+              description: Indicates whether more records are available for retrieval.
+            email:
+              type: boolean
+              description: Indicates whether email-related fields are included in the response.
+            sort_by:
+              type: string
+              maxLength: 1024
+              description: Field name used to sort the records.
+            sort_order:
+              type: string
+              enum:
+              - asc
+              - desc
+              description: Sort order applied to the results (ascending or descending).
+            next_page_token:
+              maxLength: 1024
+              type: string
+              description: Token used to fetch the next page of results.
+            previous_page_token:
+              maxLength: 1024
+              type: string
+              description: Token used to fetch the previous page of results.
+            page_token_expiry:
+              maxLength: 1024
+              type: string
+              format: date-time
+              description: Timestamp indicating when the page tokens will expire.
+    RecordSuccessResponse:
+      description: Standard success response schema for single or bulk record operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of successfully processed records with detailed metadata.
+          items:
+            type: object
+            description: Success object representing a single successfully processed record.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable code indicating a successful operation.
+                enum:
+                - SUCCESS
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable success message describing the operation outcome.
+              status:
+                type: string
+                description: Overall execution status of the operation.
+                enum:
+                - success
+              details:
+                type: object
+                description: Detailed metadata about the processed record.
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+                    format: int64
+                    description: Unique identifier of the record.
+                  Modified_Time:
+                    type: string
+                    format: date-time
+                    description: Timestamp indicating when the record was last modified.
+                  Created_Time:
+                    type: string
+                    format: date-time
+                    description: Timestamp indicating when the record was created.
+                  Created_By:
+                    type: object
+                    description: User who originally created the record.
+                    additionalProperties: false
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 100
+                        description: Display name of the creating user.
+                      id:
+                        type: string
+                        format: int64
+                        description: Unique identifier of the creating user.
+                    required:
+                    - name
+                    - id
+                  Modified_By:
+                    type: object
+                    description: User who last modified the record.
+                    additionalProperties: false
+                    properties:
+                      name:
+                        type: string
+                        maxLength: 100
+                        description: Display name of the modifying user.
+                      id:
+                        type: string
+                        format: int64
+                        description: Unique identifier of the modifying user.
+                    required:
+                    - name
+                    - id
+                  $approval_state:
+                    type: string
+                    maxLength: 1024
+                    description: Approval state of the record in the approval workflow.
+                required:
+                - id
+                - Modified_Time
+                - Created_Time
+                - Created_By
+                - Modified_By
+                - $approval_state
+            required:
+            - code
+            - message
+            - status
+            - details
+      required:
+      - data
+    RecordsInputSchema:
+      description: Input schema for create, update, or upsert record requests.
+      type: object
+      additionalProperties: false
+      required:
+      - data
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: Request body containing one or more records to be created or updated.
+          items:
+            type: object
+            description: Payload representing a single record to be created or updated.
+            additionalProperties: true
+            properties:
+              id:
+                type: string
+                maxLength: 1024
+                description: Unique identifier of the record. Required when modifying an existing record.
+              $append_values:
+                type: string
+                maxLength: 1024
+                description: Controls whether values in a multi-select picklist field should be appended or replaced during an update operation.
+        apply_feature_execution:
+          type: array
+          maxItems: 100
+          description: List of features that should be executed on demand during record processing.
+          items:
+            type: object
+            description: Feature execution configuration object.
+            additionalProperties: true
+        skip_feature_execution:
+          type: array
+          maxItems: 100
+          description: List of features that should be skipped during record processing.
+          items:
+            type: object
+            description: Feature skip configuration object.
+            additionalProperties: true
+        trigger:
+          type: array
+          maxItems: 100
+          description: List of automation triggers to invoke during the record operation.
+          items:
+            type: string
+            description: Type of automation trigger to be executed.
+            enum:
+            - approval
+            - workflow
+            - blueprint
+            - pathfinder
+            - orchestration
+    RecordPermissionResponse:
+      description: Response schema returned when a user lacks the necessary permissions to perform a record operation.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating insufficient user permissions.
+          items:
+            type: object
+            description: Error object representing a permission denial.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating the user does not have permission.
+                enum:
+                - NO_PERMISSION
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing the permission denial.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

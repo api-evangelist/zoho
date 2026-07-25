@@ -1,0 +1,176 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Bulk Import - Batch API
+  version: 1.0.0
+  description: Operations for importing large data files in batches.
+tags:
+- name: Bulk Import - Batch
+  description: Operations for importing large data files in batches.
+paths:
+  /restapi/v2/bulk/workspaces/{workspace-id}/data/batch:
+    post:
+      tags:
+      - Bulk Import - Batch
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Batch Import Data into New Table
+      description: "Initiate an import job to create a new table and import data in batches into the created table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure."
+      operationId: batchImportNewTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          first:
+            summary: First Call
+            value: '{"tableName":"SalesTable","autoIdentify":"true","onError":"setcolumnempty","batchKey":"start","isLastBatch":"false"}'
+          followup:
+            summary: Follow Up Call
+            value: '{"tableName":"SalesTable","autoIdentify":"true","onError":"setcolumnempty","batchKey":"1694703482470_1767024000008426012_SalesTable","isLastBatch":"false"}'
+          last:
+            summary: Last Call
+            value: '{"tableName":"SalesTable","autoIdentify":"true","onError":"setcolumnempty","batchKey":"1694703482470_1767024000008426012_SalesTable","isLastBatch":"true"}'
+        description: JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigNewTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: 'The data file for the batch import. Max allowed file size is 100 MB. '
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported as a batch.
+              required:
+              - FILE
+      responses:
+        '200':
+          description: Successful batch import response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchImportSuccessResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk import job
+                    data:
+                      batchKey: 1694703482470_1767024000008426012_SalesTable
+                      jobId: '1767024000008787011'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/views/{view-id}/data/batch:
+    post:
+      tags:
+      - Bulk Import - Batch
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Batch Import Data into Existing Table
+      description: "Initiate an import job to import data present in multiple batch files into the specified existing table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure."
+      operationId: batchImportExistingTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          first:
+            summary: First Call
+            value: '{"importType":"append","autoIdentify":"true","onError":"setcolumnempty","batchKey":"start","isLastBatch":"false"}'
+          followup:
+            summary: Follow Up Call
+            value: '{"importType":"append","autoIdentify":"true","onError":"setcolumnempty","batchKey":"1694703482470_1767024000008426012_SalesTable","isLastBatch":"false"}'
+          last:
+            summary: Last Call
+            value: '{"importType":"append","autoIdentify":"true","onError":"setcolumnempty","batchKey":"1694703482470_1767024000008426012","isLastBatch":"true"}'
+        description: JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigExistingTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: 'The data file for the batch import. Max allowed file size is 100 MB. '
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported as a batch.
+              required:
+              - FILE
+      responses:
+        '200':
+          description: Successful batch import response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchImportSuccessResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk import job
+                    data:
+                      batchKey: '1694703618038_1767024000008742002'
+                      jobId: '1767024000008787011'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  schemas:
+    BatchImportSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              description: The unique identifier of the batch import job.
+            batchKey:
+              type: string
+              description: The key to identify the next batch.
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

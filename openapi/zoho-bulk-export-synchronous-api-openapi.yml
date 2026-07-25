@@ -1,0 +1,76 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Bulk Export - Synchronous API
+  version: 1.0.0
+  description: Synchronous operations for exporting data.
+tags:
+- name: Bulk Export - Synchronous
+  description: Synchronous operations for exporting data.
+paths:
+  /restapi/v2/workspaces/{workspace-id}/views/{view-id}/data:
+    get:
+      tags:
+      - Bulk Export - Synchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Export Data from a View (Synchronous)
+      description: "Use Bulk APIs to export data from the specified view synchronously.\n\nNote: Export Data API is restricted for certain resources (given below). For these cases, use the Asynchronous Export APIs instead:\n\n  - Tables having more than one million rows.\n  - Tables and Views from live connect workspaces.\n  - Dashboard and QueryTable view types."
+      operationId: exportDataView
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      - in: query
+        name: CONFIG
+        schema:
+          type: string
+        examples:
+          criteria:
+            summary: Using Filter Criteria
+            value: '{"criteria":"\"SalesTable\".\"Region\"=''East''"}'
+          format:
+            summary: Using Response Format
+            value: '{"responseFormat":"json"}'
+        description: JSONObject with configuration to export data from the specified view. (Refer `ExportConfig` schema). Value must be stringified and URL-encoded.
+      responses:
+        '200':
+          description: Successful export data response. The content type will vary based on `responseFormat` in CONFIG.
+          content:
+            text/csv: {}
+            application/json: {}
+            application/xml: {}
+            application/vnd.ms-excel: {}
+            application/pdf: {}
+            text/html: {}
+            image/png: {}
+            image/jpeg: {}
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

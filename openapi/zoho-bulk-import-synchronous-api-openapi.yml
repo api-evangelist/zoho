@@ -1,0 +1,276 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Bulk Import - Synchronous API
+  version: 1.0.0
+  description: Synchronous operations for importing data.
+tags:
+- name: Bulk Import - Synchronous
+  description: Synchronous operations for importing data.
+paths:
+  /restapi/v2/workspaces/{workspace-id}/data:
+    post:
+      tags:
+      - Bulk Import - Synchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Import Data into a New Table (Synchronous)
+      description: 'Use the Bulk APIs to create a new table and import data into it synchronously. '
+      operationId: importDataNewTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          jsonConfig:
+            summary: JSON
+            value: '{"tableName":"Sales","fileType":"json","autoIdentify":true}'
+          csvConfig:
+            summary: CSV
+            value: '{"tableName":"Sales","fileType":"csv","autoIdentify":true}'
+        description: JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigNewTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: Provide either FILE (as a binary file) or DATA (as raw text). Only one should be sent.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported. Only one of FILE or DATA should be provided.
+                DATA:
+                  type: string
+                  description: Raw data (CSV or JSON) to be imported. Only one of FILE or DATA should be provided.
+                  examples:
+                  - '[{"Region":"East"},{"Region":"West"}]'
+          text/plain:
+            schema:
+              type: string
+              description: The raw data to be imported (plain text body).
+      responses:
+        '200':
+          description: Successful import data response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportSuccessResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Import data
+                    data:
+                      viewId: '1767024000003153002'
+                      importSummary:
+                        importType: APPEND
+                        totalColumnCount: 7
+                        selectedColumnCount: 7
+                        totalRowCount: 101
+                        successRowCount: 101
+                        warnings: 0
+                        importOperation: created
+                      columnDetails:
+                        Date: Date
+                        Region: Plain Text
+                        Product Category: Plain Text
+                        Product: Plain Text
+                        Customer Name: Plain Text
+                        Sales: Currency
+                        Cost: Currency
+                      importErrors: ''
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/workspaces/{workspace-id}/views/{view-id}/data:
+    post:
+      tags:
+      - Bulk Import - Synchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Import Data into an Existing Table (Synchronous)
+      description: Use Bulk APIs to import data into an existing specified table synchronously.
+      operationId: importDataExistingTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          JSON:
+            summary: JSON
+            value:
+              importType: append
+              fileType: json
+              autoIdentify: 'true'
+          CSV:
+            summary: CSV
+            value:
+              importType: append
+              fileType: csv
+              autoIdentify: 'true'
+        description: JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigExistingTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: Provide either FILE (as a binary file) or DATA (as raw text). Only one should be sent.
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported. Only one of FILE or DATA should be provided.
+                DATA:
+                  type: string
+                  description: Raw data (CSV or JSON) to be imported. Only one of FILE or DATA should be provided.
+                  examples:
+                  - '[{"Region":"East"},{"Region":"West"}]'
+          text/plain:
+            schema:
+              type: string
+              description: The raw data to be imported (plain text body).
+      responses:
+        '200':
+          description: Successful import data response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExistImportSuccessResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Import data
+                    data:
+                      viewId: '1767024000003153002'
+                      importSummary:
+                        importType: APPEND
+                        totalColumnCount: 7
+                        selectedColumnCount: 7
+                        totalRowCount: 101
+                        successRowCount: 101
+                        warnings: 0
+                        importOperation: updated
+                      columnDetails:
+                        Date: Date
+                        Region: Plain Text
+                        Product Category: Plain Text
+                        Product: Plain Text
+                        Customer Name: Plain Text
+                        Sales: Currency
+                        Cost: Currency
+                      importErrors: ''
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  schemas:
+    ImportSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            viewId:
+              type: string
+            importSummary:
+              type: object
+              properties:
+                importType:
+                  type: string
+                totalColumnCount:
+                  type: integer
+                selectedColumnCount:
+                  type: integer
+                totalRowCount:
+                  type: integer
+                successRowCount:
+                  type: integer
+                warnings:
+                  type: integer
+                importOperation:
+                  type: string
+            columnDetails:
+              type: object
+              additionalProperties:
+                type: string
+            importErrors:
+              type: string
+    ExistImportSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            importSummary:
+              type: object
+              properties:
+                importType:
+                  type: string
+                totalColumnCount:
+                  type: integer
+                selectedColumnCount:
+                  type: integer
+                totalRowCount:
+                  type: integer
+                successRowCount:
+                  type: integer
+                warnings:
+                  type: integer
+                importOperation:
+                  type: string
+            columnDetails:
+              type: object
+              additionalProperties:
+                type: string
+            importErrors:
+              type: string
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

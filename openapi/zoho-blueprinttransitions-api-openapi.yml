@@ -1,0 +1,95 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter blueprintTransitions API
+  version: 1.0.0
+tags:
+- name: blueprintTransitions
+paths:
+  /api/v1/tickets/{ticket_id}/transitions/{transition_id}/attachments/{attachment_id}/content:
+    get:
+      tags:
+      - blueprintTransitions
+      summary: View a specific attachment added to a transition draft
+      description: Get attachment of a transition draft
+      operationId: viewTemporaryTransitionDraftAttachment
+      parameters:
+      - $ref: '#/components/parameters/attachment_id'
+      - $ref: '#/components/parameters/ticket_id'
+      - $ref: '#/components/parameters/transition_id'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '200':
+          $ref: ./Common.json#/components/responses/fileResponse
+      x-audience:
+      - external-public
+  /api/v1/tickets/{ticket_id}/transitions/{transition_id}/attachments/{attachment_id}:
+    delete:
+      tags:
+      - blueprintTransitions
+      summary: Delete attachment of a transition draft
+      description: Delete a specific attachment added to a transition draft.
+      operationId: deleteTransitionDraftTemporaryAttachment
+      parameters:
+      - $ref: '#/components/parameters/attachment_id'
+      - $ref: '#/components/parameters/ticket_id'
+      - $ref: '#/components/parameters/transition_id'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '200':
+          $ref: ./Common.json#/components/responses/emptyResponse
+      security:
+      - iam-oauth2-schema:
+        - Desk.tickets.UPDATE
+      x-audience:
+      - external-public
+components:
+  parameters:
+    transition_id:
+      name: transition_id
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ''
+        pattern: ([0-9]+)
+    attachment_id:
+      name: attachment_id
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ''
+        pattern: ([0-9]+)
+    ticket_id:
+      name: ticket_id
+      in: path
+      description: ''
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ''
+        pattern: ([0-9]+)
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

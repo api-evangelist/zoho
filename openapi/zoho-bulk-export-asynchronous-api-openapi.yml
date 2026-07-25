@@ -1,0 +1,244 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Bulk Export - Asynchronous API
+  version: 1.0.0
+  description: Asynchronous operations for exporting data in bulk.
+tags:
+- name: Bulk Export - Asynchronous
+  description: Asynchronous operations for exporting data in bulk.
+paths:
+  /restapi/v2/bulk/workspaces/{workspace-id}/data:
+    get:
+      tags:
+      - Bulk Export - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Create Export Job using SQL Query (Asynchronous)
+      description: "Create an export job using an SQL SELECT statement to initiate data export asynchronously.\n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB IN PROGRESS\n     → Export is currently being processed. Continue polling.\n   - 1003: ERROR OCCURRED\n     → An error occurred. Stop polling and investigate the error.\n   - 1004: JOB COMPLETED\n     → Export process completed. Proceed to download.\n   - 1005: JOB NOT FOUND\n     → Provided JOBID is invalid. Stop polling and verify the JOBID.\n\n3. Download Exported Data:\n  - Once JOBCODE is 1004, use the Download Exported Data API to download the exported file.\n\nLimitations:\n- Exported file will be available only for 1 hour after job completion.\n- Maximum 5 concurrent export jobs are allowed per organization."
+      operationId: createExportJobSQLQuery
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          sample:
+            summary: Sample
+            value: '{"sqlQuery":"select * from Sales"}'
+        description: JSONObject with configuration to create a export data. (Refer `ExportJobConfigSQLQuery` schema). Value must be stringified and URL-encoded.
+      responses:
+        '200':
+          description: Successful bulk export response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJobCreationResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk export job
+                    data:
+                      jobId: '1767024000008787011'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/views/{view-id}/data:
+    get:
+      tags:
+      - Bulk Export - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Create Export Job using View ID (Asynchronous)
+      description: "Create an export job to initiate data export for the mentioned view asynchronously. \n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB IN PROGRESS\n     → Export is currently being processed. Continue polling.\n   - 1003: ERROR OCCURRED\n     → An error occurred. Stop polling and investigate the error.\n   - 1004: JOB COMPLETED\n     → Export process completed. Proceed to download.\n   - 1005: JOB NOT FOUND\n     → Provided JOBID is invalid. Stop polling and verify the JOBID.\n\n3. Download Exported Data:\n  - Once JOBCODE is 1004, use the Download Exported Data API to download the exported file.\n\nLimitations:\n- Exported file will be available only for 1 hour after job completion.\n- Maximum 5 concurrent export jobs are allowed per organization."
+      operationId: createExportJobViewId
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      - in: query
+        name: CONFIG
+        schema:
+          type: string
+        examples:
+          criteria:
+            summary: Using Filter Criteria
+            value: '{"criteria":"\"SalesTable\".\"Region\"=''East''"}'
+          format:
+            summary: Using Response Format
+            value: '{"responseFormat":"json"}'
+        description: JSONObject with configuration to initiate export job for the specified view. (Refer `ExportJobConfigViewId` schema). Value must be stringified and URL-encoded.
+      responses:
+        '200':
+          description: Successful export job creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJobCreationResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk export job
+                    data:
+                      jobId: '1767024000008787011'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/exportjobs/{job-id}:
+    get:
+      tags:
+      - Bulk Export - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Get Export Job Details
+      description: Returns details of the specified asynchronous export job.
+      operationId: getExportJobDetails
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/job-id'
+      responses:
+        '200':
+          description: Successful response with export job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExportJobDetailsResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Fetch export job info
+                    data:
+                      jobId: '35130000001391001'
+                      jobCode: '1004'
+                      jobStatus: JOB COMPLETED
+                      downloadUrl: https://analyticsapi.zoho.com/restapi/v2/bulk/workspaces/35130000001242001/exportjobs/35130000001391001/data
+                      expiryTime: '1623765872891'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/exportjobs/{job-id}/data:
+    get:
+      tags:
+      - Bulk Export - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Download Exported Data
+      description: Download data for the bulk export job.
+      operationId: downloadExportedData
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/job-id'
+      responses:
+        '200':
+          description: Successful download of exported data. The content type will vary based on the format specified during job creation.
+          content:
+            text/csv: {}
+            application/json: {}
+            application/xml: {}
+            application/vnd.ms-excel: {}
+            application/pdf: {}
+            text/html: {}
+            image/png: {}
+            image/jpeg: {}
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  parameters:
+    job-id:
+      name: job-id
+      in: path
+      description: The unique identifier of the import/export job.
+      required: true
+      schema:
+        type: string
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+  schemas:
+    ExportJobCreationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              description: The unique ID of the export job.
+    ExportJobDetailsResponse:
+      type: object
+      description: Response for checking the status of an export job.
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              description: Unique identifier for the export job.
+            jobCode:
+              type: string
+              description: 'Numeric code indicating the job status.
+
+
+                Possible values:
+
+                - `1001`: JOB NOT INITIATED
+
+                - `1002`: JOB IN PROGRESS
+
+                - `1003`: ERROR OCCURRED
+
+                - `1004`: JOB COMPLETED
+
+                - `1005`: JOB NOT FOUND'
+            jobStatus:
+              type: string
+              description: Human-readable status message describing the current job state.
+            downloadUrl:
+              type: string
+              format: uri
+              description: URL to download the exported data after job completion.
+            expiryTime:
+              type: string
+              description: Epoch timestamp indicating when the download URL will expire (in milliseconds).
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

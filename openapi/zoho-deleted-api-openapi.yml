@@ -1,0 +1,881 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Deleted API
+  version: 1.0.0
+tags:
+- name: Deleted
+paths:
+  /{module}/deleted:
+    get:
+      operationId: getDeletedRecords
+      summary: Get deleted records from a module
+      description: Retrieve the deleted records for the module. This endpoint can retrieve both permanently deleted records and temporarily deleted records from the recycle bin.
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - name: type
+        in: query
+        description: Specifies the type of deleted records to retrieve. Use 'all' to get all deleted records, 'recycle' for records in recycle bin, or 'permanent' for permanently deleted records.
+        required: false
+        schema:
+          type: string
+          enum:
+          - all
+          - recycle
+          - permanent
+          default: all
+          maxLength: 20
+      - name: page
+        in: query
+        description: To get the list of records from the respective pages. Default value for page is 1.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 1
+          minimum: 1
+      - name: per_page
+        in: query
+        description: To get the list of records available per page. The default and the maximum possible value is 200.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 200
+          minimum: 1
+          maximum: 200
+      responses:
+        '200':
+          description: Successful response containing the list of deleted records.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response schema returned when deleted records are successfully retrieved.
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    maxItems: 200
+                    description: List of deleted records with their metadata.
+                    items:
+                      type: object
+                      description: Deleted record object containing information about a single deleted record.
+                      additionalProperties: true
+                      properties:
+                        id:
+                          type: string
+                          format: int64
+                          description: Unique identifier of the deleted record.
+                        display_name:
+                          type:
+                          - string
+                          - 'null'
+                          maxLength: 255
+                          description: Display name of the deleted record. Null for permanently deleted records.
+                        type:
+                          type: string
+                          enum:
+                          - recycle
+                          - permanent
+                          description: Type of deletion - 'recycle' for records in recycle bin, 'permanent' for permanently deleted records.
+                        deleted_time:
+                          type: string
+                          format: date-time
+                          description: Timestamp indicating when the record was deleted.
+                        deleted_by:
+                          type:
+                          - object
+                          - 'null'
+                          description: User who deleted the record. Null for permanently deleted records.
+                          additionalProperties: false
+                          properties:
+                            name:
+                              type: string
+                              maxLength: 255
+                              description: Display name of the user who deleted the record.
+                            id:
+                              type: string
+                              format: int64
+                              description: Unique identifier of the user who deleted the record.
+                        created_by:
+                          type:
+                          - object
+                          - 'null'
+                          description: User who originally created the record. Null for permanently deleted records.
+                          additionalProperties: false
+                          properties:
+                            name:
+                              type: string
+                              maxLength: 255
+                              description: Display name of the user who created the record.
+                            id:
+                              type: string
+                              format: int64
+                              description: Unique identifier of the user who created the record.
+                      required:
+                      - id
+                      - type
+                      - deleted_time
+                  info:
+                    type: object
+                    description: Pagination information for the deleted records response.
+                    additionalProperties: false
+                    properties:
+                      per_page:
+                        type: integer
+                        format: int32
+                        description: Number of records per page.
+                      count:
+                        type: integer
+                        format: int32
+                        description: Number of records returned in the current response.
+                      page:
+                        type: integer
+                        format: int32
+                        description: Current page number.
+                      more_records:
+                        type: boolean
+                        description: Indicates whether more records are available beyond the current page.
+                    required:
+                    - per_page
+                    - count
+                    - page
+                    - more_records
+                required:
+                - data
+                - info
+          headers:
+            If-Modified-Since:
+              description: Use this header to get the list of recently modified records.
+              schema:
+                type: string
+                format: date-time
+                description: Timestamp in RFC 3339 format.
+                maxLength: 100
+              example: '2019-07-25T15:26:49+05:30'
+        '204':
+          description: No Content - The request was successful, but no deleted records found.
+        '400':
+          description: Bad Request - The request could not be processed due to invalid input or missing mandatory parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema for deleted records endpoint.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    maxLength: 100
+                    description: Machine-readable error code identifying the type of failure.
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable explanation of the error.
+                  status:
+                    type: string
+                    enum:
+                    - error
+                    description: Indicates the request resulted in an error.
+                  details:
+                    type: object
+                    additionalProperties: true
+                    description: Additional contextual information about the error.
+                required:
+                - code
+                - message
+                - status
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema for unauthorized access to deleted records.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    enum:
+                    - OAUTH_SCOPE_MISMATCH
+                    description: Machine-readable error code indicating OAuth scope mismatch.
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable message indicating the request is unauthorized.
+                  status:
+                    type: string
+                    enum:
+                    - error
+                    description: Indicates the operation resulted in an authorization error.
+                required:
+                - code
+                - message
+                - status
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Error response schema for invalid URL patterns in deleted records endpoint.
+                additionalProperties: false
+                properties:
+                  code:
+                    type: string
+                    enum:
+                    - INVALID_URL_PATTERN
+                    description: Machine-readable error code indicating an invalid API endpoint URL.
+                  message:
+                    type: string
+                    maxLength: 1024
+                    description: Human-readable explanation indicating the URL is incorrect or unsupported.
+                  status:
+                    type: string
+                    enum:
+                    - error
+                    description: Indicates the operation resulted in an error.
+                required:
+                - code
+                - message
+                - status
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.ALL
+      tags:
+      - Deleted
+  /{parentRecordModule}/deleted/{parentRecord}/{relatedList}:
+    get:
+      summary: List Deleted Related Records
+      description: Retrieves a list of records that were previously related to a parent record but have since been deleted. Useful for audit trails and data recovery scenarios.
+      operationId: getDeletedRelatedRecord
+      parameters:
+      - $ref: '#/components/parameters/ParentRecordModule'
+      - $ref: '#/components/parameters/ParentRecord'
+      - $ref: '#/components/parameters/RelatedList'
+      - $ref: '#/components/parameters/Fields'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: Successfully retrieved deleted related records
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Response containing deleted related records with metadata
+                additionalProperties: false
+                required:
+                - data
+                - info
+                properties:
+                  data:
+                    type: array
+                    description: Array of deleted related record references
+                    maxItems: 200
+                    items:
+                      type: object
+                      description: Deleted record reference with basic metadata
+                      additionalProperties: true
+                      required:
+                      - id
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier of the deleted record
+                          pattern: ^[0-9]+$
+                          maxLength: 20
+                        $member_info:
+                          type: object
+                          description: Metadata about the related record
+                          additionalProperties: false
+                          properties:
+                            id:
+                              type: string
+                              description: ID of the member info
+                              pattern: ^[0-9]+$
+                              maxLength: 20
+                            Created_Time:
+                              type: string
+                              description: Timestamp when the record was created
+                              format: date-time
+                            Modified_Time:
+                              type: string
+                              description: Timestamp when the record was last modified
+                              format: date-time
+                        Moved_To__s:
+                          type: string
+                          description: Stage value to which the record was moved (stage history / picklist movement).
+                          maxLength: 255
+                  info:
+                    type: object
+                    description: Pagination metadata for deleted records
+                    additionalProperties: false
+                    required:
+                    - page
+                    - per_page
+                    - count
+                    - more_records
+                    properties:
+                      page:
+                        type: integer
+                        format: int32
+                        description: Current page number
+                        minimum: 1
+                      per_page:
+                        type: integer
+                        format: int32
+                        description: Number of records per page
+                        minimum: 1
+                        maximum: 200
+                      count:
+                        type: integer
+                        format: int32
+                        description: Number of records in current response
+                        minimum: 0
+                      more_records:
+                        type: boolean
+                        description: Indicates if more pages are available
+                      next_page_token:
+                        type:
+                        - string
+                        - 'null'
+                        description: Token to retrieve the next page of results
+                        maxLength: 500
+                      page_token_expiry:
+                        type:
+                        - string
+                        - 'null'
+                        format: date-time
+                        description: Expiration timestamp for the page token
+                      previous_page_token:
+                        type:
+                        - string
+                        - 'null'
+                        description: Token to retrieve the previous page of results
+                        maxLength: 500
+        '204':
+          description: No related records found for the specified parent record
+        '400':
+          description: Bad Request - Various client errors
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/InvalidModuleError'
+                - $ref: '#/components/schemas/NotSupportedError'
+                - $ref: '#/components/schemas/InvalidDataError'
+                - $ref: '#/components/schemas/InvalidRequestMethodError'
+                - $ref: '#/components/schemas/AuthorizationFailedError'
+                - $ref: '#/components/schemas/RequiredParamMissingError'
+        '401':
+          description: Unauthorized - Invalid or missing authentication credentials
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/InvalidTokenError'
+                - $ref: '#/components/schemas/OAuthScopeMismatchError'
+        '403':
+          description: Permission denied to read related records
+          content:
+            application/json:
+              schema:
+                x-zs-$id: NoPermissionError
+                $ref: '#/components/schemas/NoPermissionError'
+        '404':
+          description: Not Found - Parent record does not exist
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/RecordNotFoundError'
+                - $ref: '#/components/schemas/InvalidUrlPatternError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                x-zs-$id: InternalError
+                $ref: '#/components/schemas/InternalError'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.READ
+      tags:
+      - Deleted
+components:
+  parameters:
+    Module:
+      name: module
+      description: Specifies the module name
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 100
+    PerPage:
+      name: perPage
+      in: query
+      required: false
+      description: Number of records to return per page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 200
+    ParentRecordModule:
+      name: parentRecordModule
+      in: path
+      required: true
+      description: The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
+    RelatedList:
+      name: relatedList
+      in: path
+      required: true
+      description: The name of the related list (module) containing the records to retrieve or modify
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
+    ParentRecord:
+      name: parentRecord
+      in: path
+      required: true
+      description: The unique identifier of the parent record. Must be a valid numeric record ID.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        maxLength: 20
+    Fields:
+      name: fields
+      in: query
+      required: true
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
+        maxLength: 1000
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (starting from 1)
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 10000
+        default: 1
+  schemas:
+    AuthorizationFailedError:
+      type: object
+      description: Error response for insufficient privilege.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - AUTHORIZATION_FAILED
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InternalError:
+      type: object
+      description: Error response for internal server error.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INTERNAL_ERROR
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    NotSupportedError:
+      type: object
+      description: Error response for modules not supported in the API.
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error.
+          enum:
+          - NOT_SUPPORTED
+        message:
+          type: string
+          description: Detailed error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RecordNotFoundError:
+      type: object
+      description: Error response for record not found.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_DATA
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    OAuthScopeMismatchError:
+      type: object
+      description: Error response when the access token does not have the required OAuth scope for this API call.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - OAUTH_SCOPE_MISMATCH
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidTokenError:
+      type: object
+      description: Error response for invalid authentication token.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_TOKEN
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Error response for invalid module name.
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error.
+          enum:
+          - INVALID_MODULE
+        message:
+          type: string
+          description: Detailed error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RequiredParamMissingError:
+      type: object
+      description: Error response for missing required parameter.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - REQUIRED_PARAM_MISSING
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            param_name:
+              type: string
+              description: Name of the missing required parameter.
+              maxLength: 100
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidUrlPatternError:
+      type: object
+      description: Error response when the request URL pattern is incorrect.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_URL_PATTERN
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionError:
+      type: object
+      description: Error response for permission denied.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - NO_PERMISSION
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            permissions:
+              type: array
+              description: Missing/required permissions for the requested operation
+              maxItems: 100
+              items:
+                type: string
+                description: Permission identifier string.
+                maxLength: 200
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidRequestMethodError:
+      type: object
+      description: Error response for invalid HTTP request method.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_REQUEST_METHOD
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidDataError:
+      type: object
+      description: Error response for INVALID_DATA (invalid IDs, invalid related list/relation name, hidden related list in layout, invalid input, etc.).
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_DATA
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details. Can be empty depending on the error.
+          properties:
+            id:
+              type: string
+              description: Record/related record ID involved in the error (if applicable).
+              pattern: ^[0-9]+$
+              maxLength: 20
+            api_name:
+              type: string
+              description: API name of the field/module/related list involved (if applicable).
+              maxLength: 100
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index/position in the request resource path or payload where the error occurred (if applicable).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      - details
+      additionalProperties: false
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

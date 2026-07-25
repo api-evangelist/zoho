@@ -1,0 +1,1209 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Sharing & Collaboration APIs API
+  version: 1.0.0
+  description: APIs for sharing views (reports and dashboards) with users, managing permissions, and removing sharing in Zoho Analytics.
+tags:
+- name: Sharing & Collaboration APIs
+  description: APIs for sharing views (reports and dashboards) with users, managing permissions, and removing sharing in Zoho Analytics.
+paths:
+  /restapi/v2/orgadmins:
+    get:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      summary: Get Org Admins
+      description: Returns list of admins for a specified organization.
+      operationId: getOrgAdmins
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrgAdminsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/workspaces/{workspace-id}/admins:
+    get:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      summary: Get Workspace Admins
+      description: Returns list of admins for the specified workspace.
+      operationId: getWorkspaceAdmins
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceAdminsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    post:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.create
+      summary: Add Workspace Admins
+      description: Adds admins for the specified workspace.
+      operationId: addWorkspaceAdmins
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/AddWorkspaceAdminConfig'
+              required:
+              - CONFIG
+            encoding:
+              CONFIG:
+                contentType: application/json
+      responses:
+        '204':
+          description: No content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    delete:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.delete
+      summary: Remove Workspace Admins
+      description: Removes admins from the specified workspace.
+      operationId: removeWorkspaceAdmins
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/RemoveWorkspaceAdminConfig'
+              required:
+              - CONFIG
+            encoding:
+              CONFIG:
+                contentType: application/json
+      responses:
+        '204':
+          description: No content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/workspaces/{workspace-id}/share:
+    get:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      summary: Get Workspace Shared Details
+      description: Returns sharing details of all views in the specified workspace.
+      operationId: getWorkspaceSharedDetails
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkspaceSharedDetailsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/workspaces/{workspace-id}/views/share:
+    post:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.create
+      summary: Share Views
+      description: Shares the specified views in the workspace with users or groups with selected permissions.
+      operationId: shareViews
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/ShareViewsConfig'
+              required:
+              - CONFIG
+            encoding:
+              CONFIG:
+                contentType: application/json
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    delete:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.delete
+      summary: Remove Share
+      description: Removes view sharing from specified users or groups in the workspace.
+      operationId: removeShare
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/RemoveShareConfig'
+              required:
+              - CONFIG
+            encoding:
+              CONFIG:
+                contentType: application/json
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    put:
+      summary: Update Shared Details For View
+      description: Updates the existing sharing configuration for a view.
+      operationId: UpdateSharedDetailsForView
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.update
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/UpdateSharedDetailsConfig'
+              required:
+              - CONFIG
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /workspaces/{workspace-id}/views/{view-id}/share/mypermissions:
+    get:
+      summary: Get My Permissions
+      description: Returns permissions for the specified view.
+      operationId: getMyPermissions
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMyPermissionsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /workspaces/{workspace-id}/share/shareddetails:
+    get:
+      summary: Get Shared Details For Views
+      description: Returns shared details of the specified views.
+      operationId: getSharedDetailsForViews
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - name: CONFIG
+        in: query
+        required: true
+        description: View IDs for which shared details need to be fetched.
+        style: form
+        explode: true
+        schema:
+          type: string
+          examples:
+          - '{"viewIds": ["<view-id1>", "<view-id2>"]}'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSharedDetailsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /workspaces/{workspace-id}/groups:
+    get:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      summary: Get Groups
+      description: Returns list of groups for the specified workspace.
+      operationId: getGroups
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    post:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.create
+      summary: Create Group
+      description: Create a group in the specified workspace.
+      operationId: createGroup
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/CreateGroupConfig'
+              required:
+              - CONFIG
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateGroupResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /workspaces/{workspace-id}/groups/{group-id}:
+    get:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.read
+      summary: Get Group Details
+      description: Returns details of the specified group.
+      operationId: getGroupDetails
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/group-id'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupDetailsResponse'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    put:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.update
+      summary: Rename Group
+      description: Rename a specified group.
+      operationId: renameGroup
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/group-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/RenameGroupConfig'
+              required:
+              - CONFIG
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    delete:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.delete
+      summary: Delete Group
+      description: Delete a specified group.
+      operationId: deleteGroup
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/group-id'
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /workspaces/{workspace-id}/groups/{group-id}/members:
+    post:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.create
+      summary: Add Group Members
+      description: Add users to the specified group.
+      operationId: addGroupMembers
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/group-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/GroupMembersConfig'
+              required:
+              - CONFIG
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+    delete:
+      tags:
+      - Sharing & Collaboration APIs
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.share.delete
+      summary: Remove Group Members
+      description: Remove users from the specified group.
+      operationId: removeGroupMembers
+      parameters:
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/group-id'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                CONFIG:
+                  $ref: '#/components/schemas/GroupMembersRemovalConfig'
+              required:
+              - CONFIG
+      responses:
+        '204':
+          description: No Content
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  schemas:
+    RemoveWorkspaceAdminConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        domainName:
+          type: string
+        notifyMail:
+          type: boolean
+      required:
+      - emailIds
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        domainName: zylker.com
+        notifyMail: false
+    GroupMembersRemovalConfig:
+      type: object
+      required:
+      - emailIds
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+          description: Email IDs of users to be removed.
+        notifyMail:
+          type: boolean
+          description: Whether to send notification mails. Default is false.
+        domainName:
+          type: string
+          description: Domain name used for white-labeling.
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        notifyMail: true
+        domainName: zoho.com
+    ColumnPermissionObject:
+      type: object
+      properties:
+        tableName:
+          type: string
+        columnNames:
+          type: array
+          items:
+            type: string
+    Group:
+      type: object
+      properties:
+        groupName:
+          type: string
+        groupId:
+          type: string
+        groupDesc:
+          type: string
+        groupMembers:
+          type: array
+          items:
+            type: string
+            format: email
+    GetWorkspaceSharedDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            userShareInfo:
+              type: array
+              items:
+                type: object
+                properties:
+                  emailId:
+                    type: string
+                  views:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/_ShareViewObject'
+            groupShareInfo:
+              type: array
+              items:
+                type: object
+                properties:
+                  groupId:
+                    type: string
+                  groupName:
+                    type: string
+                  groupDesc:
+                    type: string
+                  groupMembers:
+                    type: array
+                    items:
+                      type: string
+                  views:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/_ShareViewObject'
+            publicShareInfo:
+              type: object
+              properties:
+                emailId:
+                  type: string
+                views:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/_ShareViewObject'
+            privateLinkShareInfo:
+              type: object
+              properties:
+                emailId:
+                  type: string
+                views:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/_ShareViewObject'
+      examples:
+      - status: success
+        summary: Get share info
+        data:
+          userShareInfo:
+          - emailId: user+1@zoho.com
+            views:
+            - viewId: '1767024000013486001'
+              viewName: Region Wise Sales
+              sharedBy: sathishkumar.ks@zohocorp.com
+              permissions:
+                read: true
+                export: true
+                vud: false
+                addRow: false
+                updateRow: false
+                deleteRow: false
+                deleteAllRows: false
+                importAppend: false
+                importAddOrUpdate: false
+                importDeleteAllAdd: false
+                importDeleteUpdateAdd: false
+                drillDown: false
+                share: false
+                discussion: true
+                insight: true
+                drillThrough: false
+                accessAdminPresets: false
+                createPreset: false
+          groupShareInfo: []
+          publicShareInfo:
+            emailId: Public Visitor
+            views:
+            - viewId: '1767024000013511013'
+              viewName: Dashboard
+              sharedBy: sathishkumar.ks@zohocorp.com
+              permissions:
+                read: true
+                export: false
+                vud: false
+                addRow: false
+                updateRow: false
+                deleteRow: false
+                deleteAllRows: false
+                importAppend: false
+                importAddOrUpdate: false
+                importDeleteAllAdd: false
+                importDeleteUpdateAdd: false
+                drillDown: false
+                share: false
+                discussion: false
+                insight: false
+                drillThrough: false
+                accessAdminPresets: false
+                createPreset: false
+          privateLinkShareInfo:
+            emailId: Private Link
+            views:
+            - viewId: '1767024000013486001'
+              viewName: Region Wise Sales
+              sharedBy: sathishkumar.ks@zohocorp.com
+              permissions:
+                read: true
+                export: false
+                vud: false
+                addRow: false
+                updateRow: false
+                deleteRow: false
+                deleteAllRows: false
+                importAppend: false
+                importAddOrUpdate: false
+                importDeleteAllAdd: false
+                importDeleteUpdateAdd: false
+                drillDown: false
+                share: false
+                discussion: false
+                insight: true
+                drillThrough: false
+                accessAdminPresets: true
+                createPreset: true
+    UpdateSharedDetailsConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        groupIds:
+          type: array
+          items:
+            type: string
+        columns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColumnPermissionObject'
+        permissions:
+          $ref: '#/components/schemas/PermissionAttributes'
+        criteria:
+          type: string
+        inheritParentFilterCriteria:
+          type: boolean
+        domainName:
+          type: string
+        vudColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColumnPermissionObject'
+        drillColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColumnPermissionObject'
+        includeAllColsForVUD:
+          type: boolean
+      required:
+      - permissions
+    GetGroupDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            groups:
+              $ref: '#/components/schemas/Group'
+    RemoveShareConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        viewIds:
+          type: array
+          items:
+            type: string
+        removeAllViews:
+          type: boolean
+        domainName:
+          type: string
+        groupIds:
+          type: array
+          items:
+            type: string
+      examples:
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+        removeAllViews: 'true'
+      required:
+      - emailIds
+    GroupMembersConfig:
+      type: object
+      required:
+      - emailIds
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+          description: Email IDs of users to be added.
+        inviteMail:
+          type: boolean
+          description: Whether to send invitation mails. Default is false.
+        domainName:
+          type: string
+          description: Domain name used for white-labeling.
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        inviteMail: false
+        domainName: zoho.com
+    CreateGroupConfig:
+      type: object
+      required:
+      - groupName
+      - emailIds
+      properties:
+        groupName:
+          type: string
+          description: Name of the group to be created.
+        groupDesc:
+          type: string
+          description: Description of the group.
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+          description: List of email addresses to be added to the group.
+        inviteMail:
+          type: boolean
+          description: Whether to send invitation mails. Default is false.
+        mailSubject:
+          type: string
+          description: Subject of the invitation mail.
+        mailMessage:
+          type: string
+          description: Message body of the invitation mail.
+        domainName:
+          type: string
+          description: Domain name used for white-labeling.
+      examples:
+      - groupName: Marketing Group
+        groupDesc: Group for marketing team users
+        emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        inviteMail: true
+        mailSubject: Join the Group
+        mailMessage: You're invited to join the Zoho Analytics group.
+        domainName: zoho.com
+    GetGroupsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          $ref: '#/components/schemas/Groups'
+    SharedDetail:
+      type: object
+      properties:
+        viewId:
+          type: string
+        shareInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedInfo'
+    _ShareViewObject:
+      type: object
+      properties:
+        viewId:
+          type: string
+        viewName:
+          type: string
+        sharedBy:
+          type: string
+        permissions:
+          type: object
+          properties:
+            read:
+              type: boolean
+            export:
+              type: boolean
+            vud:
+              type: boolean
+            addRow:
+              type: boolean
+            updateRow:
+              type: boolean
+            deleteRow:
+              type: boolean
+            deleteAllRows:
+              type: boolean
+            importAppend:
+              type: boolean
+            importAddOrUpdate:
+              type: boolean
+            importDeleteAllAdd:
+              type: boolean
+            importDeleteUpdateAdd:
+              type: boolean
+            drillDown:
+              type: boolean
+            share:
+              type: boolean
+            discussion:
+              type: boolean
+            insight:
+              type: boolean
+            drillThrough:
+              type: boolean
+            accessAdminPresets:
+              type: boolean
+            createPreset:
+              type: boolean
+    GetWorkspaceAdminsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaceAdmins:
+              type: array
+              items:
+                type: object
+                properties:
+                  adminMembers:
+                    type: array
+                    items:
+                      type: string
+      examples:
+      - status: success
+        summary: Get workspace admins
+        data:
+          workspaceAdmins:
+          - adminMembers:
+            - user+1@zoho.com
+            - user+2@zoho.com
+    ShareViewsConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        viewIds:
+          type: array
+          items:
+            type: string
+        groupIds:
+          type: array
+          items:
+            type: string
+        permissions:
+          type: object
+          properties:
+            read:
+              type: boolean
+            export:
+              type: boolean
+            vud:
+              type: boolean
+            addRow:
+              type: boolean
+            updateRow:
+              type: boolean
+            deleteRow:
+              type: boolean
+            deleteAllRows:
+              type: boolean
+            importAppend:
+              type: boolean
+            importAddOrUpdate:
+              type: boolean
+            importDeleteAllAdd:
+              type: boolean
+            importDeleteUpdateAdd:
+              type: boolean
+            drillDown:
+              type: boolean
+            share:
+              type: boolean
+            discussion:
+              type: boolean
+          required:
+          - read
+        criteria:
+          type: string
+        inheritParentFilterCriteria:
+          type: boolean
+        inviteMail:
+          type: boolean
+        inviteMailCCMe:
+          type: boolean
+        mailSubject:
+          type: string
+        mailMessage:
+          type: string
+        domainName:
+          type: string
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              tableName:
+                type: string
+              columnNames:
+                type: array
+                items:
+                  type: string
+        vudColumns:
+          type: array
+          items:
+            type: object
+            properties:
+              tableName:
+                type: string
+              columnNames:
+                type: array
+                items:
+                  type: string
+        drillColumns:
+          type: array
+          items:
+            type: object
+            properties:
+              tableName:
+                type: string
+              columnNames:
+                type: array
+                items:
+                  type: string
+        includeAllColsForVUD:
+          type: boolean
+      examples:
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+        viewIds:
+        - <view-id1>
+        - <view-id2>
+        criteria: '"TABLENAME"."COLUMNNAME"=''VALUE'''
+        permissions:
+          read: 'true'
+          export: 'true'
+      required:
+      - emailIds
+      - viewIds
+      - permissions
+    CreateGroupResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+          example: Group created successfully
+        data:
+          type: object
+          properties:
+            groupId:
+              type: string
+              description: Unique identifier of the created group.
+      examples:
+      - status: success
+        summary: Group created successfully
+        data:
+          groupId: '1767024000015303004'
+    Groups:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    SharedInfo:
+      type: object
+      properties:
+        sharedTo:
+          type: string
+        sharedBy:
+          type: string
+        sharedToZuId:
+          type: string
+        permissionString:
+          type: string
+        permissions:
+          $ref: '#/components/schemas/PermissionAttributes'
+        criteria:
+          type: string
+        inheritParentFilterCriteria:
+          type: string
+        isInvalidCriteria:
+          type: boolean
+        sharedColumns:
+          type: array
+          items:
+            type: string
+        vudColumns:
+          type: array
+          items:
+            type: string
+        drillColumns:
+          type: array
+          items:
+            type: string
+        isGroupShare:
+          type: boolean
+        publicPermLevel:
+          type: integer
+        isROUser:
+          type: boolean
+    RenameGroupConfig:
+      type: object
+      properties:
+        groupName:
+          type: string
+        groupDesc:
+          type: string
+      required:
+      - groupName
+    GetOrgAdminsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            orgAdmins:
+              type: array
+              items:
+                type: string
+      examples:
+      - status: success
+        summary: Get org admins
+        data:
+          orgAdmins:
+          - user+1@zoho.com
+          - user+2@zoho.com
+    AddWorkspaceAdminConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        domainName:
+          type: string
+        inviteMail:
+          type: boolean
+      required:
+      - emailIds
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        domainName: zylker.com
+        inviteMail: true
+    GetSharedDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            sharedDetails:
+              type: array
+              items:
+                $ref: '#/components/schemas/SharedDetail'
+    GetMyPermissionsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            permissions:
+              $ref: '#/components/schemas/PermissionAttributes'
+    PermissionAttributes:
+      type: object
+      properties:
+        read:
+          type: boolean
+        export:
+          type: boolean
+        vud:
+          type: boolean
+        addRow:
+          type: boolean
+        updateRow:
+          type: boolean
+        deleteRow:
+          type: boolean
+        deleteAllRows:
+          type: boolean
+        importAppend:
+          type: boolean
+        importAddOrUpdate:
+          type: boolean
+        importDeleteAllAdd:
+          type: boolean
+        importDeleteUpdateAdd:
+          type: boolean
+        drillDown:
+          type: boolean
+        share:
+          type: boolean
+        discussion:
+          type: boolean
+        insight:
+          type: boolean
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+    group-id:
+      name: group-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the group.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

@@ -1,0 +1,270 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Bulk Import - Asynchronous API
+  version: 1.0.0
+  description: Asynchronous operations for importing data in bulk.
+tags:
+- name: Bulk Import - Asynchronous
+  description: Asynchronous operations for importing data in bulk.
+paths:
+  /restapi/v2/bulk/workspaces/{workspace-id}/data:
+    post:
+      tags:
+      - Bulk Import - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Create Import Job for a New Table (Asynchronous)
+      description: "Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.\n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported."
+      operationId: createImportJobNewTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          jsonConfig:
+            summary: JSON
+            value: '{"tableName":"Sales","fileType":"json","autoIdentify":true}'
+          csvConfig:
+            summary: CSV
+            value: '{"tableName":"Sales","fileType":"csv","autoIdentify":true}'
+        description: JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigNewTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: 'The file to be imported. Format should be multipart/form-data. '
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported.
+              required:
+              - FILE
+      responses:
+        '200':
+          description: Successful import job creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportJobCreationResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk import job
+                    data:
+                      jobId: '1767024000003153087'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/views/{view-id}/data:
+    post:
+      tags:
+      - Bulk Import - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.create
+      summary: Create Import Job for an Existing Table (Asynchronous)
+      description: "Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB. \n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported."
+      operationId: createImportJobExistingTable
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/view-id'
+      - in: query
+        name: CONFIG
+        required: true
+        schema:
+          type: string
+        examples:
+          jsonConfig:
+            summary: JSON
+            value: '{"importType":"append","fileType":"json","autoIdentify":"true"}'
+          csvConfig:
+            summary: CSV
+            value: '{"importType":"append","fileType":"csv","autoIdentify":"true"}'
+        description: JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigExitingTable` schema). Value must be stringified and URL-encoded.
+      requestBody:
+        description: 'The file to be imported. Format should be multipart/form-data. '
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                FILE:
+                  type: string
+                  format: binary
+                  description: The file to be imported.
+              required:
+              - FILE
+      responses:
+        '200':
+          description: Successful import job creation response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportJobCreationResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Create bulk import job
+                    data:
+                      jobId: '1767024000003153087'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+  /restapi/v2/bulk/workspaces/{workspace-id}/importjobs/{job-id}:
+    get:
+      tags:
+      - Bulk Import - Asynchronous
+      security:
+      - iam-oauth2-schema:
+        - ZohoAnalytics.data.read
+      summary: Get Import Job Details
+      description: Returns details of the specified asynchronous import job.
+      operationId: getImportJobDetails
+      parameters:
+      - $ref: '#/components/parameters/org-id'
+      - $ref: '#/components/parameters/workspace-id'
+      - $ref: '#/components/parameters/job-id'
+      responses:
+        '200':
+          description: Successful response with import job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportJobDetailsResponse'
+              examples:
+                Default:
+                  value:
+                    status: success
+                    summary: Fetch import job info
+                    data:
+                      jobId: '1767024000003153087'
+                      jobCode: '1004'
+                      jobStatus: JOB COMPLETED
+                      jobInfo:
+                        viewId: '1767024000003154002'
+                        importSummary:
+                          importType: APPEND
+                          totalColumnCount: 7
+                          selectedColumnCount: 7
+                          totalRowCount: 755
+                          successRowCount: 755
+                          warnings: 0
+                          importOperation: created
+                        columnDetails:
+                          Date: Date
+                          Region: Plain Text
+                          Product Category: Plain Text
+                          Product: Plain Text
+                          Customer Name: Plain Text
+                          Sales: Currency
+                          Cost: Currency
+                        importErrors: ''
+                      expiryTime: '1623764592309'
+        default:
+          $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
+components:
+  parameters:
+    job-id:
+      name: job-id
+      in: path
+      description: The unique identifier of the import/export job.
+      required: true
+      schema:
+        type: string
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+  schemas:
+    ImportJobDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+            jobCode:
+              type: string
+              description: 'Numeric code indicating the job status (e.g., 1001: JOB NOT INITIATED, 1002: JOB IN PROGRESS, 1003: ERROR OCCURRED, 1004: JOB COMPLETED, 1005: JOB NOT FOUND). '
+            jobStatus:
+              type: string
+              description: 'Human-readable status message (e.g., ''JOB COMPLETED''). '
+            jobInfo:
+              type: object
+              properties:
+                viewId:
+                  type: string
+                importSummary:
+                  type: object
+                  properties:
+                    importType:
+                      type: string
+                    totalColumnCount:
+                      type: integer
+                    selectedColumnCount:
+                      type: integer
+                    totalRowCount:
+                      type: integer
+                    successRowCount:
+                      type: integer
+                    warnings:
+                      type: integer
+                    importOperation:
+                      type: string
+                columnDetails:
+                  type: object
+                  additionalProperties:
+                    type: string
+    ImportJobCreationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              description: The unique ID of the import job.
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

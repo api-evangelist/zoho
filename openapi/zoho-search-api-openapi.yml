@@ -1,0 +1,2596 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Search API
+  version: 1.0.0
+tags:
+- name: Search
+paths:
+  /api/v1/tickets/search:
+    get:
+      tags:
+      - Search
+      summary: Search Tickets
+      description: This API searches for tickets in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values. <br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchTickets
+      parameters:
+      - $ref: '#/components/parameters/ticketNumber'
+      - $ref: '#/components/parameters/accountName'
+      - $ref: '#/components/parameters/subject'
+      - $ref: '#/components/parameters/departmentId'
+      - name: channel
+        in: query
+        description: The channel through which the ticket was received !@exact match@! !@empty check@! !@not empty check@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: The channel through which the ticket was received !@exact match@! !@empty check@! !@not empty check@!
+          x-dynamic-enum: true
+      - name: customerResponseTimeRange
+        in: query
+        description: Key that filters tickets in which customer responses were recorded in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! customerResponseTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z2017-11-05T13:15:30.000Z,2018-09-05T13:15:30.000Z
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Key that filters tickets in which customer responses were recorded in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! customerResponseTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z2017-11-05T13:15:30.000Z,2018-09-05T13:15:30.000Z
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z)),(((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))|null
+      - name: description
+        in: query
+        description: Description of the ticket !@wildcard search@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Description of the ticket !@wildcard search@!
+          maxLength: 65535
+          minLength: 0
+      - $ref: '#/components/parameters/productName'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/dueDateRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,! !@modifiedTime@,! !@createdTime@,!  !@customerResponseTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,! !@modifiedTime@,! !@createdTime@,!  !@customerResponseTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          - customerResponseTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - name: tag
+        in: query
+        description: The tag associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: The tag associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+          maxLength: 100
+          minLength: 3
+          pattern: ([0-9a-zA-Z_\-\*\.\$@\?\:\/\!\P{InBasicLatin}\s()]{3,}|\$\{(?i)(Empty|NotEmpty)\})
+      - $ref: '#/components/parameters/productId'
+      - $ref: '#/components/parameters/contactId'
+      - name: contactName
+        in: query
+        description: The name of the contact who raised the ticket !@wildcard search@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: The name of the contact who raised the ticket !@wildcard search@!
+          maxLength: 200
+          minLength: 0
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/priority'
+      - $ref: '#/components/parameters/assigneeId'
+      - $ref: '#/components/parameters/accountId'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: category
+        in: query
+        description: The category of the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: The category of the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+          x-dynamic-enum: true
+      - $ref: '#/components/parameters/status'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchTicketsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.tickets.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/{moduleApiName}/search:
+    get:
+      tags:
+      - Search
+      summary: Search  Records
+      description: This API searches for records in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchRecords
+      parameters:
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - $ref: '#/components/parameters/_all'
+      - name: moduleApiName
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 5
+          pattern: (cm_[a-zA-Z0-9_]+)
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchRecordsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.custommodule.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/calls/search:
+    get:
+      tags:
+      - Search
+      summary: Search Calls
+      description: This API searches for the calls in your help desk portal.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchCalls
+      parameters:
+      - $ref: '#/components/parameters/ticketNumber'
+      - $ref: '#/components/parameters/startDateRange'
+      - $ref: '#/components/parameters/subject'
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/priority'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/status'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchCallsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.calls.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/accounts/search:
+    get:
+      tags:
+      - Search
+      summary: Search Accounts
+      description: This API searches for accounts in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values. <br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchAccounts
+      parameters:
+      - $ref: '#/components/parameters/accountName'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@accountName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@accountName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          - accountName
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/_all'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchAccountsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.contacts.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/articles/search:
+    get:
+      tags:
+      - Search
+      summary: Search Articles
+      description: This API searches for help articles in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchSolutions
+      parameters:
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - name: title
+        in: query
+        description: title of the help article !@wildcard search@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: title of the help article !@wildcard search@!
+          maxLength: 500
+          minLength: 0
+      - name: categoryId
+        in: query
+        description: 'ID of the Category '
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: 'ID of the Category '
+          pattern: ([0-9]+)
+      - $ref: '#/components/parameters/_all'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchSolutionsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.articles.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/products/search:
+    get:
+      tags:
+      - Search
+      summary: Search Products
+      description: This API searches for the products in your help desk portal.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchProducts
+      parameters:
+      - $ref: '#/components/parameters/contactId'
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/productName'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/accountId'
+      - name: productCode
+        in: query
+        description: Code of the product !@wildcard search@! !@empty check@! !@not empty check@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Code of the product !@wildcard search@! !@empty check@! !@not empty check@!
+          maxLength: 100
+          minLength: 3
+          pattern: '[0-9a-zA-Z\-\.\$@\?\:\''\/\!\P{InBasicLatin}\s]{4,}'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@productName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@productName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          - productName
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchProductsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.settings.READ
+        - Desk.search.READ
+        - Desk.products.READ
+      x-audience:
+      - external-public
+  /api/v1/contacts/search:
+    get:
+      tags:
+      - Search
+      summary: Search Contacts
+      description: This API searches for contacts in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values. <br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchContacts
+      parameters:
+      - name: lastName
+        in: query
+        description: Last name of the contact !@wildcard search@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Last name of the contact !@wildcard search@!
+          maxLength: 200
+          minLength: 0
+      - name: firstName
+        in: query
+        description: First name of the contact !@wildcard search@! !@empty check@! !@not empty check@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: First name of the contact !@wildcard search@! !@empty check@! !@not empty check@!
+          maxLength: 40
+          minLength: 0
+      - $ref: '#/components/parameters/accountName'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/limit'
+      - name: fullName
+        in: query
+        description: Full name of the contact !@wildcard search@!
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Full name of the contact !@wildcard search@!
+          maxLength: 200
+          minLength: 0
+      - $ref: '#/components/parameters/from'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@lastName@,!  !@firstName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!  !@lastName@,!  !@firstName@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          - lastName
+          - firstName
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/_all'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchContactsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.contacts.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/activities/search:
+    get:
+      tags:
+      - Search
+      summary: Search Activities
+      description: This API searches for the activities in your help desk portal.<br/> You can provide comma-separated values, which will perform the search on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchActivities
+      parameters:
+      - $ref: '#/components/parameters/ticketNumber'
+      - $ref: '#/components/parameters/subject'
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/priority'
+      - $ref: '#/components/parameters/assigneeId'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/status'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/activitiesSearchResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.activities.calls.READ
+        - Desk.activities.tasks.READ
+        - Desk.activities.events.READ
+        - Desk.calls.READ
+        - Desk.events.READ
+        - Desk.tasks.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/search:
+    get:
+      tags:
+      - Search
+      summary: Search across modules
+      description: This API returns information from all modules or a specific module, based on the value of the module query param.
+      operationId: doSearch
+      parameters:
+      - name: searchStr
+        in: query
+        description: Keyword or phrase to search
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: Keyword or phrase to search
+          maxLength: 100
+          minLength: 0
+      - name: module
+        in: query
+        description: 'Module to search in: @tickets@, @accounts@, @contacts@ or @tasks@. The default response includes all modules.'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'Module to search in: @tickets@, @accounts@, @contacts@ or @tasks@. The default response includes all modules.'
+          enum:
+          - tickets
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - name: sortBy
+        in: query
+        description: 'Sort by a specific attribute: @relevance@ or @modifiedTime@'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'Sort by a specific attribute: @relevance@ or @modifiedTime@'
+          enum:
+          - relevance
+          - modifiedTime
+          maxLength: 100
+          minLength: 0
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/doSearchResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.contacts.READ
+        - Desk.tickets.READ
+        - Desk.tasks.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/tasks/search:
+    get:
+      tags:
+      - Search
+      summary: Search Tasks
+      description: This API searches for tasks in your help desk.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values. <br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchTasks
+      parameters:
+      - $ref: '#/components/parameters/ticketNumber'
+      - $ref: '#/components/parameters/subject'
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/priority'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - $ref: '#/components/parameters/dueDateRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/status'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchTasksResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.activities.calls.READ
+        - Desk.activities.tasks.READ
+        - Desk.activities.events.READ
+        - Desk.tasks.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /api/v1/events/search:
+    get:
+      tags:
+      - Search
+      summary: Search Events
+      description: This API searches for the events in your help desk portal.<br/> You can provide multiple values separated by commas, and the search will be performed on the field using any of the provided values.<br/><br/> <a href='#Search'>Learn more about search and how it works.</a>
+      operationId: searchEvents
+      parameters:
+      - $ref: '#/components/parameters/ticketNumber'
+      - $ref: '#/components/parameters/startDateRange'
+      - $ref: '#/components/parameters/subject'
+      - $ref: '#/components/parameters/departmentId'
+      - $ref: '#/components/parameters/createdTimeRange'
+      - $ref: '#/components/parameters/priority'
+      - $ref: '#/components/parameters/_all'
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/from'
+      - $ref: '#/components/parameters/modifiedTimeRange'
+      - name: sortBy
+        in: query
+        description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+        required: false
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          description: 'SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@! To specify sorting order, use as given below: !For descending order: sortBy=@-@modifiedTime! !For ascending order: sortBy=modifiedTime!'
+          enum:
+          - relevance
+          - modifiedTime
+          - createdTime
+          maxLength: 100
+          minLength: 0
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/status'
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '204':
+          $ref: ./Common.json#/components/responses/emptyResponse
+        '200':
+          $ref: '#/components/responses/searchEventsResponse'
+      security:
+      - iam-oauth2-schema:
+        - Desk.events.READ
+        - Desk.search.READ
+      x-audience:
+      - external-public
+  /{module}/search:
+    get:
+      tags:
+      - Search
+      summary: Search Records by Criteria, Word, Email, or Phone
+      operationId: searchRecords
+      description: Searches records matching your criteria within a CRM module. Supports criteria queries, email/phone/word searches. At least one search parameter required. Max 2,000 records, 15 criteria conditions. Newly created records may have indexing delays.
+      parameters:
+      - $ref: '#/components/parameters/Module'
+      - $ref: '#/components/parameters/ApprovalState'
+      - $ref: '#/components/parameters/Criteria'
+      - $ref: '#/components/parameters/Converted'
+      - $ref: '#/components/parameters/SearchWord'
+      - $ref: '#/components/parameters/SearchEmail'
+      - $ref: '#/components/parameters/SearchPhone'
+      - $ref: '#/components/parameters/Fields'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/SortBy'
+      - $ref: '#/components/parameters/SortOrder'
+      - $ref: '#/components/parameters/Type'
+      responses:
+        '200':
+          description: Successful response containing the list of records matching the search criteria.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Successful search response containing matched records and pagination information
+                additionalProperties: false
+                properties:
+                  data:
+                    type: array
+                    description: Array of records matching the search criteria
+                    maxItems: 200
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier of the record
+                          maxLength: 50
+                        Owner:
+                          type: object
+                          description: Owner information of the record
+                          additionalProperties: false
+                          properties:
+                            name:
+                              type: string
+                              description: Name of the record owner
+                              maxLength: 255
+                            id:
+                              type: string
+                              description: Unique identifier of the owner
+                              maxLength: 50
+                            email:
+                              type: string
+                              description: Email address of the owner
+                              format: email
+                        Created_Time:
+                          type: string
+                          description: Timestamp when the record was created
+                          format: date-time
+                        Modified_Time:
+                          type: string
+                          description: Timestamp when the record was last modified
+                          format: date-time
+                        Created_By:
+                          type: object
+                          description: User who created the record
+                          additionalProperties: false
+                          properties:
+                            name:
+                              type: string
+                              description: Name of the user who created the record
+                              maxLength: 255
+                            id:
+                              type: string
+                              description: Unique identifier of the user who created the record
+                              maxLength: 50
+                            email:
+                              type: string
+                              description: Email address of the user who created the record
+                              format: email
+                          required:
+                          - id
+                        Modified_By:
+                          type: object
+                          description: User who last modified the record
+                          additionalProperties: false
+                          properties:
+                            name:
+                              type: string
+                              description: Name of the user who last modified the record
+                              maxLength: 255
+                            id:
+                              type: string
+                              description: Unique identifier of the user who last modified the record
+                              maxLength: 50
+                            email:
+                              type: string
+                              description: Email address of the user who last modified the record
+                              format: email
+                      required:
+                      - id
+                      additionalProperties: true
+                      description: Record object containing module-specific fields and system fields
+                  info:
+                    type: object
+                    description: Pagination and response metadata
+                    additionalProperties: false
+                    properties:
+                      per_page:
+                        type: integer
+                        description: Number of records per page
+                        format: int32
+                      count:
+                        type: integer
+                        description: Number of records in current response
+                        format: int32
+                      page:
+                        type: integer
+                        description: Current page number
+                        format: int32
+                      more_records:
+                        type: boolean
+                        description: Indicates if more records are available
+                      sort_by:
+                        type: string
+                        description: Field used for sorting the records
+                        maxLength: 100
+                      sort_order:
+                        type: string
+                        description: Order of sorting the records
+                        enum:
+                        - asc
+                        - desc
+                required:
+                - data
+        '204':
+          description: No Content - The request was successful, but no records matched the search criteria. This may occur due to indexing delays when searching for recently created/modified records.
+        '400':
+          description: Bad Request - The request could not be processed due to invalid input, missing mandatory parameters, or malformed search criteria.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: object
+                  description: Invalid request error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid request
+                      enum:
+                      - INVALID_REQUEST
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details
+                      additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                - type: object
+                  description: Operation not supported error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating unsupported operation
+                      enum:
+                      - NOT_SUPPORTED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details including module information
+                      additionalProperties: false
+                      properties:
+                        module:
+                          type: string
+                          description: The module that does not support this operation
+                          maxLength: 100
+                      required:
+                      - module
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Missing required parameter error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating missing parameters
+                      enum:
+                      - EXPECTED_PARAM_MISSING
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details including missing parameter names
+                      additionalProperties: false
+                      properties:
+                        param_names:
+                          type: array
+                          description: List of missing parameter names
+                          maxItems: 4
+                          items:
+                            type: string
+                            description: Parameter name
+                            enum:
+                            - criteria
+                            - email
+                            - phone
+                            - word
+                      required:
+                      - param_names
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid module error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid module
+                      enum:
+                      - INVALID_MODULE
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      maxLength: 1000
+                    details:
+                      type: object
+                      description: Additional error details including resource path information
+                      additionalProperties: false
+                      properties:
+                        resource_path_index:
+                          type: integer
+                          description: Index of the invalid resource path segment
+                          format: int32
+                      required:
+                      - resource_path_index
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid query error response with various detail formats
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid query
+                      enum:
+                      - INVALID_QUERY
+                    message:
+                      type: string
+                      description: Human-readable error message describing the query issue
+                      enum:
+                      - the field in restricted in GDPR
+                      - the field in restricted in Hipaa
+                      - Invalid query formed
+                    details:
+                      oneOf:
+                      - type: object
+                        description: Data type mismatch error details
+                        additionalProperties: false
+                        properties:
+                          expected_data_type:
+                            type: string
+                            description: The expected data type for the field
+                            maxLength: 100
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - expected_data_type
+                        - reason
+                        - api_name
+                      - type: object
+                        description: Invalid operator error details
+                        additionalProperties: false
+                        properties:
+                          operator:
+                            type: string
+                            description: The invalid operator used in the query
+                            maxLength: 50
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - operator
+                        - reason
+                        - api_name
+                      - type: object
+                        description: General query error details
+                        additionalProperties: false
+                        properties:
+                          reason:
+                            type: string
+                            description: Detailed reason for the error
+                            maxLength: 500
+                        required:
+                        - reason
+                        - api_name
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Invalid query error response for IN operator violations
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating invalid query
+                      enum:
+                      - INVALID_QUERY
+                    message:
+                      type: string
+                      description: Human-readable error message describing the query issue
+                      enum:
+                      - Only 100 values are allowed in "IN" criteria
+                      - Invalid query formed
+                    details:
+                      type: object
+                      description: Additional error details including field information
+                      additionalProperties: false
+                      properties:
+                        param_name:
+                          type: string
+                          description: Name of the parameter causing the error
+                          maxLength: 100
+                      required:
+                      - api_name
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Limit reached error response when maximum record iteration exceeded
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating limit reached
+                      enum:
+                      - LIMIT_REACHED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      enum:
+                      - maximum response iteration limit reached
+                    details:
+                      type: object
+                      description: Additional error details including the limit value
+                      additionalProperties: false
+                      properties:
+                        limit:
+                          type: string
+                          description: Maximum number of records allowed
+                          enum:
+                          - '2000'
+                      required:
+                      - limit
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Criteria limit exceeded error response
+                  additionalProperties: false
+                  properties:
+                    status:
+                      type: string
+                      description: Error status indicator
+                      enum:
+                      - error
+                    code:
+                      type: string
+                      description: Error code indicating criteria limit exceeded
+                      enum:
+                      - CRITERIA_LIMIT_EXCEEDED
+                    message:
+                      type: string
+                      description: Human-readable error message
+                      enum:
+                      - no of criterium that can be given exceed the limit 15
+                    details:
+                      type: object
+                      description: Additional error details
+                      additionalProperties: false
+                  required:
+                  - status
+                  - code
+                  - message
+                  - details
+                - type: object
+                  description: Generic error response for other bad request scenarios
+                  additionalProperties: false
+        '401':
+          description: Unauthorized - Authentication failed or insufficient OAuth scope permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - User lacks permission to access the requested module or perform the search operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found - The requested URL pattern is invalid or the specified resource does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Too Many Requests - Rate limit exceeded. Wait before making additional requests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error - An unexpected error occurred on the server. Contact support if the issue persists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '502':
+          description: Bad Gateway - Temporary service dependency failure. The request should be retried.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service Unavailable - The service is temporarily unavailable due to maintenance or capacity issues.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Leads.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Contacts.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Accounts.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Deals.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Tasks.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Events.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Calls.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Products.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Vendors.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Campaigns.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Cases.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Solutions.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Pricebooks.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Quotes.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Salesorders.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Purchaseorders.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Invoices.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Forecasts.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Activities.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Notes.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.Attachments.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.custom.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.users.READ
+        - ZohoSearch.securesearch.READ
+      - iam-oauth2-schema:
+        - ZohoCRM.modules.ALL
+        - ZohoCRM.users.ALL
+        - ZohoSearch.securesearch.READ
+components:
+  parameters:
+    from:
+      name: from
+      in: query
+      description: 'The starting index for fetching results. !@default : 0@! !@starts from 0@!'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: 'The starting index for fetching results. !@default : 0@! !@starts from 0@!'
+        pattern: ([0-9]+)
+    status:
+      name: status
+      in: query
+      description: 'Status of the ticket inclusive of custom status. example: 1. status=open,in progress 2. status=${open}  !@exact match@!'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Status of the ticket inclusive of custom status. example: 1. status=open,in progress 2. status=${open}  !@exact match@!'
+        x-dynamic-enum: true
+    subject:
+      name: subject
+      in: query
+      description: Subject of the ticket !@wildcard search@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Subject of the ticket !@wildcard search@!
+        maxLength: 1000
+        minLength: 0
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the entity must be fetched. If the ID is not passed, then searches in all permitted departments !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the entity must be fetched. If the ID is not passed, then searches in all permitted departments !@exact match@!
+        pattern: ([0-9]+)
+    assigneeId:
+      name: assigneeId
+      in: query
+      description: ID of the agent who is assigned to resolve the ticket !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the agent who is assigned to resolve the ticket !@exact match@!
+        pattern: ([0-9]+)
+    modifiedTimeRange:
+      name: modifiedTimeRange
+      in: query
+      description: Key that filters tickets modified in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Key that filters tickets modified in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+        maxLength: 100
+        minLength: 0
+        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z)),(((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))|null
+    accountId:
+      name: accountId
+      in: query
+      description: ID of the account associated with the ticket !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the account associated with the ticket !@exact match@!
+        pattern: ([0-9]+)
+    _all:
+      name: _all
+      in: query
+      description: Key that includes all the columns in the tickets module for search !@wildcard search@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Key that includes all the columns in the tickets module for search !@wildcard search@!
+        maxLength: 100
+        minLength: 0
+    startDateRange:
+      name: startDateRange
+      in: query
+      description: Key that filters calls that were made in a particular period. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! startDateRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Key that filters calls that were made in a particular period. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! startDateRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+        maxLength: 100
+        minLength: 0
+        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z)),(((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))|null
+    contactId:
+      name: contactId
+      in: query
+      description: 'ID of the contact who raised the ticket !@exact match@! '
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: 'ID of the contact who raised the ticket !@exact match@! '
+        pattern: ([0-9]+)
+    accountName:
+      name: accountName
+      in: query
+      description: Name of the account associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Name of the account associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+        maxLength: 200
+        minLength: 0
+    limit:
+      name: limit
+      in: query
+      description: 'Specifies the number of tickets to be fetched. !@default : 10@!'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: 'Specifies the number of tickets to be fetched. !@default : 10@!'
+        minimum: 1
+        pattern: ([0-9]+)
+    dueDateRange:
+      name: dueDateRange
+      in: query
+      description: Key that filters tickets due in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! dueDateRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Key that filters tickets due in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! dueDateRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+        maxLength: 100
+        minLength: 0
+        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z)),(((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))|null
+    ticketNumber:
+      name: ticketNumber
+      in: query
+      description: The ticket's serial number !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: The ticket's serial number !@exact match@!
+        pattern: ([0-9]+)
+    id:
+      name: id
+      in: query
+      description: 'ID of the ticket !@exact match@! '
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: 'ID of the ticket !@exact match@! '
+        pattern: ([0-9]+)
+    productId:
+      name: productId
+      in: query
+      description: ID of the product associated with the ticket !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the product associated with the ticket !@exact match@!
+        pattern: ([0-9]+)
+    createdTimeRange:
+      name: createdTimeRange
+      in: query
+      description: Key that filters tickets created in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Key that filters tickets created in a particular period of time. !Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ;! !For example,! createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z
+        maxLength: 100
+        minLength: 0
+        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z)),(((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))|null
+    productName:
+      name: productName
+      in: query
+      description: Name of the product associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Name of the product associated with the ticket !@wildcard search@! !@empty check@! !@not empty check@!
+        maxLength: 200
+        minLength: 0
+    priority:
+      name: priority
+      in: query
+      description: Priority of the ticket !@exact match@!
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Priority of the ticket !@exact match@!
+        x-dynamic-enum: true
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: The number of records to return per page. Higher values reduce the number of API calls needed but increase response size and processing time.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 200
+    Type:
+      name: type
+      in: query
+      required: false
+      description: Filter users by their status, role, or confirmation state
+      schema:
+        type: string
+        maxLength: 50
+        enum:
+        - ActiveAndDeactive
+        - CurrentUser
+        - DeletedUsers
+        - ParentRoleUsers
+        - ChildRoleUsers
+        - DeactiveUsers
+        - NotConfirmedUsers
+        - ConfirmedUsers
+        - ActiveUsers
+        - AdminUsers
+        - ActiveConfirmedAdmins
+        - ActiveConfirmedUsers
+        - DeveloperUsers
+        - SubordinateRoleUsers
+        - AllUsers
+        - AllActiveUsers
+    Fields:
+      name: fields
+      in: query
+      required: false
+      description: Comma-separated list of field API names to retrieve in the response. If not specified, all accessible fields are returned. Use this to optimize response size and improve performance.
+      schema:
+        type: string
+        maxLength: 2000
+    Module:
+      name: module
+      in: path
+      required: true
+      description: The API name of the CRM module to search within.
+      schema:
+        type: string
+        maxLength: 100
+    SearchWord:
+      name: word
+      in: query
+      required: false
+      description: 'A simple word or phrase to search across all supported text fields in the module. Performs a global search with minimum 2 characters required. This is the broadest search method but may be slower than specific field searches.
+
+        *Mandatory if criteria, email, and phone are not present.*'
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 100
+    SortOrder:
+      name: sort_order
+      in: query
+      required: false
+      description: The sorting direction for the results. Use 'asc' for ascending (A-Z, 1-9, oldest first) or 'desc' for descending (Z-A, 9-1, newest first).
+      schema:
+        type: string
+        maxLength: 10
+        enum:
+        - asc
+        - desc
+        default: desc
+    SearchPhone:
+      name: phone
+      in: query
+      required: false
+      description: 'Search records by phone number across all phone fields in the module. Supports various phone number formats including international, national, and partial numbers.
+
+        *Mandatory if criteria, email, and word are not present.*'
+      schema:
+        type: string
+        minLength: 3
+        maxLength: 50
+        pattern: ^[+]?[0-9\s\-\(\)\.]+$
+    SearchEmail:
+      name: email
+      in: query
+      required: false
+      description: 'Search records by email address across all email fields in the module. Supports partial matches and searches multiple email fields simultaneously.
+
+        *Mandatory if criteria, phone, and word are not present.*'
+      schema:
+        type: string
+        maxLength: 255
+        format: string
+    ApprovalState:
+      name: approval_state
+      in: query
+      required: false
+      description: Filter records by their approval status. This parameter is particularly useful for modules with approval workflows or data validation processes.
+      schema:
+        type: string
+        maxLength: 50
+        enum:
+        - approval_process_pending
+        - webform_invalid
+        - review_process_pending
+        - webform_invalid_approval
+        - zia_vision_validation
+        - review_process_rejected
+        - webform_unapproved
+        - email_parser_waiting
+        - approved
+        - merge_pending
+        - email_parser_rejected
+        - zia_vision_rejected
+        - zia_vision_pending
+        - approval_process_rejected
+        - webform_double_optin
+    SortBy:
+      name: sort_by
+      in: query
+      required: false
+      description: The field API name to sort the search results by. Choose a field that exists in the target module for consistent sorting behavior.
+      schema:
+        type: string
+        maxLength: 100
+        default: id
+    Page:
+      name: page
+      in: query
+      required: false
+      description: The page number to retrieve for paginated results. Use in combination with per_page to navigate through large result sets.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    Converted:
+      name: converted
+      in: query
+      required: false
+      description: Filter records by their conversion status. Primarily used with Leads module to distinguish between converted and non-converted leads. Also applicable to other modules with conversion workflows.
+      schema:
+        type: string
+        maxLength: 10
+        enum:
+        - 'true'
+        - 'false'
+        - both
+        default: 'false'
+    Criteria:
+      name: criteria
+      in: query
+      required: false
+      description: 'Complex query string to search for records using field-specific conditions and operators. Supports up to 15 conditions combined with AND/OR operators. **Format:** `(field_name:operator:value)` with logical operators.
+
+        *Mandatory if email, phone, and word are not present.*'
+      schema:
+        type: string
+        maxLength: 3000
+  responses:
+    searchSolutionsResponse:
+      description: searchSolutionsResponse template definitions
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Search.json#/components/schemas/searchSolutionsData
+                count:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+              required:
+              - count
+              - data
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./ArticleTranslation.json#/components/schemas/articleTranslationListView
+                count:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+              required:
+              - count
+              - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - summary: Help articles are vital resources in user education. They are the first building blocks of an effective self-service setup.
+                  modifiedTime: '2018-07-16T06:48:08.000Z'
+                  latestVersionStatus: Published
+                  author:
+                    photoURL: null
+                    name: HIll
+                    id: '5000000015935'
+                  creatorId: '4000000012931'
+                  modifierId: '4000000012931'
+                  dislikeCount: '1'
+                  permission: AGENTS
+                  likeCount: '2'
+                  title: Importance of a Knowledge Base
+                  authorId: '4000000012931'
+                  usageCount: '3'
+                  latestVersion: '1.0'
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/22372000000281023
+                  portalUrl: https://desk.zoho.com/portal/zylker/kb/articles/importance-of-knowledge-base
+                  feedbackCount: '1'
+                  createdTime: '2018-07-16T06:48:08.000Z'
+                  latestPublishedVersion: '1.0'
+                  viewCount: '3'
+                  id: '22372000000281023'
+                  permalink: importance-of-a-knowledge-base
+                  category:
+                    name: General
+                    id: '5000000017008'
+                  categoryId: '4000000013240'
+                  status: Published
+                count: 379
+    searchCallsResponse:
+      description: searchCallsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchCallsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2016-07-26T17:32:11.000Z'
+                  cf:
+                    cf_permanentaddress: Menlo Park, California
+                  ticket:
+                    ticketNumber: '101'
+                    contact:
+                      firstName: null
+                      lastName: Lawrence
+                      phoneNumber: '+14246721666'
+                      id: '3000000008749'
+                    id: '3000000008753'
+                  subject: New Call
+                  completedTime: '2016-07-26T17:32:11.000Z'
+                  departmentId: '3000000007043'
+                  creatorId: '3000000008692'
+                  description: null
+                  ownerId: null
+                  priority: Normal
+                  duration: '300'
+                  createdTime: '2016-07-26T17:32:11.000Z'
+                  startTime: '2016-07-25T16:52:11.000Z'
+                  id: '3000000018001'
+                  assignee:
+                    firstName: ''
+                    lastName: raja
+                    photoURL: null
+                    emailId: carol@zylker.com
+                    id: '36385000000120033'
+                    zuid: '55499215'
+                  ticketId: '3000000008753'
+                  direction: inbound
+                  status: completed
+                count: 1
+    searchContactsResponse:
+      description: searchContactsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchContactsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - lastName: Lawrence
+                  modifiedTime: '2016-05-04T09:57:17.000Z'
+                  country: null
+                  secondaryEmail: null
+                  city: null
+                  description: null
+                  ownerId: '1892000000042001'
+                  type: null
+                  title: null
+                  photoURL: https://desk.zoho.com/api/v1/contacts/1892000000042032/photo
+                  twitter: null
+                  street: null
+                  createdTime: '2013-11-04T11:21:07.000Z'
+                  isEndUser: 'false'
+                  zohoCRMContact:
+                    id: '5000000014010'
+                    type: contacts_leads
+                  customerHappiness:
+                    badPercentage: '22'
+                    okPercentage: '31'
+                    goodPercentage: '47'
+                  state: null
+                  id: '1892000000042032'
+                  email: lawrence@zylker.com
+                  zip: null
+                  owner:
+                    firstName: Twin
+                    lastName: john
+                    photoURL: null
+                    emailId: lawrence@zylker.com
+                    id: '1892000000042001'
+                    zuid: '14345345'
+                  cf:
+                    cf_permanentaddress: Menlo Park, California
+                    cf_lastcontactedon: null
+                  facebook: null
+                  mobile: null
+                  accountId: '1892000000975382'
+                  firstName: Jennifer
+                  phone: 1 888 900 9646
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                  account:
+                    website: null
+                    accountName: Zylker
+                    id: '1892000000975382'
+                count: 1
+    doSearchResponse:
+      description: doSearchResponse template definitions
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Search.json#/components/schemas/doSearchData
+                count:
+                  $ref: ./Search.json#/components/schemas/doSearchCount
+              required:
+              - count
+              - data
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Search.json#/components/schemas/searchTicketsData
+                count:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+              required:
+              - count
+              - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - subject: Zylker ticket
+                  departmentId: '4000000007043'
+                  dueDate: null
+                  channel: Phone
+                  onholdTime: null
+                  sharedDepartments: []
+                  closedTime: null
+                  number: '104'
+                  contact:
+                    phone: null
+                    mobile: '9876543210'
+                    name: Stephen
+                    id: '4000000013012'
+                    type: null
+                    email: null
+                    account:
+                      website: null
+                      name: Zylker Accounts
+                      id: '4000000008850'
+                  createdTime: '2016-06-27T07:22:52.000Z'
+                  id: '4000000016009'
+                  department:
+                    name: Testing
+                    id: '4000000007043'
+                  email: null
+                  customerResponseTime: '2016-06-27T07:22:52.117Z'
+                  cf:
+                    cf_featureRequest: false
+                    cf_region: Asia
+                  productId: '4000000013043'
+                  contactId: '4000000013012'
+                  module: tickets
+                  threadCount: '0'
+                  team:
+                    name: TestingTeam
+                    id: '4000000007235'
+                    logoUrl: https://desk.zoho.com/api/v1/teams/4000000007235/logo?orgId=11278831
+                  priority: null
+                  assigneeId: '4000000008692'
+                  commentCount: '0'
+                  phone: null
+                  assignee:
+                    firstName: ''
+                    lastName: jade
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
+                    emailId: jade@zylker.com
+                    id: '4000000008692'
+                    zuid: '10657727'
+                  status: Open
+                - cf:
+                    cf_followUpDate: '2016-07-07T19:30:00.000Z'
+                    cf_severity: High
+                  ticket: null
+                  subject: Wifi adapter not working in zylker
+                  completedTime: null
+                  module: tasks
+                  dueDate: '2016-06-27T19:30:00.000Z'
+                  description: null
+                  ownerId: '4000000008692'
+                  priority: High
+                  isCommented: false
+                  createdBy: '4000000008692'
+                  contact: null
+                  createdTime: '2016-06-27T06:39:48.000Z'
+                  id: '4000000013065'
+                  assignee:
+                    firstName: ''
+                    lastName: jade
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
+                    emailId: jade@zylker.com
+                    id: '5000000009116'
+                    zuid: '10657727'
+                  category: null
+                  department:
+                    name: Testing
+                    id: '5000000007235'
+                  ticketId: null
+                  status: Not Started
+                - website: null
+                  phone: null
+                  accountName: Zylker India
+                  customFields:
+                    city: Delhi
+                    state: India
+                  module: accounts
+                  id: '4000000013027'
+                  email: null
+                - lastName: Stephen
+                  accountId: '4000000008850'
+                  firstName: Henry
+                  photoURL: null
+                  phone: null
+                  customFields:
+                    customerSince: '2011'
+                    editionUsed: Professional
+                  module: contacts
+                  fullName: Henry Stephen
+                  id: '4000000013012'
+                  ownerId: '4000000008692'
+                  email: null
+                  account:
+                    website: null
+                    name: Zylker India
+                    id: '4000000008850'
+                count:
+                  tickets: 1
+                  accounts: 1
+                  tasks: 1
+                  contacts: 1
+    searchTasksResponse:
+      description: searchTasksResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchTasksData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2016-09-13T12:14:41.000Z'
+                  cf:
+                    cf_permanentaddress: Menlo Park, California
+                  ticket: null
+                  subject: 'Bug Fix #121'
+                  completedTime: null
+                  departmentId: '3000000007043'
+                  dueDate: '2016-09-19T12:27:26.000Z'
+                  creatorId: '3000000008692'
+                  description: null
+                  ownerId: '3000000054002'
+                  priority: High
+                  isCommented: false
+                  createdTime: '2016-08-14T08:27:26.000Z'
+                  assignee:
+                    firstName: ''
+                    lastName: jade
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
+                    emailId: jade@zylker.com
+                    id: '5000000009116'
+                    zuid: '10657727'
+                  id: '3000000054004'
+                  department:
+                    name: Testing
+                    id: '5000000007235'
+                  category: null
+                  ticketId: null
+                  status: Not Started
+                count: 1
+    searchRecordsResponse:
+      description: searchRecordsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Records.json#/components/schemas/listRecordResponseWithAdditionalData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                layout:
+                  id: '1000003000004'
+                  layoutName: Standard - Department1
+                owner:
+                  firstName: ''
+                  lastName: Kyle
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000000329/photo?orgId=3981311
+                  id: '4000000000329'
+                modifiedTime: '2024-04-22T14:09:41.000Z'
+                cf:
+                  cf_doctor_description: Doctor 1 description change
+                createdBy:
+                  firstName: ''
+                  lastName: Kyle
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000000329/photo?orgId=3981311
+                  id: '4000000000329'
+                name: Doctor 1
+                createdTime: '2024-04-22T13:55:53.000Z'
+                modifiedBy:
+                  firstName: ''
+                  lastName: Kyle
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000000329/photo?orgId=3981311
+                  id: '4000000000329'
+                isPresence: true
+                id: '1000003019049'
+                department:
+                  name: Department1
+                  id: '1000000025632'
+    activitiesSearchResponse:
+      description: activitiesSearchResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/activitiesSearchData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2016-09-13T12:14:41.000Z'
+                  ticket: null
+                  customFields: {}
+                  subject: 'Bug Fix #121'
+                  completedTime: null
+                  module: task
+                  departmentId: '3000000007043'
+                  dueDate: '2016-09-19T12:27:26.000Z'
+                  creatorId: '3000000008692'
+                  description: null
+                  ownerId: '3000000054002'
+                  priority: High
+                  isCommented: false
+                  createdTime: '2016-08-14T08:27:26.000Z'
+                  assignee:
+                    firstName: ''
+                    lastName: jade
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
+                    emailId: jade@zylker.com
+                    id: '5000000009116'
+                    zuid: '10657727'
+                  id: '3000000054004'
+                  department:
+                    name: Testing
+                    id: '5000000007235'
+                  category: null
+                  ticketId: null
+                  status: Not Started
+                count: 1
+    searchTicketsResponse:
+      description: searchTicketsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchTicketsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2016-06-21T13:16:14.000Z'
+                  ticketNumber: '101'
+                  subCategory: Sub General
+                  statusType: Open
+                  subject: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
+                  dueDate: '2016-06-21T16:16:16.000Z'
+                  departmentId: '1892000000006907'
+                  isRead: false
+                  channel: FORUMS
+                  onholdTime: null
+                  description: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
+                  resolution: null
+                  sharedDepartments:
+                  - name: Sample Department Name
+                    id: '1892000000006909'
+                    type: READ_WRITE
+                  - name: Sample Department Name
+                    id: '1892000000006911'
+                    type: READ_ONLY
+                  closedTime: null
+                  isOverDue: false
+                  contact:
+                    lastName: Carol
+                    firstName: Lucas
+                    phone: 1 888 900 9646
+                    mobile: '9876543456'
+                    id: '1892000000042032'
+                    type: null
+                    email: carol@zylker.com
+                    account:
+                      website: www.desk.com
+                      accountName: desk Account
+                      id: '1892000000975382'
+                  createdTime: '2013-11-04T11:21:07.000Z'
+                  modifiedBy: '52338000000043001'
+                  id: '1892000000042034'
+                  department:
+                    name: dasdasdasd
+                    id: '1892000000006907'
+                  email: carol@zylker.com
+                  customerResponseTime: '2013-11-04T11:21:07.912Z'
+                  product: null
+                  cf:
+                    cf_permanentaddress: null
+                    cf_dateofpurchase: null
+                    cf_phone: null
+                    cf_numberofitems: null
+                    cf_url: null
+                    cf_secondaryemail: null
+                    cf_severitypercentage: '0.0'
+                    cf_modelname: F3 2017
+                  productId: null
+                  contactId: '1892000000042032'
+                  threadCount: '121'
+                  lastThread:
+                    channel: FEEDBACK
+                    isDraft: false
+                    isForward: false
+                    direction: in
+                  team:
+                    name: kjsdfjks
+                    id: '8920000000069071'
+                    logoUrl: https://desk.zoho.com/api/v1/teams/8920000000069071/logo?orgId=11278831
+                  priority: High
+                  classification: null
+                  assigneeId: '1892000000056007'
+                  commentCount: '1'
+                  phone: 1 888 900 9646
+                  createdBy: '52338000000043001'
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Cases/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                  teamId: '8920000000069071'
+                  isEscalated: false
+                  isSpam: false
+                  assignee:
+                    firstName: dasca
+                    lastName: vins
+                    photoURL: https://desk.zoho.com/api/v1/agents/1892000000056007/photo?orgId=298902
+                    emailId: jack@zylker.com
+                    id: '1892000000056007'
+                    zuid: '640954748'
+                  category: general
+                  status: Open
+                count: 1
+    searchProductsResponse:
+      description: searchProductsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchProductsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2017-11-02T10:31:35.000Z'
+                  productCode: Search2
+                  cf:
+                    cf_productTagName: secondary engine
+                  createdBy: '5000000009116'
+                  description: null
+                  createdTime: '2017-11-02T10:31:35.000Z'
+                  modifiedBy: '5000000009116'
+                  departmentIds:
+                  - '5000000007235'
+                  id: '5000000009882'
+                  productName: Search2
+                count: 1
+    searchEventsResponse:
+      description: searchEventsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchEventsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: '2016-07-26T17:32:11.000Z'
+                  ticket:
+                    ticketNumber: '101'
+                    contact:
+                      firstName: null
+                      lastName: Lawrence
+                      id: '3000000008749'
+                    id: '3000000008753'
+                  customFields: {}
+                  subject: New Event
+                  completedTime: '2016-07-26T17:32:11.000Z'
+                  departmentId: '3000000007043'
+                  creatorId: '3000000008692'
+                  description: null
+                  ownerId: null
+                  priority: Normal
+                  duration: '30'
+                  createdTime: '2016-07-26T16:32:11.000Z'
+                  startTime: '2016-07-26T17:02:11.000Z'
+                  id: '3000000018001'
+                  assignee:
+                    firstName: ''
+                    lastName: raja
+                    photoURL: null
+                    emailId: carol@zylker.com
+                    id: '36385000000120033'
+                    zuid: '55499215'
+                  category: Meeting
+                  ticketId: '3000000008753'
+                  status: completed
+                count: 1
+    searchAccountsResponse:
+      description: searchAccountsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Search.json#/components/schemas/searchAccountsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - owner:
+                    firstName: Twin
+                    lastName: john
+                    photoURL: https://desk.zoho.com/api/v1/agents/52338000000691001/photo?t=user&ID=10657727
+                    emailId: jade@zylker.com
+                    id: '3263000000057001'
+                    zuid: '10657727'
+                  country: USA
+                  modifiedTime: '2015-03-02T14:49:18.000Z'
+                  website: www.zylker.com
+                  code: '3211'
+                  cf:
+                    cf_contactcount: '1'
+                  accountName: Zylker
+                  city: null
+                  description: null
+                  industry: Automation
+                  ownerId: '3263000000057001'
+                  phone: '6218129190'
+                  street: null
+                  annualrevenue: null
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                  createdTime: '2015-02-16T16:57:44.000Z'
+                  state: null
+                  id: '3263000000074571'
+                  fax: +1 444 8656 8732
+                  email: support@zylker.com
+                count: 1
+  schemas:
+    ErrorDetails:
+      type: object
+      description: Specific details about the error, often including which parameter or value caused the issue.
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      description: Standard error response structure containing error code, message, and optional details
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: The specific error code.
+          enum:
+          - INVALID_DATA
+          - INVALID_QUERY
+          - EXPECTED_PARAM_MISSING
+          - LIMIT_REACHED
+          - NOT_SUPPORTED
+          - INVALID_REQUEST_METHOD
+          - AUTHORIZATION_FAILED
+          - OAUTH_SCOPE_MISMATCH
+          - NO_PERMISSION
+          - INVALID_URL_PATTERN
+          - INTERNAL_ERROR
+          - RATE_LIMIT_EXCEEDED
+          - SERVICE_UNAVAILABLE
+          - INVALID_MODULE
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+        message:
+          type: string
+          description: A human-readable error message.
+          maxLength: 1000
+        status:
+          type: string
+          description: Status indicator for the response, always 'error' for error responses
+          enum:
+          - error
+          default: error
+      required:
+      - code
+      - details
+      - message
+      - status
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

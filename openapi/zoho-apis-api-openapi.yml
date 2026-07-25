@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter Apis API
+  version: 1.0.0
+tags:
+- name: Apis
+paths:
+  /__apis:
+    get:
+      operationId: getAvailableApis
+      summary: List available REST APIs
+      description: Returns the list of available REST API endpoints, grouped by module and feature, that the current user can access in this tenant.
+      security:
+      - iam-oauth2-schema:
+        - ZohoCRM.apis.READ
+      parameters:
+      - $ref: '#/components/parameters/Filters'
+      responses:
+        '200':
+          description: Available REST APIs returned successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: List of available REST APIs and their operation types.
+                additionalProperties: false
+                properties:
+                  __apis:
+                    type: array
+                    description: Available API entries.
+                    maxItems: 2000
+                    items:
+                      type: object
+                      description: Single API entry with path and supported operations.
+                      additionalProperties: false
+                      properties:
+                        path:
+                          type: string
+                          description: Absolute API path under /crm/v8 with templated variables.
+                          maxLength: 512
+                        operation_types:
+                          type: array
+                          description: Supported HTTP operations for the path.
+                          maxItems: 10
+                          items:
+                            type: object
+                            description: Operation descriptor.
+                            additionalProperties: false
+                            properties:
+                              method:
+                                type: string
+                                description: HTTP method.
+                                enum:
+                                - GET
+                                - POST
+                                - PUT
+                                - PATCH
+                                - DELETE
+                              oauth_scope:
+                                type: string
+                                description: Required OAuth scope for the operation.
+                                maxLength: 128
+                              max_credits:
+                                type: integer
+                                format: int32
+                                description: Maximum credits consumed per request.
+                                minimum: 0
+                              min_credits:
+                                type: integer
+                                format: int32
+                                description: Minimum credits consumed per request.
+                                minimum: 0
+                            required:
+                            - method
+                            - oauth_scope
+                            - max_credits
+                            - min_credits
+                      required:
+                      - path
+                      - operation_types
+                required:
+                - __apis
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      tags:
+      - Apis
+components:
+  parameters:
+    Filters:
+      name: filters
+      in: query
+      required: false
+      description: Filter APIs by OAuth scope.
+      schema:
+        type: string
+        maxLength: 2048
+  responses:
+    InternalServerError:
+      description: Unexpected server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TooManyRequests:
+      description: Rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      description: Standard error wrapper.
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: Error code.
+          maxLength: 64
+        message:
+          type: string
+          description: Human readable error message.
+          maxLength: 512
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

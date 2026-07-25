@@ -1,0 +1,113 @@
+openapi: 3.1.0
+info:
+  title: Helpcenter PendingApproval API
+  version: 1.0.0
+tags:
+- name: PendingApproval
+paths:
+  /api/v1/myPendingApprovals:
+    get:
+      tags:
+      - PendingApproval
+      summary: Get my pending approvals
+      description: This API lists the pending approvals for a given user
+      operationId: getMyPendingApprovals
+      parameters:
+      - name: department
+        in: query
+        description: ID of the department from which pending approvals must be fetched. You can pass a specific department ID or @allDepartment@ in the API request.
+        required: true
+        style: form
+        explode: true
+        schema:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the department from which pending approvals must be fetched. You can pass a specific department ID or @allDepartment@ in the API request.
+          pattern: ([0-9]+)
+      - $ref: ./Common.json#/components/parameters/orgId
+      responses:
+        '422':
+          $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
+        '200':
+          $ref: '#/components/responses/getMyPendingApprovalsResponse'
+        '403':
+          $ref: ./Common.json#/components/responses/forbiddenErrorResponse
+      security:
+      - iam-oauth2-schema:
+        - Desk.settings.READ
+      x-audience:
+      - external-public
+components:
+  responses:
+    getMyPendingApprovalsResponse:
+      description: getMyPendingApprovalsResponse template definitions
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                myPendingApprovals:
+                  $ref: ./PendingApproval.json#/components/schemas/myPendingApprovals
+                assignee:
+                  $ref: ./PendingApproval.json#/components/schemas/assignee
+              required:
+              - assignee
+              - myPendingApprovals
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                myPendingApprovals:
+                  $ref: ./PendingApproval.json#/components/schemas/myPendingApprovals
+              required:
+              - myPendingApprovals
+          examples:
+            Valid responses Definitions:
+              value:
+                myPendingApprovals:
+                - departmentName: Sales
+                  requester:
+                    firstName: ''
+                    lastName: Smith
+                    photoURL: https://desk.zoho.com/api/v1/agent/5000000012902/photo
+                    id: '5000000012902'
+                    email: null
+                  ticketNumber: '102'
+                  subject: Sample subject
+                  departmentId: '4000000019077'
+                  createdTime: 1561122974000
+                  description: Sample description
+                  id: '4000002350527'
+                  ticketId: '4000002350527'
+                - departmentName: Marketing
+                  requester:
+                    firstName: ''
+                    lastName: John
+                    photoURL: https://desk.zoho.com/api/v1/agent/5000000012932/photo
+                    id: '5000000012932'
+                    email: null
+                  ticketNumber: '102'
+                  subject: Sample subject
+                  departmentId: '4000000019067'
+                  createdTime: 1561122974000
+                  description: ''
+                  id: '4000002350527'
+                  ticketId: '4000000014335'
+                assignee:
+                  firstName: John
+                  lastName: Carol
+                  photoURL: https://desk.zoho.com/api/v1/agents/1892000000056007/photo
+                  id: '1892000000056007'
+                  email: carol@zylker.com
+  securitySchemes:
+    iam-oauth2-schema:
+      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
+x-entity: Helpcenter

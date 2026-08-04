@@ -1,0 +1,517 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Zoho Analytics API",
+    "version": "v2",
+    "description": "API for managing data in Zoho Analytics workspaces and views."
+  },
+  "servers": [
+    {
+      "url": "https://analyticsapi.zoho.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Data APIs",
+      "description": "Data APIs are used to perform addition, update, deletion actions on Zoho Analytics tables."
+    }
+  ],
+  "paths": {
+    "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/rows": {
+      "post": {
+        "tags": [
+          "Data APIs"
+        ],
+        "summary": "Add Row",
+        "description": "Adds a single row to the specified table.",
+        "operationId": "addRow",
+        "parameters": [
+          {
+            "name": "ZANALYTICS-ORGID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Organization ID (can be obtained using Get Organizations API)."
+          },
+          {
+            "$ref": "#/components/parameters/workspace-id"
+          },
+          {
+            "$ref": "#/components/parameters/view-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "CONFIG": {
+                    "$ref": "#/components/schemas/AddRowConfig"
+                  }
+                },
+                "required": [
+                  "CONFIG"
+                ]
+              },
+              "encoding": {
+                "CONFIG": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam-oauth2-schema": [
+              "ZohoAnalytics.data.create"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "addedColumns": {
+                          "type": "object"
+                        },
+                        "invalidColumns": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "summary": "Add row",
+                      "data": {
+                        "addedColumns": {
+                          "region": "East",
+                          "Sales": "1000"
+                        },
+                        "invalidColumns": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Data APIs"
+        ],
+        "summary": "Update Rows",
+        "description": "Updates rows in the specified table.",
+        "operationId": "updateRows",
+        "parameters": [
+          {
+            "name": "ZANALYTICS-ORGID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Organization ID (can be obtained using Get Organizations API)."
+          },
+          {
+            "$ref": "#/components/parameters/workspace-id"
+          },
+          {
+            "$ref": "#/components/parameters/view-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "CONFIG": {
+                    "$ref": "#/components/schemas/UpdateRowsConfig"
+                  }
+                },
+                "required": [
+                  "CONFIG"
+                ]
+              },
+              "encoding": {
+                "CONFIG": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam-oauth2-schema": [
+              "ZohoAnalytics.data.update"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "updatedColumns": {
+                          "type": "object"
+                        },
+                        "updatedRows": {
+                          "type": "integer"
+                        },
+                        "invalidColumns": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "summary": "Update row",
+                      "data": {
+                        "updatedColumns": {
+                          "Region": "East",
+                          "Sales": "1000"
+                        },
+                        "updatedRows": 27,
+                        "invalidColumns": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Data APIs"
+        ],
+        "summary": "Delete Row",
+        "operationId": "deleteRows",
+        "description": "Deletes rows from the specified table. Note: While OpenAPI generally discourages request bodies for DELETE operations, this API supports it for detailed filtering.",
+        "parameters": [
+          {
+            "name": "ZANALYTICS-ORGID",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Organization ID (can be obtained using Get Organizations API)."
+          },
+          {
+            "$ref": "#/components/parameters/workspace-id"
+          },
+          {
+            "$ref": "#/components/parameters/view-id"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "CONFIG": {
+                    "$ref": "#/components/schemas/DeleteRowsConfig"
+                  }
+                },
+                "required": [
+                  "CONFIG"
+                ]
+              },
+              "encoding": {
+                "CONFIG": {
+                  "contentType": "application/json"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "iam-oauth2-schema": [
+              "ZohoAnalytics.data.delete"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "deletedRows": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Default": {
+                    "value": {
+                      "status": "success",
+                      "summary": "Delete row",
+                      "data": {
+                        "deletedRows": 27
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "workspace-id": {
+        "name": "workspace-id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "ID of the workspace."
+      },
+      "view-id": {
+        "name": "view-id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "ID of the view."
+      }
+    },
+    "securitySchemes": {
+      "iam-oauth2-schema": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+            "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+            "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+            "scopes": {
+              "ZohoAnalytics.data.read": "Read data from Zoho Analytics.",
+              "ZohoAnalytics.data.delete": "Delete data from Zoho Analytics.",
+              "ZohoAnalytics.data.update": "Update data in Zoho Analytics.",
+              "ZohoAnalytics.data.create": "Create data in Zoho Analytics.",
+              "ZohoAnalytics.data.all": "Full access to data in Zoho Analytics.",
+              "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "AddRowConfig": {
+        "type": "object",
+        "description": "JSONObject with configuration for adding a row.",
+        "properties": {
+          "columns": {
+            "type": "object",
+            "description": "JSONObject with column name as key and data as value.",
+            "examples": [
+              {
+                "columnName1": "value1",
+                "columnName2": "value2"
+              }
+            ]
+          },
+          "dateFormat": {
+            "type": "string",
+            "description": "Specify this in-case any date field is being added and its format cannot be auto recognized.",
+            "examples": [
+              "dd-MMM-YYYY"
+            ]
+          },
+          "columnDateFormat": {
+            "type": "object",
+            "description": "Specify this in case multiple date fields are being imported having different format each. Column name as key and date format as value.",
+            "examples": [
+              {
+                "columnName1": "dd-MMM-YYYY",
+                "columnName2": "MM/dd/yyyy"
+              }
+            ]
+          }
+        },
+        "required": [
+          "columns"
+        ],
+        "examples": [
+          {
+            "columns": {
+              "Region": "East",
+              "Sales": "1000"
+            },
+            "dateFormat": "dd-MMM-YYYY"
+          }
+        ]
+      },
+      "DeleteRowsConfig": {
+        "type": "object",
+        "description": "JSONObject with configuration for deleting rows. Must contain exactly one of the following properties: `criteria` (for selective deletion based on a string expression) or `deleteAllRows` (a boolean to indicate deletion of all rows).",
+        "properties": {
+          "criteria": {
+            "type": "string",
+            "description": "If criteria is sent, then the rows matching the criteria alone are deleted.",
+            "examples": [
+              "\"Sales Table\".\"Region\"='West'"
+            ]
+          },
+          "deleteAllRows": {
+            "type": "boolean",
+            "description": "To delete all the rows in the table.",
+            "examples": [
+              true
+            ]
+          }
+        },
+        "examples": [
+          {
+            "criteria": "\"Sales Table\".\"Region\"='West'"
+          }
+        ]
+      },
+      "UpdateRowsConfig": {
+        "type": "object",
+        "description": "JSONObject with configuration for updating rows.",
+        "properties": {
+          "columns": {
+            "type": "object",
+            "description": "JSONObject with column name as key and data as value.",
+            "examples": [
+              {
+                "columnName1": "value1",
+                "columnName2": "value2"
+              }
+            ]
+          },
+          "criteria": {
+            "type": "string",
+            "description": "If criteria is sent, then the rows matching the criteria alone are updated.",
+            "examples": [
+              "\"Sales Table\".\"Region\"='East'"
+            ]
+          },
+          "updateAllRows": {
+            "type": "boolean",
+            "description": "To update all the rows in the table.",
+            "examples": [
+              true
+            ]
+          },
+          "addIfNotExist": {
+            "type": "boolean",
+            "description": "It controls whether to add a new row with the provided details if the provided criteria doesn't matches with the existing data.",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "dateFormat": {
+            "type": "string",
+            "description": "Specify this in-case any date field is being added and its format cannot be auto recognized.",
+            "examples": [
+              "dd-MMM-YYYY"
+            ]
+          },
+          "columnDateFormat": {
+            "type": "object",
+            "description": "Specify this in case multiple date fields are being imported having different format each. Column name as key and date format as value.",
+            "examples": [
+              {
+                "columnName1": "dd-MMM-YYYY",
+                "column2": "MM/dd/yyyy"
+              }
+            ]
+          }
+        },
+        "required": [
+          "columns"
+        ],
+        "examples": [
+          {
+            "columns": {
+              "columnName1": "value1",
+              "columnName2": "value2"
+            },
+            "criteria": "\"Sales Table\".\"Region\"='East'"
+          }
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/schemas/Error"
+      }
+    }
+  }
+}

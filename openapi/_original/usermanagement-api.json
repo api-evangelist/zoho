@@ -1,0 +1,1166 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Zoho Analytics API",
+      "version": "v2",
+      "description": "API for managing data in Zoho Analytics workspaces and views."
+    },
+    "servers": [
+      {
+        "url": "https://analyticsapi.zoho.com"
+      }
+    ],
+    "tags": [
+      {
+        "name": "User Management APIs",
+        "description": "Manage User APIs allow you to add, remove, activate, or deactivate users in your Zoho Analytics organization programmatically."
+      }
+    ],
+    "paths": {
+      "/restapi/v2/users": {
+        "get": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Get Users",
+          "description": "Returns list of users for the specified organization.",
+          "operationId": "getUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetUsersResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Add Users",
+          "description": "Add users to the specified organization.",
+          "operationId": "addUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.create"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/AddUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Remove Users",
+          "description": "Remove users from the specified organization.",
+          "operationId": "removeUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.delete"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/RemoveUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/users/active": {
+        "put": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Activate Users",
+          "description": "Activate users in the specified organization.",
+          "operationId": "activateUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.update"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/ActivateUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/users/inactive": {
+        "put": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Deactivate Users",
+          "description": "Deactivate users in the specified organization.",
+          "operationId": "deActivateUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.update"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/DeactivateUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/users/role": {
+        "put": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Change User Role",
+          "description": "Change role for the specified users.",
+          "operationId": "changeUserRole",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.update"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/ChangeUserRoleConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/subscription": {
+        "get": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Get Subscription Details",
+          "description": "Returns subscription details of the specified organization.",
+          "operationId": "getSubscriptionDetails",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSubscriptionDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/resources": {
+        "get": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Get Resource Details",
+          "description": "Returns resource usage details of the specified organization.",
+          "operationId": "getResourceDetails",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetResourceDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/users": {
+        "get": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Get Workspace Users",
+          "description": "Returns list of users for the specified workspace.",
+          "operationId": "getWorkspaceUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetWorkspaceUsersResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Add Workspace Users",
+          "description": "Add users to the specified workspace.",
+          "operationId": "addWorkspaceUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.create"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/AddWorkspaceUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Delete Workspace Users",
+          "description": "Delete users from the specified workspace.",
+          "operationId": "deleteWorkspaceUsers",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.delete"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/DeleteWorkspaceUsersConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/users/status": {
+        "put": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Change Workspace Users Status",
+          "description": "Update activation status of users in a Zoho Analytics workspace.",
+          "operationId": "changeWorkspaceUsersStatus",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.update"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/ChangeWorkspaceUsersStatusConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/users/role": {
+        "put": {
+          "tags": [
+            "User Management APIs"
+          ],
+          "summary": "Change Workspace Users Role",
+          "description": "Update role of users in a Zoho Analytics workspace.",
+          "operationId": "changeWorkspaceUsersRole",
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.usermanagement.update"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "$ref": "#/components/schemas/ChangeWorkspaceUsersRoleConfig"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "encoding": {
+                  "CONFIG": {
+                    "contentType": "application/json"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "No Content"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "parameters": {
+        "org-id": {
+          "name": "ZANALYTICS-ORGID",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Organization ID (can be obtained using Get Organizations API)."
+        },
+        "workspace-id": {
+          "name": "workspace-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the workspace."
+        }
+      },
+      "securitySchemes": {
+        "iam-oauth2-schema": {
+          "type": "oauth2",
+          "flows": {
+            "authorizationCode": {
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "scopes": {
+                "ZohoAnalytics.usermanagement.read": "Read user management data in Zoho Analytics.",
+                "ZohoAnalytics.usermanagement.delete": "Delete user management data in Zoho Analytics.",
+                "ZohoAnalytics.usermanagement.update": "Update user management data in Zoho Analytics.",
+                "ZohoAnalytics.usermanagement.create": "Create user management data in Zoho Analytics.",
+                "ZohoAnalytics.usermanagement.all": "Full access to user management in Zoho Analytics.",
+                "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+              }
+            }
+          }
+        }
+      },
+      "schemas": {
+        "GetUsersResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "emailId": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "role": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get users",
+              "data": {
+                "users": [
+                  {
+                    "emailId": "user1@gmail.com",
+                    "status": true,
+                    "role": "Organization Admin"
+                  },
+                  {
+                    "emailId": "user2@gmail.com",
+                    "status": true,
+                    "role": "User"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "AddUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "role": {
+              "type": "string",
+              "description": "Supported roles: USER, VIEWER, ORGADMIN"
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "emailIds"
+          ],
+          "examples": [
+            {
+              "emailIds": [
+                "<email-id1>",
+                "<email-id2>"
+              ],
+              "role": "USER"
+            }
+          ]
+        },
+        "RemoveUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "emailIds"
+          ],
+          "examples": [
+            {
+              "emailIds": [
+                "<email-id1>",
+                "<email-id2>"
+              ]
+            }
+          ]
+        },
+        "ActivateUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "emailIds"
+          ],
+          "examples": [
+            {
+              "emailIds": [
+                "emailId1",
+                "emailId2"
+              ]
+            }
+          ]
+        },
+        "DeactivateUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "emailIds"
+          ],
+          "examples": [
+            {
+              "emailIds": [
+                "emailId1",
+                "emailId2"
+              ]
+            }
+          ]
+        },
+        "ChangeUserRoleConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "USER",
+                "VIEWER",
+                "ORGADMIN"
+              ]
+            },
+            "domainName": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "emailIds",
+            "role"
+          ],
+          "examples": [
+            {
+              "emailIds": [
+                "emailId1",
+                "emailId2"
+              ],
+              "role": "USER"
+            }
+          ]
+        },
+        "GetSubscriptionDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "subscription": {
+                  "type": "object",
+                  "properties": {
+                    "planName": {
+                      "type": "string"
+                    },
+                    "addOns": {
+                      "type": "string"
+                    },
+                    "billingDate": {
+                      "type": "string"
+                    },
+                    "trialStatus": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get subscription details",
+              "data": {
+                "subscription": {
+                  "planName": "Premium",
+                  "addOns": "Zoho Recruit Connector,Zoho Books Connector",
+                  "billingDate": " - ",
+                  "trialStatus": false
+                }
+              }
+            }
+          ]
+        },
+        "GetResourceDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "resourceDetails": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "resourceName": {
+                        "type": "string"
+                      },
+                      "resourceUsage": {
+                        "type": "object",
+                        "properties": {
+                          "allocated": {
+                            "type": "string"
+                          },
+                          "used": {
+                            "type": "string"
+                          },
+                          "remaining": {
+                            "type": "string"
+                          },
+                          "remarks": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get resource details",
+              "data": {
+                "resourceDetails": [
+                  {
+                    "resourceName": "users",
+                    "resourceUsage": {
+                      "allocated": "15",
+                      "used": "15",
+                      "remaining": "0",
+                      "remarks": ""
+                    }
+                  },
+                  {
+                    "resourceName": "roUsers",
+                    "resourceUsage": {
+                      "allocated": "25",
+                      "used": "1",
+                      "remaining": "24",
+                      "remarks": ""
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "AddWorkspaceUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string",
+              "description": "Name of the domain to which users are added"
+            },
+            "role": {
+              "type": "string",
+              "description": "Role to assign (USER, WORKSPACEADMIN or custom role)"
+            }
+          },
+          "required": [
+            "emailIds"
+          ]
+        },
+        "DeleteWorkspaceUsersConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string",
+              "description": "Domain name to remove users from"
+            }
+          },
+          "required": [
+            "emailIds"
+          ]
+        },
+        "ChangeWorkspaceUsersStatusConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string",
+              "description": "Domain to update user status in"
+            },
+            "operation": {
+              "type": "string",
+              "enum": [
+                "activate",
+                "deactivate"
+              ],
+              "description": "The status operation to perform"
+            }
+          },
+          "required": [
+            "emailIds",
+            "operation"
+          ]
+        },
+        "ChangeWorkspaceUsersRoleConfig": {
+          "type": "object",
+          "properties": {
+            "emailIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "email"
+              }
+            },
+            "domainName": {
+              "type": "string",
+              "description": "Domain of users whose role is being changed"
+            },
+            "role": {
+              "type": "string",
+              "description": "New role to assign (USER, WORKSPACEADMIN, or custom)"
+            }
+          },
+          "required": [
+            "emailIds",
+            "role"
+          ]
+        },
+        "GetWorkspaceUsersResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "emailId": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "role": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "emailId",
+                      "status",
+                      "role"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "users"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "summary",
+            "data"
+          ],
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get workspace users",
+              "data": {
+                "users": [
+                  {
+                    "emailId": "user101@zoho.com",
+                    "status": true,
+                    "role": "Account Admin"
+                  },
+                  {
+                    "emailId": "user1@zoho.com",
+                    "status": true,
+                    "role": "Workspace Admin"
+                  },
+                  {
+                    "emailId": "user2@zoho.com",
+                    "status": true,
+                    "role": "Workspace Admin"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/schemas/Error"
+        }
+      }
+    }
+  }

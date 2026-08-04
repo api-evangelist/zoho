@@ -1,0 +1,4366 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Zoho Analytics API",
+      "version": "v2",
+      "description": "API for managing data in Zoho Analytics workspaces and views."
+    },
+    "servers": [
+      {
+        "url": "https://analyticsapi.zoho.com"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Metadata APIs",
+        "description": "Metadata APIs are used to fetch information about the reporting Workspaces, tables, reports, and dashboards created in Zoho Analytics."
+      }
+    ],
+    "paths": {
+      "/restapi/v2/orgs": {
+        "get": {
+          "operationId": "getOrganizations",
+          "summary": "Get organizations",
+          "description": "Retrieve a list of organizations accessible by the authenticated user.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "List of organizations",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetOrganizationsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces": {
+        "get": {
+          "operationId": "getAllWorkspaces",
+          "summary": "Get all workspaces",
+          "description": "Retrieve a list of all workspaces accessible by the authenticated user.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of all workspaces",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAllWorkspacesResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/owned": {
+        "get": {
+          "operationId": "getOwnedWorkspaces",
+          "summary": "Get owned workspaces",
+          "description": "Retrieve a list of workspaces owned by the authenticated user.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of owned workspaces",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetOwnedWorkspacesResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/shared": {
+        "get": {
+          "operationId": "getSharedWorkspaces",
+          "summary": "Get shared workspaces",
+          "description": "Retrieve a list of workspaces shared with the authenticated user.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List of shared workspaces",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSharedWorkspacesResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Views",
+          "operationId": "getViews",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetViewsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/folders": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Folders",
+          "operationId": "getFolders",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetFoldersResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/recentviews": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Recent Views",
+          "description": "Returns list of recently accessed views.",
+          "operationId": "getRecentViews",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetRecentViewsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/trash": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Trash Views",
+          "description": "Returns list of all views available in trash for the specified workspace.",
+          "operationId": "getTrashViews",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetTrashViewsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/dashboards": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Dashboards",
+          "description": "Returns list of all accessible dashboards.",
+          "operationId": "getDashboards",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetDashboardsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/dashboards/owned": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Owned Dashboards",
+          "operationId": "getOwnedDashboards",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetOwnedDashboardsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/dashboards/shared": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Shared Dashboards",
+          "operationId": "getSharedDashboards",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetSharedDashboardsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/secretkey": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Workspace Secret Key",
+          "operationId": "getWorkspaceSecretKey",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetWorkspaceSecretKeyResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Workspace Details",
+          "operationId": "getWorkspaceDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetWorkspaceDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/views/{view-id}": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get View Details",
+          "operationId": "getViewDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": false,
+              "description": "JSON object with keys like 'withInvolvedMetaInfo'. Needs to be stringified and URL-encoded.",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "includeMeta": {
+                  "value": "{\"withInvolvedMetaInfo\": true}"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "View details response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetViewDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/querytables/{query-table-id}": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get QueryTable Details",
+          "description": "Returns details of the specified query table.",
+          "operationId": "getQueryTableDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "name": "query-table-id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "ID of the query table."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "QueryTable details response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetQueryTableDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/metadata": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Table Metadata",
+          "description": "Returns metadata details such as available columns and their attributes for the specified table.",
+          "operationId": "getTableMetadata",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Table metadata details response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetTableMetadataResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/dependents": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get View Dependents",
+          "operationId": "getViewDependents",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Dependent views response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetViewDependentsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/columns/{column-id}/dependents": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Column Dependents",
+          "operationId": "getColumnDependents",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            },
+            {
+              "$ref": "#/components/parameters/column-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Column dependents response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetColumnDependentsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/favorite": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Add Favorite Workspace",
+          "operationId": "addFavoriteWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Favorite added successfully"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Remove Favorite Workspace",
+          "operationId": "removeFavoriteWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Favorite removed successfully"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/default": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Add Default Workspace",
+          "operationId": "addDefaultWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Workspace added as default"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Remove Default Workspace",
+          "operationId": "removeDefaultWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Workspace removed from default"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/favorite": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Add Favorite View",
+          "operationId": "addFavoriteView",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "View marked as favorite"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Remove Favorite View",
+          "operationId": "removeFavoriteView",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "View removed from favorites"
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/template/data": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Export as Template",
+          "operationId": "exportAsTemplate",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": true,
+              "description": "Stringified and URL-encoded JSON object containing 'viewIds'.",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "basicExport": {
+                  "value": "{\"viewIds\": [\"176702000008549302\", \"176702000008549300\"]}"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "ZIP file containing exported template data",
+              "content": {
+                "application/x-zip-compressed": {
+                  "schema": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/customformulas": {
+        "get": {
+          "summary": "Get Custom Formula List",
+          "description": "Returns list of all formula columns for the specified table.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "operationId": "getCustomFormulaList",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetCustomFormulaListResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/aggregateformulas": {
+        "get": {
+          "summary": "Get Aggregate Formula List",
+          "description": "Returns list of all aggregate formulas for the specified table.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "operationId": "getAggregateFormulaList",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAggregateFormulaListResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/aggregateformulas": {
+        "get": {
+          "summary": "Get Aggregate Formulas In Workspace",
+          "description": "Returns list of all aggregate formulas for the specified workspace.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "operationId": "getAggregateFormulasInWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAggregateFormulasInWorkspaceResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/aggregateformulas/{formula-id}/dependents": {
+        "get": {
+          "summary": "Get Aggregate Formula Dependents",
+          "description": "Returns list of all dependent views and formulas for the specified aggregate formula.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "operationId": "getAggregateFormulaDependents",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "name": "formula-id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "The ID of the aggregate formula."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAggregateFormulaDependentsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/aggregateformulas/{formula-id}/value": {
+        "get": {
+          "summary": "Get Aggregate Formula Value",
+          "description": "Returns the value of the aggregate formula.",
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "operationId": "getAggregateFormulaValue",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "name": "formula-id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "The ID of the aggregate formula."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAggregateFormulaValueResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/metadetails": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Meta Details",
+          "description": "Returns details of the specified workspace or view.",
+          "operationId": "getMetaDetails",
+          "parameters": [
+            {
+              "name": "CONFIG",
+              "in": "query",
+              "required": false,
+              "style": "form",
+              "explode": false,
+              "schema": {
+                "$ref": "#/components/schemas/GetMetaDetailsConfig"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetMetaDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/emailschedules": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Email Schedules",
+          "description": "Returns list of email schedules available in the specified workspace.",
+          "operationId": "getEmailSchedules",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetEmailSchedulesResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/datasources": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Datasources",
+          "description": "Fetches datasources for the specified view.",
+          "operationId": "getDatasources",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Datasources fetched successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetDatasourcesResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/importdetails": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Last Import Details",
+          "description": "Returns details of the last data import for the specified view.",
+          "operationId": "getLastImportDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Last import details fetched successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetLastImportDetailsResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/datasource/{datasource-id}/sync": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.create"
+              ]
+            }
+          ],
+          "summary": "Sync Data",
+          "description": "Triggers a manual data sync for the specified view's datasource.",
+          "operationId": "syncDatasource",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Sync initiated successfully"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/views/{view-id}/sync": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.create"
+              ]
+            }
+          ],
+          "summary": "Refetch Data",
+          "description": "Refetches data from the source for the specified view.",
+          "operationId": "refetchDatasource",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/view-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Refetch initiated successfully"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/datasource/{datasource-id}": {
+        "put": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Update Datasource Connection",
+          "description": "Updates the datasource connection details for the specified view.",
+          "operationId": "updateDatasourceConnection",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/datasource-id"
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/x-www-form-urlencoded": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CONFIG": {
+                      "type": "string",
+                      "description": "Stringified JSON containing datasource connection config"
+                    }
+                  },
+                  "required": [
+                    "CONFIG"
+                  ]
+                },
+                "examples": {
+                  "sample": {
+                    "summary": "Example CONFIG",
+                    "value": "CONFIG={\"connectionName\": \"ZohoCRM_NewConnection\"}"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "Datasource connection updated successfully"
+            }
+          }
+        }
+      },
+      "/restapi/v2/workspaces/{workspace-id}/wlaccess": {
+        "post": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Enable Domain Workspace",
+          "description": "Enable workspace access for a specified white label domain.",
+          "operationId": "enableDomainWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Domain access enabled successfully"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.update"
+              ]
+            }
+          ],
+          "summary": "Disable Domain Workspace",
+          "description": "Disable workspace access for the specified white label domain.",
+          "operationId": "disableDomainWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Domain access disabled successfully"
+            }
+          }
+        }
+      },
+      "/restapi/v2/automl/analysis": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get AutoML Analysis In Org",
+          "description": "Returns all AutoML analysis available in an organization.",
+          "operationId": "getAutoMLAnalysisInOrg",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "AutoML analysis list response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAutoMLAnalysisResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/automl/workspaces/{workspace-id}/analysis": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get AutoML Analysis In Workspace",
+          "description": "Returns list of AutoML analysis for the specified workspace.",
+          "operationId": "getAutoMLAnalysisInWorkspace",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "AutoML analysis list response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAutoMLAnalysisInWorkspaceResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/automl/workspaces/{workspace-id}/analysis/{analysis-id}": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get AutoML Analysis Details",
+          "description": "Retrieve detailed information for a specific AutoML analysis.",
+          "operationId": "getAutoMLAnalysisDetails",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/analysis-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "AutoML analysis details response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAutoMLAnalysisDetailsResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      },
+      "/restapi/v2/automl/workspaces/{workspace-id}/analysis/{analysis-id}/models/{model-id}/deployments": {
+        "get": {
+          "tags": [
+            "Metadata APIs"
+          ],
+          "security": [
+            {
+              "iam-oauth2-schema": [
+                "ZohoAnalytics.metadata.read"
+              ]
+            }
+          ],
+          "summary": "Get Deployments For A Model",
+          "description": "Returns deployment details available for an AutoML analysis model.",
+          "operationId": "getDeploymentsForModel",
+          "parameters": [
+            {
+              "$ref": "#/components/parameters/org-id"
+            },
+            {
+              "$ref": "#/components/parameters/workspace-id"
+            },
+            {
+              "$ref": "#/components/parameters/analysis-id"
+            },
+            {
+              "$ref": "#/components/parameters/model-id"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Deployment details response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetDeploymentsForModelResponse"
+                  }
+                }
+              }
+            },
+            "default": {
+              "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "parameters": {
+        "org-id": {
+          "name": "ZANALYTICS-ORGID",
+          "in": "header",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "Organization ID (can be obtained using Get Organizations API)."
+        },
+        "workspace-id": {
+          "name": "workspace-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the workspace."
+        },
+        "view-id": {
+          "name": "view-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the view."
+        },
+        "column-id": {
+          "name": "column-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the column."
+        },
+        "datasource-id": {
+          "name": "datasource-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the datasource."
+        },
+        "formula-id": {
+          "name": "formula-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the formula."
+        },
+        "analysis-id": {
+          "name": "analysis-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the AutoML analysis."
+        },
+        "model-id": {
+          "name": "model-id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "ID of the AutoML analysis model."
+        }
+      },
+      "securitySchemes": {
+        "iam-oauth2-schema": {
+          "type": "oauth2",
+          "flows": {
+            "authorizationCode": {
+              "authorizationUrl": "https://accounts.zoho.com/oauth/v2/auth",
+              "tokenUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "refreshUrl": "https://accounts.zoho.com/oauth/v2/token",
+              "scopes": {
+                "ZohoAnalytics.metadata.read": "Read metadata resource from Zoho Analytics.",
+                "ZohoAnalytics.metadata.delete": "Delete metadata resource from Zoho Analytics.",
+                "ZohoAnalytics.metadata.update": "Update metadata resource in Zoho Analytics.",
+                "ZohoAnalytics.metadata.create": "Create metadata resource in Zoho Analytics.",
+                "ZohoAnalytics.metadata.all": "Full access to metadata in Zoho Analytics.",
+                "ZohoAnalytics.fullaccess.all": "Full access to all Zoho Analytics features."
+              }
+            }
+          }
+        }
+      },
+      "schemas": {
+        "GetMetaDetailsConfig": {
+          "type": "object",
+          "properties": {
+            "workspaceName": {
+              "type": "string",
+              "description": "The name of the workspace."
+            },
+            "viewName": {
+              "type": "string",
+              "description": "The name of the view."
+            }
+          },
+          "examples": [
+            {
+              "workspaceName": "Sales Workspace"
+            }
+          ],
+          "required": [
+            "workspaceName"
+          ]
+        },
+        "GetOrganizationsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "orgs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "orgId": {
+                        "type": "string"
+                      },
+                      "orgName": {
+                        "type": "string"
+                      },
+                      "orgDesc": {
+                        "type": "string"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "createdByZuId": {
+                        "type": "string"
+                      },
+                      "planName": {
+                        "type": "string"
+                      },
+                      "isDefault": {
+                        "type": "boolean"
+                      },
+                      "numberOfworkspaces": {
+                        "type": "integer"
+                      },
+                      "role": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get organizations",
+              "data": {
+                "orgs": [
+                  {
+                    "orgId": "671712892",
+                    "orgName": "bruce.wn",
+                    "orgDesc": "",
+                    "createdBy": "bruce.wn@zoho.com",
+                    "createdByZuId": "671546307",
+                    "planName": "Premium",
+                    "isDefault": true,
+                    "numberOfworkspaces": 27,
+                    "role": "Account Admin"
+                  },
+                  {
+                    "orgId": "647668523",
+                    "orgName": "clark.nt",
+                    "orgDesc": "",
+                    "createdBy": "clark.nt@zoho.com",
+                    "createdByZuId": "647310528",
+                    "planName": "Premium",
+                    "isDefault": false,
+                    "numberOfworkspaces": 2,
+                    "role": "User"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAllWorkspacesResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "ownedWorkspaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceSummary"
+                  }
+                },
+                "sharedWorkspaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceSummary"
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get all workspaces",
+              "data": {
+                "ownedWorkspaces": [
+                  {
+                    "workspaceId": "1767024000000060001",
+                    "workspaceName": "Zoho CRM Reports",
+                    "workspaceDesc": "",
+                    "orgId": "671712892",
+                    "createdTime": "1548914379156",
+                    "createdBy": "bruce.wn@zoho.com",
+                    "isDefault": false
+                  },
+                  {
+                    "workspaceId": "1767024000000004900",
+                    "workspaceName": "Zoho Sales reports",
+                    "workspaceDesc": "",
+                    "orgId": "671712892",
+                    "createdTime": "1533642916942",
+                    "createdBy": "bruce.wn@zoho.com",
+                    "isDefault": false
+                  }
+                ],
+                "sharedWorkspaces": [
+                  {
+                    "workspaceId": "1038728000004459012",
+                    "workspaceName": "Sales Data",
+                    "workspaceDesc": "",
+                    "orgId": "67510920",
+                    "createdTime": "1614961625207",
+                    "createdBy": "clark.nt@zoho.com",
+                    "isDefault": false
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetOwnedWorkspacesResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "workspaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceSummary"
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get owned workspaces",
+              "data": {
+                "workspaces": [
+                  {
+                    "workspaceId": "1038728000004459012",
+                    "workspaceName": "Sales Data",
+                    "workspaceDesc": "",
+                    "orgId": "67510920",
+                    "createdTime": "1614961625207",
+                    "createdBy": "clark.nt@zoho.com",
+                    "isDefault": false
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetSharedWorkspacesResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "workspaces": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WorkspaceSummary"
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get shared workspaces",
+              "data": {
+                "workspaces": [
+                  {
+                    "workspaceId": "1038728000004459012",
+                    "workspaceName": "Sales Data",
+                    "workspaceDesc": "",
+                    "orgId": "67510920",
+                    "createdTime": "1614961625207",
+                    "createdBy": "clark.nt@zoho.com",
+                    "isDefault": false
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "WorkspaceSummary": {
+          "type": "object",
+          "properties": {
+            "workspaceId": {
+              "type": "string"
+            },
+            "workspaceName": {
+              "type": "string"
+            },
+            "workspaceDesc": {
+              "type": "string"
+            },
+            "orgId": {
+              "type": "string"
+            },
+            "createdTime": {
+              "type": "string"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "isDefault": {
+              "type": "boolean"
+            }
+          }
+        },
+        "GetViewsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewDesc": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      },
+                      "folderName": {
+                        "type": "string"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "createdTime": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "success": {
+                "value": {
+                  "status": "success",
+                  "summary": "Get views",
+                  "data": {
+                    "views": [
+                      {
+                        "viewId": "1767024000000149001",
+                        "viewName": "Leads",
+                        "viewDesc": "",
+                        "viewType": "TABLE",
+                        "folderId": "1767024000000143001",
+                        "folderName": "Default",
+                        "createdBy": "bruce.wn@zoho.com",
+                        "createdTime": "1548914613491"
+                      },
+                      {
+                        "viewId": "1767024000000149002",
+                        "viewName": "Customers",
+                        "viewDesc": "",
+                        "viewType": "TABLE",
+                        "folderId": "1767024000000143001",
+                        "folderName": "Default",
+                        "createdBy": "bruce.wn@zoho.com",
+                        "createdTime": "1548914714322"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "GetFoldersResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "folders": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "folderId": {
+                        "type": "string"
+                      },
+                      "folderName": {
+                        "type": "string"
+                      },
+                      "folderDesc": {
+                        "type": "string"
+                      },
+                      "isDefault": {
+                        "type": "boolean"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "createdTime": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "success": {
+                "value": {
+                  "status": "success",
+                  "summary": "Get folders",
+                  "data": {
+                    "folders": [
+                      {
+                        "folderId": "1767024000000143001",
+                        "folderName": "Default",
+                        "folderDesc": "",
+                        "isDefault": true,
+                        "createdBy": "bruce.wn@zoho.com",
+                        "createdTime": "1548914379156"
+                      },
+                      {
+                        "folderId": "1767024000000143002",
+                        "folderName": "Sales",
+                        "folderDesc": "",
+                        "isDefault": false,
+                        "createdBy": "bruce.wn@zoho.com",
+                        "createdTime": "1548914379156"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "GetRecentViewsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "workspaceId": {
+                        "type": "string"
+                      },
+                      "workspaceName": {
+                        "type": "string"
+                      },
+                      "viewLastAccessedTime": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get recent views",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1767024000003145011",
+                    "viewName": "Accounts",
+                    "viewType": "Table",
+                    "workspaceId": "1767024000003145002",
+                    "workspaceName": "Zoho CRM Reports",
+                    "viewLastAccessedTime": "1623746630303"
+                  },
+                  {
+                    "viewId": "1767024000003145052",
+                    "viewName": "Sales",
+                    "viewType": "Table",
+                    "workspaceId": "1767024000003145002",
+                    "workspaceName": "Zoho CRM Reports",
+                    "viewLastAccessedTime": "1623746622479"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetTrashViewsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "deletedTime": {
+                        "type": "string"
+                      },
+                      "deletedBy": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "get trash view list",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1763024000008429063",
+                    "viewName": "SalesTable",
+                    "viewType": "Table",
+                    "deletedTime": "1694183082211",
+                    "deletedBy": "admin@finepick.com"
+                  },
+                  {
+                    "viewId": "1763024000008429061",
+                    "viewName": "Untitled-1",
+                    "viewType": "Table",
+                    "deletedTime": "1694183082211",
+                    "deletedBy": "admin@finepick.com"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetDashboardsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "ownedViews": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardSummary"
+                  }
+                },
+                "sharedViews": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DashboardSummary"
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get all dashboards",
+              "data": {
+                "ownedViews": [
+                  {
+                    "viewId": "1767024000000060095",
+                    "viewName": "Closed Revenue",
+                    "viewDesc": "Dashboard capturing the  highlights of closed revenue",
+                    "viewType": "Dashboard",
+                    "parentViewId": "",
+                    "folderId": "1767024000000060002",
+                    "createdTime": "1548914379158",
+                    "createdBy": "bruce.wn@zoho.com",
+                    "lastModifiedTime": "1548914399837",
+                    "lastModifiedBy": "bruce.wn@zoho.com",
+                    "isFavorite": false,
+                    "sharedBy": "",
+                    "workspaceId": "1767024000000060001",
+                    "orgId": "671712892"
+                  }
+                ],
+                "sharedViews": [
+                  {
+                    "viewId": "1770174000000672854",
+                    "viewName": "Sales VS Cost Dashboard",
+                    "viewDesc": "Comparison between Sales and Cost",
+                    "viewType": "Dashboard",
+                    "parentViewId": "",
+                    "folderId": "1770174000000674175",
+                    "createdTime": "1553245755646",
+                    "createdBy": "clark.nt@zoho.com",
+                    "lastModifiedTime": "1554441829143",
+                    "lastModifiedBy": "clark.nt@zoho.com",
+                    "isFavorite": false,
+                    "sharedBy": "",
+                    "workspaceId": "1770174000000670320",
+                    "orgId": "671711195"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "DashboardSummary": {
+          "type": "object",
+          "properties": {
+            "viewId": {
+              "type": "string"
+            },
+            "viewName": {
+              "type": "string"
+            },
+            "viewDesc": {
+              "type": "string"
+            },
+            "viewType": {
+              "type": "string"
+            },
+            "parentViewId": {
+              "type": "string"
+            },
+            "folderId": {
+              "type": "string"
+            },
+            "createdTime": {
+              "type": "string"
+            },
+            "createdBy": {
+              "type": "string"
+            },
+            "lastModifiedTime": {
+              "type": "string"
+            },
+            "lastModifiedBy": {
+              "type": "string"
+            },
+            "isFavorite": {
+              "type": "boolean"
+            },
+            "sharedBy": {
+              "type": "string"
+            },
+            "workspaceId": {
+              "type": "string"
+            },
+            "orgId": {
+              "type": "string"
+            }
+          }
+        },
+        "GetOwnedDashboardsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewDesc": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "parentViewId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      },
+                      "createdTime": {
+                        "type": "string"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "lastModifiedTime": {
+                        "type": "string"
+                      },
+                      "lastModifiedBy": {
+                        "type": "string"
+                      },
+                      "isFavorite": {
+                        "type": "boolean"
+                      },
+                      "sharedBy": {
+                        "type": "string"
+                      },
+                      "workspaceId": {
+                        "type": "string"
+                      },
+                      "orgId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get owned dashboards",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1767024000000060095",
+                    "viewName": "Closed Revenue",
+                    "viewDesc": "Dashboard capturing the  highlights of closed revenue",
+                    "viewType": "Dashboard",
+                    "parentViewId": "",
+                    "folderId": "1767024000000060002",
+                    "createdTime": "1548914379158",
+                    "createdBy": "bruce.wn@zoho.com",
+                    "lastModifiedTime": "1548914399837",
+                    "lastModifiedBy": "bruce.wn@zoho.com",
+                    "isFavorite": false,
+                    "sharedBy": "",
+                    "workspaceId": "1767024000000060001",
+                    "orgId": "671712892"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetSharedDashboardsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewDesc": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "parentViewId": {
+                        "type": "string"
+                      },
+                      "folderId": {
+                        "type": "string"
+                      },
+                      "createdTime": {
+                        "type": "string"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "lastModifiedTime": {
+                        "type": "string"
+                      },
+                      "lastModifiedBy": {
+                        "type": "string"
+                      },
+                      "isFavorite": {
+                        "type": "boolean"
+                      },
+                      "sharedBy": {
+                        "type": "string"
+                      },
+                      "workspaceId": {
+                        "type": "string"
+                      },
+                      "orgId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get shared dashboards",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1770174000000672854",
+                    "viewName": "Sales VS Cost Dashboard",
+                    "viewDesc": "Comparison between Sales and Cost",
+                    "viewType": "Dashboard",
+                    "parentViewId": "",
+                    "folderId": "1770174000000674175",
+                    "createdTime": "1553245755646",
+                    "createdBy": "clark.nt@zoho.com",
+                    "lastModifiedTime": "1554441829143",
+                    "lastModifiedBy": "clark.nt@zoho.com",
+                    "isFavorite": false,
+                    "sharedBy": "",
+                    "workspaceId": "1770174000000670320",
+                    "orgId": "671711195"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetWorkspaceSecretKeyResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "workspaceKey": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get workspace secretkey",
+              "data": {
+                "workspaceKey": "dc0543fc624210a5e4f578adabe07369"
+              }
+            }
+          ]
+        },
+        "GetWorkspaceDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "workspaces": {
+                  "type": "object",
+                  "properties": {
+                    "workspaceId": {
+                      "type": "string"
+                    },
+                    "workspaceName": {
+                      "type": "string"
+                    },
+                    "workspaceDesc": {
+                      "type": "string"
+                    },
+                    "createdTime": {
+                      "type": "string"
+                    },
+                    "createdBy": {
+                      "type": "string"
+                    },
+                    "orgId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get workspace details",
+              "data": {
+                "workspaces": {
+                  "workspaceId": "1767024000003145002",
+                  "workspaceName": "Account Details",
+                  "workspaceDesc": "",
+                  "createdTime": "1623743494151",
+                  "createdBy": "bruce.wn@zoho.com",
+                  "orgId": "671712892"
+                }
+              }
+            }
+          ]
+        },
+        "GetViewDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "object",
+                  "properties": {
+                    "viewId": {
+                      "type": "string"
+                    },
+                    "viewName": {
+                      "type": "string"
+                    },
+                    "viewDesc": {
+                      "type": "string"
+                    },
+                    "viewType": {
+                      "type": "string"
+                    },
+                    "workspaceId": {
+                      "type": "string"
+                    },
+                    "orgId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get view details",
+              "data": {
+                "views": {
+                  "viewId": "1767024000003145011",
+                  "viewName": "Accounts",
+                  "viewDesc": "Description",
+                  "viewType": "Table",
+                  "workspaceId": "1767024000003145002",
+                  "orgId": "671712892"
+                }
+              }
+            }
+          ]
+        },
+        "GetQueryTableDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "viewId": {
+                  "type": "string"
+                },
+                "viewName": {
+                  "type": "string"
+                },
+                "viewDesc": {
+                  "type": "string"
+                },
+                "sqlQuery": {
+                  "type": "string"
+                },
+                "workspaceId": {
+                  "type": "string"
+                },
+                "orgId": {
+                  "type": "string"
+                },
+                "createdTime": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "createdBy": {
+                  "type": "string"
+                },
+                "createdByName": {
+                  "type": "string"
+                },
+                "createdByZuId": {
+                  "type": "string"
+                },
+                "lastDesignModifiedTime": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "lastDesignModifiedBy": {
+                  "type": "string"
+                },
+                "lastDesignModifiedByName": {
+                  "type": "string"
+                },
+                "lastDesignModifiedByZuId": {
+                  "type": "string"
+                },
+                "involvedViews": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "columnId": {
+                        "type": "string"
+                      },
+                      "columnName": {
+                        "type": "string"
+                      },
+                      "dataType": {
+                        "type": "string"
+                      },
+                      "dataTypeId": {
+                        "type": "integer"
+                      },
+                      "dataTypeName": {
+                        "type": "string"
+                      },
+                      "columnIndex": {
+                        "type": "integer"
+                      },
+                      "columnDesc": {
+                        "type": "string"
+                      },
+                      "columnMaxSize": {
+                        "type": "integer"
+                      },
+                      "isNullable": {
+                        "type": "boolean"
+                      },
+                      "defaultValue": {
+                        "type": "string"
+                      },
+                      "pkTableName": {
+                        "type": "string"
+                      },
+                      "pkColumnName": {
+                        "type": "string"
+                      },
+                      "formulaDisplayName": {
+                        "type": "string"
+                      },
+                      "currencyFormat": {
+                        "type": "string"
+                      },
+                      "thousandSeparator": {
+                        "type": "string"
+                      },
+                      "decimalSeparator": {
+                        "type": "string"
+                      },
+                      "decimalPlaces": {
+                        "type": "integer"
+                      },
+                      "dateFormat": {
+                        "type": "string"
+                      },
+                      "isHidden": {
+                        "type": "boolean"
+                      },
+                      "sortedOrder": {
+                        "type": "integer"
+                      },
+                      "sortedIndex": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get querytable details",
+              "data": {
+                "viewId": "46620600000060002",
+                "viewName": "QT 1",
+                "viewDesc": "",
+                "sqlQuery": "SELECT\n\t\t \"Cost\",\n\t\t \"Customer Name\",\n\t\t \"Date\"\nFROM  \"Sales\" \n",
+                "workspaceId": "46620600000060012",
+                "orgId": "60047332811",
+                "createdTime": "1769619660917",
+                "createdBy": "admin@finepick.com",
+                "createdByName": "Vincent Herbert",
+                "createdByZuId": "60040396055",
+                "lastDesignModifiedTime": "1769619660955",
+                "lastDesignModifiedBy": "admin@finepick.com",
+                "lastDesignModifiedByName": "Vincent Herbert",
+                "lastDesignModifiedByZuId": "60040396055",
+                "involvedViews": [
+                  {
+                    "viewId": "466206000000061149",
+                    "viewName": "Sales",
+                    "viewType": "Table"
+                  }
+                ],
+                "columns": [
+                  {
+                    "columnId": "466206000000206005",
+                    "columnName": "Cost",
+                    "dataType": "CURRENCY",
+                    "dataTypeId": 7,
+                    "dataTypeName": "Currency",
+                    "columnIndex": 1,
+                    "columnDesc": "",
+                    "columnMaxSize": 22,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "currencyFormat": "es;PR;",
+                    "thousandSeparator": ",",
+                    "decimalSeparator": ".",
+                    "decimalPlaces": 2,
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  },
+                  {
+                    "columnId": "466206000000206006",
+                    "columnName": "Customer Name",
+                    "dataType": "PLAIN",
+                    "dataTypeId": 1,
+                    "dataTypeName": "Plain Text",
+                    "columnIndex": 2,
+                    "columnDesc": "",
+                    "columnMaxSize": 253,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  },
+                  {
+                    "columnId": "466206000000206007",
+                    "columnName": "Date",
+                    "dataType": "DATE_AS_DATE",
+                    "dataTypeId": 22,
+                    "dataTypeName": "Date",
+                    "columnIndex": 3,
+                    "columnDesc": "",
+                    "columnMaxSize": 19,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "dateFormat": "dd MMMM, yyyy",
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetTableMetadataResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "columns": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "columnId": {
+                        "type": "string"
+                      },
+                      "columnName": {
+                        "type": "string"
+                      },
+                      "dataType": {
+                        "type": "string"
+                      },
+                      "dataTypeId": {
+                        "type": "integer"
+                      },
+                      "dataTypeName": {
+                        "type": "string"
+                      },
+                      "columnIndex": {
+                        "type": "integer"
+                      },
+                      "columnDesc": {
+                        "type": "string"
+                      },
+                      "columnMaxSize": {
+                        "type": "integer"
+                      },
+                      "isNullable": {
+                        "type": "boolean"
+                      },
+                      "defaultValue": {
+                        "type": "string"
+                      },
+                      "pkTableName": {
+                        "type": "string"
+                      },
+                      "pkColumnName": {
+                        "type": "string"
+                      },
+                      "formulaDisplayName": {
+                        "type": "string"
+                      },
+                      "isHidden": {
+                        "type": "boolean"
+                      },
+                      "sortedOrder": {
+                        "type": "integer"
+                      },
+                      "sortedIndex": {
+                        "type": "integer"
+                      },
+                      "currencyFormat": {
+                        "type": "string"
+                      },
+                      "thousandSeparator": {
+                        "type": "string"
+                      },
+                      "decimalSeparator": {
+                        "type": "string"
+                      },
+                      "decimalPlaces": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get table metadata",
+              "data": {
+                "columns": [
+                  {
+                    "columnId": "466206000000069003",
+                    "columnName": "Product",
+                    "dataType": "PLAIN",
+                    "dataTypeId": 1,
+                    "dataTypeName": "Plain Text",
+                    "columnIndex": 1,
+                    "columnDesc": "",
+                    "columnMaxSize": 253,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  },
+                  {
+                    "columnId": "466206000000073014",
+                    "columnName": "precol",
+                    "dataType": "PLAIN",
+                    "dataTypeId": 1,
+                    "dataTypeName": "Plain Text",
+                    "columnIndex": 2,
+                    "columnDesc": "",
+                    "columnMaxSize": 253,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  },
+                  {
+                    "columnId": "466206000000073013",
+                    "columnName": "Sales",
+                    "dataType": "CURRENCY",
+                    "dataTypeId": 7,
+                    "dataTypeName": "Currency",
+                    "columnIndex": 3,
+                    "columnDesc": "",
+                    "columnMaxSize": 22,
+                    "isNullable": true,
+                    "defaultValue": "",
+                    "pkTableName": "",
+                    "pkColumnName": "",
+                    "formulaDisplayName": "",
+                    "currencyFormat": "en;US;",
+                    "thousandSeparator": ",",
+                    "decimalSeparator": ".",
+                    "decimalPlaces": 2,
+                    "isHidden": false,
+                    "sortedOrder": 0,
+                    "sortedIndex": -1
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetViewDependentsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewTypeId": {
+                        "type": "integer"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get view dependents",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1767024000009120004",
+                    "viewName": "Go_QT",
+                    "viewTypeId": 6,
+                    "viewType": "Query Table"
+                  },
+                  {
+                    "viewId": "1767024000009129004",
+                    "viewName": "QT_CURL",
+                    "viewTypeId": 6,
+                    "viewType": "Query Table"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetColumnDependentsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "views": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewTypeId": {
+                        "type": "integer"
+                      },
+                      "reportType": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "customFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "columnId": {
+                        "type": "string"
+                      },
+                      "columnName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "aggregateFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "formulaId": {
+                        "type": "string"
+                      },
+                      "formulaName": {
+                        "type": "string"
+                      },
+                      "parentViewName": {
+                        "type": "string"
+                      },
+                      "parentViewId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get column dependents",
+              "data": {
+                "views": [
+                  {
+                    "viewId": "1767024000009120004",
+                    "viewName": "Go_QT",
+                    "viewTypeId": 6,
+                    "reportType": "QueryTable"
+                  },
+                  {
+                    "viewId": "1767024000009129004",
+                    "viewName": "QT_CURL",
+                    "viewTypeId": 6,
+                    "reportType": "QueryTable"
+                  }
+                ],
+                "customFormulas": [
+                  {
+                    "columnId": "1767024000009066006",
+                    "columnName": "C1"
+                  },
+                  {
+                    "columnId": "1767024000009120246",
+                    "columnName": "F1"
+                  }
+                ],
+                "aggregateFormulas": [
+                  {
+                    "formulaId": "1767024000009137005",
+                    "formulaName": "F2",
+                    "parentViewName": "CS_1",
+                    "parentViewId": "1767024000008793002"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetCustomFormulaListResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "customFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "formulaId": {
+                        "type": "string"
+                      },
+                      "formulaName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get formula columns",
+              "data": {
+                "customFormulas": [
+                  {
+                    "formulaId": "1767024000009066006",
+                    "formulaName": "C1"
+                  },
+                  {
+                    "formulaId": "1767024000009121001",
+                    "formulaName": "Formula 2"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAggregateFormulaListResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "aggregateFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "formulaId": {
+                        "type": "string"
+                      },
+                      "formulaName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get aggregate formulas",
+              "data": {
+                "aggregateFormulas": [
+                  {
+                    "formulaId": "1767024000009120001",
+                    "formulaName": "SumOfSales"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAggregateFormulasInWorkspaceResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "aggregateFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "formulaId": {
+                        "type": "string"
+                      },
+                      "formulaName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get aggregate formulas in workspace",
+              "data": {
+                "aggregateFormulas": [
+                  {
+                    "formulaId": "1768024000011672001",
+                    "formulaName": "Sum"
+                  },
+                  {
+                    "formulaId": "1768024000011672003",
+                    "formulaName": "Average"
+                  },
+                  {
+                    "formulaId": "1768024000011672005",
+                    "formulaName": "Mode"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAggregateFormulaDependentsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "childViews": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "viewTypeId": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "parentTables": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "viewId": {
+                        "type": "string"
+                      },
+                      "viewName": {
+                        "type": "string"
+                      },
+                      "viewType": {
+                        "type": "string"
+                      },
+                      "viewTypeId": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "aggregateFormulas": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "childDashboards": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get aggregate formula dependents",
+              "data": {
+                "childViews": [
+                  {
+                    "viewName": "Chart-1",
+                    "viewId": "1767026000011512009",
+                    "viewType": "Chart View",
+                    "viewTypeId": 2
+                  }
+                ],
+                "parentTables": [
+                  {
+                    "viewId": "1767026000011211001",
+                    "viewName": "Sales Table",
+                    "viewType": "Table",
+                    "viewTypeId": 0
+                  }
+                ],
+                "aggregateFormulas": [],
+                "childDashboards": []
+              }
+            }
+          ]
+        },
+        "GetAggregateFormulaValueResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "formulaId": {
+                  "type": "string"
+                },
+                "formulaName": {
+                  "type": "string"
+                },
+                "formulaValue": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get aggregate formula value",
+              "data": {
+                "formulaId": "1768024000011672001",
+                "formulaName": "Sum",
+                "formulaValue": "348700"
+              }
+            }
+          ]
+        },
+        "GetMetaDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "workspaces": {
+                  "type": "object",
+                  "properties": {
+                    "workspaceId": {
+                      "type": "string"
+                    },
+                    "workspaceName": {
+                      "type": "string"
+                    },
+                    "workspaceDesc": {
+                      "type": "string"
+                    },
+                    "orgId": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get meta details",
+              "data": {
+                "workspaces": {
+                  "workspaceId": "1767024000003145002",
+                  "workspaceName": "Account details",
+                  "workspaceDesc": "",
+                  "orgId": "671712892"
+                }
+              }
+            }
+          ]
+        },
+        "GetEmailSchedulesResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "emailSchedules": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "scheduleId": {
+                        "type": "string"
+                      },
+                      "scheduleName": {
+                        "type": "string"
+                      },
+                      "schedulePeriod": {
+                        "type": "string"
+                      },
+                      "schedulesConsumed": {
+                        "type": "integer"
+                      },
+                      "isEnabled": {
+                        "type": "boolean"
+                      },
+                      "createdBy": {
+                        "type": "string"
+                      },
+                      "views": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get email schedules",
+              "data": {
+                "emailSchedules": [
+                  {
+                    "scheduleId": "176702400010815003",
+                    "scheduleName": "Dashboard_1",
+                    "schedulePeriod": "weekly on Friday at 14:10 IST",
+                    "schedulesConsumed": 1,
+                    "isEnabled": true,
+                    "createdBy": "user_1@zoho.com",
+                    "views": [
+                      "176702400010388124",
+                      "176702400010388129"
+                    ]
+                  },
+                  {
+                    "scheduleId": "176702400010815001",
+                    "scheduleName": "Table_1",
+                    "schedulePeriod": "daily at 14:10 IST",
+                    "schedulesConsumed": 1,
+                    "isEnabled": true,
+                    "createdBy": "user_1@zoho.com",
+                    "views": [
+                      "176702400010503569"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetDatasourcesResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "dataSources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "datasourceName": {
+                        "type": "string"
+                      },
+                      "datasourceId": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "fileType": {
+                        "type": "string"
+                      },
+                      "lastDataSyncStatus": {
+                        "type": "string"
+                      },
+                      "lastDataSyncTime": {
+                        "type": "string"
+                      },
+                      "schedule": {
+                        "type": "string"
+                      },
+                      "nextScheduleTime": {
+                        "type": "string"
+                      },
+                      "syncUsed": {
+                        "type": "string"
+                      },
+                      "totalSyncAllowed": {
+                        "type": "string"
+                      },
+                      "syncIntervalId": {
+                        "type": "string"
+                      },
+                      "syncIntervals": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "syncIntervalId": {
+                              "type": "string"
+                            },
+                            "lastDataSyncStatus": {
+                              "type": "string"
+                            },
+                            "lastDataSyncTime": {
+                              "type": "string"
+                            },
+                            "schedule": {
+                              "type": "string"
+                            },
+                            "nextScheduleTime": {
+                              "type": "string"
+                            },
+                            "syncUsed": {
+                              "type": "string"
+                            },
+                            "tableDetails": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "viewName": {
+                                    "type": "string"
+                                  },
+                                  "viewId": {
+                                    "type": "string"
+                                  },
+                                  "sourceName": {
+                                    "type": "string"
+                                  },
+                                  "lastSyncTime": {
+                                    "type": "string"
+                                  },
+                                  "syncStatus": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "tableDetails": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "viewName": {
+                              "type": "string"
+                            },
+                            "viewId": {
+                              "type": "string"
+                            },
+                            "sourceName": {
+                              "type": "string"
+                            },
+                            "lastSyncTime": {
+                              "type": "string"
+                            },
+                            "syncStatus": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Fetch Datasources",
+              "data": {
+                "dataSources": [
+                  {
+                    "datasourceName": "Amazon RDS MySQL",
+                    "datasourceId": "100003000000032016",
+                    "source": "relmodel",
+                    "lastDataSyncStatus": "Not Applicable",
+                    "lastDataSyncTime": "03 August, 2024 03:39:16 PM IST",
+                    "schedule": "Every 15 Minutes",
+                    "nextScheduleTime": "03 August, 2024 03:52:56 PM IST",
+                    "syncUsed": "0",
+                    "syncIntervalId": "100003000000032134",
+                    "totalSyncAllowed": "5",
+                    "tableDetails": [
+                      {
+                        "viewName": "Check_3",
+                        "viewId": "100003000000032019",
+                        "sourceName": "Check_3",
+                        "lastSyncTime": "03 August, 2024 03:39:13 PM IST",
+                        "syncStatus": "Success"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetLastImportDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "viewName": {
+                  "type": "string"
+                },
+                "lastImportTime": {
+                  "type": "string"
+                },
+                "lastImportStatus": {
+                  "type": "string"
+                },
+                "columns": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rows": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "string"
+                    },
+                    "success": {
+                      "type": "string"
+                    },
+                    "warning": {
+                      "type": "string"
+                    },
+                    "failed": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "importErrors": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Fetch last import details",
+              "data": {
+                "viewName": "SampleSales",
+                "lastImportTime": "18 October, 2021 11:02:41 AM GMT",
+                "lastImportStatus": "Success",
+                "columns": {
+                  "total": "7",
+                  "success": "7"
+                },
+                "rows": {
+                  "total": "755",
+                  "success": "755",
+                  "warning": "0",
+                  "failed": "0"
+                },
+                "importErrors": ""
+              }
+            }
+          ]
+        },
+        "GetAutoMLAnalysisResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "analysis": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "predictionType": {
+                        "type": "string"
+                      },
+                      "trainingTable": {
+                        "type": "string"
+                      },
+                      "trainingTableId": {
+                        "type": "string"
+                      },
+                      "isDraft": {
+                        "type": "boolean"
+                      },
+                      "workspaceId": {
+                        "type": "string"
+                      },
+                      "workspaceName": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get autoML analysis in organization",
+              "data": {
+                "analysis": [
+                  {
+                    "id": "466206000000061115",
+                    "name": "New Analysis-1",
+                    "predictionType": "Classification",
+                    "trainingTable": "Sales",
+                    "trainingTableId": "466206000000061002",
+                    "isDraft": false,
+                    "workspaceId": "466206000000061012",
+                    "workspaceName": "AML Analysis"
+                  },
+                  {
+                    "id": "466206000000073001",
+                    "name": "Sales Analysis",
+                    "predictionType": "Classification",
+                    "trainingTable": "Olympics",
+                    "trainingTableId": "466206000000021004",
+                    "isDraft": false,
+                    "workspaceId": "466206000000081014",
+                    "workspaceName": "Olympic Records"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAutoMLAnalysisInWorkspaceResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "analysis": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "predictionType": {
+                        "type": "string"
+                      },
+                      "trainingTable": {
+                        "type": "string"
+                      },
+                      "trainingTableId": {
+                        "type": "string"
+                      },
+                      "isDraft": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get autoML analysis in workspace",
+              "data": {
+                "analysis": [
+                  {
+                    "id": "466206000000061115",
+                    "name": "New Analysis-1",
+                    "predictionType": "Classification",
+                    "trainingTable": "Sales",
+                    "trainingTableId": "466206000000061002",
+                    "isDraft": false
+                  },
+                  {
+                    "id": "466206000000073001",
+                    "name": "Sales Analysis",
+                    "predictionType": "Classification",
+                    "trainingTable": "Sales",
+                    "trainingTableId": "466206000000061002",
+                    "isDraft": false
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "GetAutoMLAnalysisDetailsResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "analysis": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "predictionType": {
+                      "type": "string"
+                    },
+                    "trainingTable": {
+                      "type": "string"
+                    },
+                    "trainingTableId": {
+                      "type": "string"
+                    },
+                    "targetColumn": {
+                      "type": "string"
+                    },
+                    "features": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "stack": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "models": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "scoreParamName": {
+                            "type": "string"
+                          },
+                          "score": {
+                            "type": "string"
+                          },
+                          "trainingStatus": {
+                            "type": "string"
+                          },
+                          "lastTrainingTime": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "algorithm": {
+                            "type": "object",
+                            "properties": {
+                              "randomForestClassification": {
+                                "type": "object",
+                                "properties": {
+                                  "minimumSampleSplit": {
+                                    "type": "string"
+                                  },
+                                  "maximumDepth": {
+                                    "type": "string"
+                                  },
+                                  "numberOfTrees": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "isDeployed": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get autoML analysis details",
+              "data": {
+                "analysis": {
+                  "id": "466206000000198120",
+                  "name": "Analysis-1",
+                  "predictionType": "Classification",
+                  "trainingTable": "Sales",
+                  "trainingTableId": "466206000000061002",
+                  "targetColumn": "Product",
+                  "features": [
+                    "Region",
+                    "Product Category",
+                    "Sales"
+                  ],
+                  "stack": "8 GB",
+                  "status": "Success",
+                  "models": [
+                    {
+                      "id": "466206000000198124",
+                      "name": "Random Forest Classification",
+                      "scoreParamName": "Classification Accuracy",
+                      "score": "38.95",
+                      "trainingStatus": "Completed",
+                      "lastTrainingTime": "28 Jan 2026 20:31:24",
+                      "algorithm": {
+                        "randomForestClassification": {
+                          "minimumSampleSplit": "2",
+                          "maximumDepth": "6",
+                          "numberOfTrees": "25"
+                        }
+                      },
+                      "isDeployed": false
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "GetDeploymentsForModelResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "deployments": {
+                  "type": "object",
+                  "properties": {
+                    "deploymentId": {
+                      "type": "string"
+                    },
+                    "analysisId": {
+                      "type": "string"
+                    },
+                    "inputTable": {
+                      "type": "string"
+                    },
+                    "inputTableId": {
+                      "type": "string"
+                    },
+                    "outputTable": {
+                      "type": "string"
+                    },
+                    "outputTableId": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "lastDeploymentTime": {
+                      "type": "string"
+                    },
+                    "outputColumns": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "predictionColumn": {
+                      "type": "string"
+                    },
+                    "stack": {
+                      "type": "string"
+                    },
+                    "importType": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "examples": [
+            {
+              "status": "success",
+              "summary": "Get deployments for a model",
+              "data": {
+                "deployments": {
+                  "deploymentId": "466206000000094143",
+                  "analysisId": "466206000000073001",
+                  "inputTable": "Sales",
+                  "inputTableId": "466206000000061002",
+                  "outputTable": "Temp",
+                  "outputTableId": "466206000000094076",
+                  "status": "success",
+                  "lastDeploymentTime": "06 Jan 2026 18:47:22",
+                  "outputColumns": [
+                    "Region",
+                    "Product Category",
+                    "Sales"
+                  ],
+                  "predictionColumn": "Sales_Pred",
+                  "stack": "8 GB",
+                  "importType": "truncateadd"
+                }
+              }
+            }
+          ]
+        },
+        "Error": {
+          "type": "object",
+          "$ref": "https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/schemas/Error"
+        }
+      }
+    }
+  }

@@ -1,0 +1,333 @@
+{
+  "item": [
+    {
+      "id": "6f727f41-3d31-4c49-bba1-3290f87be9ac",
+      "name": "AutomationEngine",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "228a4ab2-5025-4cb2-9bc7-d52eb8d7d344",
+          "name": "Get Supported Actions of an Engine",
+          "request": {
+            "name": "Get Supported Actions of an Engine",
+            "description": {
+              "content": "This API fetches the supported Actions of an AutomationEngine",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automationEngine",
+                "engineSupportedActions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "engineSysName",
+                  "value": "<string,null>",
+                  "description": " AutomationEngine's system name"
+                },
+                {
+                  "disabled": false,
+                  "key": "engineId",
+                  "value": "<string,null,integer-int32>",
+                  "description": "(Required) AutomationEngine's id"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "bae62e9f-6e90-455b-8cc2-bc52251869b4",
+              "name": "supportedActionsResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automationEngine",
+                    "engineSupportedActions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "engineSysName",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "engineId",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"engineName\": \"WORKFLOWS\",\n  \"actions\": [\n    {\n      \"async\": true,\n      \"name\": \"StopEngine\",\n      \"reusable\": true\n    },\n    {\n      \"async\": true,\n      \"name\": \"StartEngine\",\n      \"reusable\": true\n    }\n  ],\n  \"modules\": [\n    {\n      \"name\": \"TICKETS\",\n      \"actions\": [\n        {\n          \"async\": true,\n          \"name\": \"StopEngine\",\n          \"reusable\": true\n        },\n        {\n          \"async\": true,\n          \"name\": \"StartEngine\",\n          \"reusable\": true\n        }\n      ],\n      \"events\": [\n        {\n          \"name\": \"CREATE\",\n          \"submodule\": \"\",\n          \"actions\": [\n            {\n              \"async\": true,\n              \"name\": \"LogCreate\",\n              \"reusable\": true\n            },\n            {\n              \"async\": true,\n              \"name\": \"NotifyCreate\",\n              \"reusable\": true\n            }\n          ]\n        },\n        {\n          \"name\": \"UPDATE\",\n          \"submodule\": null,\n          \"actions\": [\n            {\n              \"async\": true,\n              \"name\": \"NotifyUpdate\",\n              \"reusable\": true\n            },\n            {\n              \"async\": true,\n              \"name\": \"LogUpdate\",\n              \"reusable\": true\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"CUSTOM_MODULE\",\n      \"actions\": [\n        {\n          \"async\": true,\n          \"name\": \"StartEngine\",\n          \"reusable\": true\n        },\n        {\n          \"async\": true,\n          \"name\": \"StopEngine\",\n          \"reusable\": true\n        }\n      ],\n      \"events\": [\n        {\n          \"name\": \"CREATE\",\n          \"submodule\": \"\",\n          \"actions\": [\n            {\n              \"async\": true,\n              \"name\": \"LogCreate\",\n              \"reusable\": true\n            },\n            {\n              \"async\": true,\n              \"name\": \"NotifyCreate\",\n              \"reusable\": true\n            }\n          ]\n        },\n        {\n          \"name\": \"UPDATE\",\n          \"submodule\": null,\n          \"actions\": [\n            {\n              \"async\": true,\n              \"name\": \"LogUpdate\",\n              \"reusable\": true\n            },\n            {\n              \"async\": true,\n              \"name\": \"NotifyUpdate\",\n              \"reusable\": true\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07de687c-7321-4df4-809d-e765006a25f9",
+          "name": "Get supported modules of an engine",
+          "request": {
+            "name": "Get supported modules of an engine",
+            "description": {
+              "content": "This API gives the supported modules of an engine.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "engines",
+                ":engineId",
+                "modules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "engineId",
+                  "description": "(Required) The id  of the engine."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "1d1bd3ed-c47f-4fab-9729-e51b02cdc35e",
+              "name": "Supported modules of the engine",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "engines",
+                    ":engineId",
+                    "modules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "engineId",
+                      "description": "(Required) The id  of the engine."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"displayLabel\": \"Tickets\",\n      \"apiName\": \"tickets\",\n      \"id\": \"1000000000585\",\n      \"isCustomModule\": false,\n      \"isDeptSpecific\": true,\n      \"i18NLabel\": \"Tickets\"\n    },\n    {\n      \"displayLabel\": \"Contacts\",\n      \"apiName\": \"contacts\",\n      \"id\": \"1000000000587\",\n      \"isCustomModule\": false,\n      \"isDeptSpecific\": false,\n      \"i18NLabel\": \"Contacts\"\n    },\n    {\n      \"displayLabel\": \"Accounts\",\n      \"apiName\": \"accounts\",\n      \"id\": \"1000000000589\",\n      \"isCustomModule\": false,\n      \"isDeptSpecific\": true,\n      \"i18NLabel\": \"Accounts\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d82712dd-bd30-4d5d-8be6-c7ae0c309939",
+          "name": "Get supported events in a module of a specific engine",
+          "request": {
+            "name": "Get supported events in a module of a specific engine",
+            "description": {
+              "content": "This API gives the supported events in a module of a specific engine.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "engines",
+                ":engineId",
+                "modules",
+                ":moduleId",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "engineId",
+                  "description": "(Required) The id of the engine."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "moduleId",
+                  "description": "(Required) The id of the module."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "580b303c-5742-46f4-8b31-3b9b13ae7fd6",
+              "name": "Supported events in a module of a specific engine",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "engines",
+                    ":engineId",
+                    "modules",
+                    ":moduleId",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "engineId",
+                      "description": "(Required) The id of the engine."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "moduleId",
+                      "description": "(Required) The id of the module."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"displayLabel\": \"Ticket Created\",\n      \"module\": {\n        \"displayLabel\": \"Tickets\",\n        \"apiName\": \"tickets\",\n        \"id\": \"1000000000585\"\n      },\n      \"baseEvent\": \"CREATE\",\n      \"sysName\": \"tickets_create\"\n    },\n    {\n      \"displayLabel\": \"Ticket Updated\",\n      \"module\": {\n        \"displayLabel\": \"Tickets\",\n        \"apiName\": \"tickets\",\n        \"id\": \"1000000000585\"\n      },\n      \"baseEvent\": \"UPDATE\",\n      \"sysName\": \"tickets_update\"\n    },\n    {\n      \"displayLabel\": \"Ticket Deleted\",\n      \"module\": {\n        \"displayLabel\": \"Tickets\",\n        \"apiName\": \"tickets\",\n        \"id\": \"1000000000585\"\n      },\n      \"baseEvent\": \"DELETE\",\n      \"sysName\": \"tickets_delete\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "dd091410-a340-4893-af4c-1563ad162b50",
+    "name": "Helpcenter AutomationEngine API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

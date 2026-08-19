@@ -1,0 +1,1290 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Actions API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check mass change owner job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/actions/mass_change_owner",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the mass change owner job"
+              }
+            ]
+          },
+          "docs": "Check the status of a mass change owner job using the job ID"
+        },
+        {
+          "info": {
+            "name": "Mass change owner of records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/mass_change_owner",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mass change the owner of records in a module based on a custom view"
+        },
+        {
+          "info": {
+            "name": "Send an email to a record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleName/:id/actions/send_mail",
+            "params": [
+              {
+                "name": "moduleName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends an email using specific templates or custom content to a record in a given module."
+        },
+        {
+          "info": {
+            "name": "Get Related Records Count",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/get_related_records_count",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the CRM module containing the parent record. Common values include 'Contacts', 'Leads', 'Deals', 'Accounts', 'Services__s', etc."
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record for which to count related records. This is typically a numeric ID or UUID depending on the CRM configuration."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieves the count of related records for a specific parent record. Supports filtering by various criteria including approval status, conversion status, and custom field filters. This operation is useful for analytics and UI display purposes where you need to show counts without fetching the actual related records."
+        },
+        {
+          "info": {
+            "name": "To clone a record in a module",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:recordID/actions/clone",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "recordID",
+                "value": "",
+                "type": "path",
+                "description": "This ID is used to uniquely identify a record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To clone a record in a module."
+        },
+        {
+          "info": {
+            "name": "Share Emails of a record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:id/actions/share_emails",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Module  Api Name of the record"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the record"
+              }
+            ]
+          },
+          "docs": "To share emails of specific record with other users in your organization"
+        },
+        {
+          "info": {
+            "name": "Unshare Emails of a record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:id/actions/unshare_emails",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Module  Api Name of the record"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the record"
+              }
+            ]
+          },
+          "docs": "To unshare emails of specific record with other users in your organization"
+        },
+        {
+          "info": {
+            "name": "Share Emails in Bulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/actions/share_emails",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Module  Api Name of the record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To share emails of multiple records with other users in your organization"
+        },
+        {
+          "info": {
+            "name": "Unshare Emails in Bulk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/actions/unshare_emails",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Module  Api Name of the record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To unshare emails of multiple records with other users in your organization"
+        },
+        {
+          "info": {
+            "name": "Get Share Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/share",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "API name of the module"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the record"
+              },
+              {
+                "name": "sharedTo",
+                "value": "",
+                "type": "query",
+                "description": "To specify to whom the record is shared"
+              },
+              {
+                "name": "view",
+                "value": "",
+                "type": "query",
+                "description": "To get the summary of share records"
+              }
+            ]
+          },
+          "docs": "Get Share Records. API exposed to customers"
+        },
+        {
+          "info": {
+            "name": "Create Share Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/share",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "API name of the module"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Share Records. API exposed to customers"
+        },
+        {
+          "info": {
+            "name": "Update Share Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/share",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "API name of the module"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Share Records. API exposed to customers"
+        },
+        {
+          "info": {
+            "name": "Delete Share Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/share",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "API name of the module"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the record"
+              }
+            ]
+          },
+          "docs": "Delete Share Records. API exposed to customers"
+        },
+        {
+          "info": {
+            "name": "Associate Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:recordId/actions/associate_email",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module (e.g., Leads, Contacts)."
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique ID of the record to associate the email with."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Associates emails to a specific record in a module."
+        },
+        {
+          "info": {
+            "name": "Change owner for a single record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:record/actions/change_owner",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the record to be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the owner of a specific record in the module"
+        },
+        {
+          "info": {
+            "name": "Change owner for multiple records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/change_owner",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the owner of multiple records in the module"
+        },
+        {
+          "info": {
+            "name": "Retrieve mass delete job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/actions/mass_delete",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the CRM module for the mass delete operation. Note: Module names are case-sensitive."
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Job ID returned from the mass delete POST request."
+              }
+            ]
+          },
+          "docs": "Get the status and results of a previously scheduled mass delete operation by job ID."
+        },
+        {
+          "info": {
+            "name": "Mass delete with record ids and custom view id",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/mass_delete",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the CRM module for the mass delete operation. Note: Module names are case-sensitive."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mass delete records with record ids or custom view id"
+        },
+        {
+          "info": {
+            "name": "Unenroll records from cadences",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/unenrol_from_cadences",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Un-Enroll records from the cadences"
+        },
+        {
+          "info": {
+            "name": "Enroll records into cadences",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/enrol_in_cadences",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "API to enroll records into manual cadence"
+        },
+        {
+          "info": {
+            "name": "Convert an inventory record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:id/actions/convert",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Module API of the source module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the source module"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Converts the record into another inventory module type depending on the parent module:Quotes -> Sales Orders, Invoices :Sales Orders -> Invoices."
+        },
+        {
+          "info": {
+            "name": "POST /{module_API_name}/{recordId}/actions/send_mail_merge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/send_mail_merge",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: moduleApiName"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: recordId"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send mail merge API to use a mail merge template and send emails to users. You can also attach files either as inline images or separate attachments with the email through the API."
+        },
+        {
+          "info": {
+            "name": "POST /{module_API_name}/{recordId}/actions/sign_mail_merge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/sign_mail_merge",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: moduleApiName"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: recordId"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To send a mail merge document for signing and approval.To use this API, you must initially access&nbsp;the Merge and Sign dialogue&nbsp;from the Writer UI once. Please note that you need to do this only once."
+        },
+        {
+          "info": {
+            "name": "POST /{module_API_name}/{recordId}/actions/download_mail_merge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/actions/download_mail_merge",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: moduleApiName"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: recordId"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use the download mail merge API to download the merged document created using your mail merge template."
+        },
+        {
+          "info": {
+            "name": "Invite portal users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/actions/portal_invite",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The CRM module name for portal invitation"
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Job ID to fetch the status of the portal user invitations"
+              }
+            ]
+          },
+          "docs": "Send invitations to portal users for a specific module."
+        },
+        {
+          "info": {
+            "name": "Invite portal users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/portal_invite",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The CRM module name for portal invitation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send invitations to portal users for a specific module."
+        },
+        {
+          "info": {
+            "name": "Invite portal users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:recordId/actions/portal_invite",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The CRM module name for portal invitation"
+              },
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record"
+              },
+              {
+                "name": "language",
+                "value": "",
+                "type": "query",
+                "description": "Preferred language for the invitation"
+              },
+              {
+                "name": "user_type_id",
+                "value": "",
+                "type": "query",
+                "description": "User type identifier"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Invitation type"
+              }
+            ]
+          },
+          "docs": "Send invitations to portal users for a specific module."
+        },
+        {
+          "info": {
+            "name": "Get Merge Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/:masterRecordId/actions/merge",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Optional job ID to track specific merge operation status"
+              },
+              {
+                "name": "masterRecordId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the master record that will be retained after merge"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "CRM module name for which records should be merged"
+              }
+            ]
+          },
+          "docs": "Retrieves the status of merge jobs for finding and tracking record merge operations in Zoho CRM modules."
+        },
+        {
+          "info": {
+            "name": "Merge Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:masterRecordId/actions/merge",
+            "params": [
+              {
+                "name": "masterRecordId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the master record that will be retained after merge"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "CRM module name for which records should be merged"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Merges duplicate records in Zoho CRM modules with field mapping and validation. Supports synchronous and asynchronous merge operations."
+        },
+        {
+          "info": {
+            "name": "List active notification channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/actions/watch",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module API name filter (e.g. Leads)."
+              },
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "query",
+                "description": "Single channel id filter."
+              }
+            ]
+          },
+          "docs": "Get a list of all active notification channels for the user."
+        },
+        {
+          "info": {
+            "name": "Create notification channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/actions/watch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create one or more notification channels."
+        },
+        {
+          "info": {
+            "name": "Update full notification details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/actions/watch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all details of an existing notification channel, overwriting its previous configuration."
+        },
+        {
+          "info": {
+            "name": "Update specific notification information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/actions/watch",
+            "params": [
+              {
+                "name": "channel_id",
+                "value": "",
+                "type": "query",
+                "description": "Single channel id filter."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially update selected properties of a notification channel (URL, events, expiry, conditions, token)."
+        },
+        {
+          "info": {
+            "name": "Disable notification channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/actions/watch",
+            "params": [
+              {
+                "name": "channel_ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma separated channel ids (delete operations)."
+              }
+            ]
+          },
+          "docs": "Disable one or more notification channels identified by the channel_ids query parameter."
+        },
+        {
+          "info": {
+            "name": "Unblock bulk emails in a module",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/unblock_email",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The module name (e.g., Leads)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unblock emails for multiple records in a module."
+        },
+        {
+          "info": {
+            "name": "Unblock single email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:id/actions/unblock_email",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "The module name (e.g., Leads)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The record ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unblock email for a single record in a module."
+        },
+        {
+          "info": {
+            "name": "Fetch full data for multiple records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/actions/fetch_full_data",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the record (e.g. Leads, Contacts, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "A single string containing a comma-separated list of rich text field API names to fetch."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "A single string containing a comma-separated list of valid record IDs. The maximum number of IDs allowed is 200."
+              }
+            ]
+          },
+          "docs": "Fetches the full content of rich text fields for multiple records. The 'fields' parameter is mandatory and supports a maximum of 8 rich text fields."
+        },
+        {
+          "info": {
+            "name": "Fetch full data for a single record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/:id/actions/fetch_full_data",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the record (e.g. Leads, Contacts, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "A single string containing a comma-separated list of rich text field API names to fetch."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record. Must be a valid numeric record ID."
+              }
+            ]
+          },
+          "docs": "Fetches the full content of rich text fields for a specific record. If the 'fields' parameter is not provided, all rich text fields in the module will be fetched."
+        },
+        {
+          "info": {
+            "name": "Asssign Territories To Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:record/actions/assign_territories",
+            "params": [
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `record` in `path`."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `module` in `path`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Auto-generated description for operation `Asssign Territories To Record`."
+        },
+        {
+          "info": {
+            "name": "Asssign Territories To Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/assign_territories",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `module` in `path`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Auto-generated description for operation `Asssign Territories To Records`."
+        },
+        {
+          "info": {
+            "name": "Remove Territories To Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:record/actions/remove_territories",
+            "params": [
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `record` in `path`."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `module` in `path`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Auto-generated description for operation `Remove Territories To Record`."
+        },
+        {
+          "info": {
+            "name": "Remove Territories To Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/remove_territories",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Parameter `module` in `path`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Auto-generated description for operation `Remove Territories To Records`."
+        },
+        {
+          "info": {
+            "name": "Retrieve the status of a mass update job",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/actions/mass_update",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the CRM module for the mass update operation. Note: Module names are case-sensitive."
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Job identifier for the asynchronous mass update operation initiated via POST. Used to retrieve operation status and result counts."
+              }
+            ]
+          },
+          "docs": "Retrieves the current status and progress metrics of an asynchronous mass update job initiated via POST /crm/v8/\\{module\\}/actions/mass_update. Returns record counts and current job state."
+        },
+        {
+          "info": {
+            "name": "Mass Update API",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/mass_update",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the CRM module for the mass update operation. Note: Module names are case-sensitive."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enables users to update a specific field value across multiple records within a CRM module."
+        },
+        {
+          "info": {
+            "name": "POST /{module}/actions/add_tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/add_tags",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "module api name"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: module"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is used to associate tags to records"
+        },
+        {
+          "info": {
+            "name": "POST /{module}/actions/remove_tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/actions/remove_tags",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "module api name"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: module"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is used to remove tags from records"
+        },
+        {
+          "info": {
+            "name": "POST /{module}/{id}/actions/add_tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:id/actions/add_tags",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is used to add tags to record"
+        },
+        {
+          "info": {
+            "name": "POST /{module}/{id}/actions/remove_tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module/:id/actions/remove_tags",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Path parameter: id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint is used to dissociate tags from records"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

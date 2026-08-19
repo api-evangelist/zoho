@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Bulk Import - Asynchronous API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Import - Asynchronous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Import Job for a New Table (Asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.\n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the st"
+        },
+        {
+          "info": {
+            "name": "Create Import Job for an Existing Table (Asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/views/:view-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "view-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the view."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigExitingTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB. \n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request"
+        },
+        {
+          "info": {
+            "name": "Get Import Job Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/importjobs/:job-id",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "job-id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the import/export job."
+              }
+            ]
+          },
+          "docs": "Returns details of the specified asynchronous import job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

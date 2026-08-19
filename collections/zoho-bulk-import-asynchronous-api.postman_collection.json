@@ -1,0 +1,663 @@
+{
+  "item": [
+    {
+      "id": "d8a55eab-7d59-4ec3-b61a-98e7a0010eb1",
+      "name": "Bulk Import - Asynchronous",
+      "description": {
+        "content": "Asynchronous operations for importing data in bulk.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "39dfe45f-760f-42c8-b2d3-6f3d884e5122",
+          "name": "Create Import Job for a New Table (Asynchronous)",
+          "request": {
+            "name": "Create Import Job for a New Table (Asynchronous)",
+            "description": {
+              "content": "Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.\n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "restapi",
+                "v2",
+                "bulk",
+                "workspaces",
+                ":workspace-id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "CONFIG",
+                  "value": "<string>",
+                  "description": "(Required) JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-id",
+                  "description": "(Required) ID of the workspace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                "key": "ZANALYTICS-ORGID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "FILE",
+                  "type": "file",
+                  "description": "(Required) The file to be imported."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6dc8a4ad-7a98-4efc-9543-6257b5f7eea0",
+              "name": "Successful import job creation response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"tableName\":\"Sales\",\"fileType\":\"json\",\"autoIdentify\":true}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to be imported.",
+                        "type": "text/plain"
+                      },
+                      "key": "FILE",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"summary\": \"Create bulk import job\",\n  \"data\": {\n    \"jobId\": \"1767024000003153087\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d657e1d9-1dac-44ad-8c12-bac3dd645814",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"tableName\":\"Sales\",\"fileType\":\"json\",\"autoIdentify\":true}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to be imported.",
+                        "type": "text/plain"
+                      },
+                      "key": "FILE",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "35950933-42cc-4b1d-9fc3-48fbaa181682",
+          "name": "Create Import Job for an Existing Table (Asynchronous)",
+          "request": {
+            "name": "Create Import Job for an Existing Table (Asynchronous)",
+            "description": {
+              "content": "Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB. \n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "restapi",
+                "v2",
+                "bulk",
+                "workspaces",
+                ":workspace-id",
+                "views",
+                ":view-id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "CONFIG",
+                  "value": "<string>",
+                  "description": "(Required) JSONObject with configuration to initiate a new import job. (Refer `BulkImportConfigExitingTable` schema). Value must be stringified and URL-encoded."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-id",
+                  "description": "(Required) ID of the workspace."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "view-id",
+                  "description": "(Required) ID of the view."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                "key": "ZANALYTICS-ORGID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "FILE",
+                  "type": "file",
+                  "description": "(Required) The file to be imported."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7c9491c8-2a88-4f38-85c2-315dc4a72052",
+              "name": "Successful import job creation response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "views",
+                    ":view-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"importType\":\"append\",\"fileType\":\"json\",\"autoIdentify\":\"true\"}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "view-id",
+                      "description": "(Required) ID of the view."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to be imported.",
+                        "type": "text/plain"
+                      },
+                      "key": "FILE",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"summary\": \"Create bulk import job\",\n  \"data\": {\n    \"jobId\": \"1767024000003153087\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "154e3970-7691-4032-b07a-fa53c08dae20",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "views",
+                    ":view-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"importType\":\"append\",\"fileType\":\"json\",\"autoIdentify\":\"true\"}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "view-id",
+                      "description": "(Required) ID of the view."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The file to be imported.",
+                        "type": "text/plain"
+                      },
+                      "key": "FILE",
+                      "type": "file"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b9855382-5fa4-4417-8b35-12560697f755",
+          "name": "Get Import Job Details",
+          "request": {
+            "name": "Get Import Job Details",
+            "description": {
+              "content": "Returns details of the specified asynchronous import job.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "restapi",
+                "v2",
+                "bulk",
+                "workspaces",
+                ":workspace-id",
+                "importjobs",
+                ":job-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-id",
+                  "description": "(Required) ID of the workspace."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "job-id",
+                  "description": "(Required) The unique identifier of the import/export job."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                "key": "ZANALYTICS-ORGID",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "b795d97d-a86f-42c7-a3d9-bc4e0101e7bf",
+              "name": "Successful response with import job details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "importjobs",
+                    ":job-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "job-id",
+                      "description": "(Required) The unique identifier of the import/export job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"summary\": \"Fetch import job info\",\n  \"data\": {\n    \"jobId\": \"1767024000003153087\",\n    \"jobCode\": \"1004\",\n    \"jobStatus\": \"JOB COMPLETED\",\n    \"jobInfo\": {\n      \"viewId\": \"1767024000003154002\",\n      \"importSummary\": {\n        \"importType\": \"APPEND\",\n        \"totalColumnCount\": 7,\n        \"selectedColumnCount\": 7,\n        \"totalRowCount\": 755,\n        \"successRowCount\": 755,\n        \"warnings\": 0,\n        \"importOperation\": \"created\"\n      },\n      \"columnDetails\": {\n        \"Date\": \"Date\",\n        \"Region\": \"Plain Text\",\n        \"Product Category\": \"Plain Text\",\n        \"Product\": \"Plain Text\",\n        \"Customer Name\": \"Plain Text\",\n        \"Sales\": \"Currency\",\n        \"Cost\": \"Currency\"\n      },\n      \"importErrors\": \"\"\n    },\n    \"expiryTime\": \"1623764592309\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d4385fc8-8f31-455e-9382-da0b488c2f17",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "bulk",
+                    "workspaces",
+                    ":workspace-id",
+                    "importjobs",
+                    ":job-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "job-id",
+                      "description": "(Required) The unique identifier of the import/export job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b08acbac-a616-4544-9815-117148b2811d",
+    "name": "Helpcenter Bulk Import - Asynchronous API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Asynchronous operations for importing data in bulk.",
+      "type": "text/plain"
+    }
+  }
+}

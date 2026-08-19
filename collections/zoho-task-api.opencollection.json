@@ -1,0 +1,271 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Task API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Task",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update many tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple tasks at once."
+        },
+        {
+          "info": {
+            "name": "Delete spam tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/deleteSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes the given spam tasks"
+        },
+        {
+          "info": {
+            "name": "Get task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the task. Values allowed are: @contacts@, @assignee@,@tickets@,@teams@,@creator@."
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a task from your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps update the details of a task."
+        },
+        {
+          "info": {
+            "name": "Empty spam tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/emptySpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes all spam tasks."
+        },
+        {
+          "info": {
+            "name": "Delete tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves task entries to the Recycle Bin of your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the task count must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tasks to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tasks must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API fetches a particular number of tasks, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a task in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List tasks by ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/tasks",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the task. Values allowed are: @contacts@, @assignee@,@tickets@,@teams@,@projects@."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tasks to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tasks must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the tasks by a specific attribute: @dueDate@ or @createdTime@.The default sorting order is ascending. A @-@ prefix denotes a descending order of sorting. "
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes whether to fetch spam tasks or not"
+              },
+              {
+                "name": "isCompleted",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the task was completed or not"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists all tasks associated with a particular ticket."
+        },
+        {
+          "info": {
+            "name": "List all tasks count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/count",
+            "params": [
+              {
+                "name": "viewId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the view to apply while fetching the resources"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the task count must be fetched"
+              },
+              {
+                "name": "dueDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter by task duedate. Values allowed are @Overdue@, @Tomorrow@, @CurrentWeek@, @CurrentMonth@ and @Today@. You can include both values by separating them with a comma"
+              },
+              {
+                "name": "assignee",
+                "value": "",
+                "type": "query",
+                "description": " Key that filters tasks by assignee. A valid assigneeId must be passed for this parameter. Multiple assigneeIds can be passed as comma-separated values."
+              }
+            ]
+          },
+          "docs": "This API returns the number of tasks in your help desk."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

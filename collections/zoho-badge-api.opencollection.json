@@ -1,0 +1,141 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Badge API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Badge",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List badges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/badges",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of badges to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the badges must be listed"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of badge: default or custom"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of default and custom badges, based on the limit defined."
+        },
+        {
+          "info": {
+            "name": "List User badges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/users/:userId/badges",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of badges to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the badges must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by the @createdTime@ attribute. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Start time should be in GMT time zone"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "End time should be in GMT time zone"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists user's default and custom badges, based on the limit defined."
+        },
+        {
+          "info": {
+            "name": "Add Badges to a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/users/:userId/badges/associate",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds specified badges to user."
+        },
+        {
+          "info": {
+            "name": "Remove Badges from user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/users/:userId/badges/dissociate",
+            "params": [
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API removes specified badges from the users."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,462 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter CommunityComment API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CommunityComment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Report topic comment as spam",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId/markSpam",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API marks a comment on a forum topic as spam."
+        },
+        {
+          "info": {
+            "name": "Report multiple comments as spam",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/community/markAllCommentsAsSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API marks multiple comments on a forum topic as spam."
+        },
+        {
+          "info": {
+            "name": "Restore community topic trashed comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityComments/restore",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API restores comments that were trashed from forum topics."
+        },
+        {
+          "info": {
+            "name": "List comments pending moderation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/communityModeration/comments",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of comments to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the comments must be listed"
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the community category from which the comments must be fetched"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Moderation status of the comments. Values allowed are: @AWAITINGAPPROVAL@, @SPAM@, and @TRASHED@."
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments that are pending moderation, based on the limit defined."
+        },
+        {
+          "info": {
+            "name": "Permanently delete topic comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/communityComments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API permanently deletes comments from the trash of your help desk portal. "
+        },
+        {
+          "info": {
+            "name": "Get Comments Views Count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/communityComments/count",
+            "params": [
+              {
+                "name": "viewId",
+                "value": "",
+                "type": "query",
+                "description": "ID of a view for which you need to get the count"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of topics to list. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@."
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the community category from which the comments must be fetched"
+              }
+            ]
+          },
+          "docs": "This API fetches the total count of the comments based on the selected view."
+        },
+        {
+          "info": {
+            "name": "Get community topic comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a comment received on a topic."
+        },
+        {
+          "info": {
+            "name": "Update community topic comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps update a published comment."
+        },
+        {
+          "info": {
+            "name": "Delete community topic comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId/moveToTrash",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes a comment from a topic."
+        },
+        {
+          "info": {
+            "name": "Approve community topic comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityComments/approve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API approves comments that are pending moderation."
+        },
+        {
+          "info": {
+            "name": "Add community topic reply",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:parentCommentId/replies",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "parentCommentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps add a reply to a comment on a forum topic."
+        },
+        {
+          "info": {
+            "name": "Trash community topic reply",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId/replies/:replyId/moveToTrash",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "replyId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes a reply to a topic comment."
+        },
+        {
+          "info": {
+            "name": "List community topic comments by user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/communityUsers/:userId/comments",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of comments to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the comments must be listed"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Starting time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone."
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the community category from which the comments must be fetched"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments by a user, based on the limit defined."
+        },
+        {
+          "info": {
+            "name": "Update community topic reply",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments/:commentId/replies/:replyId",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "replyId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps update a published reply."
+        },
+        {
+          "info": {
+            "name": "Trash unmoderated community topic comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityComments/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API trashes comments that are yet to be approved for publishing on a forum topic. "
+        },
+        {
+          "info": {
+            "name": "List community topic comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments",
+            "params": [
+              {
+                "name": "latestCommentsFirst",
+                "value": "",
+                "type": "query",
+                "description": "Key that defines the listing order of the comments. Setting @TRUE@ lists the latest comments first (descending order) and setting @FALSE@ lists the oldest comments first (ascending order)."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of comments to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the comments must be listed"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Starting time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone."
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone."
+              },
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments on a topic, based on the limit defined. "
+        },
+        {
+          "info": {
+            "name": "Add community topic comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/communityTopics/:topicId/comments",
+            "params": [
+              {
+                "name": "topicId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps add a comment to a forum topic."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

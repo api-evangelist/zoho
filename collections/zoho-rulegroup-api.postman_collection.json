@@ -1,0 +1,383 @@
+{
+  "item": [
+    {
+      "id": "fe582727-aba7-446d-8dcb-9483a6a0d15c",
+      "name": "RuleGroup",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fd86ae65-9b24-45f0-89b6-a2a9f8e5f5d5",
+          "name": "Get All RuleGroups",
+          "request": {
+            "name": "Get All RuleGroups",
+            "description": {
+              "content": "This API returns a list of all rule groups configured for a specific engine.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "rulegroups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<integer>",
+                  "description": "The index number from which the rule groups should be listed. This is used for pagination. For example, if you want to skip the first 10 rule groups, set the from parameter to 11."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Specifies the maximum number of rule groups to return in the response. The value must be between 1 and 50."
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<long>",
+                  "description": "Specifies the ID to filter rule groups by department. Only rule groups belonging to this department will be listed."
+                },
+                {
+                  "disabled": false,
+                  "key": "module",
+                  "value": "<string>",
+                  "description": "(Required) Represents the API name of the module for which you want to filter rule groups."
+                },
+                {
+                  "disabled": false,
+                  "key": "engineSysName",
+                  "value": "<string>",
+                  "description": "(Required) The system name of the engine (e.g., WORKFLOWS, MACRO) to filter rule groups associated with a particular automation engine."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Specifies the status of the rule group. Based on this parameter, you can filter rule groups. Only rule groups with the specified status (\"ACTIVE\" or \"INACTIVE\") will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "rulegroupIds",
+                  "value": "<string>,<string>",
+                  "description": "The IDs of the rulegroups to list separated by commas. You can pass up to 50 IDs."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "0d0a24bf-d733-45e0-880f-d7496b289ac0",
+              "name": "List of RuleGroups",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "rulegroups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "engineSysName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "rulegroupIds",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"$ref\": \"untitled:Untitled-22\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5789f6d2-1f38-46a3-b921-5de4286636d7",
+          "name": "Create RuleGroup",
+          "request": {
+            "name": "Create RuleGroup",
+            "description": {
+              "content": "This API creates a new RuleGroup.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "rulegroups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentProperties\": [\n    {\n      \"id\": \"<string>\",\n      \"ruleGroupStatus\": \"<string>\",\n      \"ruleGroupOrder\": \"<string>\",\n      \"ruleGroupExecutionType\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"ruleGroupStatus\": \"<string>\",\n      \"ruleGroupOrder\": \"<string>\",\n      \"ruleGroupExecutionType\": \"<string>\"\n    }\n  ],\n  \"engine\": {\n    \"id\": \"<string>\",\n    \"systemName\": \"<string>\"\n  },\n  \"name\": \"<string>\",\n  \"rules\": [\n    {\n      \"name\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"criteria\": \"<object>\",\n      \"clusters\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"name\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"criteria\": \"<object>\",\n      \"clusters\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": \"<object>\",\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"description\": \"<string>\",\n  \"module\": {\n    \"apiName\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"<string>\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"<string>\"\n          }\n        },\n        \"criteria\": \"<object>\"\n      }\n    },\n    {\n      \"sysName\": \"<string>\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"<string>\"\n          }\n        },\n        \"criteria\": \"<object>\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "84ad23f7-c41b-463d-8d3f-a85df89d2e43",
+              "name": "RuleGroup created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "rulegroups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sample RuleGroup\",\n  \"description\": \"Description for Sample RuleGroup\",\n  \"engine\": {\n    \"id\": \"1000000000581\",\n    \"systemName\": \"WORKFLOWS\"\n  },\n  \"departmentProperties\": [\n    {\n      \"id\": \"1234567890\",\n      \"ruleGroupStatus\": \"ACTIVE\",\n      \"ruleGroupOrder\": \"1\",\n      \"ruleGroupExecutionType\": \"ASYNC\"\n    }\n  ],\n  \"module\": {\n    \"id\": \"1000000000581\",\n    \"apiName\": \"tickets\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"tickets_create\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"tickets\"\n          }\n        },\n        \"criteria\": {}\n      }\n    }\n  ],\n  \"rules\": [\n    {\n      \"name\": \"Sample Rule\",\n      \"order\": 1,\n      \"criteria\": {},\n      \"clusters\": [\n        {\n          \"id\": \"1000000007890\",\n          \"name\": \"Sample Cluster\",\n          \"type\": \"TREE\",\n          \"nodes\": [\n            {\n              \"id\": \"1000000008901\",\n              \"name\": \"Root Node\",\n              \"executionType\": \"ASYNC\",\n              \"type\": \"ROOT\",\n              \"propertyType\": \"ACTION_MAPPING\",\n              \"propertyId\": \"1000000054256\",\n              \"childNodes\": []\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1000000001234\",\n  \"name\": \"Sample RuleGroup\",\n  \"description\": \"Description for Sample RuleGroup\",\n  \"createdTime\": \"2025-07-07T14:14:30.511Z\",\n  \"modifiedTime\": \"2025-07-07T14:14:30.511Z\",\n  \"createdBy\": {\n    \"id\": \"1000000000523\",\n    \"name\": \"John\",\n    \"photoURL\": \"https://desk.abc.com/api/v1/agents/1000000000523/photo?orgId=34920657\"\n  },\n  \"modifiedBy\": {\n    \"id\": \"1000000000523\",\n    \"name\": \"John\",\n    \"photoURL\": \"https://desk.abc.com/api/v1/agents/1000000000523/photo?orgId=34920657\"\n  },\n  \"engine\": {\n    \"id\": \"1000000000581\",\n    \"systemName\": \"WORKFLOWS\"\n  },\n  \"departmentProperties\": [\n    {\n      \"id\": \"1234567890\",\n      \"ruleGroupStatus\": \"ACTIVE\",\n      \"ruleGroupOrder\": \"1\",\n      \"ruleGroupExecutionType\": \"ASYNC\"\n    }\n  ],\n  \"module\": {\n    \"id\": \"1000000000581\",\n    \"apiName\": \"tickets\",\n    \"displayLabel\": \"Tickets\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"tickets_create\",\n      \"displayLabel\": \"Ticket Created\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"tickets\"\n          }\n        },\n        \"criteria\": {}\n      }\n    }\n  ],\n  \"rules\": [\n    {\n      \"id\": \"1000000005678\",\n      \"name\": \"Sample Rule\",\n      \"order\": 1,\n      \"criteria\": {},\n      \"clusters\": [\n        {\n          \"id\": \"1000000007890\",\n          \"name\": \"Sample Cluster\",\n          \"type\": \"TREE\",\n          \"nodes\": [\n            {\n              \"id\": \"1000000008901\",\n              \"name\": \"Root Node\",\n              \"executionType\": \"ASYNC\",\n              \"type\": \"ROOT\",\n              \"propertyType\": \"ACTION_MAPPING\",\n              \"propertyId\": \"1000000054256\",\n              \"childNodes\": []\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3f25708f-6c5c-4520-a85f-4fe44501281c",
+          "name": "Update RuleGroup",
+          "request": {
+            "name": "Update RuleGroup",
+            "description": {
+              "content": "This API updates the rulegroup",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "rulegroups",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int32>",
+                  "key": "id",
+                  "description": "(Required) RuleGroup ID to be updated"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"departmentProperties\": [\n    {\n      \"id\": \"<string>\",\n      \"ruleGroupStatus\": \"<string>\",\n      \"ruleGroupOrder\": \"<string>\",\n      \"ruleGroupExecutionType\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"ruleGroupStatus\": \"<string>\",\n      \"ruleGroupOrder\": \"<string>\",\n      \"ruleGroupExecutionType\": \"<string>\"\n    }\n  ],\n  \"engine\": {\n    \"id\": \"<string>\",\n    \"systemName\": \"<string>\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"<string>\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"<string>\"\n          }\n        },\n        \"criteria\": {\n          \"value\": \"reference ./Criteria.json#/components/schemas/criteriaFieldsObject not found in the OpenAPI spec\"\n        }\n      }\n    },\n    {\n      \"sysName\": \"<string>\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"<string>\"\n          }\n        },\n        \"criteria\": {\n          \"value\": \"reference ./Criteria.json#/components/schemas/criteriaFieldsObject not found in the OpenAPI spec\"\n        }\n      }\n    }\n  ],\n  \"id\": \"<string>\",\n  \"module\": {\n    \"apiName\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"rules\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"clusters\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"clusters\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"type\": \"<string>\",\n          \"nodes\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"executionType\": \"<string>\",\n              \"type\": \"<string>\",\n              \"propertyType\": \"<string>\",\n              \"propertyId\": \"<string>\",\n              \"childNodes\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"executionType\": \"<string>\",\n                  \"type\": \"<string>\",\n                  \"propertyType\": \"<string>\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"criteria\": {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  },\n                  \"childNodes\": [\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    {\n                      \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c459012b-8392-4eed-97e1-35fa23c0c336",
+              "name": "RuleGroup updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "rulegroups",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int32>",
+                      "key": "id",
+                      "description": "(Required) RuleGroup ID to be updated"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"1000000001234\",\n  \"name\": \"Sample RuleGroup updated\",\n  \"description\": \"Updated description for Sample RuleGroup\",\n  \"engine\": {\n    \"id\": \"1000000000581\",\n    \"systemName\": \"WORKFLOWS\"\n  },\n  \"departmentProperties\": [\n    {\n      \"id\": \"1234567890\",\n      \"ruleGroupStatus\": \"ACTIVE\",\n      \"ruleGroupOrder\": \"1\",\n      \"ruleGroupExecutionType\": \"ASYNC\"\n    }\n  ],\n  \"module\": {\n    \"id\": \"1000000000581\",\n    \"apiName\": \"tickets\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"tickets_update\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"tickets\"\n          }\n        },\n        \"criteria\": {\n          \"$ref\": \"Criteria.json#/components/schemas/criteriaFieldsObject\"\n        }\n      }\n    }\n  ],\n  \"rules\": [\n    {\n      \"id\": \"1000000005678\",\n      \"name\": \"Updated Sample Rule\",\n      \"order\": 1,\n      \"clusters\": [\n        {\n          \"id\": \"1000000007890\",\n          \"name\": \"Updated Sample Cluster\",\n          \"type\": \"TREE\",\n          \"nodes\": [\n            {\n              \"id\": \"1000000008901\",\n              \"name\": \"Updated Root Node\",\n              \"executionType\": \"ASYNC\",\n              \"type\": \"ROOT\",\n              \"propertyType\": \"ACTION_MAPPING\",\n              \"propertyId\": \"1000000054256\",\n              \"childNodes\": [\n                {\n                  \"id\": \"1000000008902\",\n                  \"name\": \"Updated Child Node 1\",\n                  \"executionType\": \"SYNC\",\n                  \"type\": \"DEFAULT\",\n                  \"propertyType\": \"CRITERIA\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"primaryModule\": {\n                        \"apiName\": \"tickets\"\n                      }\n                    },\n                    \"criteria\": {\n                      \"$ref\": \"Criteria.json#/components/schemas/criteriaFieldsObject\"\n                    }\n                  },\n                  \"childNodes\": []\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1000000001234\",\n  \"name\": \"Sample RuleGroup updated\",\n  \"description\": \"Updated description for Sample RuleGroup\",\n  \"engine\": {\n    \"id\": \"1000000000581\",\n    \"systemName\": \"WORKFLOWS\"\n  },\n  \"departmentProperties\": [\n    {\n      \"id\": \"1234567890\",\n      \"ruleGroupStatus\": \"ACTIVE\",\n      \"ruleGroupOrder\": \"1\",\n      \"ruleGroupExecutionType\": \"ASYNC\"\n    }\n  ],\n  \"module\": {\n    \"id\": \"1000000000581\",\n    \"apiName\": \"tickets\"\n  },\n  \"events\": [\n    {\n      \"sysName\": \"tickets_update\",\n      \"userCriteria\": {\n        \"moduleMapping\": {\n          \"primaryModule\": {\n            \"apiName\": \"tickets\"\n          }\n        },\n        \"criteria\": {\n          \"$ref\": \"Criteria.json#/components/schemas/criteriaFieldsObject\"\n        }\n      }\n    }\n  ],\n  \"rules\": [\n    {\n      \"id\": \"1000000005678\",\n      \"name\": \"Updated Sample Rule\",\n      \"order\": 1,\n      \"clusters\": [\n        {\n          \"id\": \"1000000007890\",\n          \"name\": \"Updated Sample Cluster\",\n          \"type\": \"TREE\",\n          \"nodes\": [\n            {\n              \"id\": \"1000000008901\",\n              \"name\": \"Updated Root Node\",\n              \"executionType\": \"ASYNC\",\n              \"type\": \"ROOT\",\n              \"propertyType\": \"ACTION_MAPPING\",\n              \"propertyId\": \"1000000054256\",\n              \"childNodes\": [\n                {\n                  \"id\": \"1000000008902\",\n                  \"name\": \"Updated Child Node 1\",\n                  \"executionType\": \"SYNC\",\n                  \"type\": \"DEFAULT\",\n                  \"propertyType\": \"CRITERIA\",\n                  \"entityInfo\": {\n                    \"moduleMapping\": {\n                      \"primaryModule\": {\n                        \"apiName\": \"tickets\"\n                      }\n                    },\n                    \"criteria\": {\n                      \"$ref\": \"Criteria.json#/components/schemas/criteriaFieldsObject\"\n                    }\n                  },\n                  \"childNodes\": []\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b9e1296e-3681-422b-b84a-d61617d368d1",
+    "name": "Helpcenter RuleGroup API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

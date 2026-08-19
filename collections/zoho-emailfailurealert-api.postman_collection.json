@@ -1,0 +1,287 @@
+{
+  "item": [
+    {
+      "id": "3813a42b-74db-4986-907b-c6d4a2d09b61",
+      "name": "EmailFailureAlert",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ecc96d9f-cf09-4ea0-9492-e35e011127cb",
+          "name": "List email delivery failure alerts",
+          "request": {
+            "name": "List email delivery failure alerts",
+            "description": {
+              "content": "This API lists the email delivery failure alerts configured in a particular department.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "emailFailureAlerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of alerts to list"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Index number, starting from which the alerts must be listed"
+                },
+                {
+                  "disabled": false,
+                  "key": "department",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the email delivery failure alerts must be fetched. You can pass a specific department ID or @allDepartment@ in the API request."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "630dd3b0-bb12-49f0-87f4-c2014db4cffb",
+              "name": "getEmailFailureResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "emailFailureAlerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "department",
+                      "value": "<string,null,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"departmentName\": \"Sales\",\n      \"threadId\": \"4000002350527\",\n      \"ticketNumber\": \"102\",\n      \"reason\": \"452 4.3.1 Temporary System Error\",\n      \"subject\": \"zPhone not working\",\n      \"departmentId\": \"4000000019077\",\n      \"channel\": \"EMAIL\",\n      \"errorMessage\": \"Error while processing the request! Unable to send message;\",\n      \"assignee\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/1892000000056007/photo\",\n        \"id\": \"1892000000056007\",\n        \"email\": \"carol@zylker.com\"\n      },\n      \"ticketId\": \"4000000014345\"\n    },\n    {\n      \"departmentName\": \"Marketing\",\n      \"threadId\": \"4000002353427\",\n      \"ticketNumber\": \"102\",\n      \"reason\": \"Email reply failed from being sent! Momentary issues with the mail server, Try resending this email again.\",\n      \"subject\": \"zPhone not working\",\n      \"departmentId\": \"4000000019067\",\n      \"channel\": \"TWITTER\",\n      \"errorMessage\": \"null\",\n      \"assignee\": {\n        \"firstName\": \"John\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/1892000000056007/photo\",\n        \"id\": \"1892000000056007\",\n        \"email\": \"carol@zylker.com\"\n      },\n      \"ticketId\": \"4000000014335\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f41d9f2-b1ab-4a4f-a84c-b826545127b4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "emailFailureAlerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "department",
+                      "value": "<string,null,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2fbf3b52-44a9-4ce4-bba4-7ddd9499a447",
+          "name": "Clear email delivery failure alerts",
+          "request": {
+            "name": "Clear email delivery failure alerts",
+            "description": {
+              "content": "This API deletes all email delivery failure alerts configured in a particular department.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "emailFailureAlerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "department",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the email delivery failure alerts must be fetched. You can pass a specific department ID or @allDepartment@ in the API request."
+                }
+              ],
+              "variable": []
+            },
+            "method": "PATCH"
+          },
+          "response": [
+            {
+              "id": "5b8c5267-511e-41e9-befe-2157620ea68f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "emailFailureAlerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "department",
+                      "value": "<string,null,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f4521123-6494-4ab6-9449-d6778b0f5f7a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "emailFailureAlerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "department",
+                      "value": "<string,null,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "81f2363a-5313-46eb-80ca-1cdf6eec9a06",
+    "name": "Helpcenter EmailFailureAlert API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

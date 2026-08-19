@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Bulk Export - Synchronous API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Export - Synchronous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export Data from a View (Synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/workspaces/:workspace-id/views/:view-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "view-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the view."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to export data from the specified view. (Refer `ExportConfig` schema). Value must be stringified and URL-encoded."
+              }
+            ]
+          },
+          "docs": "Use Bulk APIs to export data from the specified view synchronously.\n\nNote: Export Data API is restricted for certain resources (given below). For these cases, use the Asynchronous Export APIs instead:\n\n  - Tables having more than one million rows.\n  - Tables and Views from live connect workspaces.\n  - Dashboard and QueryTable view types."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

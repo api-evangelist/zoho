@@ -1,0 +1,394 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Layout API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Layout",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Layouts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/layouts",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": " Name of the module whose layouts must be fetched. The allowed values are !@tickets, contacts, accounts, calls, events, tasks, timeEntry, products, and contracts@!"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the layouts are configured"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the layout"
+              }
+            ]
+          },
+          "docs": "This API lists all the layouts configured for a module."
+        },
+        {
+          "info": {
+            "name": "Create Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates the layout"
+        },
+        {
+          "info": {
+            "name": "Get Standard Layout Format",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/layouts/standardLayoutFormat",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This Api provides the standrd layout format for the given module with organisations fields that can be used for create layout"
+        },
+        {
+          "info": {
+            "name": "Clone Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/clone",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates new Layout by cloning existing layout."
+        },
+        {
+          "info": {
+            "name": "Export PickList Values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/fields/:fieldId/value",
+            "params": [
+              {
+                "name": "fileType",
+                "value": "",
+                "type": "query",
+                "description": "Export Format in which format should be shown.This value can be @CSV@"
+              },
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This api behaves as below <br> (i)When Query param _fileType_=_CSV_ is passed  the picklist values gets downloaded in csv file with _*fieldlabel*_ as its name <br> (ii) When header param is not passed _empty 200_ response "
+        },
+        {
+          "info": {
+            "name": "Deactivate Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/deactivate",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This Api deactivates existing layout"
+        },
+        {
+          "info": {
+            "name": "Get Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a layout configured for a module"
+        },
+        {
+          "info": {
+            "name": "Update Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing layout."
+        },
+        {
+          "info": {
+            "name": "Delete Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": " This API deletes a layout"
+        },
+        {
+          "info": {
+            "name": "Activate Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/activate",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This api activates the deactivated Layout."
+        },
+        {
+          "info": {
+            "name": "Clone Fields to other Layouts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/fields/:fieldId/cloneFieldsInLayout",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API is to clone a field to other layouts."
+        },
+        {
+          "info": {
+            "name": "Get Layout Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/profiles",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This api returns the profiles associated with a layout"
+        },
+        {
+          "info": {
+            "name": "Associate Profiles To Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/profiles",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This api Associates the given profiles to the layout"
+        },
+        {
+          "info": {
+            "name": "Get My Form",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/myForm",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the layout"
+              }
+            ]
+          },
+          "docs": "This API fetches details of a layout, based on the profile of the current user."
+        },
+        {
+          "info": {
+            "name": "Replace PickList Value",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/replaceValues",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API replaces the old value with the new value for the PickList field type in all existing records only.<p><b>Note</b>: When a value that does not exist in the PickList values is provided as new value, then this API will create the new value without deleting the old one.</p>"
+        },
+        {
+          "info": {
+            "name": "Update Layout Field",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/fields/:fieldId",
+            "params": [
+              {
+                "name": "isMandatory",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of a field in the layout."
+        },
+        {
+          "info": {
+            "name": "Remove Field From Layout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/layouts/:layoutId/fields/:fieldId/unassociate",
+            "params": [
+              {
+                "name": "layoutId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API is to remove fields from a layout."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

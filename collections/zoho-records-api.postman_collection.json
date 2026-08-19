@@ -1,0 +1,3452 @@
+{
+  "item": [
+    {
+      "id": "f6dd6886-83f0-4d04-8fdc-6ecb6ba4ea3f",
+      "name": "Records",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cf4fad91-2328-4499-8e8b-a7855f488085",
+          "name": "Get Record Count in a Module",
+          "request": {
+            "name": "Get Record Count in a Module",
+            "description": {
+              "content": "Fetches the total number of records in a specified module.\nThe count can be filtered using `cvid` (Custom View ID) or one of the search parameters (`criteria`, `phone`, `email`, `word`).\n\n**Important Constraint (Zoho Documentation):**\nYou can only include **either** `cvid` **or** one of the search parameters (`criteria`, `phone`, `email`, `word`) in a single request. Combining `cvid` with any search parameter will result in an `AMBIGUITY_DURING_PROCESSING` error (HTTP 400).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":moduleApiName",
+                "actions",
+                "count"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>",
+                  "description": "Searches for records using an email address. The API searches across all email fields in the specified module and returns matching records. (e.g., `p%2Bboyle@abc.com` for `p+boyle@abc.com`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "phone",
+                  "value": "<string>",
+                  "description": "Searches for records using a phone number. The API searches across all phone fields in the specified module and returns matching records. (e.g., `9876543210`)."
+                },
+                {
+                  "disabled": false,
+                  "key": "word",
+                  "value": "<string>",
+                  "description": "Performs a global search within the specified module using the given word. The matchable records across multiple fields based on the search term. (e.g., `fin` to match records containing 'fin' in any searchable field)."
+                },
+                {
+                  "disabled": false,
+                  "key": "cvid",
+                  "value": "<string>",
+                  "description": "The ID of the custom view from which to get the record count."
+                },
+                {
+                  "disabled": false,
+                  "key": "criteria",
+                  "value": "<string>",
+                  "description": "Performs search by following the shown criteria: `(({api_name}:{operator}:{value}) and/or ({api_name}:{operator}:{value}))`\n\nPerforms a search based on the following format:\n`(({field_API_name}:{operator}:{value}) and/or ({field_API_name}:{operator}:{value}))`\n\nReplace `{field_API_name}`, `{operator}`, and `{value}` with the appropriate field API name, condition, and value.\n\n**Key Points:**\n- You can search for a maximum of **10 criteria** (with same or different columns)\n- The only operator that is supported for **encrypted fields** is `equals`\n- When using the `equals` operator in the Search API, it behaves like `contains`, retrieving records that include the specified value\n\n**Single Condition:**\nIf the condition is `(Company:equals:ABC)`, the response will include records with \"ABC\" as well as \"ABC Inc\" in the Company field.\n\n**Multiple Conditions:**\n`equals` still behaves like `contains`. For example, `((Company:equals:ABC) and (First_Name:starts_with:M))`, it retrieves records where the \"First Name\" starts with \"M\" and the \"Company\" contains \"ABC\" (e.g., \"ABC\" or \"ABC Inc.\").\n\n**Note:** The above behaviour does not apply to the **picklist field type**.\n\n**IN Operator:**\nThe `in` operator checks if a field's value matches any value in a given list.\nFor example, `(Full_Name:in:Patricia,Boyle,Kate)`, it retrieves records where the Full Name is Patricia, Boyle, or Kate.\n\n**Special Character Handling:**\nWhen a single-line field value contains characters such as `{`, `}`, `[`, `]`, `^`, `:`, `-`, `/`, `!`, `?`, `*`, `_`, `@`, space, the Search API returns records with similar-looking values, even if the characters are not an exact match.\n\nFor example, if Record A has the field value `sales-team@zoho.com` and Record B has `sales_team@zoho.com`, a search using `equals:sales-team@zoho.com` may return both records.\n\n**Escaping Special Characters:**\nWhen using parentheses `()`, commas `,`, or a backslash `\\` as the last character in a search value, follow these steps:\n1. Escape special characters using a backslash `\\`\n2. Encode the value before making the API request. Select the value of the criteria, right-click the value, and choose the EncodeURIComponent option.\n\n**Example 1: Escaping Parentheses and Commas**\n- Search term: `((Last_Name:equals:Burns,B) and (First_Name:starts_with:M))`\n- Escape the comma `\\,`: `((Last_Name:equals:Burns\\,B) and (First_Name:starts_with:M))`\n- Encode the value: `((Last_Name:equals:Burns%5C%2CB) and (First_Name:starts_with:M))`\n\n**Example 2: Escaping a Backslash at the End**\n- Search term: `(Last_Name:equals:K\\)`\n- Escape the backslash `\\\\`: `(Last_Name:equals:K\\\\)`\n- Encode the value: `(Last_Name:equals:K%5C%5C)`\n\n**Supported Data Types:**\n`picklist`, `owner_lookup`, `user_lookup`, `lookup`, `phone`, `email`, `date`, `datetime`, `text`, `textarea`, `integer`, `currency`, `decimal`, `multiselectpicklist`, `bigint`, `percent`, `formula`, `website`, `boolean`, `double`\n\n**Supported Operators:**\n`equals`, `starts_with`, `in`, `not_equal`, `greater_equal`, `greater_than`, `less_equal`, `less_than`, `between`\n\n**Operator Compatibility by Data Type:**\n\n| Data Type | equals | starts_with | in | not_equal | greater_equal | greater_than | less_equal | less_than | between |\n|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n| **text** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **textarea** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **email** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **phone** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **website** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **picklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **multiselectpicklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **owner_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **user_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **boolean** | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **integer** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **bigint** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **currency** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **decimal** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **double** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **percent** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **date** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **datetime** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **formula** | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n\n**Legend:** ✓ = Supported, ✗ = Not Supported\n\n**Note:** Refer to the Zoho CRM API documentation for the most up-to-date operator compatibility information."
+                },
+                {
+                  "disabled": false,
+                  "key": "converted",
+                  "value": "<string>",
+                  "description": "Filters leads based on their conversion status."
+                },
+                {
+                  "disabled": false,
+                  "key": "approved",
+                  "value": "<string>",
+                  "description": "Filters leads based on their approval status."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "The page number to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "200",
+                  "description": "The number of records to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filters users based on their type. This parameter is supported **only for the Users module**."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "moduleApiName",
+                  "description": "(Required) The API name of the module to retrieve the record count for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "049f979f-62fc-4303-850f-ecbb1a10f75d",
+              "name": "Successful response containing the total record count.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":moduleApiName",
+                    "actions",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "word",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "approved",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "moduleApiName",
+                      "description": "(Required) The API name of the module to retrieve the record count for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 4262\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c63cc293-4c16-4da5-b14e-65d885b505df",
+              "name": "Bad Request - invalid module name, unsupported module, or ambiguous use of parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":moduleApiName",
+                    "actions",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "word",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "approved",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "moduleApiName",
+                      "description": "(Required) The API name of the module to retrieve the record count for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"error\",\n  \"code\": \"INVALID_REQUEST\",\n  \"message\": \"string\",\n  \"details\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45373fb5-db6f-4e5b-8555-c5539e10eac6",
+              "name": "Unauthorized (e.g., OAUTH_SCOPE_MISMATCH).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":moduleApiName",
+                    "actions",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "word",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "approved",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "moduleApiName",
+                      "description": "(Required) The API name of the module to retrieve the record count for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": {},\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96ac634c-4a2c-4ba1-b242-e4ae13b7fffd",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":moduleApiName",
+                    "actions",
+                    "count"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "word",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "approved",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "moduleApiName",
+                      "description": "(Required) The API name of the module to retrieve the record count for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": {},\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff3c63f4-0933-4c9d-9fe1-c8b009663f0a",
+          "name": "Get Records for a specific module",
+          "request": {
+            "name": "Get Records for a specific module",
+            "description": {
+              "content": "To get the list of available records from a module",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "Specify the API names of the fields you want to retrieve when fetching the records."
+                },
+                {
+                  "disabled": false,
+                  "key": "territory_id",
+                  "value": "<int64>",
+                  "description": "Specify the territory ID to get the list of records that belongs to a specific territory"
+                },
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "To retrieve specific records based on their unique ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "cvid",
+                  "value": "<int64>",
+                  "description": "Specify the custom view ID to get the list of records based on custom views"
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "<integer>",
+                  "description": "Specify how many records to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "To get the list of records from the respective pages"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>",
+                  "description": "To fetch more than 2000 records, you must include the \"page_token\" param in the request"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_order",
+                  "value": "<string>",
+                  "description": "To sort the available list of records in either ascending or descending order"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort_by",
+                  "value": "<string>",
+                  "description": "To sort the records based on the fields id, Created_Time, and Modified_Time. The default value is 'id'"
+                },
+                {
+                  "disabled": false,
+                  "key": "converted",
+                  "value": "<string>",
+                  "description": "To get the list of converted records"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_child",
+                  "value": "<boolean>",
+                  "description": "To include records from the child territories"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "8ee363da-3485-42e2-a871-c8c600cd07da",
+              "name": "Successful response containing the list of records for the specified module",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"Owner\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"email\": \"string\"\n      },\n      \"Created_Time\": \"2023-04-01T22:38:57.617Z\",\n      \"Modified_Time\": \"1951-10-24T12:39:40.164Z\",\n      \"Created_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"Modified_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"Owner\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"email\": \"string\"\n      },\n      \"Created_Time\": \"1960-07-26T19:20:49.163Z\",\n      \"Modified_Time\": \"1947-12-13T12:20:14.687Z\",\n      \"Created_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"Modified_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    }\n  ],\n  \"info\": {\n    \"page\": 9147,\n    \"call\": false,\n    \"per_page\": 5209,\n    \"count\": 9338,\n    \"more_records\": false,\n    \"email\": false,\n    \"sort_by\": \"string\",\n    \"sort_order\": \"asc\",\n    \"next_page_token\": \"string\",\n    \"previous_page_token\": \"string\",\n    \"page_token_expiry\": \"1972-09-19T15:29:04.674Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0be6723-9d14-4b1a-88b3-4c5a1b2996cf",
+              "name": "No Content - The request was successful, but no records found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "07fddeaf-4365-44a3-bfb6-310ed4f68962",
+              "name": "Bad Request - The request could not be processed due to invalid input, missing mandatory parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_DATA\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 7150\n      }\n    },\n    {\n      \"code\": \"PAGINATION_LIMIT_EXCEEDED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 3235\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2271bab-550d-4852-88cc-0c8788b8a824",
+              "name": "Forbidden - User lacks permission to access the requested module, Records or This API is supported only for admin users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3c1ff66-2608-4573-a4a0-7260392b2878",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e15e34f-1d86-4985-81a1-b2b85bda8f5f",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "territory_id",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cvid",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_order",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sort_by",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "converted",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_child",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aae18688-af97-49bf-b714-1bd3aecf434f",
+          "name": "Create a Record in a specific module",
+          "request": {
+            "name": "Create a Record in a specific module",
+            "description": {
+              "content": "Create a Record in a specific module",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3616\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 6802.9065769295385,\n      \"key_1\": 88,\n      \"key_2\": true,\n      \"key_3\": 6447\n    },\n    {\n      \"key_0\": false\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": 329,\n      \"key_1\": 3999,\n      \"key_2\": false,\n      \"key_3\": 5201\n    },\n    {\n      \"key_0\": \"string\"\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c471a1bc-bc99-46db-83c0-1dad071dfb6b",
+              "name": "Record is created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"1968-05-14T21:39:24.118Z\",\n        \"Created_Time\": \"1982-10-02T19:27:07.803Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"2000-12-12T02:13:43.821Z\",\n        \"Created_Time\": \"1984-03-15T09:31:39.078Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "437fc9e7-3324-48f7-a2aa-33077048b62d",
+              "name": "Bad Request - The request could not be processed due to invalid input, missing mandatory parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"RECORD_LOCKED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 6246,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    },\n    {\n      \"code\": \"AUTHORIZATION_FAILED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 434,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9b02ec4-1bd2-41ca-9dbe-22cea306f744",
+              "name": "Unauthorized - Authentication failed or insufficient OAuth scope permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9de0886-e243-4fa8-8455-53d849a5269e",
+              "name": "Forbidden - User lacks permission add records to the requested module, Records or This API is supported only for admin users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fce4436-5394-4e0a-aa55-9340a4a11c5c",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d698a6b-5f16-48d1-abc7-39ece4c63a53",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 6090.697080626219\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": 1705\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7888\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false,\n      \"key_2\": \"string\"\n    },\n    {\n      \"key_0\": 4861.437839037393\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "27ceef1f-1130-4fa7-95f9-ec937b9769c2",
+          "name": "To update existing entities or records in a specified module",
+          "request": {
+            "name": "To update existing entities or records in a specified module",
+            "description": {
+              "content": "To update existing entities or records in a specified module.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": true,\n      \"key_1\": 8790,\n      \"key_2\": 4330\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\",\n      \"key_1\": 2503\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 7710,\n      \"key_2\": 8758.878955253525\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 1047,\n      \"key_2\": 9734.2264949194,\n      \"key_3\": 7529\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": 490.27465789141746,\n      \"key_1\": 4504,\n      \"key_2\": 4689\n    },\n    {\n      \"key_0\": 3268.6441964312376,\n      \"key_1\": \"string\",\n      \"key_2\": 462.45036794752\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2533186a-7c00-4f83-be76-b865dcc14f0e",
+              "name": "Success Response containing the record id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"1968-05-14T21:39:24.118Z\",\n        \"Created_Time\": \"1982-10-02T19:27:07.803Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"2000-12-12T02:13:43.821Z\",\n        \"Created_Time\": \"1984-03-15T09:31:39.078Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "281a8326-e5a1-4136-95c0-c6d4073cdbc1",
+              "name": "Failure in Record Update",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"RECORD_LOCKED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 6246,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    },\n    {\n      \"code\": \"AUTHORIZATION_FAILED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 434,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e112502-cf62-47db-be0f-edbfb741af96",
+              "name": "Unauthorized - Authentication failed or insufficient OAuth scope permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b4711a8-ceac-4668-aedf-818ab1be5d88",
+              "name": "Forbidden - User lacks permission update records in the requested module, Records or This API is supported only for admin users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f07c2171-06cf-4fa4-9633-64d2411a0e9d",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba3f484d-c81a-4ca0-95d0-88352c936328",
+              "name": "The record was modified after the time specified.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"ALREADY_MODIFIED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"Modified_Time\": \"1979-10-16T17:01:51.724Z\",\n        \"Created_Time\": \"2017-08-11T22:57:30.615Z\",\n        \"id\": \"string\",\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"key_0\": 6908.424878795196\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d77c50b1-5a4a-4a54-8712-3116148083f5",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "249da970-a0ab-4e20-9074-59817f3e80d5",
+          "name": "Delete multiple records from a module",
+          "request": {
+            "name": "Delete multiple records from a module",
+            "description": {
+              "content": "Permanently deletes one or more records from the specified module using comma-separated record IDs. Returns per-item results for bulk operations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "To retrieve specific records based on their unique ID."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "2420fd42-a0da-4f20-a6cc-305dcd0da8cb",
+              "name": "Successful deletion. Returns a success status for each deleted record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"record deleted\",\n      \"status\": \"success\"\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"record deleted\",\n      \"status\": \"success\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d66f11b-f7d9-4c6f-80c0-f4e27e7ede9d",
+              "name": "Multi-status response indicating that some records were deleted successfully while others failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"status\": \"success\",\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"details\": {\n        \"id\": \"string\"\n      }\n    },\n    {\n      \"status\": \"success\",\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"details\": {\n        \"id\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2b62f043-6f0a-4f67-a913-c1e0da53abd1",
+              "name": "Bad request due to invalid module, missing parameters, or invalid record IDs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"status\": \"error\",\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"details\": {\n        \"id\": \"string\",\n        \"key_0\": 837,\n        \"key_1\": false,\n        \"key_2\": 5690,\n        \"key_3\": 3666,\n        \"key_4\": \"string\"\n      }\n    },\n    {\n      \"status\": \"error\",\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"details\": {\n        \"id\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01752c92-216b-4685-a211-2ec1f0b3eb55",
+              "name": "Unauthorized response returned when the OAuth token does not contain the required delete scope.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"OAUTH_SCOPE_MISMATCH\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28a2fa44-248c-4193-b0df-ebe0cafac30f",
+              "name": "Forbidden response returned when the user does not have permission to delete records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NO_PERMISSION\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa0b02ca-eb60-44fb-a5aa-718de3376b54",
+              "name": "Response returned when the API endpoint URL is invalid or the requested resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_URL_PATTERN\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "19c67396-590b-4cad-9f5d-122b802113f5",
+              "name": "Response returned when an unexpected internal server error occurs during record deletion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INTERNAL_ERROR\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf31e019-6040-48d2-b35c-b738873c7939",
+          "name": "Get Record for a specific module with RecordId",
+          "request": {
+            "name": "Get Record for a specific module with RecordId",
+            "description": {
+              "content": "To get the details of a specific record with its unique record ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module",
+                ":recordID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<int64>",
+                  "key": "recordID",
+                  "description": "(Required) This ID is used to uniquely identify a record"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "3e711cbf-e012-4bfa-a709-4b2fbb12e9c1",
+              "name": "Successful response of the mentioned Record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"Owner\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"email\": \"string\"\n      },\n      \"Created_Time\": \"2023-04-01T22:38:57.617Z\",\n      \"Modified_Time\": \"1951-10-24T12:39:40.164Z\",\n      \"Created_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"Modified_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"Owner\": {\n        \"name\": \"string\",\n        \"id\": \"string\",\n        \"email\": \"string\"\n      },\n      \"Created_Time\": \"1960-07-26T19:20:49.163Z\",\n      \"Modified_Time\": \"1947-12-13T12:20:14.687Z\",\n      \"Created_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"Modified_By\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    }\n  ],\n  \"info\": {\n    \"page\": 9147,\n    \"call\": false,\n    \"per_page\": 5209,\n    \"count\": 9338,\n    \"more_records\": false,\n    \"email\": false,\n    \"sort_by\": \"string\",\n    \"sort_order\": \"asc\",\n    \"next_page_token\": \"string\",\n    \"previous_page_token\": \"string\",\n    \"page_token_expiry\": \"1972-09-19T15:29:04.674Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a74aed9a-05b8-43cd-bc2f-c8d222e1f8aa",
+              "name": "No Content - The request was successful, but no records found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "18edc39e-1e30-4a38-866b-929c590fe434",
+              "name": "Bad Request - The request could not be processed due to invalid input, missing mandatory parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_DATA\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 7150\n      }\n    },\n    {\n      \"code\": \"PAGINATION_LIMIT_EXCEEDED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 3235\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eda68c46-eda4-4da1-917b-cbe102e2dc4a",
+              "name": "Forbidden - User lacks permission to access the requested module, Records or This API is supported only for admin users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bea48c53-b8d8-4425-b7e0-b4e25d4877f2",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94421e77-6b04-463d-9d31-d17829b66a14",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "de138224-4e33-4bdd-ad20-0ee5d1e9ed30",
+          "name": "To update existing entities or records in a specified module with the recordID",
+          "request": {
+            "name": "To update existing entities or records in a specified module with the recordID",
+            "description": {
+              "content": "To update existing entities or records in a specified module with the recordID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module",
+                ":recordID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<int64>",
+                  "key": "recordID",
+                  "description": "(Required) This ID is used to uniquely identify a record"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": true,\n      \"key_1\": 8790,\n      \"key_2\": 4330\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": \"string\",\n      \"key_1\": 2503\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 7710,\n      \"key_2\": 8758.878955253525\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 1047,\n      \"key_2\": 9734.2264949194,\n      \"key_3\": 7529\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": 490.27465789141746,\n      \"key_1\": 4504,\n      \"key_2\": 4689\n    },\n    {\n      \"key_0\": 3268.6441964312376,\n      \"key_1\": \"string\",\n      \"key_2\": 462.45036794752\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5364bc35-d488-44d8-85d6-fcfb0f706f8b",
+              "name": "Success Response containing the record id",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"1968-05-14T21:39:24.118Z\",\n        \"Created_Time\": \"1982-10-02T19:27:07.803Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\",\n        \"Modified_Time\": \"2000-12-12T02:13:43.821Z\",\n        \"Created_Time\": \"1984-03-15T09:31:39.078Z\",\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"$approval_state\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c3925bd-763d-42a7-9293-79a6683ffb45",
+              "name": "Failure in Record Update",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"RECORD_LOCKED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 6246,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    },\n    {\n      \"code\": \"AUTHORIZATION_FAILED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"resource_path_index\": 434,\n        \"api_name\": \"string\",\n        \"json_path\": \"string\",\n        \"expected_fields\": [\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          },\n          {\n            \"api_name\": \"string\",\n            \"json_path\": \"string\"\n          }\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1f7fc07-9fdd-477f-9f58-fefd93c687b0",
+              "name": "Unauthorized - Authentication failed or insufficient OAuth scope permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"OAUTH_SCOPE_MISMATCH\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2fb6352-0c50-4d5b-9561-f6e5ded39fb0",
+              "name": "Forbidden - User lacks permission to update records the requested module, Records or This API is supported only for admin users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"NO_PERMISSION\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2b43954-eff2-4135-b05e-622f055e1e85",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e11cf9f0-2615-42aa-8e84-d319c68d6e4c",
+              "name": "The record was modified after the time specified.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"ALREADY_MODIFIED\",\n      \"message\": \"string\",\n      \"status\": \"error\",\n      \"details\": {\n        \"Modified_Time\": \"2000-09-20T15:10:33.511Z\",\n        \"Created_Time\": \"1960-05-28T07:20:40.238Z\",\n        \"id\": \"string\",\n        \"Modified_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        },\n        \"Created_By\": {\n          \"name\": \"string\",\n          \"id\": \"string\"\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3aa1f89c-4ea3-43ec-ac36-14fb7794838c",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"$append_values\": \"<string>\",\n      \"key_0\": 3654.095982538832,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"apply_feature_execution\": [\n    {\n      \"key_0\": false,\n      \"key_1\": false\n    },\n    {\n      \"key_0\": 664,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"skip_feature_execution\": [\n    {\n      \"key_0\": true,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 8816\n    }\n  ],\n  \"trigger\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b5214cd8-8d5b-4320-9224-642ededa9a33",
+          "name": "Delete a single record by ID",
+          "request": {
+            "name": "Delete a single record by ID",
+            "description": {
+              "content": "Permanently deletes a specific record from the module using its unique record ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module",
+                ":recordID"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<int64>",
+                  "key": "recordID",
+                  "description": "(Required) This ID is used to uniquely identify a record"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "c353f087-2fbf-4ee3-8022-a1aa91307146",
+              "name": "Successful response returned when the specified record is deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\"\n      }\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"id\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e0f9acf-b5ed-4324-9236-8d587fd6216a",
+              "name": "Bad request response returned when record deletion fails due to invalid input, path parameters, or request constraints.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"RECORD_LOCKED\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"resource_path_index\": 1218,\n    \"id\": \"string\",\n    \"param\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5061f6ab-c48f-4e55-8cd7-090d87498e46",
+              "name": "Response returned when the request is unauthorized due to a missing or invalid OAuth scope required for record deletion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"OAUTH_SCOPE_MISMATCH\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4053a2d-d15b-49c8-9820-00903f0ee338",
+              "name": "Response returned when the user does not have permission to delete the requested record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NO_PERMISSION\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef8b016c-6451-4bc4-821e-1d87819ea8ee",
+              "name": "Response returned when the API endpoint URL is invalid or the requested resource is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_URL_PATTERN\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "278e7ebb-e29a-43ba-b2b2-7bcb49027c9f",
+              "name": "Internal server error response returned when record deletion fails due to an unexpected server-side issue.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    ":recordID"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<int64>",
+                      "key": "recordID",
+                      "description": "(Required) This ID is used to uniquely identify a record"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INTERNAL_ERROR\",\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b177d98f-2b97-4b72-8bc2-8d85a3cf968a",
+    "name": "Helpcenter Records API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

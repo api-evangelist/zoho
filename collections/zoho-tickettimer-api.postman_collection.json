@@ -1,0 +1,848 @@
+{
+  "item": [
+    {
+      "id": "a20f512f-a647-4098-8e3e-6248769d7132",
+      "name": "TicketTimer",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "66fa2213-bc47-4873-b619-0a6cadc70811",
+          "name": "List active timers",
+          "request": {
+            "name": "List active timers",
+            "description": {
+              "content": "This API lists a particular number of currently active timers in a department, based on the limit specified. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "allActiveTimers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the timers must be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "module",
+                  "value": "<string>",
+                  "description": "Zoho Desk modules from which the timers must be fetched. Values allowed are: Tickets, Tasks, Events, and Calls. You can pass multiple values by separating them using commas. If you do not pass a value, all modules are considered."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of timers to list"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<string,integer-int64>",
+                  "description": "Point of time before or after which the timers were started. This parameter works in conjunction with the sortBy parameter. If the value of sortBy is startTime, the timers are listed in ascending order. If the value of sortBy is -startTime, they are listed in descending order. (Note: With startTime in play, the time value associated with the last timer in an API response is considered as the value from which the next set of timers must be fetched in the subsequent response.)"
+                },
+                {
+                  "disabled": false,
+                  "key": "sortBy",
+                  "value": "<string>",
+                  "description": "Key that sorts the timers from oldest to latest (ascending order) or latest to oldest (descending order). Values allowed are: startTime (ascending order) and -startTime (descending order, which is the default sorting order). "
+                },
+                {
+                  "disabled": false,
+                  "key": "owners",
+                  "value": "<string,integer-int64>",
+                  "description": " Key that filters timers by Owner. Values allowed are any valid Owner ID or multiple Owner IDs separated by commas."
+                },
+                {
+                  "disabled": false,
+                  "key": "owners",
+                  "value": "<string,integer-int64>",
+                  "description": " Key that filters timers by Owner. Values allowed are any valid Owner ID or multiple Owner IDs separated by commas."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "836ad448-6c55-438c-b6dd-c7b64fe22d69",
+              "name": "getActiveTimers template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "allActiveTimers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"owner\": {\n        \"firstName\": \"George\",\n        \"lastName\": \"McKinson\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/75485000000418459/photo?orgId=60708463\",\n        \"name\": \"McKinson George\",\n        \"id\": \"75485000000418459\"\n      },\n      \"timer\": {\n        \"hours\": \"137\",\n        \"seconds\": \"38\",\n        \"minutes\": \"17\",\n        \"state\": \"RUNNING\"\n      },\n      \"ticket\": {\n        \"ticketNumber\": \"401\",\n        \"subject\": \"Ticket for timer by another agent\",\n        \"dueDate\": null,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000001513021\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Open\"\n      },\n      \"startTime\": \"1626290803841\",\n      \"entity\": \"Tickets\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Lucas\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/75485000000182033/photo?orgId=60708463\",\n        \"name\": \"Carol Lucas\",\n        \"id\": \"75485000000182033\"\n      },\n      \"timer\": {\n        \"hours\": \"192\",\n        \"seconds\": \"23\",\n        \"minutes\": \"38\",\n        \"state\": \"RUNNING\"\n      },\n      \"ticket\": {\n        \"ticketNumber\": \"673\",\n        \"subject\": \"Ticket for timer\",\n        \"dueDate\": null,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000002473027\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Open\"\n      },\n      \"startTime\": \"1626150959474\",\n      \"entity\": \"Tickets\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Lucas\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/75485000000182033/photo?orgId=60708463\",\n        \"name\": \"Carol Lucas\",\n        \"id\": \"75485000000182033\"\n      },\n      \"timer\": {\n        \"hours\": \"216\",\n        \"seconds\": \"10\",\n        \"minutes\": \"47\",\n        \"state\": \"RUNNING\"\n      },\n      \"task\": {\n        \"subject\": \"Task with ticket for timer\",\n        \"dueDate\": 1626244200000,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000002466025\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Not Started\"\n      },\n      \"ticket\": {\n        \"ticketNumber\": \"672\",\n        \"subject\": \"checking active timer\",\n        \"dueDate\": 1626244200000,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000002459023\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Open\"\n      },\n      \"startTime\": \"1626064031778\",\n      \"entity\": \"Tasks\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Lucas\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/75485000000182033/photo?orgId=60708463\",\n        \"name\": \"Carol Lucas\",\n        \"id\": \"75485000000182033\"\n      },\n      \"timer\": {\n        \"hours\": \"226\",\n        \"seconds\": \"21\",\n        \"minutes\": \"21\",\n        \"state\": \"RUNNING\"\n      },\n      \"startTime\": \"1626029581045\",\n      \"event\": {\n        \"subject\": \"Event without ticket \",\n        \"dueDate\": null,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000002463059\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Not Started\"\n      },\n      \"entity\": \"Events\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Lucas\",\n        \"lastName\": \"Carol\",\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/75485000000182033/photo?orgId=60708463\",\n        \"name\": \"Carol Lucas\",\n        \"id\": \"75485000000182033\"\n      },\n      \"timer\": {\n        \"hours\": \"274\",\n        \"seconds\": \"42\",\n        \"minutes\": \"26\",\n        \"state\": \"RUNNING\"\n      },\n      \"task\": {\n        \"subject\": \"Task without ticket\",\n        \"dueDate\": null,\n        \"depId\": \"75485000000569047\",\n        \"id\": \"75485000000572019\",\n        \"depName\": \"TestDept\",\n        \"status\": \"Not Started\"\n      },\n      \"startTime\": \"1625856459759\",\n      \"entity\": \"Tasks\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f2ef4a9-1667-49dc-b2a5-3604d676da05",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "allActiveTimers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "sortBy",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "owners",
+                      "value": "<string,integer-int64>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "07c4f4f7-8fee-4615-92e3-add12ee7e001",
+          "name": "Get Ticket Timer",
+          "request": {
+            "name": "Get Ticket Timer",
+            "description": {
+              "content": "This API fetches the time elapsed in the ticket timer, along with the current state",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                ":caseId",
+                "timer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "caseId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7892a68a-79d3-4d1e-8bbb-14bc2ac1ec04",
+              "name": "ticketTimerJson template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tickets",
+                    ":caseId",
+                    "timer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "caseId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hours\": 0,\n  \"seconds\": 26,\n  \"minutes\": 5,\n  \"state\": \"RUNNING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3477752d-b9ec-48a9-89b7-0350dacbe0fe",
+          "name": "Performs Ticket Timer actions",
+          "request": {
+            "name": "Performs Ticket Timer actions",
+            "description": {
+              "content": "This API performs timer-related actions, such as START, STOP, PAUSE and RESUME ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                ":caseId",
+                "timer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "action",
+                  "value": "<string,null>",
+                  "description": "(Required)  Action of the timer.Supported actions are  @START@, @STOP@, @PAUSE@ and @RESUME@"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "caseId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "957b354e-83e3-4bfc-ad5d-a26079222bde",
+              "name": "ticketTimerJson template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tickets",
+                    ":caseId",
+                    "timer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "action",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "caseId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"hours\": 0,\n  \"seconds\": 26,\n  \"minutes\": 5,\n  \"state\": \"RUNNING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33df7f0e-974d-4e02-b0c3-3bb340de9f5d",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tickets",
+                    ":caseId",
+                    "timer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "action",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "caseId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dc8e7fb5-9d9a-4b63-ad62-30b0f71a7d3c",
+          "name": "Get Active Timer for an Agent",
+          "request": {
+            "name": "Get Active Timer for an Agent",
+            "description": {
+              "content": "This API fetches currently running timer details for an agent",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "myActiveTimers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the timers must be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of timers to list"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "from"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "0ba1f3a3-f89e-4372-acec-db23e4661a13",
+              "name": "getActiveTimerForEntity template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "myActiveTimers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"owner\": {\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Jones\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20\",\n        \"name\": \"Sam Jones\",\n        \"id\": \"7000000020001\"\n      },\n      \"timer\": {\n        \"hours\": 93,\n        \"seconds\": 9,\n        \"minutes\": 6,\n        \"state\": \"Running\"\n      },\n      \"userId\": \"7000000020001\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Robert\",\n        \"lastName\": \"Downey\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20\",\n        \"name\": \"Robert Downey\",\n        \"id\": \"7000000030001\"\n      },\n      \"timer\": {\n        \"hours\": 19,\n        \"seconds\": 24,\n        \"minutes\": 9,\n        \"state\": \"Paused\"\n      },\n      \"userId\": \"7000000030001\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d1cced7-7d99-47be-9ef3-1bcc577a75b0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "myActiveTimers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "24aa2312-4111-471a-affd-3ea6f65f0911",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "myActiveTimers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9dbaa4b3-e06f-4c8c-a894-aa291ce18140",
+          "name": "List ticket timers",
+          "request": {
+            "name": "List ticket timers",
+            "description": {
+              "content": "This API fetches the details of timers currently active in a ticket.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                ":entityId",
+                "activeTimer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string,null>",
+                  "description": "Secondary information related to the timers. Value supported is @owner@."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of timers to list"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "from"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "entityId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "bbfb398e-59ae-466c-bee5-2bd67aac3415",
+              "name": "getActiveTimerForEntity template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tickets",
+                    ":entityId",
+                    "activeTimer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "entityId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"owner\": {\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Jones\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20\",\n        \"name\": \"Sam Jones\",\n        \"id\": \"7000000020001\"\n      },\n      \"timer\": {\n        \"hours\": 93,\n        \"seconds\": 9,\n        \"minutes\": 6,\n        \"state\": \"Running\"\n      },\n      \"userId\": \"7000000020001\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Robert\",\n        \"lastName\": \"Downey\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20\",\n        \"name\": \"Robert Downey\",\n        \"id\": \"7000000030001\"\n      },\n      \"timer\": {\n        \"hours\": 19,\n        \"seconds\": 24,\n        \"minutes\": 9,\n        \"state\": \"Paused\"\n      },\n      \"userId\": \"7000000030001\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b07316b9-1b71-4fe8-a93d-d08deac90bd5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tickets",
+                    ":entityId",
+                    "activeTimer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "entityId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a72e89e5-405e-47c7-9925-463e7f1461d8",
+    "name": "Helpcenter TicketTimer API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

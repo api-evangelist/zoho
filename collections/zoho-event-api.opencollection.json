@@ -1,0 +1,234 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Event API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Event",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/events",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the event count must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of events to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the events must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of events, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds an event entry to your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Get event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/events/:eventId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : @contacts@, @assignee@,@tickets@,@teams@,@integInfo@,@creator@."
+              },
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of an event."
+        },
+        {
+          "info": {
+            "name": "Update an event",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/events/:eventId",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the details of an event."
+        },
+        {
+          "info": {
+            "name": "Delete spam events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events/deleteSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes the given spam events"
+        },
+        {
+          "info": {
+            "name": "Update many events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple events at once."
+        },
+        {
+          "info": {
+            "name": "Delete events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves event entries to the Recycle Bin of your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List events by ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/events",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : contacts, assignee,tickets,teams,integInfo."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of events to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the events must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @startTime@ or @createdTime@.The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes whether to fetch spam events or not"
+              },
+              {
+                "name": "isCompleted",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the event was completed or not"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of events associated with a ticket, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Empty spam events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events/emptySpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes all spam events."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

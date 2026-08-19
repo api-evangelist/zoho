@@ -1,0 +1,342 @@
+{
+  "item": [
+    {
+      "id": "52a4fdcf-b537-4e2b-9fb5-5738bb7b04c3",
+      "name": "AccountTimeEntry",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6af7e9c9-7baa-43b8-bf9a-7bde9b57c60a",
+          "name": "List Account Time Entries",
+          "request": {
+            "name": "List Account Time Entries",
+            "description": {
+              "content": "This API lists time entries recorded for a ticket or task related to an account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "timeEntry"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Secondary information related to the time entry. Value supported is owner"
+                },
+                {
+                  "disabled": false,
+                  "key": "module",
+                  "value": "<string>",
+                  "description": "Module Preference. It can be either tickets tasks"
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,integer-int64>",
+                  "description": "ID of the department"
+                },
+                {
+                  "disabled": false,
+                  "key": "createdTimeRange",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of time entries to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "billStatus",
+                  "value": "<string>",
+                  "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string,null>",
+                  "description": "Key that sorts the time entries in ascending or descending order, based on the @executedTime attribute. Values allowed are @ASC@ (default) and @DESC@"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Index number, starting from which the time entries must be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "modifiedTimeRange",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "accountId",
+                  "description": "(Required) ID of the account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "e43136e0-2cf2-45d0-afd5-395bd068025c",
+              "name": "getTimeEntryByAccountIdResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "createdTimeRange",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "billStatus",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "modifiedTimeRange",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "accountId",
+                      "description": "(Required) ID of the account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688129\"\n      },\n      \"secondsSpent\": \"21\",\n      \"parent\": {\n        \"ticketNumber\": \"1001\",\n        \"associatedTicketId\": \"4000000031014\",\n        \"subject\": \"Task subject\",\n        \"id\": \"4000000031007\",\n        \"type\": \"TASKS\"\n      },\n      \"executedTime\": 1466627400000,\n      \"fixedCost\": \"10.17\",\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"23\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"3.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"3\",\n      \"ownerId\": \"4000000008692\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466061884000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033001\",\n      \"requestChargeType\": \"Customer Service\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"20.17\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688129\"\n      },\n      \"secondsSpent\": \"21\",\n      \"parent\": {\n        \"ticketNumber\": \"1001\",\n        \"associatedTicketId\": \"4000000031014\",\n        \"subject\": \"Task subject\",\n        \"id\": \"4000000031007\",\n        \"type\": \"TASKS\"\n      },\n      \"executedTime\": 1466796600000,\n      \"fixedCost\": null,\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"34\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"10.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"3\",\n      \"ownerId\": \"4000000012090\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466063199000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033006\",\n      \"requestChargeType\": \"Product Consultation\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"45.72\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688128\"\n      },\n      \"secondsSpent\": \"22\",\n      \"parent\": {\n        \"ticketNumber\": \"1001\",\n        \"subject\": \"Ticket subject\",\n        \"id\": \"4000000031007\",\n        \"type\": \"TICKETS\"\n      },\n      \"executedTime\": 1465846200000,\n      \"fixedCost\": null,\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"22\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"20.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"32\",\n      \"ownerId\": \"4000000008692\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466063392000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033011\",\n      \"requestChargeType\": \"Customer Service\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"657.46\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "035f7820-abc9-4103-acbd-d8a4dde61111",
+          "name": "Get summation of Account Time Entries",
+          "request": {
+            "name": "Get summation of Account Time Entries",
+            "description": {
+              "content": "This API fetches summation of time entries for an account from your help desk",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "timeEntrySummation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "module",
+                  "value": "<string>",
+                  "description": "Module Preference. It can be either tickets tasks"
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,integer-int64>",
+                  "description": "ID of the department"
+                },
+                {
+                  "disabled": false,
+                  "key": "billStatus",
+                  "value": "<string>",
+                  "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "accountId",
+                  "description": "(Required) ID of the account"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2c300405-e306-464f-a4d2-c803d2556718",
+              "name": "getSummationOfTimeEntryForAccountResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "timeEntrySummation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "module",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,integer-int64>"
+                    },
+                    {
+                      "key": "billStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "accountId",
+                      "description": "(Required) ID of the account"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalMins\": 5,\n  \"totalHours\": 12,\n  \"totalCosts\": 1000,\n  \"totalSeconds\": 24\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c0365a48-a842-4cfa-97c0-15680d7c69eb",
+    "name": "Helpcenter AccountTimeEntry API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

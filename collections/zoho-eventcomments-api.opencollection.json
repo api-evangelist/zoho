@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter EventComments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EventComments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all event comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/events/:eventId/comments",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments. Value allowed is @mentions@, which returns the details of users mentioned in the comments."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "No. of comments to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the comments must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort comments by the @commentedTime@ attribute. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments recorded on a event, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create a event comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/events/:eventId/comments",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a comment to a event."
+        },
+        {
+          "info": {
+            "name": "Get a event comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/events/:eventId/comments/:commentId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments. Value allowed is @mentions@, which returns the details of users mentioned in the comments."
+              },
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a event comment from the portal."
+        },
+        {
+          "info": {
+            "name": "Update a event comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/events/:eventId/comments/:commentId",
+            "params": [
+              {
+                "name": "eventId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates an existing event comment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

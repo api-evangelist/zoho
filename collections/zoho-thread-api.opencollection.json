@@ -1,0 +1,193 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Thread API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Thread",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update Draft",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/draftReply/:threadId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates a draft thread created via the @EMAIL@, @FACEBOOK@, or @FORUM@ channel."
+        },
+        {
+          "info": {
+            "name": "Get Original Mail Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:requestId/threads/:threadId/originalContent",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "requestId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API get the orginal mail content including mail headers"
+        },
+        {
+          "info": {
+            "name": "Send Email Reply",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/sendReply",
+            "headers": [
+              {
+                "name": "impersonatedUserId",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "parentConversationId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API sends an email reply. The from address in the email must be a from address configured in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Draft Email Reply",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/draftReply",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "parentConversationId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API drafts an email reply. The from address in the email must be a from address configured in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List all threads ",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/threads",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of threads to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the threads must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the threads by sendDateTime.<br>If the value of sortBy key is: <br> <ul><li> \"<b>sendDateTime</b>\" - sorting will be done in <b> ascending </b> order</li> <li> \"<b>-sendDateTime </b>\" - (prefix the value with a \"-\") sorting will be done in <b>descending</b> order</li></ul> <br> <b>Note:</b> If this sortBy key is not specified, the sorting will be done in descending order by default based on sendDateTime."
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists all threads in your helpdesk."
+        },
+        {
+          "info": {
+            "name": "Delete attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/threads/:threadId/attachments/:attachmentId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "attachmentId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the attachment to be deleted"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes an attachment from a draft thread."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

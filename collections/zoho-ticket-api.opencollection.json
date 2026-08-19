@@ -1,0 +1,762 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Ticket API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ticket",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get ticket resolution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/resolution",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details related to the resolution of a ticket."
+        },
+        {
+          "info": {
+            "name": "Update ticket resolution",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/resolution",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the resolution field of a ticket."
+        },
+        {
+          "info": {
+            "name": "Delete ticket resolution",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/resolution",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes a resolution added to a ticket."
+        },
+        {
+          "info": {
+            "name": "List all agentsTicketsCount",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agentsTicketsCount",
+            "params": [
+              {
+                "name": "agentIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of agent IDs. Maximum number of IDs allowed is 50."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              }
+            ]
+          },
+          "docs": "This API returns the number of tickets assigned to multiple agents."
+        },
+        {
+          "info": {
+            "name": "Move Tickets to trash",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves tickets to the Recycle Bin"
+        },
+        {
+          "info": {
+            "name": "List all associated tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/associatedTickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Key that returns additional information related to a ticket. Values allowed are: contacts, products, and assignee. All three values can be passed by separating them with a comma in the API request."
+              },
+              {
+                "name": "follower",
+                "value": "",
+                "type": "query",
+                "description": "Filter by followers of the ticket. Values allowed : a valid @agentId@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tickets to fetch"
+              },
+              {
+                "name": "sharedDepartmentId",
+                "value": "",
+                "type": "query",
+                "description": "Fetches only the tickets shared from @departmentId@ to @sharedDepartmentId@. If @departmentId@ is not provided, fetches all the tickets shared to @sharedDepartmentId@. @sharedDepartmentId@ is given precedence only when @isShared@ is @false@/not given."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tickets must be listed"
+              },
+              {
+                "name": "assignee",
+                "value": "",
+                "type": "query",
+                "description": "assignee - Key that filters tickets by assignee. Values allowed are @Unassigned@ or a valid @assigneeId@. Multiple @assigneeIds@ can be passed as comma-separated values."
+              },
+              {
+                "name": "receivedInDays",
+                "value": "",
+                "type": "query",
+                "description": "Fetches recent tickets, based on @customer response time@. Values allowed are @15@, @30@ , @90@."
+              },
+              {
+                "name": "isShared",
+                "value": "",
+                "type": "query",
+                "description": "Filter all shared tickets actually belonging to @departmentId@ if @isShared@ is true. If @departmentId@ is not provided and if @isShared@ is true, shared tickets from all permitted departments will be listed. If @departmentId@ is provided and @isShared@ is @true@, tickets belonging to @departmentId@, but shared to any other department will be fetched. If @departmentId@ and @sharedDepartmentId@ is provided and @isShared@ is @true@, then tickets belonging to @departmentId@, but shared to @sharedDepartmentId@ will be fetched(Here permission checks are done on @departmentId@). If @departmentId@ and @sharedDepartmentId@ is provided and @isShared@ is @false@/not given, then tickets shared to @sharedDepartmentId@, but belonging to @departmentId@ will be fetched(Here permission checks are done on @sharedDepartmentId@)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by resolution status of the ticket. You can include multiple values by separating them with a comma"
+              },
+              {
+                "name": "commenter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by commenters of the ticket. Values allowed : a valid @agentId@. As of now, either @follower@ or @commenter@ is supported. If both params are given, @commenter@ will be ignored."
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of tickets that are associated to you from your help desk, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Bulk update tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple tickets at once."
+        },
+        {
+          "info": {
+            "name": "Delete spam tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/deleteSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes the given spam tickets"
+        },
+        {
+          "info": {
+            "name": "Get Archived Ticket List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/archivedTickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Key that returns additional information related to a ticket. Values allowed are: @contacts@, @products@,@departments@,@team@,@isRead@ and @assignee@. All six values can be passed by separating them with a comma in the API request."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tickets to fetch"
+              },
+              {
+                "name": "viewType",
+                "value": "",
+                "type": "query",
+                "description": "View Type - Supported Values 1 for Compact view , 2 for Classic view ,4 for Table View. If view type is not specified, Classic View will be the default view"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tickets must be listed"
+              }
+            ]
+          },
+          "docs": "This API gets the archived tickets list  in given department."
+        },
+        {
+          "info": {
+            "name": "Move ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/move",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps move a ticket from one department to another.\n @Note:@ The departmentId query parameter will be deprecated soon. Therefore, going forward, the departmentId attribute must be passed in the body of the API request."
+        },
+        {
+          "info": {
+            "name": "Get ticket metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/metrics",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details related to the response and resolution times of a ticket."
+        },
+        {
+          "info": {
+            "name": "Merge two tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/merge",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API merges two different tickets."
+        },
+        {
+          "info": {
+            "name": "Empty spam tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/emptySpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes all spam tickets."
+        },
+        {
+          "info": {
+            "name": "Map articles to tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/notifyArticleUsage",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API maps tickets with help articles to automatically suggest the same articles for similar tickets that arrive later."
+        },
+        {
+          "info": {
+            "name": "Get resolution history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/resolutionHistory",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the resolution history of a ticket"
+        },
+        {
+          "info": {
+            "name": "Mark ticket as spam",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/markSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API marks tickets as spam."
+        },
+        {
+          "info": {
+            "name": "List tickets by contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/tickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the tickets. Values allowed are: @products@, @departments@, @team@, @isRead@ and @assignee@. You can pass multiple values by separating them with a comma in the API request."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              },
+              {
+                "name": "dueDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ticket duedate. Values allowed are @overdue@, @tomorrow@, @currentWeek@, @currentMonth@ and @today@. You can include both values by separating them with a comma"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tickets to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tickets must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @createdTime@ or @modifiedTime@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Filters Spam tickets"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists tickets received from a specific contact."
+        },
+        {
+          "info": {
+            "name": "Mark as read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/markAsRead",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API marks a ticket as read by the user."
+        },
+        {
+          "info": {
+            "name": "List all tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              },
+              {
+                "name": "dueDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ticket duedate. Values allowed are @overdue@, @tomorrow@, @currentWeek@, @currentMonth@ and @today@. You can include both values by separating them with a comma"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tickets to fetch"
+              },
+              {
+                "name": "channel",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tickets must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "assignee",
+                "value": "",
+                "type": "query",
+                "description": "assignee - Key that filters tickets by assignee. Values allowed are @Unassigned@ or a valid @assigneeId@. Multiple @assigneeIds@ can be passed as comma-separated values."
+              },
+              {
+                "name": "teamIds",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "receivedInDays",
+                "value": "",
+                "type": "query",
+                "description": "Fetches recent tickets, based on @customer response time@. Values allowed are @15@, @30@ , @90@."
+              },
+              {
+                "name": "closedTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by resolution status of the ticket. You can include multiple values by separating them with a comma"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of tickets, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a ticket in your helpdesk."
+        },
+        {
+          "info": {
+            "name": "Closed many tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/closeTickets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API closes multiple tickets at once."
+        },
+        {
+          "info": {
+            "name": "List all ticketQueueView count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ticketQueueView/count",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the agent assigned to resolve the ticket"
+              },
+              {
+                "name": "viewId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the view whose ticket count must be fetched"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              }
+            ]
+          },
+          "docs": "This API returns the number of tickets in a particular view."
+        },
+        {
+          "info": {
+            "name": "Get a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Key that fetches secondary information related to the ticket. Values allowed are: @contacts@, @products@, @assignee@, @departments@, @contract@, @isRead@, @team@, and @skills@ . Multiple values can be passed, with commas for separation."
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a single ticket from your helpdesk."
+        },
+        {
+          "info": {
+            "name": "Update a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the details of an existing ticket."
+        },
+        {
+          "info": {
+            "name": "Mark as unread",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/markAsUnRead",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API marks a ticket as unread by the user."
+        },
+        {
+          "info": {
+            "name": "Split tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/threads/:threadId/split",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API splits an incoming ticket thread into a new ticket."
+        },
+        {
+          "info": {
+            "name": "List tickets by products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/products/:productId/tickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the tickets. Values allowed are: @products@, @departments@, @team@, @isRead@ and @assignee@. You can pass multiple values by separating them with a comma in the API request."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the ticket count must be fetched"
+              },
+              {
+                "name": "dueDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ticket duedate. Values allowed are @overdue@, @tomorrow@, @currentWeek@, @currentMonth@ and @today@. You can include both values by separating them with a comma"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tickets to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tickets must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @createdTime@ or @modifiedTime@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Filters Spam tickets"
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists tickets received from a specific products."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

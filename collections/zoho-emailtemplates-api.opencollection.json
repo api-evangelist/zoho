@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter EmailTemplates API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EmailTemplates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Listing Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/templates",
+            "params": [
+              {
+                "name": "searchStr",
+                "value": "",
+                "type": "query",
+                "description": "String to search for templates by name. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for templates whose name start with the string, 2) *string* - Searches for templates whose name contain the string, 3) string - Searches for templates whose name is an exact match for the string"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "the corresponding department to be fetched"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "The name of the module"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "number of templates to be retrieved Range 1-50, @DEFAULT 50@"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "from index, @DEFAULT 1@"
+              },
+              {
+                "name": "folderId",
+                "value": "",
+                "type": "query",
+                "description": "the corresponding folder to be fetched"
+              }
+            ]
+          },
+          "docs": "List all Templates"
+        },
+        {
+          "info": {
+            "name": "Add Template ",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/templates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new Template "
+        },
+        {
+          "info": {
+            "name": "Cloning a Email Template Attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/templates/:emailTemplateId/cloneAttachments",
+            "params": [
+              {
+                "name": "emailTemplateId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cloning an exisiting Template's attachments "
+        },
+        {
+          "info": {
+            "name": "Fetching placeholders ",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/templates/placeHolders",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "the corresponding department to be fetched"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "The name of the module"
+              }
+            ]
+          },
+          "docs": "List the placeholders supported in emailTemplates"
+        },
+        {
+          "info": {
+            "name": "View Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/templates/:emailTemplateId",
+            "params": [
+              {
+                "name": "emailTemplateId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "View a particular Template"
+        },
+        {
+          "info": {
+            "name": "Update Template ",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/templates/:emailTemplateId",
+            "params": [
+              {
+                "name": "emailTemplateId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing Template "
+        },
+        {
+          "info": {
+            "name": "Delete Template ",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/templates/:emailTemplateId",
+            "params": [
+              {
+                "name": "emailTemplateId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a Template "
+        },
+        {
+          "info": {
+            "name": "Rendering a Template ",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/templates/:emailTemplateId/render",
+            "params": [
+              {
+                "name": "entityId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "emailTemplateId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Render an exisiting Template into reply "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

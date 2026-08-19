@@ -1,0 +1,161 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter ContactComments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ContactComments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all contact comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/comments",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments. Value allowed is @mentions@, which returns the details of users mentioned in the comments."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "No. of comments to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the comments must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "sortby can be @commentedTime@. default order : commentedTime in descending order , prefix @-@ denotes desc"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments recorded on a contact, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create a contact comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/comments",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a comment to a contact."
+        },
+        {
+          "info": {
+            "name": "Get a contact comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/comments/:commentId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments. Value allowed is @mentions@, which returns the details of users mentioned in the comments."
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a contact comment from the portal."
+        },
+        {
+          "info": {
+            "name": "Update a contact comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/comments/:commentId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates an existing contact comment."
+        },
+        {
+          "info": {
+            "name": "Delete a contact comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/comments/:commentId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes an existing contact comment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

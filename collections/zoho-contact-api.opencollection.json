@@ -1,0 +1,599 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Contact API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contact",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List contacts associated with product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/products/:productId/contacts",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Key that fetches secondary information related to the contact.Value allowed is @accounts@"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the contacts must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Parameter that sorts contacts by one of these attributes: !@firstName,@! !@lastName,@! !@phone,@! !@email,@! !@account,@! !@createdTime,@! !@modifiedTime@!"
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Filters Spam contacts"
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the contacts associated with a product."
+        },
+        {
+          "info": {
+            "name": "Invite multiple contacts to help center",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/inviteAsEndUser",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps invite multiple contacts as end-users to your help center."
+        },
+        {
+          "info": {
+            "name": "Delete contact photo",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/photo",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes the display picture of a contact."
+        },
+        {
+          "info": {
+            "name": "Get contact statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/statistics",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the overall statistics of an contact."
+        },
+        {
+          "info": {
+            "name": "Dissociate accounts from contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/dissociateAccounts",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API dissociates multiple accounts from a particular contact."
+        },
+        {
+          "info": {
+            "name": "Delete Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves the contacts specified to the Recycle Bin."
+        },
+        {
+          "info": {
+            "name": "Dissociate account from contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/accounts/:accountId/dissociate",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API dissociates a particular account from a contact."
+        },
+        {
+          "info": {
+            "name": "Get status of contact in help centers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/helpCenters",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a particular contact's activation status in all the help centers they are part of."
+        },
+        {
+          "info": {
+            "name": "Get contact history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/history",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query",
+                "description": " Key that filters ticket activities performed by a particular agent"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": " ID of the department from which the history details must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the contacts must be listed"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the ticket history of a contact."
+        },
+        {
+          "info": {
+            "name": "List Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "viewId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the contacts must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of contacts, based on the limit specified. "
+        },
+        {
+          "info": {
+            "name": "Create Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a contact in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Update many contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple contacts at once."
+        },
+        {
+          "info": {
+            "name": "Get contacts count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/count",
+            "params": [
+              {
+                "name": "viewId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "startsWith",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API displays the count for the number of contacts in a custom view"
+        },
+        {
+          "info": {
+            "name": "List Contacts By Ids",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/contactsByIds",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "List of Contact Ids (separated by comma) which must be fetched. The maximum number of IDs allowed is 20."
+              }
+            ]
+          },
+          "docs": "This API lists details of specific contacts, based on the IDs passed in the request."
+        },
+        {
+          "info": {
+            "name": "Get Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are :  @accounts@ , @owner@"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a single contact from your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Update Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing contact."
+        },
+        {
+          "info": {
+            "name": "Merge Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/merge",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API merges two or more contacts  <br/></br/>_Note:_<br/>Though portal users (users who signed up via the help center) are saved as contacts in the help desk, their records cannot be merged with other records/contacts."
+        },
+        {
+          "info": {
+            "name": "Approve contact for help center",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/approveEndUserInvite",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps approve a particular contact as an end-user to your help center."
+        },
+        {
+          "info": {
+            "name": "Reject contact for help center",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/rejectEndUserInvite",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps reject a particular contact from being added as an end-user to your help center."
+        },
+        {
+          "info": {
+            "name": "Associate accounts with contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/associateAccounts",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API associates multiple accounts with a particular contact."
+        },
+        {
+          "info": {
+            "name": "Associate products with a contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/associateProducts",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API associates products with a contact. Only a maximum of 10 products can be associated with a contact through a single API request."
+        },
+        {
+          "info": {
+            "name": "Mark contact as spam",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/markSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API marks contacts as spam."
+        },
+        {
+          "info": {
+            "name": "Delete spam contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/deleteSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes the given spam contacts"
+        },
+        {
+          "info": {
+            "name": "Invite contact to help center",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/inviteAsEndUser",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps invite a particular contact as an end-user to your help center."
+        },
+        {
+          "info": {
+            "name": "List Associated contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/contacts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the contacts must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Parameter that sorts contacts by one of these attributes: !@firstName,@! !@lastName,@! !@fullName,@! !@phone,@! !@email,@! !@createdTime,@! !@modifiedTime@!"
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Filters Spam contacts"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the contacts associated with an account"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

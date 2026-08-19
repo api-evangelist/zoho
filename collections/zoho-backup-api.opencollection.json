@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Backup API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Backup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Initiate Bulk Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/bulkExport",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To initiate module Exports."
+        },
+        {
+          "info": {
+            "name": "Get Bulk Export",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/bulkExport/:exportId",
+            "params": [
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "the id of the export which was initiated for first time"
+              }
+            ]
+          },
+          "docs": "To get Bulk Export details."
+        },
+        {
+          "info": {
+            "name": "Download Bulk Export File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/downloadBulkExportFile",
+            "params": [
+              {
+                "name": "exportId",
+                "value": "",
+                "type": "path",
+                "description": "the id of the export which was initiated for first time"
+              }
+            ]
+          },
+          "docs": "To download the exported data as a ZIP file"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

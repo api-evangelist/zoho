@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Role API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Role",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of a particular role."
+        },
+        {
+          "info": {
+            "name": "Update role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/roles/:roleId",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing role."
+        },
+        {
+          "info": {
+            "name": "List roles by role IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/rolesByIds",
+            "params": [
+              {
+                "name": "roleIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma separated role ids. Maximum allowed count is 50"
+              }
+            ]
+          },
+          "docs": "This API lists details of the roles whose IDs are passed in the API request."
+        },
+        {
+          "info": {
+            "name": "Get personal role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/personalRole"
+          },
+          "docs": "This API fetches the details of the personal role configured in your help desk. Agents with personal role can view only the tickets assigned to them and unassigned tickets."
+        },
+        {
+          "info": {
+            "name": "Get role count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/roles/count",
+            "params": [
+              {
+                "name": "isDefault",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes whether the roles must be default roles or custom roles"
+              },
+              {
+                "name": "isVisible",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters roles according to their visibility in the UI"
+              }
+            ]
+          },
+          "docs": "This API fetches the number of roles configured in your help desk."
+        },
+        {
+          "info": {
+            "name": "List agents by role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/roles/:roleId/agents",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists agents mapped to a particular role."
+        },
+        {
+          "info": {
+            "name": "Delete role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/roles/:roleId/delete",
+            "params": [
+              {
+                "name": "roleId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes a role from your help desk."
+        },
+        {
+          "info": {
+            "name": "List roles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/roles",
+            "params": [
+              {
+                "name": "isDefault",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes whether the roles must be default roles or custom roles"
+              },
+              {
+                "name": "searchStr",
+                "value": "",
+                "type": "query",
+                "description": "String to search for roles by name or description. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for roles whose name or description start with the string, 2) *string* - Searches for roles whose name or description contain the string, 3) string -  Searches for roles whose name or description is an exact match for the string"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of roles to display. The default value is 15 and the maximum value allowed is 500."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the roles must be listed"
+              },
+              {
+                "name": "isVisible",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters roles according to their visibility in the UI"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of roles, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create role",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/roles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a role in your help desk."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

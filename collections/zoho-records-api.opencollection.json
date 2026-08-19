@@ -1,0 +1,332 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Records API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Record Count in a Module",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/actions/count",
+            "params": [
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module to retrieve the record count for."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Searches for records using an email address. The API searches across all email fields in the specified module and returns matching records. (e.g., `p%2Bboyle@abc.com` for `p+boyle@abc.com`)."
+              },
+              {
+                "name": "phone",
+                "value": "",
+                "type": "query",
+                "description": "Searches for records using a phone number. The API searches across all phone fields in the specified module and returns matching records. (e.g., `9876543210`)."
+              },
+              {
+                "name": "word",
+                "value": "",
+                "type": "query",
+                "description": "Performs a global search within the specified module using the given word. The matchable records across multiple fields based on the search term. (e.g., `fin` to match records containing 'fin' in any searchable field)."
+              },
+              {
+                "name": "cvid",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the custom view from which to get the record count."
+              },
+              {
+                "name": "criteria",
+                "value": "",
+                "type": "query",
+                "description": "Performs search by following the shown criteria: `(({api_name}:{operator}:{value}) and/or ({api_name}:{operator}:{value}))`\n\nPerforms a search based on the following format:\n`(({field_API_name}:{operator}:{value}) and/or ({field_API_name}:{operator}:{value}))`\n\nReplace `{field_API_name}`, `{operator}`, and `{value}` with the appropriate field API name, condition, and value.\n\n**Key Points:**\n- You can search for a maximum of **10 criteria** (with same or different columns)\n- The only operator that is supported for **encrypted fields** is `equals`\n- When using the `equals` operator in the Search API, it behaves like `contains`, retrieving records that include the specified value\n\n**Single Condition:**\nIf the condition is `(Company:equals:ABC)`, the response will include records with \"ABC\" as well as \"ABC Inc\" in the Company field.\n\n**Multiple Conditions:**\n`equals` still behaves like `contains`. For example, `((Company:equals:ABC) and (First_Name:starts_with:M))`, it retrieves records where the \"First Name\" starts with \"M\" and the \"Company\" contains \"ABC\" (e.g., \"ABC\" or \"ABC Inc.\").\n\n**Note:** The above behaviour does not apply to the **picklist field type**.\n\n**IN Operator:**\nThe `in` operator checks if a field's value matches any value in a given list.\nFor example, `(Full_Name:in:Patricia,Boyle,Kate)`, it retrieves records where the Full Name is Patricia, Boyle, or Kate.\n\n**Special Character Handling:**\nWhen a single-line field value contains characters such as `{`, `}`, `[`, `]`, `^`, `:`, `-`, `/`, `!`, `?`, `*`, `_`, `@`, space, the Search API returns records with similar-looking values, even if the characters are not an exact match.\n\nFor example, if Record A has the field value `sales-team@zoho.com` and Record B has `sales_team@zoho.com`, a search using `equals:sales-team@zoho.com` may return both records.\n\n**Escaping Special Characters:**\nWhen using parentheses `()`, commas `,`, or a backslash `\\` as the last character in a search value, follow these steps:\n1. Escape special characters using a backslash `\\`\n2. Encode the value before making the API request. Select the value of the criteria, right-click the value, and choose the EncodeURIComponent option.\n\n**Example 1: Escaping Parentheses and Commas**\n- Search term: `((Last_Name:equals:Burns,B) and (First_Name:starts_with:M))`\n- Escape the comma `\\,`: `((Last_Name:equals:Burns\\,B) and (First_Name:starts_with:M))`\n- Encode the value: `((Last_Name:equals:Burns%5C%2CB) and (First_Name:starts_with:M))`\n\n**Example 2: Escaping a Backslash at the End**\n- Search term: `(Last_Name:equals:K\\)`\n- Escape the backslash `\\\\`: `(Last_Name:equals:K\\\\)`\n- Encode the value: `(Last_Name:equals:K%5C%5C)`\n\n**Supported Data Types:**\n`picklist`, `owner_lookup`, `user_lookup`, `lookup`, `phone`, `email`, `date`, `datetime`, `text`, `textarea`, `integer`, `currency`, `decimal`, `multiselectpicklist`, `bigint`, `percent`, `formula`, `website`, `boolean`, `double`\n\n**Supported Operators:**\n`equals`, `starts_with`, `in`, `not_equal`, `greater_equal`, `greater_than`, `less_equal`, `less_than`, `between`\n\n**Operator Compatibility by Data Type:**\n\n| Data Type | equals | starts_with | in | not_equal | greater_equal | greater_than | less_equal | less_than | between |\n|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n| **text** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **textarea** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **email** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **phone** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **website** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **picklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **multiselectpicklist** | ✓ | ✗ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **owner_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **user_lookup** | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **boolean** | ✓ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |\n| **integer** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **bigint** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **currency** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **decimal** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **double** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **percent** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **date** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **datetime** | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n| **formula** | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |\n\n**Legend:** ✓ = Supported, ✗ = Not Supported\n\n**Note:** Refer to the Zoho CRM API documentation for the most up-to-date operator compatibility information."
+              },
+              {
+                "name": "converted",
+                "value": "",
+                "type": "query",
+                "description": "Filters leads based on their conversion status."
+              },
+              {
+                "name": "approved",
+                "value": "",
+                "type": "query",
+                "description": "Filters leads based on their approval status."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number to retrieve."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of records to return per page."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filters users based on their type. This parameter is supported **only for the Users module**."
+              }
+            ]
+          },
+          "docs": "Fetches the total number of records in a specified module.\nThe count can be filtered using `cvid` (Custom View ID) or one of the search parameters (`criteria`, `phone`, `email`, `word`).\n\n**Important Constraint (Zoho Documentation):**\nYou can only include **either** `cvid` **or** one of the search parameters (`criteria`, `phone`, `email`, `word`) in a single request. Combining `cvid` with any search parameter will result in an `AMBIGUITY_DURING_PROCESSING` error (HTTP 400)."
+        },
+        {
+          "info": {
+            "name": "Get Records for a specific module",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Specify the API names of the fields you want to retrieve when fetching the records."
+              },
+              {
+                "name": "territory_id",
+                "value": "",
+                "type": "query",
+                "description": "Specify the territory ID to get the list of records that belongs to a specific territory"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "To retrieve specific records based on their unique ID."
+              },
+              {
+                "name": "cvid",
+                "value": "",
+                "type": "query",
+                "description": "Specify the custom view ID to get the list of records based on custom views"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Specify how many records to return per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "To get the list of records from the respective pages"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "To fetch more than 2000 records, you must include the \"page_token\" param in the request"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "To sort the available list of records in either ascending or descending order"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "To sort the records based on the fields id, Created_Time, and Modified_Time. The default value is 'id'"
+              },
+              {
+                "name": "converted",
+                "value": "",
+                "type": "query",
+                "description": "To get the list of converted records"
+              },
+              {
+                "name": "include_child",
+                "value": "",
+                "type": "query",
+                "description": "To include records from the child territories"
+              }
+            ]
+          },
+          "docs": "To get the list of available records from a module"
+        },
+        {
+          "info": {
+            "name": "Create a Record in a specific module",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:module",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a Record in a specific module"
+        },
+        {
+          "info": {
+            "name": "To update existing entities or records in a specified module",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:module",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To update existing entities or records in a specified module."
+        },
+        {
+          "info": {
+            "name": "Delete multiple records from a module",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:module",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "To retrieve specific records based on their unique ID."
+              }
+            ]
+          },
+          "docs": "Permanently deletes one or more records from the specified module using comma-separated record IDs. Returns per-item results for bulk operations."
+        },
+        {
+          "info": {
+            "name": "Get Record for a specific module with RecordId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/:recordID",
+            "params": [
+              {
+                "name": "recordID",
+                "value": "",
+                "type": "path",
+                "description": "This ID is used to uniquely identify a record"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              }
+            ]
+          },
+          "docs": "To get the details of a specific record with its unique record ID."
+        },
+        {
+          "info": {
+            "name": "To update existing entities or records in a specified module with the recordID",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:module/:recordID",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "recordID",
+                "value": "",
+                "type": "path",
+                "description": "This ID is used to uniquely identify a record"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To update existing entities or records in a specified module with the recordID"
+        },
+        {
+          "info": {
+            "name": "Delete a single record by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:module/:recordID",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "recordID",
+                "value": "",
+                "type": "path",
+                "description": "This ID is used to uniquely identify a record"
+              }
+            ]
+          },
+          "docs": "Permanently deletes a specific record from the module using its unique record ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TaskTimeEntry API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TaskTimeEntry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Task Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timeEntry",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": " Secondary information related to the time entry. Value supported is @owner@."
+              },
+              {
+                "name": "createdTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of time entries to fetch"
+              },
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the time entries must be fetched"
+              },
+              {
+                "name": "modifiedTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the time entries associated with a task."
+        },
+        {
+          "info": {
+            "name": "Add a Task Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timeEntry",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a time entry in your help desk"
+        },
+        {
+          "info": {
+            "name": "Get summation of Task Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timeEntrySummation",
+            "params": [
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the sum of time entries associated with a task."
+        },
+        {
+          "info": {
+            "name": "Get a Task Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timeEntry/:taskTimeEntryId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the time entry. Value supported is @owner@."
+              },
+              {
+                "name": "taskTimeEntryId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a time entry recorded for a task."
+        },
+        {
+          "info": {
+            "name": "Update a Task Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timeEntry/:taskTimeEntryId",
+            "params": [
+              {
+                "name": "taskTimeEntryId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing time entry."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

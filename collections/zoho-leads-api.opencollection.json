@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Leads API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Leads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Convert a Lead",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/Leads/:leadId/actions/convert",
+            "params": [
+              {
+                "name": "leadId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the Lead record to convert. Must be a valid Lead ID that exists in the CRM and has not been previously converted."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Converts a Lead record into Contact, Account, and/or Deal records. Allows configuration of conversion behavior including overwrite settings, notifications, owner assignment, and tag carryover."
+        },
+        {
+          "info": {
+            "name": "Get mass convert job status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/Leads/actions/mass_convert",
+            "params": [
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "Identifier of the mass convert job to fetch status for."
+              }
+            ]
+          },
+          "docs": "Retrieve the status and counts of a previously scheduled mass convert job using job_id query parameter."
+        },
+        {
+          "info": {
+            "name": "Mass convert leads",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/Leads/actions/mass_convert",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a scheduled mass-convert job that converts multiple leads into other modules (Deals/Contacts/Accounts) according to provided options. Max 50 lead IDs per request."
+        },
+        {
+          "info": {
+            "name": "Get Lead Conversion Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/Leads/:leadId/__conversion_options",
+            "params": [
+              {
+                "name": "leadId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the Lead record to retrieve conversion options for"
+              }
+            ]
+          },
+          "docs": "Retrieves available conversion options for a lead including matching contacts, accounts, field mappings, and layout preferences. This endpoint helps determine what conversion paths are available before performing the actual lead conversion."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

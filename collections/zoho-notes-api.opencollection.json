@@ -1,0 +1,430 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Notes API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Notes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Notes for a Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field names to include in the response. Field names must follow API naming conventions."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starting from 1)"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return per page"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field name to sort the notes by"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of notes associated with a specific parent record in a CRM module."
+        },
+        {
+          "info": {
+            "name": "Create Notes for a Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates one or more notes associated with a specific parent record. Either note content or note title must be provided (at least one is mandatory)."
+        },
+        {
+          "info": {
+            "name": "Update Multiple Notes for a Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more notes associated with a specific parent record. Either note content or note title must be provided (at least one is mandatory) for each note."
+        },
+        {
+          "info": {
+            "name": "Delete Note(s) for a Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of note record IDs to delete. Required for bulk deletion operations."
+              }
+            ]
+          },
+          "docs": "Deletes one or more notes associated with a specific parent record using comma-separated note IDs in the query parameter."
+        },
+        {
+          "info": {
+            "name": "Get a Specific Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes/:noteId",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific note record. Must be a valid numeric record ID."
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific note record associated with a parent record in a CRM module."
+        },
+        {
+          "info": {
+            "name": "Update a Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes/:noteId",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific note record. Must be a valid numeric record ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing note associated with a specific parent record. Either note content or note title must be provided (at least one is mandatory)."
+        },
+        {
+          "info": {
+            "name": "Delete a Specific Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecordId/Notes/:noteId",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)"
+              },
+              {
+                "name": "parentRecordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "noteId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific note record. Must be a valid numeric record ID."
+              }
+            ]
+          },
+          "docs": "Deletes a specific note record associated with a parent record using the note ID in the path."
+        },
+        {
+          "info": {
+            "name": "Get Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/Notes",
+            "params": [
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field API names to include in the response"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of note IDs to retrieve specific notes"
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Page token for fetching more than 2000 records"
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (ascending or descending)"
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field name to sort results by"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of notes."
+        },
+        {
+          "info": {
+            "name": "Create Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/Notes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates one or more note records."
+        },
+        {
+          "info": {
+            "name": "Update Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/Notes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more existing note records. Either note content or note title must be provided (at least one is mandatory) for each note."
+        },
+        {
+          "info": {
+            "name": "Delete Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/Notes",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of note IDs to retrieve specific notes"
+              }
+            ]
+          },
+          "docs": "Permanently deletes one or more notes using comma-separated note IDs."
+        },
+        {
+          "info": {
+            "name": "Get a Specific Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/Notes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the note"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field API names to include in the response"
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific note by its ID."
+        },
+        {
+          "info": {
+            "name": "Update a Specific Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/Notes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the note"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific note by its ID. Either note content or note title must be provided (at least one is mandatory)."
+        },
+        {
+          "info": {
+            "name": "Delete a Specific Note",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/Notes/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the note"
+              }
+            ]
+          },
+          "docs": "Permanently deletes a specific note by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

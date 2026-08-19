@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Bulk Import - Batch API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Import - Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Batch Import Data into New Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/data/batch",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Initiate an import job to create a new table and import data in batches into the created table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each bat"
+        },
+        {
+          "info": {
+            "name": "Batch Import Data into Existing Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/views/:view-id/data/batch",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "view-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the view."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to initiate a batch import job. (Refer `BatchImportConfigExistingTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Initiate an import job to import data present in multiple batch files into the specified existing table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,251 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TicketTimeEntry API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TicketTimeEntry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Ticket Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntry/:timeEntryId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the time entry. Value supported is @owner@."
+              },
+              {
+                "name": "timeEntryId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ]
+          },
+          "docs": "This API fetches a time entry recorded for a ticket."
+        },
+        {
+          "info": {
+            "name": "Delete Ticket Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntry/:timeEntryId",
+            "params": [
+              {
+                "name": "timeEntryId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ]
+          },
+          "docs": "This API deletes a time entry recorded for a ticket"
+        },
+        {
+          "info": {
+            "name": "List Ticket Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:caseId/timeEntry",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the time entry. Value supported is @owner@."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@."
+              },
+              {
+                "name": "createdTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of time entries to fetch"
+              },
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the time entries must be fetched"
+              },
+              {
+                "name": "modifiedTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "caseId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the time entries associated with a ticket."
+        },
+        {
+          "info": {
+            "name": "Update Ticket Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntry/:teId",
+            "params": [
+              {
+                "name": "teId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates an existing ticket time entry"
+        },
+        {
+          "info": {
+            "name": "Get summation of Ticket Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntrySummation",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@."
+              },
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ]
+          },
+          "docs": "This API fetches the sum of time entries associated with a ticket."
+        },
+        {
+          "info": {
+            "name": "Add Ticket Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntry",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a time entry in your help desk"
+        },
+        {
+          "info": {
+            "name": "Get Ticket Time Entries by Billing Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/timeEntryByBillingType",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed value is : @owner@ "
+              },
+              {
+                "name": "billingType",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are @FIXED_COST_FOR_TICKETS@ @FIXED_COST_FOR_AGENTS@ @SPECIFIC_COST_PER_AGENT@ @SPECIFIC_COST_PER_PROFILE@"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the ticket"
+              }
+            ]
+          },
+          "docs": "This API fetches time entries for a ticket created after recently modified time of the given billing type from your help desk"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

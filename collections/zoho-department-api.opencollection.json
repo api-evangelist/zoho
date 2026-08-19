@@ -1,0 +1,385 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Department API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Department",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Associate agents to department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/associateAgents",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API associates agents to a department."
+        },
+        {
+          "info": {
+            "name": "Get department",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of a department from your help desk"
+        },
+        {
+          "info": {
+            "name": "Update department",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the details of an existing department."
+        },
+        {
+          "info": {
+            "name": "Get department logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/logo",
+            "params": [
+              {
+                "name": "fileSize",
+                "value": "",
+                "type": "query",
+                "description": "Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the logo set for a department."
+        },
+        {
+          "info": {
+            "name": "Upload department logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/logo",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "departmentLogo",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "This API updates the logo set for a department."
+        },
+        {
+          "info": {
+            "name": "Delete department logo",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/logo",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API removes the logo set for a department."
+        },
+        {
+          "info": {
+            "name": "Enable department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/enable",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API enables a department in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Disable department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/disable",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API disables a department in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Get department details by department IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departmentsByIds",
+            "params": [
+              {
+                "name": "departmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of department IDs. Maximum number of IDs allowed is 50."
+              }
+            ]
+          },
+          "docs": "This API fetches the details of the departments whose IDs are passed in the API request."
+        },
+        {
+          "info": {
+            "name": "List agents in department",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/agents",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the field that must be used for searching and listing agents. Values allowed are: @firstName@, @lastName@, @name@, and @emailId@."
+              },
+              {
+                "name": "searchStr",
+                "value": "",
+                "type": "query",
+                "description": "String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string"
+              },
+              {
+                "name": "isLightAgent",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the agents must be light or non light."
+              },
+              {
+                "name": "sortOrder",
+                "value": "",
+                "type": "query",
+                "description": "To sort the available list of agents in either ascending or descending order. Values allowed are: @asc@ or @desc@"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of agents to fetch; default value is 10 and maximum value is 200"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the agents must be listed"
+              },
+              {
+                "name": "isConfirmed",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the agents must be confirmed or unconfirmed."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters agents, based on their activation status: @ACTIVE@ or @DISABLED@"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the agents in a department."
+        },
+        {
+          "info": {
+            "name": "Get department count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/count"
+          },
+          "docs": "This API returns the number of departments configured in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Dissociate agents from department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/dissociateAgents",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API dissociates agents from a department."
+        },
+        {
+          "info": {
+            "name": "List departments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments",
+            "params": [
+              {
+                "name": "chatStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters departments based on their chat status. Values allowed are @AVAILABLE@, @DISABLED@, @NOT_CREATED@, and @${UNAVAILABLE}@. @${UNAVAILABLE}@ refers to departments which are not available for chat."
+              },
+              {
+                "name": "searchStr",
+                "value": "",
+                "type": "query",
+                "description": "String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string"
+              },
+              {
+                "name": "isEnabled",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters departments based on their enabled status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of agents to fetch; default value is 10 and maximum value is 200"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the agents must be listed"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of departments, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Add department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/departments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a department to your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Check for duplicate departments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/checkExists",
+            "params": [
+              {
+                "name": "departmentName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the department for which you want to check duplicate entries"
+              }
+            ]
+          },
+          "docs": "This API checks if multiple departments have the same name."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

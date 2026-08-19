@@ -1,0 +1,271 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Call API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Call",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update many calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple calls at once."
+        },
+        {
+          "info": {
+            "name": "Get call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/calls/:callId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the call. Values allowed are:  @contacts@, @assignee@,@tickets@,@teams@,@livecalls@,@creator@."
+              },
+              {
+                "name": "callId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the live call"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of a call."
+        },
+        {
+          "info": {
+            "name": "Update call",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/calls/:callId",
+            "params": [
+              {
+                "name": "callId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the live call"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the details of a call."
+        },
+        {
+          "info": {
+            "name": "Delete calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves call entries to the Recycle Bin of your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Clear live call mapping from an activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls/:callId/clearLiveCall",
+            "params": [
+              {
+                "name": "callId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the live call"
+              }
+            ]
+          },
+          "docs": "This API clears the live call mapping from an activity"
+        },
+        {
+          "info": {
+            "name": " List calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/calls",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the calls count must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of calls to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the calls must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "departmentIds",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "isCompleted",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the call was completed or not"
+              }
+            ]
+          },
+          "docs": "This API fetches a particular number of calls, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create call",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a call entry to your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Delete spam calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls/deleteSpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes the given spam calls"
+        },
+        {
+          "info": {
+            "name": "Empty spam calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/calls/emptySpam",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes all spam calls."
+        },
+        {
+          "info": {
+            "name": "List calls by ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/calls",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : @contacts@, @assignee@,@tickets@,@teams@."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of calls to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the calls must be listed"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @startTime@ or @createdTime@.The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes whether to fetch spam calls or not"
+              },
+              {
+                "name": "isCompleted",
+                "value": "",
+                "type": "query",
+                "description": "Key that denotes if the call was completed or not"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of calls associated with a ticket, based on the limit specified."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

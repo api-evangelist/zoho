@@ -1,0 +1,470 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter ArticleTranslation API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ArticleTranslation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get permalinks of translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:id/translations/:locale/permalinks",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API fetches the primary and secondary permalinks of a translation"
+        },
+        {
+          "info": {
+            "name": "Dislike translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:id/translations/:locale/dislike",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API adds a dislike (a negative reaction) to a translation. "
+        },
+        {
+          "info": {
+            "name": "Update permalink of translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:id/translations/:locale/permalinks/add",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the permalink of a translation and adds the old permalink to the redirection list"
+        },
+        {
+          "info": {
+            "name": "Get translations of an article",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The end limit to which the articles containing search string must be fetched."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the articles containing the search string must be fetched."
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the articles based on a specific attribute: !@createdTime,@! or !@modifiedTime@!"
+              },
+              {
+                "name": "authorId",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the ID of the article owner"
+              },
+              {
+                "name": "translationState",
+                "value": "",
+                "type": "query",
+                "description": "Key that specifies the state of the translated article: !@OUTDATED@! !@UP-TO-DATE@!"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The articles that need to be searched based on the status. The allowed values are @Draft@, @Review@, @Expired@, @Published@, @Unpublished@"
+              },
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the available translations of an article."
+        },
+        {
+          "info": {
+            "name": "Add translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations",
+            "params": [
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a translated version of an article."
+        },
+        {
+          "info": {
+            "name": "Search translations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articleTranslations/search",
+            "params": [
+              {
+                "name": "duration",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the time since the article is created. The allowed values are @yesterday@, @last_30_days@, @last_7_days@, @this_week@, @this_month@, @today@"
+              },
+              {
+                "name": "searchString",
+                "value": "",
+                "type": "query",
+                "description": "The text that needs to be searched."
+              },
+              {
+                "name": "isTrashed",
+                "value": "",
+                "type": "query",
+                "description": "The articles that are even in the recycle bin should be searched. The allowed values are TRUE, FALSE Note: To search in both locations, you can provide both values as comma-separated."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The end limit to which the articles containing search string must be fetched."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the articles containing the search string must be fetched."
+              },
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "The articles of the users to be searched based on the provided permissions. For example: If the value is REGISTEREDUSERS, the search will only include articles created by registered users. The allowed values are @ALL@, @REGISTEREDUSERS@, @AGENTS@"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the tags."
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              },
+              {
+                "name": "authorId",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the ID of the article owner"
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the category ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The articles that need to be searched based on the status. The allowed values are @Draft@, @Review@, @Expired@, @Published@, @Unpublished@"
+              }
+            ]
+          },
+          "docs": "This API searches for the provided string from within the translation of articles."
+        },
+        {
+          "info": {
+            "name": "Download article translation attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/attachments/:attachmentId/content",
+            "params": [
+              {
+                "name": "inline",
+                "value": "",
+                "type": "query",
+                "description": "Display content inline"
+              },
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "attachmentId",
+                "value": "",
+                "type": "path",
+                "description": "Article translation attachment id"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API downloads the attachment associated with article translation"
+        },
+        {
+          "info": {
+            "name": "Trash an article translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/moveToTrash",
+            "params": [
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API moves an article translation to trash."
+        },
+        {
+          "info": {
+            "name": "Edit translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale",
+            "params": [
+              {
+                "name": "createVersion",
+                "value": "",
+                "type": "query",
+                "description": "Denotes if a new version is needed"
+              },
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API edits an already translated article."
+        },
+        {
+          "info": {
+            "name": "Get article translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:id/translations/:locale",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of the article translation"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API fetches a specific translation of an article."
+        },
+        {
+          "info": {
+            "name": "Like translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:id/translations/:locale/like",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              }
+            ]
+          },
+          "docs": "This API adds a like (a positive reaction) to a translation"
+        },
+        {
+          "info": {
+            "name": "Search Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articleTranslations/searchByTag",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "The search of the article includes countInfo or availableLocaleTranslations. The allowed values are countInfo or availableLocaleTranslations . Note : countInfo - Search the most popular. articlesavailableLocaleTranslations - search from the provided language."
+              },
+              {
+                "name": "isTrashed",
+                "value": "",
+                "type": "query",
+                "description": "The articles that are even in the recycle bin should be searched. The allowed values are TRUE, FALSE Note: To search in both locations, you can provide both values as comma-separated."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "The end limit to which the articles containing search string must be fetched."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the articles containing the search string must be fetched."
+              },
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "The articles of the users to be searched based on the provided permissions. For example: If the value is REGISTEREDUSERS, the search will only include articles created by registered users. The allowed values are @ALL@, @REGISTEREDUSERS@, @AGENTS@"
+              },
+              {
+                "name": "tag",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the tags."
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path",
+                "description": "Article translation locale"
+              },
+              {
+                "name": "authorId",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the ID of the article owner"
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "The articles to be searched based on the category ID"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "The articles that need to be searched based on the status. The allowed values are @Draft@, @Review@, @Expired@, @Published@, @Unpublished@"
+              }
+            ]
+          },
+          "docs": "This API searches for the provided string from within the translation of articles."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

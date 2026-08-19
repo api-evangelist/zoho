@@ -1,0 +1,321 @@
+{
+  "item": [
+    {
+      "id": "aa00a817-d999-478f-a70c-0b1973aae1c2",
+      "name": "MailReplyAddress",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "52790de1-94f7-481b-a71f-95ebd0805d79",
+          "name": "Send Verification Mail",
+          "request": {
+            "name": "Send Verification Mail",
+            "description": {
+              "content": "This API sends a verification link to the MailReplyAddress configured in your help desk portal.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "mailReplyAddress",
+                ":mailReplyAddressId",
+                "sendVerification"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "mailReplyAddressId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "c8b441f6-3afe-4487-9f0f-c9c8c147fd8e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "mailReplyAddress",
+                    ":mailReplyAddressId",
+                    "sendVerification"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "mailReplyAddressId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aca2b758-7438-4975-bfd1-c3c4feb4fdc0",
+          "name": "List MailReplyAddresses",
+          "request": {
+            "name": "List MailReplyAddresses",
+            "description": {
+              "content": "This API lists the mailReplyAddresses configured in your help desk portal.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "mailReplyAddress"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the Department from which the addresses need to be queried."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of mail addresses to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Index number, starting from which the mail addresses must be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "isActive",
+                  "value": "<boolean,null>",
+                  "description": "Key that returns if the mailReplyAddress is active or not"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "6c28ef26-e100-4d5b-9586-d0a52e66c7a6",
+              "name": "getReplyMailAddressesResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "mailReplyAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "isActive",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"modifiedTime\": 1673006126000,\n      \"address\": \"support@zylker.com\",\n      \"isVerified\": true,\n      \"isSmtpEnabled\": true,\n      \"displayName\": \"Support\",\n      \"departmentId\": \"4000000007043\",\n      \"isActive\": true,\n      \"smtpDetails\": {\n        \"port\": \"465\",\n        \"host\": \"smtp.zoho.com\",\n        \"userName\": \"support@zylker.com\",\n        \"connectionType\": \"SSL\"\n      },\n      \"createdBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"createdTime\": 1672998926000,\n      \"modifiedBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"id\": \"4000000025003\",\n      \"serviceProviderType\": \"CustomSMTP\"\n    },\n    {\n      \"modifiedTime\": 1673006126000,\n      \"address\": \"market@zylker.com\",\n      \"isVerified\": true,\n      \"isSmtpEnabled\": false,\n      \"createdBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"displayName\": \"Marketing\",\n      \"departmentId\": \"4000000007043\",\n      \"createdTime\": 1672998926000,\n      \"modifiedBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"id\": \"4000000026001\",\n      \"isActive\": false,\n      \"serviceProviderType\": \"ZohoSMTP\"\n    },\n    {\n      \"modifiedTime\": 1673006126000,\n      \"address\": \"techsupport@zylker.com\",\n      \"isVerified\": true,\n      \"isSmtpEnabled\": true,\n      \"displayName\": \"Tech\",\n      \"departmentId\": \"4000000007043\",\n      \"isActive\": true,\n      \"smtpDetails\": {\n        \"port\": \"465\",\n        \"host\": \"smtp.zoho.com\",\n        \"userName\": \"techsupport@zylker.com\",\n        \"connectionType\": \"SSL\"\n      },\n      \"createdBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"createdTime\": 1672998926000,\n      \"modifiedBy\": {\n        \"photoURL\": \"https://desk.zoho.com/api/v1/agents/4000000028043/photo?orgId=11171343\",\n        \"firstName\": \"Sam\",\n        \"lastName\": \"Steve\",\n        \"id\": \"4000000028043\",\n        \"email\": \"steve@zylker.com\"\n      },\n      \"id\": \"4000000028003\",\n      \"serviceProviderType\": \"CustomSMTP\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b5be219-cc8a-41d9-9863-62231684a4a5",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "mailReplyAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "isActive",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fc3ad27c-fbf3-4a92-bd4a-eb0205f3f57a",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "mailReplyAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "isActive",
+                      "value": "<boolean,null>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "99772a56-538d-4ed8-a257-03807146c8f0",
+    "name": "Helpcenter MailReplyAddress API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

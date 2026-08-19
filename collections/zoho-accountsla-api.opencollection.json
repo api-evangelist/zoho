@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter AccountSla API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AccountSla",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Associate or dissociate SLA from account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/sla/:slaId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slaId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API associates or dissociates an SLA from an account."
+        },
+        {
+          "info": {
+            "name": "List account SLAs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/sla",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the SLAs must be fetched. If you do not pass this parameter in the API request, SLAs from all permitted departments will be listed."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of SLAs to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the SLAs must be fetched"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Activation status of the SLAs. Values allowed are: @ACTIVE@ and @INACTIVE@"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of SLAs associated with an account, based on the limit defined."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

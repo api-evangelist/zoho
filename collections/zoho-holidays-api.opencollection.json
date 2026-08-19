@@ -1,0 +1,140 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Holidays API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Holidays",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve holidays",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/settings/holidays",
+            "params": [
+              {
+                "name": "year",
+                "value": "",
+                "type": "query",
+                "description": "Filter holidays by year. Must be a valid 4-digit year value within a reasonable range."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter holidays by type: business holidays apply to all users, shift holidays apply to specific shifts"
+              },
+              {
+                "name": "shift_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter holidays by shift hour ID. Required when filtering by shift_holiday type. Must be a valid numeric string identifier."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of holidays filtered by year, type (business or shift), and shift ID. Business holidays apply organization-wide, while shift holidays are specific to configured shifts. Returns paginated results with metadata."
+        },
+        {
+          "info": {
+            "name": "Create holidays",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/settings/holidays",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates one or more holidays with specified names, dates, types, and associated shift hours. Each holiday must have a unique name and date combination. Business holidays apply to all users, while shift holidays require a valid shift_hour association."
+        },
+        {
+          "info": {
+            "name": "Update holidays (bulk)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/settings/holidays",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates one or more existing holidays by their IDs with new names, dates, or shift hour associations."
+        },
+        {
+          "info": {
+            "name": "Retrieve a specific holiday",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/settings/holidays/:holidayId",
+            "params": [
+              {
+                "name": "holidayId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the holiday. Must be a valid numeric string identifier."
+              }
+            ]
+          },
+          "docs": "Retrieves complete details of a specific holiday by its unique identifier, including its name, date, type, associated shift hour (if applicable), and year."
+        },
+        {
+          "info": {
+            "name": "Update a specific holiday",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/settings/holidays/:holidayId",
+            "params": [
+              {
+                "name": "holidayId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the holiday. Must be a valid numeric string identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific holiday identified by its ID. You can modify the holiday's name (max 80 characters, no special characters: #, %, ^, &, *) or date (must be within current or next financial year). Provide only the fields you want to update."
+        },
+        {
+          "info": {
+            "name": "Delete a specific holiday",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/settings/holidays/:holidayId",
+            "params": [
+              {
+                "name": "holidayId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the holiday. Must be a valid numeric string identifier."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a specific holiday identified by its ID. This operation is irreversible. Ensure the holiday ID is valid before deletion to avoid errors."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,202 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Team API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Team",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List teams in department",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/departments/:departmentId/teams",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details of all the teams in a particular department."
+        },
+        {
+          "info": {
+            "name": "List teams from all associated departments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/teams"
+          },
+          "docs": "This API fetches details of all teams created in all departments to which the current user belongs."
+        },
+        {
+          "info": {
+            "name": "Create team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/teams",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a team in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Delete team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/teams/:team_id/deleteTeam",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes an existing team from your help desk portal. To reassign the open and on hold tickets and tasks of the deleted team to a different team, pass the <b>ticketNewTeam</b>, <b>taskNewTeam</b>, <b>ticketNewAgent</b>, and <b>taskNewAgent</b> team parameters in the API request. If you do not want to assign the tickets to another team, pass the values of <b>ticketNewTeam</b> and <b>ticketNewAgent</b> as null. However, in the case of tasks, either <b>taskNewTeam</b> or <b>taskNewAgent</b>"
+        },
+        {
+          "info": {
+            "name": "List associable teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/teams/:teamId/associables",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the other teams that can be added as sub-teams to the current team."
+        },
+        {
+          "info": {
+            "name": "List associated teams for a role",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/roles/:role_id/teams",
+            "params": [
+              {
+                "name": "role_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details of all the teams associated with a particular role."
+        },
+        {
+          "info": {
+            "name": "List associated teams of agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/teams",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details of all the teams to which an agent belongs."
+        },
+        {
+          "info": {
+            "name": "List details of team members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/teams/:team_id/members",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the team. Values allowed are @profile@, @role@. You can include all two values by separating them with commas in the API request."
+              },
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details of all the members of a particular team."
+        },
+        {
+          "info": {
+            "name": "Get team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/teams/:teamId",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of a team."
+        },
+        {
+          "info": {
+            "name": "Update team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/teams/:team_id",
+            "params": [
+              {
+                "name": "team_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing team."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

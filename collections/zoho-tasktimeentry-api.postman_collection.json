@@ -1,0 +1,877 @@
+{
+  "item": [
+    {
+      "id": "3f935ba7-bbc4-4665-8236-32dec1c4d833",
+      "name": "TaskTimeEntry",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "82fd8b5d-770c-41c2-a45c-5fce34b86e8d",
+          "name": "List Task Time Entries",
+          "request": {
+            "name": "List Task Time Entries",
+            "description": {
+              "content": "This API lists the time entries associated with a task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                ":taskId",
+                "timeEntry"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string,null>",
+                  "description": " Secondary information related to the time entry. Value supported is @owner@."
+                },
+                {
+                  "disabled": false,
+                  "key": "createdTimeRange",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of time entries to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "billStatus",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+                },
+                {
+                  "disabled": false,
+                  "key": "orderBy",
+                  "value": "<string,null>",
+                  "description": "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Index number, starting from which the time entries must be fetched"
+                },
+                {
+                  "disabled": false,
+                  "key": "modifiedTimeRange",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "c5dd3ff5-9a72-48f6-ab74-d3b7865a6310",
+              "name": "getTimeEntryByTaskIdResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "createdTimeRange",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "billStatus",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "modifiedTimeRange",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688129\"\n      },\n      \"secondsSpent\": \"21\",\n      \"parent\": {\n        \"ticketNumber\": \"1003\",\n        \"associatedTicketId\": \"4000000030017\",\n        \"subject\": \"Tasks subject\",\n        \"id\": \"4000000031014\",\n        \"type\": \"TASKS\"\n      },\n      \"cf\": {\n        \"cf_timeentryname\": \"time1\"\n      },\n      \"executedTime\": 1466627400000,\n      \"fixedCost\": null,\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"23\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"3.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"3\",\n      \"ownerId\": \"4000000008692\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466061884000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033001\",\n      \"requestChargeType\": \"Customer Service\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"20.17\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688129\"\n      },\n      \"secondsSpent\": \"21\",\n      \"parent\": {\n        \"ticketNumber\": \"1003\",\n        \"associatedTicketId\": \"4000000030017\",\n        \"subject\": \"Tasks subject\",\n        \"id\": \"4000000031014\",\n        \"type\": \"TASKS\"\n      },\n      \"cf\": {\n        \"cf_timeentryname\": \"time2\"\n      },\n      \"executedTime\": 1466796600000,\n      \"fixedCost\": null,\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"34\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"10.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"3\",\n      \"ownerId\": \"4000000012090\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466063199000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033006\",\n      \"requestChargeType\": \"Product Consultation\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"45.72\"\n    },\n    {\n      \"owner\": {\n        \"firstName\": \"Eswer\",\n        \"lastName\": \"KM\",\n        \"photoURL\": \"https://contacts.zoho.com/file?t=user&ID=4851669\",\n        \"name\": \"Eswer KM\",\n        \"id\": \"4000000008688129\"\n      },\n      \"secondsSpent\": \"22\",\n      \"parent\": {\n        \"ticketNumber\": \"1003\",\n        \"associatedTicketId\": \"4000000030017\",\n        \"subject\": \"Tasks subject\",\n        \"id\": \"4000000031014\",\n        \"type\": \"TASKS\"\n      },\n      \"cf\": {\n        \"cf_timeentryname\": \"time3\"\n      },\n      \"executedTime\": 1465846200000,\n      \"fixedCost\": null,\n      \"departmentId\": \"4000000008694\",\n      \"minutesSpent\": \"22\",\n      \"creatorId\": \"4000000008692\",\n      \"agentCostPerHour\": \"20.0\",\n      \"description\": \"Time Entry description\",\n      \"hoursSpent\": \"32\",\n      \"ownerId\": \"4000000008692\",\n      \"isBillable\": true,\n      \"mode\": \"MANUAL\",\n      \"isTrashed\": \"false\",\n      \"billingType\": \"FIXED_COST_FOR_TICKETS\",\n      \"createdTime\": 1466063392000,\n      \"invoiceId\": \"40000000086881212\",\n      \"id\": \"4000000033011\",\n      \"requestChargeType\": \"Customer Service\",\n      \"additionalCost\": \"10.0\",\n      \"totalCost\": \"657.46\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d13e204-0e97-4fb3-80bb-1d54d5ec9790",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "createdTimeRange",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "billStatus",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "modifiedTimeRange",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0a1da858-f458-40dc-a781-204477b9a55b",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "createdTimeRange",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "billStatus",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "orderBy",
+                      "value": "<string,null>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "modifiedTimeRange",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c07e7e6-dbe5-4f4f-a7c5-eeec8263e723",
+          "name": "Add a Task Time Entry",
+          "request": {
+            "name": "Add a Task Time Entry",
+            "description": {
+              "content": "This API creates a time entry in your help desk",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                ":taskId",
+                "timeEntry"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"executedTime\": \"<string,null>\",\n  \"secondsSpent\": \"<string,null,integer-int32>\",\n  \"cf\": {\n    \"5rrBD M\": \"6S\"\n  },\n  \"customFields\": {\n    \"o\": \"Qs. kU7@ \"\n  },\n  \"fixedCost\": \"<string,null>\",\n  \"minutesSpent\": \"<string,null,integer-int32>\",\n  \"agentCostPerHour\": \"<string,null>\",\n  \"description\": \"<string,null>\",\n  \"hoursSpent\": \"<string,null,integer-int32>\",\n  \"ownerId\": \"<string,null,integer-int64>\",\n  \"isBillable\": \"<boolean,null>\",\n  \"mode\": \"<string,null>\",\n  \"requestChargeType\": \"<string,null>\",\n  \"additionalCost\": \"<string,null>\",\n  \"totalCost\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bfce3460-cbb3-4384-ba87-a631e5c1d563",
+              "name": "getTimeEntryJson template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa3d6788-6962-49a4-97aa-5fe59e68110f",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "daa3fcf0-9783-4e40-985c-e87004b0d756",
+          "name": "Get summation of Task Time Entries",
+          "request": {
+            "name": "Get summation of Task Time Entries",
+            "description": {
+              "content": "This API fetches the sum of time entries associated with a task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                ":taskId",
+                "timeEntrySummation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "billStatus",
+                  "value": "<string,null>",
+                  "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "870bb497-fd4d-44dc-a481-16aaa04698c4",
+              "name": "getSummationOfTimeEntryForTaskResponse template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntrySummation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "billStatus",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalMins\": 5,\n  \"totalHours\": 12,\n  \"totalCosts\": 1000,\n  \"totalSeconds\": 24\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "32bf99a8-75de-49fb-91f0-70bf8b6ebad0",
+          "name": "Get a Task Time Entry",
+          "request": {
+            "name": "Get a Task Time Entry",
+            "description": {
+              "content": "This API fetches a time entry recorded for a task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                ":taskId",
+                "timeEntry",
+                ":taskTimeEntryId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string,null>",
+                  "description": "Secondary information related to the time entry. Value supported is @owner@."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskTimeEntryId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "c2c959b0-afc8-4e5b-96b5-97edeb2a766a",
+              "name": "getTimeEntryJson template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry",
+                    ":taskTimeEntryId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string,null>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskTimeEntryId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c43d249-e88d-4eba-ad4a-0c861302a2d7",
+          "name": "Update a Task Time Entry",
+          "request": {
+            "name": "Update a Task Time Entry",
+            "description": {
+              "content": "This API updates details of an existing time entry.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tasks",
+                ":taskId",
+                "timeEntry",
+                ":taskTimeEntryId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskTimeEntryId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string,null,integer-int64>",
+                  "key": "taskId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"secondsSpent\": \"<string,null,integer-int32>\",\n  \"cf\": {\n    \"J5﻿9iOW\": \"WOd\"\n  },\n  \"executedTime\": \"<string,null>\",\n  \"customFields\": {\n    \"w\": \"JiS7_zk?m2S\"\n  },\n  \"fixedCost\": \"<string,null>\",\n  \"minutesSpent\": \"<string,null,integer-int32>\",\n  \"agentCostPerHour\": \"<string,null>\",\n  \"description\": \"<string,null>\",\n  \"hoursSpent\": \"<string,null,integer-int32>\",\n  \"ownerId\": \"<string,null,integer-int64>\",\n  \"isBillable\": \"<boolean,null>\",\n  \"mode\": \"<string,null>\",\n  \"requestChargeType\": \"<string,null>\",\n  \"additionalCost\": \"<string,null>\",\n  \"totalCost\": \"<string,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1a8bd4f4-1ed4-4214-a645-848af1a5eeb6",
+              "name": "getTimeEntryJson template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry",
+                    ":taskTimeEntryId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskTimeEntryId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "null",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8edb718a-597c-429f-83f4-32c77d93958c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tasks",
+                    ":taskId",
+                    "timeEntry",
+                    ":taskTimeEntryId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskTimeEntryId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string,null,integer-int64>",
+                      "key": "taskId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ff6b63a3-219c-4302-9458-25d070760d44",
+    "name": "Helpcenter TaskTimeEntry API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

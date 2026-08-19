@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Bulk Export - Asynchronous API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Export - Asynchronous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Export Job using SQL Query (Asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to create a export data. (Refer `ExportJobConfigSQLQuery` schema). Value must be stringified and URL-encoded."
+              }
+            ]
+          },
+          "docs": "Create an export job using an SQL SELECT statement to initiate data export asynchronously.\n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB I"
+        },
+        {
+          "info": {
+            "name": "Create Export Job using View ID (Asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/views/:view-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "view-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the view."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to initiate export job for the specified view. (Refer `ExportJobConfigViewId` schema). Value must be stringified and URL-encoded."
+              }
+            ]
+          },
+          "docs": "Create an export job to initiate data export for the mentioned view asynchronously. \n\nWorkflow:\n1. Create Export Job:\n  - Call the Create Export Job API.\n  - Receive a unique JOBID to track the export status.\n\n2. Check Export Job Status:\n  - Use the JOBID with the Get Export Job Details API.\n  - Poll every few seconds to get the current JOBCODE.\n\n   JOBCODEs and Meaning:\n   - 1001: JOB NOT INITIATED\n     → Export job acknowledged but not started. Retry after a short delay.\n   - 1002: JOB IN PROG"
+        },
+        {
+          "info": {
+            "name": "Get Export Job Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/exportjobs/:job-id",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "job-id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the import/export job."
+              }
+            ]
+          },
+          "docs": "Returns details of the specified asynchronous export job."
+        },
+        {
+          "info": {
+            "name": "Download Exported Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/restapi/v2/bulk/workspaces/:workspace-id/exportjobs/:job-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "job-id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the import/export job."
+              }
+            ]
+          },
+          "docs": "Download data for the bulk export job."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

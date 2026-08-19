@@ -1,0 +1,208 @@
+{
+  "item": [
+    {
+      "id": "3cfe0c08-73ee-43f3-b34f-3ccc6639d50d",
+      "name": "Composite Requests",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b156c371-f87b-4380-b146-19dc99f43651",
+          "name": "To process multiple requests in a single API call",
+          "request": {
+            "name": "To process multiple requests in a single API call",
+            "description": {
+              "content": "This API allows clients to bundle multiple API requests into a single HTTP request",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "__composite_requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"__composite_requests\": [\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": true,\n        \"key_1\": true\n      },\n      \"params\": {\n        \"key_0\": 5230.927191290352,\n        \"key_1\": 3048\n      },\n      \"body\": {\n        \"key_0\": \"string\"\n      }\n    },\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": 4702,\n        \"key_1\": \"string\"\n      },\n      \"params\": {\n        \"key_0\": 8712,\n        \"key_1\": \"string\",\n        \"key_2\": 4525\n      },\n      \"body\": {\n        \"key_0\": 1546.590194283647,\n        \"key_1\": true\n      }\n    }\n  ],\n  \"rollback_on_fail\": false,\n  \"parallel_execution\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f8dec381-9bb9-4bf1-8267-ec3e670fd3b0",
+              "name": "Success response when all sub requests are executed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "__composite_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"__composite_requests\": [\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": 2842,\n        \"key_1\": 8318.68625437885\n      },\n      \"params\": {\n        \"key_0\": 9369\n      },\n      \"body\": {\n        \"key_0\": true,\n        \"key_1\": \"string\",\n        \"key_2\": 5955.4496581429785,\n        \"key_3\": \"string\",\n        \"key_4\": 1692\n      }\n    },\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": true\n      },\n      \"params\": {\n        \"key_0\": 9502\n      },\n      \"body\": {\n        \"key_0\": true\n      }\n    }\n  ],\n  \"rollback_on_fail\": false,\n  \"parallel_execution\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"__composite_requests\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"response\": {\n          \"headers\": {\n            \"key_0\": 7213\n          },\n          \"body\": {\n            \"key_0\": true,\n            \"key_1\": \"string\",\n            \"key_2\": 5700\n          },\n          \"status_code\": 3832\n        }\n      }\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"message\": \"string\",\n      \"status\": \"success\",\n      \"details\": {\n        \"response\": {\n          \"headers\": {\n            \"key_0\": 3600\n          },\n          \"body\": {\n            \"key_0\": false,\n            \"key_1\": \"string\"\n          },\n          \"status_code\": 7698\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16db21ae-e939-4b58-b47a-24ef9cecbfdf",
+              "name": "few sub requests are executed and few of them are not executed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "__composite_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"__composite_requests\": [\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": 2842,\n        \"key_1\": 8318.68625437885\n      },\n      \"params\": {\n        \"key_0\": 9369\n      },\n      \"body\": {\n        \"key_0\": true,\n        \"key_1\": \"string\",\n        \"key_2\": 5955.4496581429785,\n        \"key_3\": \"string\",\n        \"key_4\": 1692\n      }\n    },\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": true\n      },\n      \"params\": {\n        \"key_0\": 9502\n      },\n      \"body\": {\n        \"key_0\": true\n      }\n    }\n  ],\n  \"rollback_on_fail\": false,\n  \"parallel_execution\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"__composite_requests\": [\n    {\n      \"key_0\": 5103.53176972343\n    },\n    {\n      \"key_0\": 5033.0928593187455,\n      \"key_1\": \"string\",\n      \"key_2\": 1830.1040865899377\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d339c962-c07c-47aa-a4e7-a02b3b53af62",
+              "name": "error responses due to invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "__composite_requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"__composite_requests\": [\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": 2842,\n        \"key_1\": 8318.68625437885\n      },\n      \"params\": {\n        \"key_0\": 9369\n      },\n      \"body\": {\n        \"key_0\": true,\n        \"key_1\": \"string\",\n        \"key_2\": 5955.4496581429785,\n        \"key_3\": \"string\",\n        \"key_4\": 1692\n      }\n    },\n    {\n      \"method\": \"<string>\",\n      \"uri\": \"<string>\",\n      \"sub_request_id\": \"<string>\",\n      \"headers\": {\n        \"key_0\": true\n      },\n      \"params\": {\n        \"key_0\": 9502\n      },\n      \"body\": {\n        \"key_0\": true\n      }\n    }\n  ],\n  \"rollback_on_fail\": false,\n  \"parallel_execution\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"MANDATORY_NOT_FOUND\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"api_name\": \"string\",\n    \"json_path\": \"string\",\n    \"expected_data_type\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "decbe322-e902-43d9-8d9f-e5521fbeb9ba",
+    "name": "Helpcenter Composite Requests API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

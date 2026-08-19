@@ -1,0 +1,136 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter ContactDeduplication API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ContactDeduplication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List duplicate contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/groupContactDuplicateValues",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!"
+              },
+              {
+                "name": "swFieldValue",
+                "value": "",
+                "type": "query",
+                "description": "Key that specifies the letter with which the field values must start"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the contacts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the contacts by a specific attribute: @count@ or @fieldValue@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting"
+              }
+            ]
+          },
+          "docs": "This API lists the duplicate entries of a contact.The _fieldName_ parameters is mandatory in the API request <br/></br/>_Note:_<br/> If you encounter a 202 status code while executing this API request, it means there are 100,000 or more contacts in the help desk portal. Matching the records and finding duplicates will be time-consuming in such a scenario. Therefore, the deduplication request will be accepted, and after the process is completed, an automated report will be sent to the user who in"
+        },
+        {
+          "info": {
+            "name": "Get name of default field",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contactsDeduplication/defaultFieldName"
+          },
+          "docs": "This API fetches the name of the field set as the default field for contact deduplication."
+        },
+        {
+          "info": {
+            "name": "Set default field for contact deduplication",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/contactsDeduplication/defaultFieldName",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API sets the field you specify as the default field for deduplicating contacts."
+        },
+        {
+          "info": {
+            "name": "List details of duplicate contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/groupContacts",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the contact. Value allowed is: @accounts@"
+              },
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contacts to fetch"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the contacts by a specific attribute:  !@firstName,@! !@lastName,@! !@fullName,@! !@phone,@! !@email,@! !@account,@! !@createdTime,@! !@modifiedTime@!"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the contacts must be fetched"
+              },
+              {
+                "name": "fieldValues",
+                "value": "",
+                "type": "query",
+                "description": "Actual values in each field related to the contact"
+              }
+            ]
+          },
+          "docs": "This API lists all the details of duplicate contacts.The _fieldName_ and _fieldValues_ parameters are mandatory in the API request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

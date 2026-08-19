@@ -1,0 +1,229 @@
+{
+  "item": [
+    {
+      "id": "8143fe80-b775-401a-94f9-8491effff80e",
+      "name": "Bulk Export - Synchronous",
+      "description": {
+        "content": "Synchronous operations for exporting data.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03a2526e-7be9-48dc-b454-689aa978c221",
+          "name": "Export Data from a View (Synchronous)",
+          "request": {
+            "name": "Export Data from a View (Synchronous)",
+            "description": {
+              "content": "Use Bulk APIs to export data from the specified view synchronously.\n\nNote: Export Data API is restricted for certain resources (given below). For these cases, use the Asynchronous Export APIs instead:\n\n  - Tables having more than one million rows.\n  - Tables and Views from live connect workspaces.\n  - Dashboard and QueryTable view types.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "restapi",
+                "v2",
+                "workspaces",
+                ":workspace-id",
+                "views",
+                ":view-id",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "CONFIG",
+                  "value": "<string>",
+                  "description": "JSONObject with configuration to export data from the specified view. (Refer `ExportConfig` schema). Value must be stringified and URL-encoded."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workspace-id",
+                  "description": "(Required) ID of the workspace."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "view-id",
+                  "description": "(Required) ID of the view."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                "key": "ZANALYTICS-ORGID",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "text/csv"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "92570fac-b00d-4525-949a-5be70e256c05",
+              "name": "Successful export data response. The content type will vary based on `responseFormat` in CONFIG.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "workspaces",
+                    ":workspace-id",
+                    "views",
+                    ":view-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"criteria\":\"\\\"SalesTable\\\".\\\"Region\\\"='East'\"}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "view-id",
+                      "description": "(Required) ID of the view."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/csv"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b54fe98-c30c-41bc-b4ef-54bfd75c4f06",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "restapi",
+                    "v2",
+                    "workspaces",
+                    ":workspace-id",
+                    "views",
+                    ":view-id",
+                    "data"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "CONFIG",
+                      "value": "{\"criteria\":\"\\\"SalesTable\\\".\\\"Region\\\"='East'\"}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workspace-id",
+                      "description": "(Required) ID of the workspace."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "view-id",
+                      "description": "(Required) ID of the view."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Organization ID (can be obtained using Get Organizations API).",
+                    "key": "ZANALYTICS-ORGID",
+                    "value": "<string>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8d43c16e-3539-4c82-9f74-7241ab3af863",
+    "name": "Helpcenter Bulk Export - Synchronous API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Synchronous operations for exporting data.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter EmailFailureAlert API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "EmailFailureAlert",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List email delivery failure alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/emailFailureAlerts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of alerts to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the alerts must be listed"
+              },
+              {
+                "name": "department",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the email delivery failure alerts must be fetched. You can pass a specific department ID or @allDepartment@ in the API request."
+              }
+            ]
+          },
+          "docs": "This API lists the email delivery failure alerts configured in a particular department."
+        },
+        {
+          "info": {
+            "name": "Clear email delivery failure alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/emailFailureAlerts",
+            "params": [
+              {
+                "name": "department",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the email delivery failure alerts must be fetched. You can pass a specific department ID or @allDepartment@ in the API request."
+              }
+            ]
+          },
+          "docs": "This API deletes all email delivery failure alerts configured in a particular department."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

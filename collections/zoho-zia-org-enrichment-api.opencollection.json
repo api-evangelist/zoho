@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Zia Org Enrichment API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zia Org Enrichment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Zia Org Enrichment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/__zia_org_enrichment",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort by."
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order (ascending or descending)."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter records by enrichment status."
+              }
+            ]
+          },
+          "docs": "Retrieve the Zia Org Enrichment records with pagination and filtering options"
+        },
+        {
+          "info": {
+            "name": "Trigger organization-level enrichment for a CRM record",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/__zia_org_enrichment",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "CRM module name from which enrichment is triggered."
+              },
+              {
+                "name": "record_id",
+                "value": "",
+                "type": "query",
+                "description": "Unique CRM record ID for which enrichment is requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates the ZIA organization enrichment process for a specific CRM record. Accepts module name, record ID, and supported fields (name, email, website)."
+        },
+        {
+          "info": {
+            "name": "Retrieve organization-level enrichment data by enrichment ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/__zia_org_enrichment/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the Zia Org Enrichment record"
+              }
+            ]
+          },
+          "docs": "Fetches the enrichment status and enriched organization data for a specific enrichment job using its unique ID. Returns completed, scheduled, or failed enrichment information along with enriched fields such as name, website, email, address, CEO, revenue, employees, social media, and industries."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

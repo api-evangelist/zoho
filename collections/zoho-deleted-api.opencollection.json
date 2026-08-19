@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Deleted API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deleted",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get deleted records from a module",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:module/deleted",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "path",
+                "description": "Specifies the module name"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the type of deleted records to retrieve. Use 'all' to get all deleted records, 'recycle' for records in recycle bin, or 'permanent' for permanently deleted records."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "To get the list of records from the respective pages. Default value for page is 1."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "To get the list of records available per page. The default and the maximum possible value is 200."
+              }
+            ]
+          },
+          "docs": "Retrieve the deleted records for the module. This endpoint can retrieve both permanently deleted records and temporarily deleted records from the recycle bin."
+        },
+        {
+          "info": {
+            "name": "List Deleted Related Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:parentRecordModule/deleted/:parentRecord/:relatedList",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field names to include in the response. Field names must follow API naming conventions."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starting from 1)"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return per page"
+              }
+            ]
+          },
+          "docs": "Retrieves a list of records that were previously related to a parent record but have since been deleted. Useful for audit trails and data recovery scenarios."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

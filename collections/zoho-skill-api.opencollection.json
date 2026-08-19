@@ -1,0 +1,298 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Skill API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Skill",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all skills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/skills",
+            "params": [
+              {
+                "name": "searchString",
+                "value": "",
+                "type": "query",
+                "description": "Search string, Used to filter skills by name starting with this string"
+              },
+              {
+                "name": "skillTypeId",
+                "value": "",
+                "type": "query",
+                "description": "Skill Type Id, to Filter Skills by SkillType"
+              },
+              {
+                "name": "skillIds",
+                "value": "",
+                "type": "query",
+                "description": "The IDs of the skills to list separated by commas. You can pass upto 50 IDs."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Department Id"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of skill to list, @allowed minimum value 1, maximum value 100,default is 100@"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the skills must be listed"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Active inactive filter for Skills. Values allowed are @ACTIVE@ and @INACTIVE@"
+              }
+            ]
+          },
+          "docs": "This API lists all skills in a department"
+        },
+        {
+          "info": {
+            "name": "Create skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/skills",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API Creates a skill"
+        },
+        {
+          "info": {
+            "name": "Reorder Skills in a Department",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/skills/order",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API lists reorders Skills in a Department"
+        },
+        {
+          "info": {
+            "name": "Execute Skill Based Assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/executeSkillbasedAssignment",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API assigns tickets to agents according to their designated skills and routing preferences."
+        },
+        {
+          "info": {
+            "name": "Get details of a skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/skills/:skillId",
+            "params": [
+              {
+                "name": "skillId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API Gets the details of a skill"
+        },
+        {
+          "info": {
+            "name": "Update skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/skills/:skillId",
+            "params": [
+              {
+                "name": "skillId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API Updates a skill"
+        },
+        {
+          "info": {
+            "name": "Delete skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/skills/:skillId",
+            "params": [
+              {
+                "name": "skillId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes a skill from your help desk portal"
+        },
+        {
+          "info": {
+            "name": "Get Criteria Fields for Skill in a Department",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/skills/criteriaFields",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Department Id"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module, Allowed values are @tickets@,@contacts@ and @accounts@"
+              }
+            ]
+          },
+          "docs": "This API returns list of fields supported in criteria for Skills by module"
+        },
+        {
+          "info": {
+            "name": "Map Skills in a Department with an Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/mapSkills",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API modifies skills mapped for an agent in a department"
+        },
+        {
+          "info": {
+            "name": "Recalculate Skills for a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/recalculateSkills",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API removes existing skills and reapplies the required ones based on the ticket's current circumstances."
+        },
+        {
+          "info": {
+            "name": "List associated automation rules of the skill",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/skills/:skillId/relatedRules",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of skill to list, @allowed minimum value 1, maximum value 100,default is 100@"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the skills must be listed"
+              },
+              {
+                "name": "skillId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of automation rules that include a skill,based on the limit specified"
+        },
+        {
+          "info": {
+            "name": "Get Skills of an Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/skills",
+            "params": [
+              {
+                "name": "departmentIds",
+                "value": "",
+                "type": "query",
+                "description": "list of Department Ids separated by commas,Maximum @10@ department ids allowed"
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns skills mapped with an agent by department "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

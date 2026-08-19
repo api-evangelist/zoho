@@ -1,0 +1,276 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Article API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Article",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles",
+            "params": [
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "Permission of the article.Values allowed are <br>ALL</br><br>REGISTEREDUSERS</br><br>AGENTS"
+              },
+              {
+                "name": "authorId",
+                "value": "",
+                "type": "query",
+                "description": "ID of article owner"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tags to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the tags must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the articles based on a specific attribute: !@createdTime,@! or !@modifiedTime@! or     !@likeCount@! or !@viewCount@! or !@feedbackCount@! or !@dislikeCount@! or !@positionArticle@!"
+              },
+              {
+                "name": "modifiedTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters articles modified within a specific date and time range. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'"
+              },
+              {
+                "name": "expiryTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters articles which will expire within a specific date and time range. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'"
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the category to which the article belongs"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Publishing status of the article. Values allowed are Draft, Published, Review, Expired, Unpublished"
+              }
+            ]
+          },
+          "docs": "This API fetches a specific number of articles from your knowledge base, based on the limit defined."
+        },
+        {
+          "info": {
+            "name": "Create an article",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles",
+            "headers": [
+              {
+                "name": "templateId",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates an article in your helpdesk."
+        },
+        {
+          "info": {
+            "name": "Get article",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:id",
+            "params": [
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version number of the article"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches an article from your knowledge base."
+        },
+        {
+          "info": {
+            "name": "Update an article",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/articles/:id",
+            "headers": [
+              {
+                "name": "templateId",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates an existing article."
+        },
+        {
+          "info": {
+            "name": "Validate permalink",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/checkPermalinkAvailability",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API validates if a permalink is available for a help article."
+        },
+        {
+          "info": {
+            "name": "Get article count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/count",
+            "params": [
+              {
+                "name": "permission",
+                "value": "",
+                "type": "query",
+                "description": "Permission of the article.Values allowed are <br>ALL</br><br>REGISTEREDUSERS</br><br>AGENTS"
+              },
+              {
+                "name": "authorId",
+                "value": "",
+                "type": "query",
+                "description": "ID of article owner"
+              },
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the category to which the article belongs"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Publishing status of the article. Values allowed are Draft, Published, Review, Expired, Unpublished"
+              }
+            ]
+          },
+          "docs": "This API returns the number of articles published in the knowledge base of your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Preview article",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/preview",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API shows a preview of help articles, through which you can check the content for formatting, alignment, and grammar/spelling errors and get the look and feel of the help article even before publishing it."
+        },
+        {
+          "info": {
+            "name": "Move articles to trash",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves articles to the Recycle Bin"
+        },
+        {
+          "info": {
+            "name": "Suggest relevant articles for ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/articleSuggestion",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department to which the help article belongs. If you want to include help articles from all departments, pass 0 as the value of this key"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tags to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the tags must be fetched"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API suggests help articles that could be relevant to resolving a ticket."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

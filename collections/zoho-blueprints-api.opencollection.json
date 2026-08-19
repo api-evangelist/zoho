@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter blueprints API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "blueprints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List all blueprints in a department",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/blueprints",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Department for which the blueprints are listed"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "module of the blueprints to be listed"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "To get blueprints by status, allowed values are @ACTIVE@ ,@INACTIVE@ and @DRAFT@"
+              }
+            ]
+          },
+          "docs": "To get all blueprints in a specific department"
+        },
+        {
+          "info": {
+            "name": "Create Blueprint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/blueprints",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To create a blueprint"
+        },
+        {
+          "info": {
+            "name": "Reorder blueprints",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/blueprints/reorder",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Department for which the blueprints are listed"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "module of the blueprints to be listed"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To reorder blueprints in a specific department"
+        },
+        {
+          "info": {
+            "name": "Get Applied Blueprint details of ticket for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticket_id/blueprint",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Meta information related to the transition owners. Values allowed are: @transitionOwnerAgents@, @transitionOwnerTeams@, @transitionOwnerDept@ to include agents,teams,department under owners. You can pass multiple values by separating them with commas in the API request."
+              },
+              {
+                "name": "ticket_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "To get the applied blueprint details of a ticket"
+        },
+        {
+          "info": {
+            "name": "Get Blueprint Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/blueprints/:blueprint_id",
+            "params": [
+              {
+                "name": "blueprint_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "To get a specific blueprint details"
+        },
+        {
+          "info": {
+            "name": "Update a blueprint",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/blueprints/:blueprint_id",
+            "params": [
+              {
+                "name": "blueprint_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To update an existing blueprint"
+        },
+        {
+          "info": {
+            "name": "Delete Blueprint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/blueprints/:blueprint_id",
+            "params": [
+              {
+                "name": "blueprint_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "To delete a specific blueprint"
+        },
+        {
+          "info": {
+            "name": "Revoke Blueprint from Blueprint Level",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/blueprints/:blueprint_id/revoke",
+            "params": [
+              {
+                "name": "blueprint_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "To revoke all entities from a particular blueprint"
+        },
+        {
+          "info": {
+            "name": "Revoke Blueprint at Entity Level",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticket_id/revokeBlueprint",
+            "params": [
+              {
+                "name": "ticket_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "To revoke blueprint from an entity"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

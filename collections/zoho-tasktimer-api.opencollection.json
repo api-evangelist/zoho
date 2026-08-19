@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TaskTimer API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TaskTimer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Task Timer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:activityId/timer",
+            "params": [
+              {
+                "name": "activityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the time elapsed in the task timer, along with the current state"
+        },
+        {
+          "info": {
+            "name": "Performs Task Timer actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tasks/:taskId/timer",
+            "params": [
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": " Action of the timer.Supported actions are  @START@, @STOP@, @PAUSE@ and @RESUME@"
+              },
+              {
+                "name": "taskId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API performs timer-related actions, such as START, STOP, PAUSE and RESUME"
+        },
+        {
+          "info": {
+            "name": "List task timers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tasks/:entityId/activeTimer",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the timers. Value supported is @owner@."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of timers to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the timers must be fetched"
+              },
+              {
+                "name": "entityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of timers currently active in a task."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

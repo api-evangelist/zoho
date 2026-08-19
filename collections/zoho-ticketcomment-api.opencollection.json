@@ -1,0 +1,207 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TicketComment API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TicketComment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a ticket comment history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments/:commentId/history",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments The allowed values are @mentions@ and @plainText@. In the API request, you can pass @mention@, @plainText@, or both by using commas to separate them."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of comment activities to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the comment activities must be fetched"
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the history of comments recorded on a ticket, including instances of adding and editing the comments."
+        },
+        {
+          "info": {
+            "name": "Get ticket comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments/:commentId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments The allowed values are @mentions@ and @plainText@. In the API request, you can pass @mention@, @plainText@, or both by using commas to separate them."
+              },
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a ticket comment from your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Update ticket comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments/:commentId",
+            "params": [
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API modifies an existing comment. To include an @mention, follow this format: zsu[@user:{zuid}]zsu."
+        },
+        {
+          "info": {
+            "name": "Delete ticket comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments/:commentId",
+            "params": [
+              {
+                "name": "commentId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deletes a comment."
+        },
+        {
+          "info": {
+            "name": "List all ticket comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the comments The allowed values are @mentions@ and @plainText@. In the API request, you can pass @mention@, @plainText@, or both by using commas to separate them."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of comment activities to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the comment activities must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by the @commentedTime@ attribute. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of comments recorded on a ticket, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Create ticket comment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/comments",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "parentConversationId",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a comment to a ticket. To include an _@mention_, follow this format: _zsu[@user:{zuid}]zsu_."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

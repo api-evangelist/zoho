@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Global Picklists API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Global Picklists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Replace picklist values for a global picklist",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/settings/global_picklists/:id/actions/replace_picklist_values",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric id of the resource."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Schedules or executes replacement of picklist values for the specified global picklist. You can specify either `id`, `display_value`, or both for `old_value` and `new_value`. If both are provided, the system validates them for consistency. The `from` (old) value can be non-existent in the current picklist, but the `to` (new) value must be in the **used** state of the picklist option."
+        },
+        {
+          "info": {
+            "name": "Get picklist values which is in replace scheduler",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/settings/global_picklists/:id/actions/replaced_values",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric id of the resource."
+              }
+            ]
+          },
+          "docs": "Retrieves picklist values that are currently being replaced through a replace scheduler for the given global picklist ID."
+        },
+        {
+          "info": {
+            "name": "To get the fields associated with a global picklist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/settings/global_picklists/:id/actions/associations",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Numeric id of the resource."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (positive integer). Default: 1."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page. Default and maximum: 200."
+              },
+              {
+                "name": "include_inner_details",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of nested details to include (e.g., `module.plural_label,module.module_name,layouts.status`). Allowed values: module.plural_label, module.module_name, layouts.status."
+              }
+            ]
+          },
+          "docs": "Retrieves associations of picklist values with modules, fields, and layouts for a given global picklist ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

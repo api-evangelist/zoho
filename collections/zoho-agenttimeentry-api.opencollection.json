@@ -1,0 +1,155 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter AgentTimeEntry API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AgentTimeEntry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Agent Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/timeEntry",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the time entry. Value supported is @owner@."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department"
+              },
+              {
+                "name": "createdTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of time entries to fetch"
+              },
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "orderBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the time entries must be fetched"
+              },
+              {
+                "name": "modifiedTimeRange",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the time entries associated with an agent."
+        },
+        {
+          "info": {
+            "name": "Get summation of Agent Time Entries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/timeEntrySummation",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department"
+              },
+              {
+                "name": "billStatus",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@"
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the sum of time entries associated with an agent."
+        },
+        {
+          "info": {
+            "name": "Get an Agent Time Entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/timeEntry/:agentTimeEntryId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the time entry. Value supported is owner."
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "agentTimeEntryId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches a time entry related to an agent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

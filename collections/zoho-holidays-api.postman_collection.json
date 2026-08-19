@@ -1,0 +1,1012 @@
+{
+  "item": [
+    {
+      "id": "709ac8b2-e52c-419f-9a8a-a04ce3a6f97e",
+      "name": "Holidays",
+      "description": {
+        "content": "Operations for managing holidays that affect business hours and shift schedules",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "761610c7-524c-4c0b-bb68-284b84dd64a2",
+          "name": "Retrieve holidays",
+          "request": {
+            "name": "Retrieve holidays",
+            "description": {
+              "content": "Retrieves a list of holidays filtered by year, type (business or shift), and shift ID. Business holidays apply organization-wide, while shift holidays are specific to configured shifts. Returns paginated results with metadata.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "year",
+                  "value": "<integer>",
+                  "description": "Filter holidays by year. Must be a valid 4-digit year value within a reasonable range."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter holidays by type: business holidays apply to all users, shift holidays apply to specific shifts"
+                },
+                {
+                  "disabled": false,
+                  "key": "shift_id",
+                  "value": "<string>",
+                  "description": "Filter holidays by shift hour ID. Required when filtering by shift_holiday type. Must be a valid numeric string identifier."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "b25a85cb-97a8-41d3-9054-e9ec71be5815",
+              "name": "Success - Returns a paginated list of holidays matching the specified filter criteria",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shift_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"name\": \"SIe9X(?u\",\n      \"date\": \"2026-07-12\",\n      \"type\": \"business_holiday\",\n      \"shift_hour\": {\n        \"name\": \"string\",\n        \"id\": \"9\"\n      },\n      \"id\": \"36139\",\n      \"year\": 2018\n    },\n    {\n      \"name\": \"}F|rQ)T}o\",\n      \"date\": \"1952-08-07\",\n      \"type\": \"shift_holiday\",\n      \"shift_hour\": {\n        \"name\": \"string\",\n        \"id\": \"720581648\"\n      },\n      \"id\": \"1056335\",\n      \"year\": 2071\n    }\n  ],\n  \"info\": {\n    \"per_page\": 6342,\n    \"page\": 1718,\n    \"count\": 6984,\n    \"more_records\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ecaf81c-2201-41f4-b7d0-0df4f137ddae",
+              "name": "No Content - No holidays found matching the specified filter criteria",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shift_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9b073ef3-1125-4421-b2d2-6890bd4f3026",
+              "name": "Bad request - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "year",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "shift_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"PATTERN_NOT_MATCHED\",\n  \"details\": {\n    \"key_0\": \"string\"\n  },\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3444c22a-e6d6-4981-8e4b-edcf091ae679",
+          "name": "Create holidays",
+          "request": {
+            "name": "Create holidays",
+            "description": {
+              "content": "Creates one or more holidays with specified names, dates, types, and associated shift hours. Each holiday must have a unique name and date combination. Business holidays apply to all users, while shift holidays require a valid shift_hour association.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "920b23d2-0eef-4d52-bc35-5efd9ed70faf",
+              "name": "Holidays created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4281578a-0783-482d-b8fc-83d221fc3777",
+              "name": "Bad request - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"LIMIT_EXCEEDED\",\n      \"details\": {\n        \"key_0\": 2142.834221891926,\n        \"key_1\": 2368\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"DEPENDENT_FIELD_MISSING\",\n      \"details\": {\n        \"key_0\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b97e869b-700d-4fe6-ad1d-694979c07821",
+              "name": "Forbidden - insufficient permissions to perform this operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      }\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NO_PERMISSION\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36803cb8-79db-41d6-9b33-882b31ffea71",
+          "name": "Update holidays (bulk)",
+          "request": {
+            "name": "Update holidays (bulk)",
+            "description": {
+              "content": "Updates one or more existing holidays by their IDs with new names, dates, or shift hour associations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "be38f3f2-e1ba-4593-b790-e8d181d10840",
+              "name": "Success - Holidays updated successfully. Returns array of result objects with status for each holiday.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"string\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"string\"\n    },\n    {\n      \"code\": \"string\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f432ac63-2018-4eab-9144-a2f32cdfc1c7",
+              "name": "Bad request - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"DEPENDENT_FIELD_MISSING\",\n      \"details\": {\n        \"key_0\": true,\n        \"key_1\": 9318,\n        \"key_2\": true\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_DATA\",\n      \"details\": {\n        \"key_0\": 1113\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a99ffb9-f318-4685-979a-96451feae13f",
+              "name": "Forbidden - insufficient permissions to perform this operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string>\",\n      \"date\": \"<date>\",\n      \"type\": \"<string>\",\n      \"shift_hour\": {\n        \"name\": \"<string>\",\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\"\n    }\n  ],\n  \"info\": {\n    \"per_page\": \"<integer>\",\n    \"page\": \"<integer>\",\n    \"count\": \"<integer>\",\n    \"more_records\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NO_PERMISSION\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e6dec35-1976-4e97-a70f-04f186a9a714",
+          "name": "Update a specific holiday",
+          "request": {
+            "name": "Update a specific holiday",
+            "description": {
+              "content": "Updates a specific holiday identified by its ID. You can modify the holiday's name (max 80 characters, no special characters: #, %, ^, &, *) or date (must be within current or next financial year). Provide only the fields you want to update.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays",
+                ":holidayId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "holidayId",
+                  "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string,null>\",\n      \"date\": \"<string,null-date>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6cfcdbc4-f71c-4d93-a2a5-f55d0bff4afb",
+              "name": "Holiday updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string,null>\",\n      \"date\": \"<string,null-date>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba8173c4-05ab-480f-8b3e-e1ee3f4f6022",
+              "name": "Bad request - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holidays\": [\n    {\n      \"name\": \"<string,null>\",\n      \"date\": \"<string,null-date>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"DEPENDENT_FIELD_MISSING\",\n      \"details\": {\n        \"key_0\": 7055.340254957056,\n        \"key_1\": true\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    },\n    {\n      \"code\": \"INVALID_DATA\",\n      \"details\": {\n        \"key_0\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"error\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08162d42-cb41-4eba-a9d6-967a433c2bf5",
+          "name": "Retrieve a specific holiday",
+          "request": {
+            "name": "Retrieve a specific holiday",
+            "description": {
+              "content": "Retrieves complete details of a specific holiday by its unique identifier, including its name, date, type, associated shift hour (if applicable), and year.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays",
+                ":holidayId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "holidayId",
+                  "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "1a6469ed-18be-4281-b97f-09193bc66c55",
+              "name": "Response for status 200",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"name\": \"string\",\n      \"date\": \"1978-05-10\",\n      \"type\": \"shift_holiday\",\n      \"shift_hour\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"id\": \"string\",\n      \"year\": 3578\n    },\n    {\n      \"name\": \"string\",\n      \"date\": \"1948-06-08\",\n      \"type\": \"shift_holiday\",\n      \"shift_hour\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"id\": \"string\",\n      \"year\": 1703\n    }\n  ],\n  \"info\": {\n    \"per_page\": 8712,\n    \"page\": 4662,\n    \"count\": 6241,\n    \"more_records\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59b10115-21eb-46fa-85b9-a59242c26136",
+              "name": "Response for status 204",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6cb2618-e696-4e04-b0cb-54a8910de8a0",
+          "name": "Delete a specific holiday",
+          "request": {
+            "name": "Delete a specific holiday",
+            "description": {
+              "content": "Permanently deletes a specific holiday identified by its ID. This operation is irreversible. Ensure the holiday ID is valid before deletion to avoid errors.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "settings",
+                "holidays",
+                ":holidayId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "holidayId",
+                  "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "6b2d89ea-0784-4ecd-af71-3d8fbdb91f83",
+              "name": "Holiday deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"holidays\": [\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    },\n    {\n      \"code\": \"SUCCESS\",\n      \"details\": {\n        \"id\": \"string\"\n      },\n      \"message\": \"string\",\n      \"status\": \"success\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abe41d5f-bbee-4966-b775-99a49a3acfbd",
+              "name": "Bad request - validation errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "settings",
+                    "holidays",
+                    ":holidayId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "holidayId",
+                      "description": "(Required) Unique identifier of the holiday. Must be a valid numeric string identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_DATA\",\n  \"details\": {\n    \"key_0\": 8554,\n    \"key_1\": 6979\n  },\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1d400a6d-5ee1-4b18-9658-5b8d36a03ede",
+    "name": "Helpcenter Holidays API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations for managing holidays that affect business hours and shift schedules",
+      "type": "text/plain"
+    }
+  }
+}

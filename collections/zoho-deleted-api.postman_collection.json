@@ -1,0 +1,962 @@
+{
+  "item": [
+    {
+      "id": "91c88f3b-2dd1-4c7c-ab55-2d8f72b2ac52",
+      "name": "Deleted",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b7624657-a5f8-4fa8-96fa-ab631f204348",
+          "name": "Get deleted records from a module",
+          "request": {
+            "name": "Get deleted records from a module",
+            "description": {
+              "content": "Retrieve the deleted records for the module. This endpoint can retrieve both permanently deleted records and temporarily deleted records from the recycle bin.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":module",
+                "deleted"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "all",
+                  "description": "Specifies the type of deleted records to retrieve. Use 'all' to get all deleted records, 'recycle' for records in recycle bin, or 'permanent' for permanently deleted records."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "To get the list of records from the respective pages. Default value for page is 1."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "200",
+                  "description": "To get the list of records available per page. The default and the maximum possible value is 200."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "module",
+                  "description": "(Required) Specifies the module name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7df93e8a-217d-4768-91a8-01dfb0b309c0",
+              "name": "Successful response containing the list of deleted records.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    "deleted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Use this header to get the list of recently modified records.",
+                  "key": "If-Modified-Since",
+                  "value": "2019-07-25T15:26:49+05:30"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"string\",\n      \"type\": \"recycle\",\n      \"deleted_time\": \"1958-04-12T01:09:13.192Z\",\n      \"display_name\": \"string\",\n      \"deleted_by\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"created_by\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"type\": \"recycle\",\n      \"deleted_time\": \"1962-12-11T18:20:51.325Z\",\n      \"display_name\": \"string\",\n      \"deleted_by\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      },\n      \"created_by\": {\n        \"name\": \"string\",\n        \"id\": \"string\"\n      }\n    }\n  ],\n  \"info\": {\n    \"per_page\": 9668,\n    \"count\": 2184,\n    \"page\": 8071,\n    \"more_records\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9517a65d-99e7-4a51-a38b-59dff4ab36ad",
+              "name": "No Content - The request was successful, but no deleted records found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    "deleted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "37712970-f3fd-4218-82cf-d5c5125f3ae8",
+              "name": "Bad Request - The request could not be processed due to invalid input or missing mandatory parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    "deleted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c475da83-38a2-47e3-b697-99183ff60f21",
+              "name": "Unauthorized - Authentication failed or insufficient OAuth scope permissions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    "deleted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"OAUTH_SCOPE_MISMATCH\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efe1e23a-1efc-40b7-a76a-3d125bf043db",
+              "name": "Not Found - The requested URL pattern is invalid or the specified resource does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":module",
+                    "deleted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "module",
+                      "description": "(Required) Specifies the module name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_URL_PATTERN\",\n  \"message\": \"string\",\n  \"status\": \"error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4d30facf-c2c9-41f0-9fa1-f7faf186e9c3",
+          "name": "List Deleted Related Records",
+          "request": {
+            "name": "List Deleted Related Records",
+            "description": {
+              "content": "Retrieves a list of records that were previously related to a parent record but have since been deleted. Useful for audit trails and data recovery scenarios.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":parentRecordModule",
+                "deleted",
+                ":parentRecord",
+                ":relatedList"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated list of field names to include in the response. Field names must follow API naming conventions."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for pagination (starting from 1)"
+                },
+                {
+                  "disabled": false,
+                  "key": "perPage",
+                  "value": "200",
+                  "description": "Number of records to return per page"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "parentRecordModule",
+                  "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "parentRecord",
+                  "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "relatedList",
+                  "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "61854109-cab1-43a5-ad40-5daf0321fc02",
+              "name": "Successfully retrieved deleted related records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"612573901\",\n      \"$member_info\": {\n        \"id\": \"635\",\n        \"Created_Time\": \"2018-08-31T07:57:44.744Z\",\n        \"Modified_Time\": \"2003-04-15T05:49:05.102Z\"\n      },\n      \"Moved_To__s\": \"string\"\n    },\n    {\n      \"id\": \"8626406\",\n      \"$member_info\": {\n        \"id\": \"80221824194\",\n        \"Created_Time\": \"1946-09-13T12:56:02.518Z\",\n        \"Modified_Time\": \"1974-12-12T00:04:03.378Z\"\n      },\n      \"Moved_To__s\": \"string\"\n    }\n  ],\n  \"info\": {\n    \"page\": 9782,\n    \"per_page\": 133,\n    \"count\": 84,\n    \"more_records\": true,\n    \"next_page_token\": \"string\",\n    \"page_token_expiry\": \"2002-11-29T07:04:32.013Z\",\n    \"previous_page_token\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "568987c8-27c6-4d19-972c-c51b2f2aa85f",
+              "name": "No related records found for the specified parent record",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2f9b3381-071d-45d2-a3c3-5a13f6c1f540",
+              "name": "Bad Request - Various client errors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_MODULE\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"resource_path_index\": 2964,\n    \"key_0\": 6722,\n    \"key_1\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41e0cf37-c216-47c9-ac9f-5015a644cfe3",
+              "name": "Unauthorized - Invalid or missing authentication credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_TOKEN\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": 7977,\n    \"key_1\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "908de82b-6641-466d-9458-eb17221d84cd",
+              "name": "Permission denied to read related records",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"NO_PERMISSION\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"permissions\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c40cc77-c19e-49d2-a3b9-4f8716d9f227",
+              "name": "Not Found - Parent record does not exist",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INVALID_DATA\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": false,\n    \"key_1\": 7526,\n    \"key_2\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44292bab-29dc-492f-96e6-4bac91fc051b",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":parentRecordModule",
+                    "deleted",
+                    ":parentRecord",
+                    ":relatedList"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "perPage",
+                      "value": "200"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecordModule",
+                      "description": "(Required) The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "parentRecord",
+                      "description": "(Required) The unique identifier of the parent record. Must be a valid numeric record ID."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "relatedList",
+                      "description": "(Required) The name of the related list (module) containing the records to retrieve or modify"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"INTERNAL_ERROR\",\n  \"message\": \"string\",\n  \"status\": \"error\",\n  \"details\": {\n    \"key_0\": true,\n    \"key_1\": 8957\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "855fadda-a3d5-4c14-9ad5-5677719e92f8",
+    "name": "Helpcenter Deleted API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

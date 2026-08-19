@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Bulk Import - Synchronous API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Import - Synchronous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Import Data into a New Table (Synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/workspaces/:workspace-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigNewTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "DATA",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use the Bulk APIs to create a new table and import data into it synchronously. "
+        },
+        {
+          "info": {
+            "name": "Import Data into an Existing Table (Synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/restapi/v2/workspaces/:workspace-id/views/:view-id/data",
+            "headers": [
+              {
+                "name": "ZANALYTICS-ORGID",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "workspace-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the workspace."
+              },
+              {
+                "name": "view-id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the view."
+              },
+              {
+                "name": "CONFIG",
+                "value": "",
+                "type": "query",
+                "description": "JSONObject with configuration to create a new table and import data on the same. (Refer `ImportConfigExistingTable` schema). Value must be stringified and URL-encoded."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "FILE",
+                  "type": "text",
+                  "value": ""
+                },
+                {
+                  "name": "DATA",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use Bulk APIs to import data into an existing specified table synchronously."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

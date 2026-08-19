@@ -1,0 +1,444 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Account API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Associate products with an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/associateProducts",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API associates products with an account. Only a maximum of 10 products can be associated with an account through a single API request."
+        },
+        {
+          "info": {
+            "name": "Merge Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/merge",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API merges two or more accounts."
+        },
+        {
+          "info": {
+            "name": "List accounts of contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/contacts/:contactId/accounts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @accountName@ or @createdTime@ or @mappingType@ . The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "startsWith",
+                "value": "",
+                "type": "query",
+                "description": "Letter with which the names of the accounts must start"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the contact"
+              }
+            ]
+          },
+          "docs": "This API lists the accounts associated with a particular contact."
+        },
+        {
+          "info": {
+            "name": "Get account statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/statistics",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Unique ID of the department"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ]
+          },
+          "docs": "This API fetches the overall statistics of an account."
+        },
+        {
+          "info": {
+            "name": "List tickets by account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/tickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the tickets. Values allowed are: contacts, products, departments, team, isRead and assignee. You can pass multiple values by separating them with a comma in the API request."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Unique ID of the department"
+              },
+              {
+                "name": "dueDate",
+                "value": "",
+                "type": "query",
+                "description": "Filter by ticket duedate. Values allowed are @overdue@, @tomorrow@, @currentWeek@, @currentMonth@ and @today@. You can include both values by separating them with a comma"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Sort by a specific attribute: @createdTime@ or @modifiedTime@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "isSpam",
+                "value": "",
+                "type": "query",
+                "description": "Filters Spam tickets"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ]
+          },
+          "docs": "This API lists tickets received from a specific account."
+        },
+        {
+          "info": {
+            "name": "List accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of accounts, based on the limit specified. "
+        },
+        {
+          "info": {
+            "name": "Create Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates an account in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Get contract",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/contracts",
+            "params": [
+              {
+                "name": "contractStatus",
+                "value": "",
+                "type": "query",
+                "description": "Contract Status,Indicates the Current Status of the Contract, Values are @ACTIVE@, @EXPIRED@, @FUTURE@"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Unique ID of the department"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of contracts to fetch, Ranges from 1-50, DEFAULT 50"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ]
+          },
+          "docs": "Getting contracts of an Account"
+        },
+        {
+          "info": {
+            "name": "Get Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are :  @owner@"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ]
+          },
+          "docs": "This API fetches an account from your help desk portal."
+        },
+        {
+          "info": {
+            "name": "Update Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an existing account."
+        },
+        {
+          "info": {
+            "name": "Get account history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accounts/:accountId/history",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "query",
+                "description": "Key that filters ticket activities performed by a particular agent"
+              },
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the contact"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Unique ID of the department"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Unique ID of the account"
+              }
+            ]
+          },
+          "docs": "This API fetches the ticket history of an account."
+        },
+        {
+          "info": {
+            "name": "Delete Accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts/moveToTrash",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API moves the accounts specified to the Recycle Bin."
+        },
+        {
+          "info": {
+            "name": "List accounts associated with product",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/products/:productId/accounts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the accounts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the accounts by a specific attribute: @accountName@ or @createdTime@.The default sorting order is ascending. A @-@ prefix denotes descending order of sorting"
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists the accounts associated with a product"
+        },
+        {
+          "info": {
+            "name": "Update many accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accounts/updateMany",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates multiple accounts at once."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

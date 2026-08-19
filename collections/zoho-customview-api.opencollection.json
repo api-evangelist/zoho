@@ -1,0 +1,206 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter CustomView API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CustomView",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update Last Accessed View",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/lastAccessedView/:cvId",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              },
+              {
+                "name": "cvId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API updates the view last accessed by the user in the module and department specified in the request."
+        },
+        {
+          "info": {
+            "name": "Add Starred View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/views/:cvId/star",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              },
+              {
+                "name": "cvId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API stars a view, enabling quick access to the view."
+        },
+        {
+          "info": {
+            "name": "Get Last Accessed View",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/lastAccessedView",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@."
+              }
+            ]
+          },
+          "docs": "This API fetches the view last accessed by the user in the module and department specified in the request."
+        },
+        {
+          "info": {
+            "name": "Remove Starred View",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/starredViews/:cvId/unstar",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              },
+              {
+                "name": "cvId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API unstars a view, disabling quick access to the view."
+        },
+        {
+          "info": {
+            "name": "Update Starred View order - Reorder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/starredViews/order",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API helps reorder the starred views in a module."
+        },
+        {
+          "info": {
+            "name": "List Views",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/views",
+            "headers": [
+              {
+                "name": "featureFlags",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Module Name (for which the view configured and need to be fetched)"
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              }
+            ]
+          },
+          "docs": "This API lists the different views configured for a specific module or for all modules in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List Starred Views",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/starredViews",
+            "headers": [
+              {
+                "name": "featureFlags",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department in which the view(s) is (are) configured."
+              }
+            ]
+          },
+          "docs": "This API lists the starred views in a module. Number of resources in the starred view is displayed only for the Tickets module."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

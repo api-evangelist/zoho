@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter License API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "License",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get License Feature Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/licenses/features",
+            "params": [
+              {
+                "name": "featureCodes",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of feature codes to retrieve information for."
+              },
+              {
+                "name": "isAllowed",
+                "value": "",
+                "type": "query",
+                "description": "Filter features based on their active status."
+              },
+              {
+                "name": "includeDetailedLimits",
+                "value": "",
+                "type": "query",
+                "description": "Flag to include detailed per-unit feature limits (max, free, add-on values) instead of only max values."
+              }
+            ]
+          },
+          "docs": "Fetches the list of all license features, with optional filters for active status and specific feature codes. Useful for retrieving their current availability (isAllowed) and usage limits. Returns either simple max values or detailed limit information based on the includeDetailedLimits parameter."
+        },
+        {
+          "info": {
+            "name": "Check License Availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/licenses/features/:featureCode/availability",
+            "params": [
+              {
+                "name": "featureCode",
+                "value": "",
+                "type": "path",
+                "description": "The feature code to check availability for."
+              },
+              {
+                "name": "entityId",
+                "value": "",
+                "type": "query",
+                "description": "The ID of the entity (e.g., Department ID) for which to check availability."
+              },
+              {
+                "name": "count",
+                "value": "",
+                "type": "query",
+                "description": "The number of items for which the license is being checked."
+              },
+              {
+                "name": "criteria",
+                "value": "",
+                "type": "query",
+                "description": "Refine license availability check based on constraints"
+              }
+            ]
+          },
+          "docs": "Checks if a specific license feature is available, potentially for a given entity and item count."
+        },
+        {
+          "info": {
+            "name": "Get License Plan Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/licenses/plan"
+          },
+          "docs": "Retrieves details about the current license plan."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

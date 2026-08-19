@@ -1,0 +1,650 @@
+{
+  "item": [
+    {
+      "id": "9c77e3d4-95a4-4d98-a841-5f7c8ef664ea",
+      "name": "AgentPresence",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c7f60b8f-e59d-4d6e-adec-0959634e2502",
+          "name": "Get Agent Availability Configuration",
+          "request": {
+            "name": "Get Agent Availability Configuration",
+            "description": {
+              "content": "This API fetches the agent availability setting configured in your help desk portal. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agentAvailabilityConfig"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "2f6c45a9-7df9-4264-a3cb-eb900250ca53",
+              "name": "getConfig template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agentAvailabilityConfig"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"agentIdleTime\": \"30\",\n  \"treatIdleAgentsAsOffline\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a328862-22b6-4a94-b2dd-1fbf3aaea048",
+          "name": "Update Agent Availability Configuration",
+          "request": {
+            "name": "Update Agent Availability Configuration",
+            "description": {
+              "content": "This API updates the agent availability setting configured in your help desk portal.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agentAvailabilityConfig"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"agentIdleTime\": \"<string,null,integer-int32>\",\n  \"treatIdleAgentsAsOffline\": \"<boolean,null>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a809b5d7-1d28-4e64-b4d3-509ca1b83146",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agentAvailabilityConfig"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3001cff-aacc-42b7-8338-56f5e7f899d4",
+          "name": "Get Offline Agents",
+          "request": {
+            "name": "Get Offline Agents",
+            "description": {
+              "content": "This API lists the agents who are currently offline in a particular department.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "offlineAgents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "",
+                  "description": "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus"
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of agents to list. The default value is 20 and the maximum value allowed is 6000."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "f825cabf-89fb-46c5-9278-66c7ef43eed3",
+              "name": "getCurrentAvailability template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "offlineAgents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": ""
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"892000000008734\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    },\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"8920000000056010\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    }\n  ],\n  \"totalAgentsCount\": \"2\",\n  \"hasMore\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e00f756-2e58-438d-aa7b-b5fb7a1bb7cc",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "offlineAgents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": ""
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7468db98-2546-4011-8ceb-f64b5ce079b6",
+          "name": "Get Current Availability",
+          "request": {
+            "name": "Get Current Availability",
+            "description": {
+              "content": "This API lists the current availability of agents in a particular department.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "agentAvailability"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus"
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of agents to list. The default value is 20 and the maximum value allowed is 6000."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Index number, starting from which the agents must be fetched. The default value is 0 and the maximum value allowed is 5999."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "aef39524-88a7-45be-a648-4c1218cc2106",
+              "name": "getCurrentAvailability template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agentAvailability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"892000000008734\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    },\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"8920000000056010\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    }\n  ],\n  \"totalAgentsCount\": \"2\",\n  \"hasMore\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6079af5b-b40b-4d59-bff8-b47ebc5077a8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "agentAvailability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    },
+                    {
+                      "key": "from",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8af4507c-c801-4570-a537-27e5479532c1",
+          "name": "Get Online Agents",
+          "request": {
+            "name": "Get Online Agents",
+            "description": {
+              "content": "This API lists the agents who are currently online in a particular department.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "onlineAgents"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus"
+                },
+                {
+                  "disabled": false,
+                  "key": "departmentId",
+                  "value": "<string,null,integer-int64>",
+                  "description": "(Required) ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<string,null,integer-int32>",
+                  "description": "Number of agents to list. The default value is 20 and the maximum value allowed is 6000."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "e33bb6d7-9449-4d87-81e0-9e02232c9510",
+              "name": "getCurrentAvailability template definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "onlineAgents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"892000000008734\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    },\n    {\n      \"chatStatus\": \"ONLINE\",\n      \"agentId\": \"8920000000056010\",\n      \"phoneMode\": \"WEB\",\n      \"phoneStatus\": \"ONLINE\",\n      \"mailStatus\": \"OFFLINE\",\n      \"presenceStatus\": \"ONLINE\",\n      \"status\": \"ONLINE\"\n    }\n  ],\n  \"totalAgentsCount\": \"2\",\n  \"hasMore\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db5d4d22-45bf-407b-b07d-1a0685c447a3",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "onlineAgents"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "departmentId",
+                      "value": "<string,null,integer-int64>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<string,null,integer-int32>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2004fee2-8e80-4718-9be5-2b89b6c5e85e",
+    "name": "Helpcenter AgentPresence API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

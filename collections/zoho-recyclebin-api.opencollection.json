@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Recyclebin API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Recyclebin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Restore deleted resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recycleBin/restore",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API restores the deleted resources specified in the API request. Additionally, the parent resources are also restored. "
+        },
+        {
+          "info": {
+            "name": "Restore all resources from Recycle Bin",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recycleBin/restoreAll"
+          },
+          "docs": "This API restores all deleted resources from the Recycle Bin."
+        },
+        {
+          "info": {
+            "name": "List deleted resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/recycleBin",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the resources. Values allowed are: @department@ and @deletedBy@. You can pass multiple values by separating them with commas in the API request."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department to which the deleted resources belong."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of resources to list. The default value is 10 and the maximum value supported is 100."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the resources must be fetched."
+              },
+              {
+                "name": "moduleId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the module to which the deleted resources belong."
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of deleted resources, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Delete resources from Recycle Bin",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recycleBin/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API permanently deletes the resources specified in the API request. Additionally, the child resources are also permanently deleted."
+        },
+        {
+          "info": {
+            "name": "Delete all resources from Recycle Bin",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recycleBin/deleteAll"
+          },
+          "docs": "This API permanently deletes all resources from the Recycle Bin."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

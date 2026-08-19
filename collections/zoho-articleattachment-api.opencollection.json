@@ -1,0 +1,173 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter ArticleAttachment API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ArticleAttachment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Dissociate attachments from translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/dissociateAttachments",
+            "params": [
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API removes the file attachments from a translation."
+        },
+        {
+          "info": {
+            "name": "Upload attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articleAttachments",
+            "params": [
+              {
+                "name": "attachmentType",
+                "value": "",
+                "type": "query",
+                "description": "Attachment type. Allowed values @file@, @blob@"
+              },
+              {
+                "name": "workspaceId",
+                "value": "",
+                "type": "query",
+                "description": "Workspace id to which the attachment should be uploaded"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "This API uploads files to your portal gallery."
+        },
+        {
+          "info": {
+            "name": "Get attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/attachments",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of attachments to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the article attachments must be fetched."
+              },
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the files attached to an article translation."
+        },
+        {
+          "info": {
+            "name": "Upload and associate attachments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/attachments",
+            "params": [
+              {
+                "name": "attachmentType",
+                "value": "",
+                "type": "query",
+                "description": "Attachment type. Allowed values @file@, @blob@"
+              },
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "This API uploads the files to the gallery section and attaches them to an article translation"
+        },
+        {
+          "info": {
+            "name": "Attach files to translation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/articles/:articleId/translations/:locale/associateAttachments",
+            "params": [
+              {
+                "name": "articleId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API attaches the files selected from the gallery to an article translation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

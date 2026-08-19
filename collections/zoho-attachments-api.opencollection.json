@@ -1,0 +1,140 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Attachments API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Attachments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download a specific attachment file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/Attachments/:id",
+            "params": [
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record"
+              },
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the attachment"
+              }
+            ]
+          },
+          "docs": "Download the file content of a specific attachment by its ID. This endpoint returns the actual file (image, PDF, document, etc.). For link attachments, an error is returned as they cannot be downloaded."
+        },
+        {
+          "info": {
+            "name": "Delete Link Attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/Attachments/:id",
+            "params": [
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record"
+              },
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the attachment"
+              }
+            ]
+          },
+          "docs": "Delete a link attachment associated with a specific record in a module."
+        },
+        {
+          "info": {
+            "name": "Retrieve all attachments associated with a specific record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/Attachments",
+            "params": [
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record"
+              },
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Specify the fields to retrieve"
+              }
+            ]
+          },
+          "docs": "Retrieve all attachments associated with a specific record."
+        },
+        {
+          "info": {
+            "name": "Upload an attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/:moduleApiName/:recordId/Attachments",
+            "params": [
+              {
+                "name": "recordId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the record"
+              },
+              {
+                "name": "moduleApiName",
+                "value": "",
+                "type": "path",
+                "description": "The API name of the module"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload an attachment by providing either a file or a valid URL. Maximum request body size: 100MB."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

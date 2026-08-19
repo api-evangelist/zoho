@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TicketTimer API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TicketTimer",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List active timers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/allActiveTimers",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the timers must be fetched"
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Zoho Desk modules from which the timers must be fetched. Values allowed are: Tickets, Tasks, Events, and Calls. You can pass multiple values by separating them using commas. If you do not pass a value, all modules are considered."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of timers to list"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "Point of time before or after which the timers were started. This parameter works in conjunction with the sortBy parameter. If the value of sortBy is startTime, the timers are listed in ascending order. If the value of sortBy is -startTime, they are listed in descending order. (Note: With startTime in play, the time value associated with the last timer in an API response is considered as the value from which the next set of timers must be fetched in the subsequent response.)"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the timers from oldest to latest (ascending order) or latest to oldest (descending order). Values allowed are: startTime (ascending order) and -startTime (descending order, which is the default sorting order). "
+              },
+              {
+                "name": "owners",
+                "value": "",
+                "type": "query",
+                "description": " Key that filters timers by Owner. Values allowed are any valid Owner ID or multiple Owner IDs separated by commas."
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of currently active timers in a department, based on the limit specified. "
+        },
+        {
+          "info": {
+            "name": "Get Ticket Timer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:caseId/timer",
+            "params": [
+              {
+                "name": "caseId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the time elapsed in the ticket timer, along with the current state"
+        },
+        {
+          "info": {
+            "name": "Performs Ticket Timer actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:caseId/timer",
+            "params": [
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": " Action of the timer.Supported actions are  @START@, @STOP@, @PAUSE@ and @RESUME@"
+              },
+              {
+                "name": "caseId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API performs timer-related actions, such as START, STOP, PAUSE and RESUME "
+        },
+        {
+          "info": {
+            "name": "Get Active Timer for an Agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/myActiveTimers",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the timers must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of timers to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "from"
+              }
+            ]
+          },
+          "docs": "This API fetches currently running timer details for an agent"
+        },
+        {
+          "info": {
+            "name": "List ticket timers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:entityId/activeTimer",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the timers. Value supported is @owner@."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of timers to list"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "from"
+              },
+              {
+                "name": "entityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of timers currently active in a ticket."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

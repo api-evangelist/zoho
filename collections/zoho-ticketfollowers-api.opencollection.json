@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TicketFollowers API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TicketFollowers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Remove ticket followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/removeFollowers",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API removes one or more users from the followers list of a ticket."
+        },
+        {
+          "info": {
+            "name": "Add ticket followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/addFollowers",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds one or more users to the followers list of a ticket."
+        },
+        {
+          "info": {
+            "name": "Get ticket followers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/followers",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the list of users following a ticket. <br/></br/>_Note:_<br/>Sometimes, followers of a contact/account indirectly end up as ticket followers if the ticket is associated with the contact/account they follow. In that case, the _following_ key returns the value of the original module the user follows--*contact* or account. <br/></br/>Even in a case where the user first followed the ticket and then followed the contact/account associated with it, the following key returns the value "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

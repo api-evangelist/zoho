@@ -1,0 +1,296 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Zoho CRM Related Records API API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zoho CRM Related Records API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Related Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList",
+            "headers": [
+              {
+                "name": "If-Modified-Since",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field names to include in the response. Field names must follow API naming conventions."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (starting from 1)"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query",
+                "description": "Number of records to return per page"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for fetching the next set of records after 2000. Use the value from 'next_page_token' in the previous response."
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of record IDs to retrieve."
+              },
+              {
+                "name": "sort_order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for records."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query",
+                "description": "Field to sort records by. Allowed: id, Created_Time, Modified_Time."
+              },
+              {
+                "name": "converted",
+                "value": "",
+                "type": "query",
+                "description": "Filter for converted records."
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of records from a specific related list of a parent record in a CRM module. Supports filtering by fields and conditional requests using If-Modified-Since header."
+        },
+        {
+          "info": {
+            "name": "Update Related Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple related records' specific properties in a specified related list."
+        },
+        {
+          "info": {
+            "name": "Remove Related Records by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of record IDs to delink from the parent record. Each ID must be numeric."
+              }
+            ]
+          },
+          "docs": "Removes relationships between a parent record and multiple records in a specified related list, identified by their IDs in the query parameter. This operation deletes only the relationship links, not the actual records themselves. The target records remain intact in their respective modules."
+        },
+        {
+          "info": {
+            "name": "Get Specific Related Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList/:record",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific related record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of field names to include in the response. Field names must follow API naming conventions."
+              }
+            ]
+          },
+          "docs": "Retrieves details of a specific record that is related to a parent record. Returns the record data along with pagination information if applicable."
+        },
+        {
+          "info": {
+            "name": "Update Specific Related Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList/:record",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific related record. Must be a valid numeric record ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific related record's properties."
+        },
+        {
+          "info": {
+            "name": "Delink Specific Related Record",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/:parentRecordModule/:parentRecord/:relatedList/:record",
+            "params": [
+              {
+                "name": "parentRecordModule",
+                "value": "",
+                "type": "path",
+                "description": "The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)"
+              },
+              {
+                "name": "parentRecord",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the parent record. Must be a valid numeric record ID."
+              },
+              {
+                "name": "relatedList",
+                "value": "",
+                "type": "path",
+                "description": "The name of the related list (module) containing the records to retrieve or modify"
+              },
+              {
+                "name": "record",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the specific related record. Must be a valid numeric record ID."
+              }
+            ]
+          },
+          "docs": "Deletes the association between a parent record and a specific related record. This operation deletes only the relationship link, not the actual record itself."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,111 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter RuleGroup API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "RuleGroup",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get All RuleGroups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/rulegroups",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "The index number from which the rule groups should be listed. This is used for pagination. For example, if you want to skip the first 10 rule groups, set the from parameter to 11."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the maximum number of rule groups to return in the response. The value must be between 1 and 50."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the ID to filter rule groups by department. Only rule groups belonging to this department will be listed."
+              },
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Represents the API name of the module for which you want to filter rule groups."
+              },
+              {
+                "name": "engineSysName",
+                "value": "",
+                "type": "query",
+                "description": "The system name of the engine (e.g., WORKFLOWS, MACRO) to filter rule groups associated with a particular automation engine."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the status of the rule group. Based on this parameter, you can filter rule groups. Only rule groups with the specified status (\"ACTIVE\" or \"INACTIVE\") will be returned."
+              },
+              {
+                "name": "rulegroupIds",
+                "value": "",
+                "type": "query",
+                "description": "The IDs of the rulegroups to list separated by commas. You can pass up to 50 IDs."
+              }
+            ]
+          },
+          "docs": "This API returns a list of all rule groups configured for a specific engine."
+        },
+        {
+          "info": {
+            "name": "Create RuleGroup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/rulegroups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API creates a new RuleGroup."
+        },
+        {
+          "info": {
+            "name": "Update RuleGroup",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/rulegroups/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "RuleGroup ID to be updated"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the rulegroup"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,255 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter TicketTag API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "TicketTag",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List tags in a ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/tags",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists tags associated with a ticket."
+        },
+        {
+          "info": {
+            "name": "Dissociate Ticket Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/dissociateTag",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API removes a single tag or multiple tags from a ticket."
+        },
+        {
+          "info": {
+            "name": "List recent tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/recentTicketTags",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the tags must be fetched"
+              }
+            ]
+          },
+          "docs": "This API lists the five most recent tags associated with tickets."
+        },
+        {
+          "info": {
+            "name": "Update recent tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/recentTicketTags/:tagId",
+            "params": [
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API adds a tag to the list of recently viewed tags. tag_id is a mandatory parameter in the API request."
+        },
+        {
+          "info": {
+            "name": "Replace the specified tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/tags/:currentTagId/replace",
+            "params": [
+              {
+                "name": "currentTagId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API replaces a tag to the specified tag. tag_id is a mandatory parameter in the API request."
+        },
+        {
+          "info": {
+            "name": "List tickets tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ticketTags",
+            "params": [
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the tags must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tags to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tags must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts tags by a specific attribute: createdTime or count. The default sorting order is descending."
+              }
+            ]
+          },
+          "docs": "This API lists the ticket tags added in your help desk portal.�"
+        },
+        {
+          "info": {
+            "name": "Associate Ticket Tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/tickets/:ticketId/associateTag",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds a single tag or multiple tags to a ticket."
+        },
+        {
+          "info": {
+            "name": "Search tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tags/search",
+            "params": [
+              {
+                "name": "searchVal",
+                "value": "",
+                "type": "query",
+                "description": "Search keyword related to the tag."
+              },
+              {
+                "name": "departmentId",
+                "value": "",
+                "type": "query",
+                "description": "ID of the department from which the tags must be fetched"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tags to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tags must be fetched"
+              }
+            ]
+          },
+          "docs": "This API searches for tags added in your help desk portal."
+        },
+        {
+          "info": {
+            "name": "List tickets by tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/tags/:tagId/tickets",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the tickets. Values allowed are: @contacts@, @products@, @departments@, @team@, @isRead@ and @assignee@. You can pass multiple values by separating them with commas."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of tags to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the tags must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the tickets by a specific attribute: @dueDate@, @recentThread@, @createdTime@, or @ticketNumber@. The default sorting order is ascending. A - prefix denotes a descending order of sorting."
+              },
+              {
+                "name": "tagId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API lists tickets containing the tag specified."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

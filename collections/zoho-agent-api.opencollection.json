@@ -1,0 +1,402 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter Agent API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get My Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/myPreferences"
+          },
+          "docs": "This API fetches the preferences of the currently logged in agent."
+        },
+        {
+          "info": {
+            "name": "Update My Preferences",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/myPreferences",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates the preferences of the currently logged in agent."
+        },
+        {
+          "info": {
+            "name": "Upload my photo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/uploadMyPhoto",
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "userPhoto",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "This API sets the profile photo for the currently logged in agent.<p><b>Note</b>: To upload your photo generate OAuthToken for the scope: Desk.settings.UPDATE,profile.userphoto.UPDATE or Desk.basic.UPDATE,profile.userphoto.UPDATE </p>"
+        },
+        {
+          "info": {
+            "name": "Schedule reassignment for deactivated or deleted agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/reassignment",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API schedules reassignment of tickets, tasks, and automations belonging to a deleted/deactivated agent to another agent within the same department."
+        },
+        {
+          "info": {
+            "name": "Get agent details by agentId",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agentsByIds",
+            "params": [
+              {
+                "name": "agentIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of agent IDs. Maximum number of IDs allowed is 50."
+              }
+            ]
+          },
+          "docs": "This API fetches details of agents via the agent IDs passed in the API request."
+        },
+        {
+          "info": {
+            "name": "Get agent photo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/photo",
+            "params": [
+              {
+                "name": "fileSize",
+                "value": "",
+                "type": "query",
+                "description": "Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@."
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API gets the profile photo for the given agent id.<p><b>Note</b>: To get agent photo generate OAuthToken for the scope: Desk.settings.READ,profile.userphoto.READ or Desk.basic.READ,profile.userphoto.READ </p>"
+        },
+        {
+          "info": {
+            "name": "Activate agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/activate"
+          },
+          "docs": "This API activates agents in your help desk."
+        },
+        {
+          "info": {
+            "name": "Anonymize deleted agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/deletedAgents/:agentId/anonymize",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API removes the identification details of a deleted agent."
+        },
+        {
+          "info": {
+            "name": "List agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to agents, The allowed values are profile, role. You can include all two values by separating them with commas in the API request."
+              },
+              {
+                "name": "roleIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of role IDs. Maximum number of IDs allowed is 50."
+              },
+              {
+                "name": "searchStr",
+                "value": "",
+                "type": "query",
+                "description": "String to search for agents by first name, last name, or email ID. The string must contain at least one character. The supported search methods: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of agents to fetch; default value is 10 and maximum value is 200"
+              },
+              {
+                "name": "rolePermissionType",
+                "value": "",
+                "type": "query",
+                "description": "Types of roles and permissions of the agents to list. The allowed values are @AgentPublic@, @AgentPersonal@,@AgentTeamPersonal@, @Admin@, @Light@, @Custom@, and @${NON_LIGHT}@. @${NON_LIGHT}@ refers to agents who are not associated with the light agent profile."
+              },
+              {
+                "name": "profileIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of profile IDs. Maximum number of IDs allowed is 50."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the deleted agents must be fetched"
+              },
+              {
+                "name": "isConfirmed",
+                "value": "",
+                "type": "query",
+                "description": "Filters Confirmed & Unconfirmed agents"
+              },
+              {
+                "name": "departmentIds",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated array of department IDs. Maximum number of IDs allowed is 50."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Parameter that filters agents based on their activation status: @ACTIVE@ or @DISABLED@"
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of agents, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Add agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API adds an agent to your help desk.<p><br>Keep in mind the following points while adding an agent: <ol> <li>The<b>emailId</b>,<b>lastName</b>,<b>associatedDepartmentIds</b>, and <b>rolePermissionType</b> are mandatory in the API request.</li> <li>To assign the profile and role for the agents, pass any of the following values with the <b>rolePermissionType</b> key: <ol type=\"a\"><li>For the Support Administrator profile and CEO role, pass <b>\"rolePermissionType\"</b>:<b>\"Admin\"</b></li> <li>F"
+        },
+        {
+          "info": {
+            "name": "Get My Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/myinfo",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the agent. Values allowed are profile, role, associatedDepartments, and associatedChatDepartments. You can pass multiple values by separating them with commas in the query param"
+              }
+            ]
+          },
+          "docs": "This API fetches details of the currently logged in agent. "
+        },
+        {
+          "info": {
+            "name": "Get agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Secondary information related to the agent. Values allowed are profile, role, associatedDepartments, associatedChatDepartments and verifiedEmails. You can include all four values by separating them with commas in the API request."
+              },
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches details of an agent in your help desk."
+        },
+        {
+          "info": {
+            "name": "Update agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API updates details of an agent."
+        },
+        {
+          "info": {
+            "name": "Deactivate agent",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/:agentId/deactivate",
+            "params": [
+              {
+                "name": "agentId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API deactivates an agent in your help desk."
+        },
+        {
+          "info": {
+            "name": "Delete My Photo",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/deleteMyPhoto"
+          },
+          "docs": "This API deletes the profile photo of the currently logged in agent."
+        },
+        {
+          "info": {
+            "name": "Delete unconfirmed agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/deleteUnconfirmed",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API deletes unconfirmed agents from your help desk."
+        },
+        {
+          "info": {
+            "name": "Get agents count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/agents/count",
+            "params": [
+              {
+                "name": "isConfirmed",
+                "value": "",
+                "type": "query",
+                "description": "Filters Confirmed & Unconfirmed agents"
+              },
+              {
+                "name": "includeLightAgent",
+                "value": "",
+                "type": "query",
+                "description": "Count light agent."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Parameter that filters agents based on their activation status: @ACTIVE@ or @DISABLED@"
+              }
+            ]
+          },
+          "docs": "This API lists the agents count by status, confirmed and include light"
+        },
+        {
+          "info": {
+            "name": "Reinvite unconfirmed agents",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/agents/reinvite"
+          },
+          "docs": "This API sends reinvitation mails to unconfirmed agents."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

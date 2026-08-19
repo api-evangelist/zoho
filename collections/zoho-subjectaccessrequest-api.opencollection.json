@@ -1,0 +1,185 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter SubjectAccessRequest API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SubjectAccessRequest",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export all subject data from Zoho Desk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/exportAll",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API exports data related to the subject, from your Zoho Desk portal."
+        },
+        {
+          "info": {
+            "name": "Get fields and conditions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/fieldsAndConditions",
+            "params": [
+              {
+                "name": "module",
+                "value": "",
+                "type": "query",
+                "description": "Name of the modules from which the resources must be fetched. Values allowed are @tickets@ and @contacts@. If you want to fetch resources from both modules, pass the value @allEntities@."
+              }
+            ]
+          },
+          "docs": "This API fetchs possible fileds list and conditions"
+        },
+        {
+          "info": {
+            "name": "Get subject access request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/:sarId",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the request. Values allowed are: @createdBy@ and @modifiedBy@. You can pass multiple values by separating them using commas in the API request."
+              },
+              {
+                "name": "sarId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API fetches the details of a particular SAR."
+        },
+        {
+          "info": {
+            "name": "Erase all subject data from Zoho Desk",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/eraseAll",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API erases data related to the subject, from your Zoho Desk portal."
+        },
+        {
+          "info": {
+            "name": "List subject access requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests",
+            "params": [
+              {
+                "name": "duration",
+                "value": "",
+                "type": "query",
+                "description": "Period in which the requests were made. Values allowed are: @TODAY@, @LAST_24_HOURS@, @LAST_7_DAYS@, @LAST_30_DAYS@, @CURRENT_WEEK@, and @CURRENT_MONTH@. "
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "Additional information related to the requests. Values allowed are: @createdBy@ and @modifiedBy@. You can pass multiple values by separating them using commas in the API request."
+              },
+              {
+                "name": "contactEmailId",
+                "value": "",
+                "type": "query",
+                "description": "Email ID of the contact who made the request."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of requests to list. The default value is @10@ and the maximum value supported is @100@."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number, starting from which the requests must be fetched."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Processing status of the request. Values allowed are: @INITIATED@, @INPROGRESS@, @COMPLETED@, @CANCELED@, @EXPORTED@, @PARTIALLY_COMPLETED@, @PARTIALLY_EXPORTED@ and @FAILED@. You can pass multiple values by separating them using commas in the API request."
+              }
+            ]
+          },
+          "docs": "This API lists a particular number of subject access requests, based on the limit specified."
+        },
+        {
+          "info": {
+            "name": "Export specific resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API exports specific resources related to a subject access request."
+        },
+        {
+          "info": {
+            "name": "Get count of resources related to request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/count",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API returns the number of resources related to a subject access request."
+        },
+        {
+          "info": {
+            "name": "Erase specific resources",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/subjectAccessRequests/erase",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API erases specific resources related to a subject access request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

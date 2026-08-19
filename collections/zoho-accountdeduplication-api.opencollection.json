@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Helpcenter AccountDeduplication API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "AccountDeduplication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Default Field Name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/accountsDeduplication/defaultFieldName"
+          },
+          "docs": "This API fetches the name of the field set as the default field for account deduplication."
+        },
+        {
+          "info": {
+            "name": "Set default field for account deduplication",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/accountsDeduplication/defaultFieldName",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API sets the field you specify as the default field for deduplicating accounts."
+        },
+        {
+          "info": {
+            "name": "List duplicate accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/groupAccountDuplicateValues",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!"
+              },
+              {
+                "name": "swFieldValue",
+                "value": "",
+                "type": "query",
+                "description": "Key that specifies the letter with which the field values must start"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the accounts must be fetched"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the accounts by a specific attribute: @count@ or @fieldValue@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              }
+            ]
+          },
+          "docs": "This API lists the duplicate entries of an account.The _fieldName_ parameters is mandatory in the API request   <br/></br/>_Note:_<br/> If you encounter a 202 status code while executing this API request, it means there are 100,000 or more accounts in the help desk portal. Matching the records and finding duplicates will be time-consuming in such a scenario. Therefore, the deduplication request will be accepted, and after the process is completed, an automated report will be sent to the user who"
+        },
+        {
+          "info": {
+            "name": "List details of duplicate accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/groupAccounts",
+            "params": [
+              {
+                "name": "fieldName",
+                "value": "",
+                "type": "query",
+                "description": "Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of accounts to fetch"
+              },
+              {
+                "name": "sortBy",
+                "value": "",
+                "type": "query",
+                "description": "Key that sorts the accounts by a specific attribute: @accountName@ or @createdTime@ or @modifiedTime@. The default sorting order is ascending. A @-@ prefix denotes descending order of sorting."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Index number starting from which the accounts must be fetched"
+              },
+              {
+                "name": "fieldValues",
+                "value": "",
+                "type": "query",
+                "description": "Actual values in each field related to the account"
+              }
+            ]
+          },
+          "docs": "This API lists all the details of duplicate accounts.The _fieldName_ and _fieldValues_ parameters are mandatory in the API request"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

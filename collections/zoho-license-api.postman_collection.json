@@ -1,0 +1,473 @@
+{
+  "item": [
+    {
+      "id": "6aca963d-d2f2-4e9d-bd6b-5b5c285c759b",
+      "name": "License",
+      "description": {
+        "content": "Operations related to license features and plan information.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ace70f3c-f5fb-4685-ab52-a549a96d6baa",
+          "name": "Get License Feature Information",
+          "request": {
+            "name": "Get License Feature Information",
+            "description": {
+              "content": "Fetches the list of all license features, with optional filters for active status and specific feature codes. Useful for retrieving their current availability (isAllowed) and usage limits. Returns either simple max values or detailed limit information based on the includeDetailedLimits parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "licenses",
+                "features"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "featureCodes",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of feature codes to retrieve information for."
+                },
+                {
+                  "disabled": false,
+                  "key": "isAllowed",
+                  "value": "<boolean>",
+                  "description": "Filter features based on their active status."
+                },
+                {
+                  "disabled": false,
+                  "key": "includeDetailedLimits",
+                  "value": "<boolean>",
+                  "description": "Flag to include detailed per-unit feature limits (max, free, add-on values) instead of only max values."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9358eda8-f508-437a-a934-60f0a01c9318",
+              "name": "Successfully retrieved feature information.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "features"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "featureCodes",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "isAllowed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeDetailedLimits",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"featureCode\": \"AGNT01\",\n      \"featureName\": \"Agent\",\n      \"isAllowed\": true,\n      \"limits\": [\n        {\n          \"unitCode\": \"ORG\",\n          \"maxValue\": 33\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee31db54-3985-4d95-86ca-5bc59e3f6b05",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "features"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "featureCodes",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "isAllowed",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "includeDetailedLimits",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48003c92-044c-4629-bb53-8114f44cec34",
+          "name": "Check License Availability",
+          "request": {
+            "name": "Check License Availability",
+            "description": {
+              "content": "Checks if a specific license feature is available, potentially for a given entity and item count.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "licenses",
+                "features",
+                ":featureCode",
+                "availability"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "entityId",
+                  "value": "<int64>",
+                  "description": "The ID of the entity (e.g., Department ID) for which to check availability."
+                },
+                {
+                  "disabled": false,
+                  "key": "count",
+                  "value": "<integer>",
+                  "description": "The number of items for which the license is being checked."
+                },
+                {
+                  "disabled": false,
+                  "key": "criteria",
+                  "value": "<string>",
+                  "description": "Refine license availability check based on constraints"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "featureCode",
+                  "description": "(Required) The feature code to check availability for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8c362be5-9193-4853-aa58-48fa85c89135",
+              "name": "Successfully checked license availability.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "features",
+                    ":featureCode",
+                    "availability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "entityId",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "featureCode",
+                      "description": "(Required) The feature code to check availability for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"isAllowed\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1be0da91-f7ab-465e-b186-206a3de722cf",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "features",
+                    ":featureCode",
+                    "availability"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "entityId",
+                      "value": "<int64>"
+                    },
+                    {
+                      "key": "count",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "criteria",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "featureCode",
+                      "description": "(Required) The feature code to check availability for."
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b1124f4c-13e4-4c8d-a0d6-e166141b99c5",
+          "name": "Get License Plan Information",
+          "request": {
+            "name": "Get License Plan Information",
+            "description": {
+              "content": "Retrieves details about the current license plan.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "licenses",
+                "plan"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00c950fa-7d09-498a-97c0-05118bf23090",
+              "name": "Successfully retrieved plan information.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"planName\": \"Enterprise\",\n  \"planCode\": \"ENTP01\",\n  \"planStatus\": \"Active\",\n  \"expiryDate\": \"1749203963937\",\n  \"billingCycle\": \"Annual\",\n  \"storePlanId\": 12345,\n  \"storeProfileId\": \"prof_abc123\",\n  \"previousPlanCode\": \"PRO01\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6dfd1bfd-bc69-4d6b-8c34-c19e2b0b1ee4",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "licenses",
+                    "plan"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fddc80d6-be11-4bba-a140-b96a2f8d0b15",
+    "name": "Helpcenter License API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Operations related to license features and plan information.",
+      "type": "text/plain"
+    }
+  }
+}

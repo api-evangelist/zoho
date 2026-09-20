@@ -1,0 +1,321 @@
+slug: zoho
+provider: Zoho
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 31
+edges:
+- tag: Ticket
+  spec_file: zoho-ticket-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.92
+  evidence: GET /api/v1/tickets/{ticketId}/resolution  Get ticket resolution; POST /api/v1/tickets/{ticketId}/merge  Merge
+    two tickets
+  reason: 'Core help-desk ticket lifecycle: creation, resolution, merge, move, spam handling, agent ticket
+    counts. This is inbound customer contact capture, routing and resolution.'
+- tag: Leads
+  spec_file: zoho-leads-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.9
+  evidence: 'POST /Leads/{leadId}/actions/convert  convertLead  Convert a Lead; schemas: DealConversion'
+  reason: Lead conversion (including mass convert) into deals — clearly lead/opportunity lifecycle management
+    in CRM. Title 'Helpcenter' is unreliable per the operations.
+- tag: SubjectAccessRequest
+  spec_file: zoho-subjectaccessrequest-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.9
+  evidence: POST /api/v1/subjectAccessRequests/exportAll  Export all subject data from Zoho Desk; POST
+    /api/v1/subjectAccessRequests/eraseAll  Erase all subject data
+  reason: Data subject access/erasure requests are the operational core of GDPR-style Privacy & Data Protection
+    Management.
+- tag: Metadata APIs
+  spec_file: zoho-metadata-apis-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.85
+  evidence: Metadata APIs are used to fetch information about the reporting Workspaces, tables, reports,
+    and dashboards created in Zoho Analytics.
+  reason: Explicitly a BI platform surface exposing workspaces, views, reports and dashboards metadata,
+    which realises Analytics & BI delivery.
+- tag: Thread
+  spec_file: zoho-thread-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.85
+  evidence: POST /api/v1/tickets/{ticketId}/sendReply  Send Email Reply; schemas faceBookThreadResponse,
+    twitterThreadResponse
+  reason: Multi-channel reply threads (email, Facebook, Twitter, forums) on support tickets — inbound
+    contact handling and response, i.e. customer inquiry management in a help-desk product.
+- tag: Article
+  spec_file: zoho-article-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.82
+  evidence: POST /api/v1/articles  createArticle  Create an article; GET /api/v1/tickets/{ticketId}/articleSuggestion  suggestArticlesForTicket  Suggest
+    relevant articles for ticket
+  reason: Knowledge-base article authoring and suggestion in a help-centre product — self-service knowledge
+    management for customer service.
+- tag: CommunityTopic
+  spec_file: zoho-communitytopic-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.8
+  evidence: '"List forum topics", "Add community topic", "Approve topics", "List all community topic followers"'
+  reason: Full lifecycle of customer forum topics — the self-service/community support channel of the
+    help-desk.
+- tag: Embed APIs
+  spec_file: zoho-embed-apis-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.8
+  evidence: Embed APIs let you dynamically integrate Zoho Analytics reports and dashboards into your websites
+    and applications; GET /restapi/v2/workspaces/{workspace-id}/views/{view-id}/publish/embed
+  reason: Operations publish and share Zoho Analytics views, dashboards and slideshows (public URL, private
+    link, publish configuration) — delivery of reporting/BI content, i.e. Analytics & BI Management. Some
+    residual doubt because the surface is specifically publishing/embedding mechanics.
+- tag: Finance
+  spec_file: zoho-finance-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.8
+  evidence: GET /api/v1/zohoFinance/{financeService}/invoices  List invoices; POST .../invoices/markAsSent  MarkAllInvoicesSent;
+    PATCH .../invoices/{id}  Update invoice status
+  reason: Operations read and update customer invoices and estimates and mark invoices as sent — customer
+    invoicing, i.e. Accounts Receivable Management. Slight ambiguity as estimates lean toward quoting,
+    but invoices dominate the surface.
+- tag: Modeling APIs
+  spec_file: zoho-modeling-apis-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.8
+  evidence: Modeling APIs manage workspaces, views, columns, and folders ... POST /restapi/v2/workspaces/{workspace-id}/reports  createReport  Create
+    Report
+  reason: Creation and maintenance of analytics workspaces, tables, query tables and reports in Zoho Analytics
+    — BI content delivery; some overlap with data architecture modelling hence not maximal confidence.
+- tag: Profile
+  spec_file: zoho-profile-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: 'GET /api/v1/myProfilePermissions  getMyProfilePermissions; schemas: agentsPermissionJson,
+    contactsPermissionJson, productsPermissionJson'
+  reason: Profiles here are permission sets granting agents rights across modules, cloned/assigned and
+    queried for permissions — access management, not HR profiles.
+- tag: Webhook
+  spec_file: zoho-webhook-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.8
+  evidence: POST /api/v1/webhooks  createWebhook  Create webhook
+  reason: Full lifecycle management of outbound webhook subscriptions, matching Webhook & Event Subscription
+    Management.
+- tag: Community
+  spec_file: zoho-community-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.78
+  evidence: '"Trash community topic", "Lock community topic", "Topic voters trend"'
+  reason: Support community/forum topic moderation is a self-service support channel (knowledge sharing
+    with customers) within customer service management.
+- tag: DashboardMetrics
+  spec_file: zoho-dashboardmetrics-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.78
+  evidence: '"Get unresolved tickets count", "List resolution times", "Get total response count"'
+  reason: Operations return support-desk ticket volume, resolution and response-time metrics — operational
+    reporting over customer service handling. L1 only since it spans inquiry handling and contact-centre
+    operations reporting.
+- tag: ArticleTranslation
+  spec_file: zoho-articletranslation-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.75
+  evidence: POST /api/v1/articles/{articleId}/translations  createArticleTranslation  Add translation;
+    GET /api/v1/articleTranslations/search  searchArticleTranslations
+  reason: Localised versions of help-centre knowledge-base articles with like/dislike and permalink handling
+    — knowledge base / self-service content management.
+- tag: CommunityCategory
+  spec_file: zoho-communitycategory-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.75
+  evidence: '"Disable community category or forum", "List followers of community category or forum"'
+  reason: Forum/category structure for the customer self-service community in a help-desk product.
+- tag: CommunityComment
+  spec_file: zoho-communitycomment-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.75
+  evidence: '"List comments pending moderation", "Approve community topic comments", "Report topic comment
+    as spam"'
+  reason: Moderation and management of customer forum discussion — self-service support community operations.
+- tag: KBRootCategory
+  spec_file: zoho-kbrootcategory-api-openapi.yml
+  capability_id: BC-830.20
+  capability_id_l1: BC-830
+  capability_name: Knowledge Curation & Taxonomy Management
+  confidence: 0.75
+  evidence: GET /api/v1/kbRootCategories/{rootCategoryId}/categoryTree  getKBRootCategoryTree  Get a category
+    tree; POST .../reviewOwners/add  Add review owner
+  reason: KB (knowledge base) root category taxonomy management with category trees, moderators and review
+    owners — knowledge curation and taxonomy management. Could also be read as help-centre self-service,
+    but the operations are specifically about structuring and governing knowledge content taxonomy.
+- tag: NewTicketHistory
+  spec_file: zoho-newtickethistory-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.75
+  evidence: GET /api/v1/tickets/{ticketId}/History  getTicketHistory  Get ticket history
+  reason: Support ticket history retrieval in a help desk product, supporting inbound contact handling
+    and resolution tracking; single read-only operation limits confidence on the sub-capability.
+- tag: TicketTag
+  spec_file: zoho-tickettag-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.75
+  evidence: POST /api/v1/tickets/{ticketId}/associateTag  associateTicketTags  Associate Ticket Tags;
+    GET /api/v1/tags/{tagId}/tickets  getTicketsByTag
+  reason: Tagging and retrieval of support tickets by tag — categorisation of inbound customer contacts
+    in a helpdesk, part of inquiry handling and routing.
+- tag: AgentPresence
+  spec_file: zoho-agentpresence-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.72
+  evidence: GET /api/v1/onlineAgents  getOnlineAgents  Get Online Agents; GET /api/v1/agentAvailabilityConfig  getConfig  Get
+    Agent Availability Configuration
+  reason: Availability/presence of support agents drives routing and workforce management in a service
+    desk, which is contact-centre operations.
+- tag: Call
+  spec_file: zoho-call-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.72
+  evidence: '"List calls by ticket", "Clear live call mapping from an activity", "Delete spam calls"'
+  reason: Calls here are support-desk call activity records tied to tickets — inbound customer contact
+    handling in a help-desk, i.e. customer service; ambiguous between inquiry management and contact-centre
+    operations so no L2.
+- tag: TicketTemplate
+  spec_file: zoho-tickettemplate-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.72
+  evidence: POST /api/v1/ticketTemplates  createTicketTemplate  Create ticket template
+  reason: CRUD over ticket templates used to standardise support ticket creation in the helpdesk; squarely
+    customer service inquiry management rather than a generic technical surface.
+- tag: Account
+  spec_file: zoho-account-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: POST /api/v1/accounts/{accountId}/merge  mergeAccounts; GET /api/v1/contacts/{contactId}/accounts  List
+    accounts of contact; GET /api/v1/accounts/{accountId}/tickets  List tickets by account
+  reason: Accounts here are customer company master records in Zoho Desk, with create/update, merge and
+    contact linkage - i.e. customer master data and identity resolution. Not an accounting 'account'.
+- tag: AccountDeduplication
+  spec_file: zoho-accountdeduplication-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: GET /api/v1/groupAccountDuplicateValues  listGroupedDuplicateAccounts  List duplicate accounts;
+    Set default field for account deduplication
+  reason: Detecting and configuring deduplication of customer account records is identity resolution /
+    golden-record work within Customer Data Management.
+- tag: ArticleFeedback
+  spec_file: zoho-articlefeedback-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.7
+  evidence: POST /api/v1/articleFeedbacks/{feedbackId}/addAsTicket  convertFeedbackToTicket  Convert feedback
+    comment into ticket
+  reason: Reader feedback on help-centre knowledge articles, convertible into support tickets — clearly
+    customer-service domain, but it straddles self-service knowledge management and customer feedback,
+    so only the L1 is asserted.
+- tag: Helpcenter
+  spec_file: zoho-helpcenter-api-openapi.yml
+  capability_id: BC-430.40
+  capability_id_l1: BC-430
+  capability_name: Self-Service Management
+  confidence: 0.7
+  evidence: GET /api/v1/helpCenters getAllHelpCenters 'List help centers'; POST .../sitemaps 'Update Helpcenter
+    sitemaps'
+  reason: The help centre is Zoho Desk's customer-facing self-service portal (knowledge base + sitemaps),
+    so managing help centres realises Self-Service Management; some ambiguity as operations are largely
+    configuration.
+- tag: Role
+  spec_file: zoho-role-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /api/v1/roles/{roleId}/agents  getAgentsByRole  List agents by role; POST /api/v1/roles  addRole  Create
+    role
+  reason: Role definition and assignment of agents to roles governs data access in the help desk, which
+    is identity and access administration rather than HR job architecture.
+- tag: Skill
+  spec_file: zoho-skill-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.7
+  evidence: POST /api/v1/tickets/{ticketId}/executeSkillbasedAssignment  Execute Skill Based Assignment;
+    POST /api/v1/agents/{agentId}/mapSkills
+  reason: Skills here are help-desk agent skills used to route/assign tickets — support-contact routing,
+    i.e. Customer Inquiry Management. Not HR competency management.
+- tag: TicketFollowers
+  spec_file: zoho-ticketfollowers-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.7
+  evidence: POST /api/v1/tickets/{ticketId}/addFollowers  addTicketFollowers  Add ticket followers
+  reason: Operations manage followers on support tickets in Zoho Desk's help-centre ticketing surface,
+    i.e. collaboration on inbound customer inquiries. L1 customer service is clear; the inquiry-handling
+    sub-capability is the closest fit though 'followers' is a collaboration detail.
+- tag: User Management APIs
+  spec_file: zoho-user-management-apis-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: Manage User APIs allow you to add, remove, activate, or deactivate users in your Zoho Analytics
+    organization programmatically; PUT /restapi/v2/users/role  changeUserRole
+  reason: Provisioning, deprovisioning, activation and role assignment of organisation and workspace users
+    — user account and access administration.

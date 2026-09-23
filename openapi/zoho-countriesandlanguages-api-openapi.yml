@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter CountriesAndLanguages API
+  title: Countries And Languages API
   version: 1.0.0
 tags:
 - name: CountriesAndLanguages
@@ -10,7 +10,7 @@ paths:
       tags:
       - CountriesAndLanguages
       summary: List all countries
-      description: This API lists the countries that can be set in the locale field in Zoho Desk. Keep in mind that the <b>countries</b> object will be deprecated soon. Therefore, make sure to use the <b>data</b> object instead, wherever needed.
+      description: This API lists the countries that can be set in the locale field in Zoho Desk. Keep in mind that the countries object will be deprecated soon. Therefore, make sure to use the data object instead, wherever needed.
       operationId: getAllCountries
       parameters: []
       responses:
@@ -52,6 +52,36 @@ paths:
       - external-public
 components:
   responses:
+    languagesCommonResponse:
+      description: languagesCommonResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              languages:
+                $ref: ./CountriesAndLanguages.json#/components/schemas/languageCommonResponse
+            required:
+            - languages
+          examples:
+            Valid responses Definitions:
+              value:
+                languages:
+                  Italian: it_IT
+                  French: fr_FR
+                  Russian: ru_RU
+                  English (United States): en_US
+                  Chinese: zh_CN
+                  Danish: da_DK
+                  Spanish: es_ES
+                  German: de_DE
+                  Japanese: ja_JP
+                  Dutch: nl_NL
+                  Turkish: tr_TR
+                  Portuguese (Brazil): pt_BR
     countriesCommonResponse:
       description: countriesCommonResponse template definitions
       content:
@@ -1325,36 +1355,6 @@ components:
                   Suriname: nl_SR
                   Greenland: kl_GL
                   Saint Helena: en_SH
-    languagesCommonResponse:
-      description: languagesCommonResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              languages:
-                $ref: ./CountriesAndLanguages.json#/components/schemas/languageCommonResponse
-            required:
-            - languages
-          examples:
-            Valid responses Definitions:
-              value:
-                languages:
-                  Italian: it_IT
-                  French: fr_FR
-                  Russian: ru_RU
-                  English (United States): en_US
-                  Chinese: zh_CN
-                  Danish: da_DK
-                  Spanish: es_ES
-                  German: de_DE
-                  Japanese: ja_JP
-                  Dutch: nl_NL
-                  Turkish: tr_TR
-                  Portuguese (Brazil): pt_BR
     timeZoneCommonResponse:
       description: timeZoneCommonResponse template definitions
       content:
@@ -2612,4 +2612,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: CountriesAndLanguages

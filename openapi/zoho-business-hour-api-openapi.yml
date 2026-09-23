@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter BusinessHour API
+  title: Business Hour API
   version: 1.0.0
 tags:
-- name: BusinessHour
+- name: Business Hour
 paths:
   /api/v1/businessHours/{businessHourId}:
     get:
       tags:
-      - BusinessHour
+      - Business Hour
       summary: Get business hours set
       description: This API fetches the details of a business hours set configured in your help desk portal
       operationId: getBusinessHour
@@ -27,7 +27,7 @@ paths:
       - external-public
     patch:
       tags:
-      - BusinessHour
+      - Business Hour
       summary: Update business hours set
       description: This API updates the details of a business hours set configured in your help desk portal
       operationId: updateBusinessHour
@@ -49,7 +49,7 @@ paths:
   /api/v1/businessHours:
     get:
       tags:
-      - BusinessHour
+      - Business Hour
       summary: List business hour sets
       description: This API lists a particular number of business hour sets, based on the limit specified
       operationId: getBusinessHours
@@ -102,7 +102,7 @@ paths:
       - external-public
     post:
       tags:
-      - BusinessHour
+      - Business Hour
       summary: Create business hours set
       description: This API creates a business hours set in your help desk portal
       operationId: createBusinessHour
@@ -123,7 +123,7 @@ paths:
   /api/v1/businessHours/{businessHourId}/relatedRules:
     get:
       tags:
-      - BusinessHour
+      - Business Hour
       summary: List associated automation rules for the business hour
       description: This API lists a particular number of automation rules that include a business hours set,based on the limit specified
       operationId: getRelatedRulesForBusinessHour
@@ -141,188 +141,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    createBusinessHour_businessHourInputJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              timeZoneId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              holidayListId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              businessTimes:
-                $ref: ./BusinessHour.json#/components/schemas/businessTimesList
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - 24X7
-                - SPECIFIC
-                - CUSTOM
-                maxLength: 100
-                minLength: 0
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-            required:
-            - businessTimes
-            - name
-            - status
-            - timeZoneId
-            - type
-          examples:
-            Valid requestBody Definitions:
-              value:
-                timeZoneId: PLT
-                name: BusinssHour Pakistan Shift
-                businessTimes:
-                - startTime: 600
-                  endTime: 960
-                  day: MONDAY
-                - startTime: 600
-                  endTime: 960
-                  day: TUESDAY
-                - startTime: 600
-                  endTime: 960
-                  day: WEDNESDAY
-                - startTime: 600
-                  endTime: 960
-                  day: THURSDAY
-                - startTime: 600
-                  endTime: 960
-                  day: FRIDAY
-                type: SPECIFIC
-                status: ACTIVE
-    businessHourInputJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              timeZoneId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              holidayListId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              businessTimes:
-                $ref: ./BusinessHour.json#/components/schemas/businessTimesList
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - 24X7
-                - SPECIFIC
-                - CUSTOM
-                maxLength: 100
-                minLength: 0
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                holidayListId: '4000000105030'
-  parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the business hour sets must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the business hour sets must be listed
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of business hour sets to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of business hour sets to list
-        maximum: 50
-        minimum: 1
-        pattern: ([0-9]+)
-    businessHourId:
-      name: businessHourId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
     businessHourListViewJSON:
       description: businessHourListViewJSON template definitions
@@ -555,6 +373,42 @@ components:
                   id: '4000000101009'
                   type: CUSTOM
                   status: INACTIVE
+    relatedRuleListArray:
+      description: relatedRuleListArray template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./BusinessHour.json#/components/schemas/relatedRulesData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ruleType: SUPERVISE
+                  ruleName: TBA1
+                  ruleId: '6000000019012'
+                - ruleType: SLA
+                  ruleName: Priority-based SLAs
+                  ruleId: '6000000013508'
+                - ruleType: SLA
+                  ruleName: Bronze SLAs
+                  ruleId: '6000000013514'
+                - ruleType: BLUEPRINT
+                  ruleName: Default Blueprint
+                  ruleId: '6000000016083'
+                - ruleType: BLUEPRINT
+                  ruleName: BH BP
+                  ruleId: '6000000018143'
+                - ruleType: BLUEPRINT
+                  ruleName: Third Bp
+                  ruleId: '6000000023018'
     businessHourJSON:
       description: businessHourJSON template definitions
       content:
@@ -737,8 +591,54 @@ components:
                 id: '4000000186010'
                 type: SPECIFIC
                 status: ACTIVE
-    relatedRuleListArray:
-      description: relatedRuleListArray template definitions
+  parameters:
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the business hour sets must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the business hour sets must be listed
+        pattern: ([0-9]+)
+    businessHourId:
+      name: businessHourId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of business hour sets to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of business hour sets to list
+        maximum: 50
+        minimum: 1
+        pattern: ([0-9]+)
+  requestBodies:
+    businessHourInputJSON:
       content:
         application/json:
           schema:
@@ -747,33 +647,133 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: ./BusinessHour.json#/components/schemas/relatedRulesData
-            required:
-            - data
+              timeZoneId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              holidayListId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              businessTimes:
+                $ref: ./BusinessHour.json#/components/schemas/businessTimesList
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - 24X7
+                - SPECIFIC
+                - CUSTOM
+                maxLength: 100
+                minLength: 0
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                data:
-                - ruleType: SUPERVISE
-                  ruleName: TBA1
-                  ruleId: '6000000019012'
-                - ruleType: SLA
-                  ruleName: Priority-based SLAs
-                  ruleId: '6000000013508'
-                - ruleType: SLA
-                  ruleName: Bronze SLAs
-                  ruleId: '6000000013514'
-                - ruleType: BLUEPRINT
-                  ruleName: Default Blueprint
-                  ruleId: '6000000016083'
-                - ruleType: BLUEPRINT
-                  ruleName: BH BP
-                  ruleId: '6000000018143'
-                - ruleType: BLUEPRINT
-                  ruleName: Third Bp
-                  ruleId: '6000000023018'
+                holidayListId: '4000000105030'
+    createBusinessHour_businessHourInputJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              timeZoneId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              holidayListId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              businessTimes:
+                $ref: ./BusinessHour.json#/components/schemas/businessTimesList
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - 24X7
+                - SPECIFIC
+                - CUSTOM
+                maxLength: 100
+                minLength: 0
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+            required:
+            - businessTimes
+            - name
+            - status
+            - timeZoneId
+            - type
+          examples:
+            Valid requestBody Definitions:
+              value:
+                timeZoneId: PLT
+                name: BusinssHour Pakistan Shift
+                businessTimes:
+                - startTime: 600
+                  endTime: 960
+                  day: MONDAY
+                - startTime: 600
+                  endTime: 960
+                  day: TUESDAY
+                - startTime: 600
+                  endTime: 960
+                  day: WEDNESDAY
+                - startTime: 600
+                  endTime: 960
+                  day: THURSDAY
+                - startTime: 600
+                  endTime: 960
+                  day: FRIDAY
+                type: SPECIFIC
+                status: ACTIVE
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: BusinessHour

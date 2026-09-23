@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter ContactTimeEntry API
+  title: Contact Time Entry API
   version: 1.0.0
 tags:
 - name: ContactTimeEntry
@@ -135,6 +135,72 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+        maxLength: 100
+        minLength: 0
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department
+        pattern: ([0-9]+)
+    contactId:
+      name: contactId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: Module Preference. It can be either @tickets@ @tasks@
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Module Preference. It can be either @tickets@ @tasks@
+        enum:
+        - tickets
+        - tasks
+        - calls
+        - events
+        maxLength: 100
+        minLength: 0
   responses:
     getTimeEntryByContactIdResponse:
       description: getTimeEntryByContactIdResponse template definitions
@@ -328,73 +394,7 @@ components:
                 totalHours: 12
                 totalCosts: 1000
                 totalSeconds: 24
-  parameters:
-    module:
-      name: module
-      in: query
-      description: Module Preference. It can be either @tickets@ @tasks@
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Module Preference. It can be either @tickets@ @tasks@
-        enum:
-        - tickets
-        - tasks
-        - calls
-        - events
-        maxLength: 100
-        minLength: 0
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-        maxLength: 100
-        minLength: 0
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department
-        pattern: ([0-9]+)
-    contactId:
-      name: contactId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: ContactTimeEntry

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter CommunityTopic API
+  title: Community Topic API
   version: 1.0.0
 tags:
 - name: CommunityTopic
@@ -63,7 +63,7 @@ paths:
       tags:
       - CommunityTopic
       summary: Add community topic
-      description: 'This API helps add a forum topic in the user community. '
+      description: This API helps add a forum topic in the user community.
       operationId: addCommunityTopic
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -287,7 +287,7 @@ paths:
       tags:
       - CommunityTopic
       summary: List all community topic followers
-      description: 'This API lists a particular number of users who follow a forum topic, based on the limit defined. '
+      description: This API lists a particular number of users who follow a forum topic, based on the limit defined.
       operationId: getAllCommunityTopicFollowers
       parameters:
       - name: limit
@@ -550,7 +550,7 @@ paths:
       tags:
       - CommunityTopic
       summary: Trash unmoderated community topics
-      description: 'This API trashes forum topics that are yet to be moderated for publishing. '
+      description: This API trashes forum topics that are yet to be moderated for publishing.
       operationId: deleteUnmoderatedCommunityTopics
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -805,7 +805,7 @@ paths:
       tags:
       - CommunityTopic
       summary: Restore trashed topics
-      description: 'This API restores topics from trash. '
+      description: This API restores topics from trash.
       operationId: addTrashedCommunityTopics
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -1028,155 +1028,8 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    topicId:
-      name: topicId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the topics must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the topics must be listed
-        minimum: 0
-        pattern: ([0-9]+)
-    type:
-      name: type
-      in: query
-      description: 'Type of topics to list. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Type of topics to list. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
-        enum:
-        - QUESTION
-        - IDEA
-        - ANNOUNCEMENT
-        - PROBLEM
-        - DISCUSSION
-        maxLength: 100
-        minLength: 0
-    status:
-      name: status
-      in: query
-      description: 'Moderation status of the topics. Values allowed are: @AWAITINGAPPROVAL@, @SPAM@, and @TRASHED@.'
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Moderation status of the topics. Values allowed are: @AWAITINGAPPROVAL@, @SPAM@, and @TRASHED@.'
-        enum:
-        - SPAM
-        - TRASHED
-        - AWAITINGAPPROVAL
-        maxLength: 100
-        minLength: 0
-    tagName:
-      name: tagName
-      in: query
-      description: Tag by which topics must be filtered
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Tag by which topics must be filtered
-        maxLength: 100
-        minLength: 0
-        pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
-    categoryId:
-      name: categoryId
-      in: query
-      description: ID of the community category from which the topics must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the community category from which the topics must be fetched
-        pattern: ([0-9]+)
-    categoryId_requiredFalse:
-      name: categoryId
-      in: query
-      description: ID of the community category from which the topics must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the community category from which the topics must be fetched
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of topics to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of topics to list
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
-    userType:
-      name: userType
-      in: query
-      description: Filters based on the type of the user who follows it. The allowed values are @AGENT@ or @END_USER@.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Filters based on the type of the user who follows it. The allowed values are @AGENT@ or @END_USER@.
-        enum:
-        - AGENT
-        - END_USER
-        maxLength: 100
-        minLength: 0
   requestBodies:
-    unmoderateTopics_moderationTopicIdsJSON:
+    communityCategoryIdJSON:
       content:
         application/json:
           schema:
@@ -1185,29 +1038,21 @@ components:
             - object
             additionalProperties: false
             properties:
-              topicIds:
+              categoryId:
                 type:
+                - string
                 - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                minItems: 1
-                uniqueItems: false
+                - integer
+                format: int64
+                description: ID of the community category
+                pattern: ([0-9]+)
             required:
-            - topicIds
+            - categoryId
           examples:
             Valid requestBody Definitions:
               value:
-                topicIds:
-                - '103417000000528003'
-                - '103417000000528006'
-                - '103417000000528008'
-    reportBulkTopicsAsSpam:
+                categoryId: '1000000012755'
+    spamReason:
       content:
         application/json:
           schema:
@@ -1223,58 +1068,12 @@ components:
                 description: Reason for marking the topic as spam
                 maxLength: 1000
                 minLength: 0
-              topicIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
             required:
             - reason
-            - topicIds
           examples:
             Valid requestBody Definitions:
               value:
                 reason: Reason for marking a topic as spam
-                topicIds:
-                - '103417000000528003'
-                - '103417000000528006'
-                - '103417000000528008'
-    deleteTagsoFATopic_tagsRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              tags:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
-                uniqueItems: false
-            required:
-            - tags
-          examples:
-            Valid requestBody Definitions:
-              value:
-                tags:
-                - tag1
-                - tag2
     communityAddTopicJson:
       content:
         application/json:
@@ -1374,7 +1173,7 @@ components:
                 tags:
                 - tag1
                 - tag2
-    deleteTopics_moderationTopicIdsJSON:
+    unmoderateTopics_moderationTopicIdsJSON:
       content:
         application/json:
           schema:
@@ -1405,210 +1204,7 @@ components:
                 - '103417000000528003'
                 - '103417000000528006'
                 - '103417000000528008'
-    communityCategoryIdJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              categoryId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the community category
-                pattern: ([0-9]+)
-            required:
-            - categoryId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                categoryId: '1000000012755'
-    publishDraft_communityAddTopicJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./CommunityTopic.json#/components/schemas/communityTopicJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                mailTo:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-                  uniqueItems: false
-                permalink:
-                  type:
-                  - string
-                  - 'null'
-                  description: permalink of the topic to be created
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
-                isSticky:
-                  type:
-                  - boolean
-                  - 'null'
-                  description: Key that defines whether the topic must be pinned to the topics list page or not
-                categoryId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the community category in which the topic must be posted
-                  pattern: ([0-9]+)
-                content:
-                  type:
-                  - string
-                  - 'null'
-                  description: Body content of the topic
-                  maxLength: 50000
-                  minLength: 0
-                notifyMe:
-                  type:
-                  - boolean
-                  - 'null'
-                  description: Key that defines whether the creator of the topic must be notified about further user actions on the topic or not
-                tags:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 200
-                    minLength: 0
-                    pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
-                  uniqueItems: false
-            - type: object
-              required:
-              - categoryId
-              - content
-              - subject
-              - type
-          examples:
-            Valid requestBody Definitions:
-              value:
-                featuredImage:
-                  imageId: '1000000061105'
-                subject: Topic 1
-                attachmentIds:
-                - '4000000019027'
-                mailTo:
-                - carol@zylker.com
-                type: QUESTION
-                seo:
-                  keywords: seo,search
-                  useTitleAsPageTitle: 'true'
-                  description: seo description
-                  title: seo title
-                isSticky: 'false'
-                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
-                categoryId: '4000000000017'
-                notifyMe: 'false'
-                tags:
-                - tag1
-                - tag2
-    addDraft_communityAddOrUpdateDraftTopicJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./CommunityTopic.json#/components/schemas/communityTopicJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                permalink:
-                  type:
-                  - string
-                  - 'null'
-                  description: permalink of the topic to be created
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
-                isSticky:
-                  type:
-                  - boolean
-                  - 'null'
-                  description: Key that defines whether the topic must be pinned to the topics list page or not
-                categoryId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the community category in which the topic must be posted
-                  pattern: ([0-9]+)
-                content:
-                  type:
-                  - string
-                  - 'null'
-                  description: Body content of the topic
-                  maxLength: 50000
-                  minLength: 0
-                notifyMe:
-                  type:
-                  - boolean
-                  - 'null'
-                  description: Key that defines whether the creator of the topic must be notified about further user actions on the topic or not
-                tags:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 200
-                    minLength: 0
-                    pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
-                  uniqueItems: false
-            - type: object
-              required:
-              - categoryId
-              - content
-              - subject
-              - type
-          examples:
-            Valid requestBody Definitions:
-              value:
-                featuredImage:
-                  imageId: '1000000061105'
-                subject: Topic 1
-                attachmentIds:
-                - '4000000019027'
-                type: QUESTION
-                seo:
-                  keywords: seo,search
-                  useTitleAsPageTitle: 'true'
-                  description: seo description
-                  title: seo title
-                isSticky: 'false'
-                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
-                categoryId: '4000000000017'
-                notifyMe: 'false'
-                tags:
-                - tag1
-                - tag2
-    restoreTopics_moderationTopicIdsJSON:
+    moderationTopicIdsJSON:
       content:
         application/json:
           schema:
@@ -1639,136 +1235,6 @@ components:
                 - '103417000000528003'
                 - '103417000000528006'
                 - '103417000000528008'
-    spamReason:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reason:
-                type:
-                - string
-                - 'null'
-                description: Reason for marking the topic as spam
-                maxLength: 1000
-                minLength: 0
-            required:
-            - reason
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reason: Reason for marking a topic as spam
-    tagsRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              tags:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
-                uniqueItems: false
-            required:
-            - tags
-          examples:
-            Valid requestBody Definitions:
-              value:
-                tags:
-                - tag1
-                - tag2
-    communityUpdateTopicJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              featuredImage:
-                $ref: ./CommunityTopic.json#/components/schemas/featuredImagePayload
-              subject:
-                type:
-                - string
-                - 'null'
-                description: Title of the topic
-                maxLength: 1000
-                minLength: 0
-              attachmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              label:
-                type:
-                - string
-                - 'null'
-                description: 'Status label of the topic. The value of this key varies according to the topic type. Values allowed are: @NOSTATUS@, @NEEDMOREINFO@, @WORKINGONIT@, @ANSWERED@, @UNANSWERED@, @MAYBELATER@, @UNDERREVIEW@, @IMPLEMENTED@, @WILLNOTIMPLEMENT@, @NOTAPROBLEM@, @TEMPORARYFIX@, @ANALYZING@, @SOLVED@, @UNSOLVED@, and @MOSTVOTED@.'
-                maxLength: 100
-                minLength: 0
-              type:
-                type:
-                - string
-                - 'null'
-                description: 'Type of topic. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
-                enum:
-                - QUESTION
-                - IDEA
-                - ANNOUNCEMENT
-                - PROBLEM
-                - DISCUSSION
-                maxLength: 100
-                minLength: 0
-              seo:
-                $ref: ./CommunityTopic.json#/components/schemas/seoPayload
-              content:
-                type:
-                - string
-                - 'null'
-                description: Body content of the topic
-                maxLength: 50000
-                minLength: 0
-              notifyMentions:
-                type:
-                - boolean
-                - 'null'
-                description: whether to notify mentioned user while updateing content.
-          examples:
-            Valid requestBody Definitions:
-              value:
-                featuredImage:
-                  imageId: '1000000061105'
-                subject: Topic 1
-                attachmentIds:
-                - '4000000019027'
-                type: QUESTION
-                seo:
-                  keywords: seo,search
-                  useTitleAsPageTitle: 'true'
-                  description: seo description
-                  title: seo title
-                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
     topicTypeRequestJSON:
       content:
         application/json:
@@ -1818,7 +1284,7 @@ components:
                 - DISCUSSION
                 - ANNOUNCEMENT
                 - QUESTION
-    moderationTopicIdsJSON:
+    reportBulkTopicsAsSpam:
       content:
         application/json:
           schema:
@@ -1827,6 +1293,13 @@ components:
             - object
             additionalProperties: false
             properties:
+              reason:
+                type:
+                - string
+                - 'null'
+                description: Reason for marking the topic as spam
+                maxLength: 1000
+                minLength: 0
               topicIds:
                 type:
                 - 'null'
@@ -1838,18 +1311,19 @@ components:
                   - integer
                   format: int64
                   pattern: ([0-9]+)
-                minItems: 1
                 uniqueItems: false
             required:
+            - reason
             - topicIds
           examples:
             Valid requestBody Definitions:
               value:
+                reason: Reason for marking a topic as spam
                 topicIds:
                 - '103417000000528003'
                 - '103417000000528006'
                 - '103417000000528008'
-    trashTopics_moderationTopicIdsJSON:
+    restoreTopics_moderationTopicIdsJSON:
       content:
         application/json:
           schema:
@@ -1963,7 +1437,657 @@ components:
                 tags:
                 - tag1
                 - tag2
+    tagsRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              tags:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
+                uniqueItems: false
+            required:
+            - tags
+          examples:
+            Valid requestBody Definitions:
+              value:
+                tags:
+                - tag1
+                - tag2
+    publishDraft_communityAddTopicJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./CommunityTopic.json#/components/schemas/communityTopicJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                mailTo:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+                  uniqueItems: false
+                permalink:
+                  type:
+                  - string
+                  - 'null'
+                  description: permalink of the topic to be created
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
+                isSticky:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: Key that defines whether the topic must be pinned to the topics list page or not
+                categoryId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the community category in which the topic must be posted
+                  pattern: ([0-9]+)
+                content:
+                  type:
+                  - string
+                  - 'null'
+                  description: Body content of the topic
+                  maxLength: 50000
+                  minLength: 0
+                notifyMe:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: Key that defines whether the creator of the topic must be notified about further user actions on the topic or not
+                tags:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 200
+                    minLength: 0
+                    pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
+                  uniqueItems: false
+            - type: object
+              required:
+              - categoryId
+              - content
+              - subject
+              - type
+          examples:
+            Valid requestBody Definitions:
+              value:
+                featuredImage:
+                  imageId: '1000000061105'
+                subject: Topic 1
+                attachmentIds:
+                - '4000000019027'
+                mailTo:
+                - carol@zylker.com
+                type: QUESTION
+                seo:
+                  keywords: seo,search
+                  useTitleAsPageTitle: 'true'
+                  description: seo description
+                  title: seo title
+                isSticky: 'false'
+                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
+                categoryId: '4000000000017'
+                notifyMe: 'false'
+                tags:
+                - tag1
+                - tag2
+    communityUpdateTopicJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              featuredImage:
+                $ref: ./CommunityTopic.json#/components/schemas/featuredImagePayload
+              subject:
+                type:
+                - string
+                - 'null'
+                description: Title of the topic
+                maxLength: 1000
+                minLength: 0
+              attachmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              label:
+                type:
+                - string
+                - 'null'
+                description: 'Status label of the topic. The value of this key varies according to the topic type. Values allowed are: @NOSTATUS@, @NEEDMOREINFO@, @WORKINGONIT@, @ANSWERED@, @UNANSWERED@, @MAYBELATER@, @UNDERREVIEW@, @IMPLEMENTED@, @WILLNOTIMPLEMENT@, @NOTAPROBLEM@, @TEMPORARYFIX@, @ANALYZING@, @SOLVED@, @UNSOLVED@, and @MOSTVOTED@.'
+                maxLength: 100
+                minLength: 0
+              type:
+                type:
+                - string
+                - 'null'
+                description: 'Type of topic. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
+                enum:
+                - QUESTION
+                - IDEA
+                - ANNOUNCEMENT
+                - PROBLEM
+                - DISCUSSION
+                maxLength: 100
+                minLength: 0
+              seo:
+                $ref: ./CommunityTopic.json#/components/schemas/seoPayload
+              content:
+                type:
+                - string
+                - 'null'
+                description: Body content of the topic
+                maxLength: 50000
+                minLength: 0
+              notifyMentions:
+                type:
+                - boolean
+                - 'null'
+                description: whether to notify mentioned user while updateing content.
+          examples:
+            Valid requestBody Definitions:
+              value:
+                featuredImage:
+                  imageId: '1000000061105'
+                subject: Topic 1
+                attachmentIds:
+                - '4000000019027'
+                type: QUESTION
+                seo:
+                  keywords: seo,search
+                  useTitleAsPageTitle: 'true'
+                  description: seo description
+                  title: seo title
+                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
+    trashTopics_moderationTopicIdsJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              topicIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                minItems: 1
+                uniqueItems: false
+            required:
+            - topicIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                topicIds:
+                - '103417000000528003'
+                - '103417000000528006'
+                - '103417000000528008'
+    addDraft_communityAddOrUpdateDraftTopicJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./CommunityTopic.json#/components/schemas/communityTopicJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                permalink:
+                  type:
+                  - string
+                  - 'null'
+                  description: permalink of the topic to be created
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
+                isSticky:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: Key that defines whether the topic must be pinned to the topics list page or not
+                categoryId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the community category in which the topic must be posted
+                  pattern: ([0-9]+)
+                content:
+                  type:
+                  - string
+                  - 'null'
+                  description: Body content of the topic
+                  maxLength: 50000
+                  minLength: 0
+                notifyMe:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: Key that defines whether the creator of the topic must be notified about further user actions on the topic or not
+                tags:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 200
+                    minLength: 0
+                    pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
+                  uniqueItems: false
+            - type: object
+              required:
+              - categoryId
+              - content
+              - subject
+              - type
+          examples:
+            Valid requestBody Definitions:
+              value:
+                featuredImage:
+                  imageId: '1000000061105'
+                subject: Topic 1
+                attachmentIds:
+                - '4000000019027'
+                type: QUESTION
+                seo:
+                  keywords: seo,search
+                  useTitleAsPageTitle: 'true'
+                  description: seo description
+                  title: seo title
+                isSticky: 'false'
+                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
+                categoryId: '4000000000017'
+                notifyMe: 'false'
+                tags:
+                - tag1
+                - tag2
+    deleteTagsoFATopic_tagsRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              tags:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
+                uniqueItems: false
+            required:
+            - tags
+          examples:
+            Valid requestBody Definitions:
+              value:
+                tags:
+                - tag1
+                - tag2
+    deleteTopics_moderationTopicIdsJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              topicIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                minItems: 1
+                uniqueItems: false
+            required:
+            - topicIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                topicIds:
+                - '103417000000528003'
+                - '103417000000528006'
+                - '103417000000528008'
+  parameters:
+    status:
+      name: status
+      in: query
+      description: 'Moderation status of the topics. Values allowed are: @AWAITINGAPPROVAL@, @SPAM@, and @TRASHED@.'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Moderation status of the topics. Values allowed are: @AWAITINGAPPROVAL@, @SPAM@, and @TRASHED@.'
+        enum:
+        - SPAM
+        - TRASHED
+        - AWAITINGAPPROVAL
+        maxLength: 100
+        minLength: 0
+    categoryId_requiredFalse:
+      name: categoryId
+      in: query
+      description: ID of the community category from which the topics must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the community category from which the topics must be fetched
+        pattern: ([0-9]+)
+    categoryId:
+      name: categoryId
+      in: query
+      description: ID of the community category from which the topics must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the community category from which the topics must be fetched
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of topics to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of topics to list
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    tagName:
+      name: tagName
+      in: query
+      description: Tag by which topics must be filtered
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Tag by which topics must be filtered
+        maxLength: 100
+        minLength: 0
+        pattern: '[A-Za-z0-9\P{InBasicLatin}]+'
+    topicId:
+      name: topicId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    userType:
+      name: userType
+      in: query
+      description: Filters based on the type of the user who follows it. The allowed values are @AGENT@ or @END_USER@.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Filters based on the type of the user who follows it. The allowed values are @AGENT@ or @END_USER@.
+        enum:
+        - AGENT
+        - END_USER
+        maxLength: 100
+        minLength: 0
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the topics must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the topics must be listed
+        minimum: 0
+        pattern: ([0-9]+)
+    type:
+      name: type
+      in: query
+      description: 'Type of topics to list. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Type of topics to list. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.'
+        enum:
+        - QUESTION
+        - IDEA
+        - ANNOUNCEMENT
+        - PROBLEM
+        - DISCUSSION
+        maxLength: 100
+        minLength: 0
   responses:
+    listAllModerationTopics:
+      description: listAllModerationTopics template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./CommunityTopic.json#/components/schemas/communityModerationTopicListJSONArray
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - summary: topic 2's description
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: user 2
+                    id: '7000000015972'
+                    label: null
+                    type: AGENT
+                  trashedBy: null
+                  subject: Topic 2
+                  createdTime: 1539682932716
+                  id: '4000000019017'
+                  type: QUESTION
+                  permalink: topic-2
+                  categoryId: '4000000000017'
+                  status: AWAITINGAPPROVAL
+                - summary: Topic 1 dscription
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/portalUser/7000000015971/photo?orgId=123456
+                    name: user2
+                    id: '7000000015972'
+                    label:
+                      preferences:
+                        shape: RECTANGLE
+                        bgColor: '#23F123'
+                        textColor: '#2CA123'
+                      name: Admin
+                      id: '6000000158001'
+                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                    type: END_USER
+                  trashedBy: null
+                  subject: Topic 1
+                  createdTime: 1539682893202
+                  id: '4000000019003'
+                  type: QUESTION
+                  permalink: topic-1
+                  categoryId: '4000000000017'
+                  status: AWAITINGAPPROVAL
+    topicsViewsCountResponse:
+      description: topicsViewsCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: '10'
+    myDraftedTopicsResponse:
+      description: myDraftedTopicsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./CommunityTopic.json#/components/schemas/myDraftedTopicsData
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: alex carry
+                    id: '7000000015972'
+                    type: AGENT
+                  subject: How to change language in moblie?
+                  createdTime: 1539682893202
+                  id: '4000000168087'
+                  type: QUESTION
+                  categoryId: '7000000018007'
+                - creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: john peter
+                    id: '7000000015972'
+                    type: AGENT
+                  subject: How to delete draft posts?
+                  createdTime: 1539682893202
+                  id: '4000000168087'
+                  type: QUESTION
+                  categoryId: '7000000018007'
     associateTagsResponse:
       description: associateTagsResponse template definitions
       content:
@@ -1981,48 +2105,6 @@ components:
                 permalink: tag1
               - name: tag2
                 permalink: tag2
-    listAllCommunityTopicFollowers:
-      description: listAllCommunityTopicFollowers template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./CommunityTopic.json#/components/schemas/topicFollowersDetailsData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                  name: user 1
-                  id: '7000000015971'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#23F123'
-                      textColor: '#2CA123'
-                    name: Admin
-                    id: '6000000158001'
-                    logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
-                  type: AGENT
-                - photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
-                  name: user 3
-                  id: '7000000015972'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#23F123'
-                      textColor: '#2CA123'
-                    name: Admin
-                    id: '6000000158001'
-                    logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
-                  type: AGENT
     topicTypeResponseJSON:
       description: topicTypeResponseJSON template definitions
       content:
@@ -2094,151 +2176,8 @@ components:
                 disabledTopicTypes:
                 - IDEA
                 - PROBLEM
-    communityAddOrUpdateDraftedTopicResponseJSON:
-      description: communityAddOrUpdateDraftedTopicResponseJSON template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              creator:
-                $ref: ./CommunityTopic.json#/components/schemas/creator
-              attachments:
-                $ref: ./CommunityTopic.json#/components/schemas/attachmentList
-              subject:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - QUESTION
-                - IDEA
-                - ANNOUNCEMENT
-                - PROBLEM
-                - DISCUSSION
-                maxLength: 100
-                minLength: 0
-              isSticky:
-                type:
-                - boolean
-                - 'null'
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 50000
-                minLength: 0
-              featuredImage:
-                $ref: ./CommunityTopic.json#/components/schemas/featuredImageResponse
-              mentions:
-                $ref: ./Mentions.json#/components/schemas/mentionedObj
-              portalUrl:
-                type:
-                - string
-                - 'null'
-                maxLength: 255
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              createdTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              tag:
-                $ref: ./CommunityTopic.json#/components/schemas/tag
-              seo:
-                $ref: ./CommunityTopic.json#/components/schemas/seoResponse
-              categoryId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              notifyMe:
-                type:
-                - boolean
-                - 'null'
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - DRAFT
-                - PUBLISHED
-                - SPAM
-                - AWAITINGAPPROVAL
-                - TRASHED
-                maxLength: 100
-                minLength: 0
-            required:
-            - attachments
-            - categoryId
-            - content
-            - createdTime
-            - creator
-            - featuredImage
-            - id
-            - isSticky
-            - mentions
-            - notifyMe
-            - portalUrl
-            - seo
-            - status
-            - subject
-            - tag
-            - type
-          examples:
-            Valid responses Definitions:
-              value:
-                attachments:
-                - size: '1166'
-                  name: download.png
-                  id: '4000000019027'
-                  href: https://desk.zoho.com/api/v1/communityTopics/4000000019003/attachments/4000000019027/content?orgId=123456
-                subject: Topic 1
-                type: QUESTION
-                isSticky: false
-                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
-                featuredImage:
-                  imageId: '1000000061105'
-                  size: '2048'
-                  imageUrl: https://desk.zoho.com/portal/api/publicImages/42065000003493086?portalId=edbsnfb8166209e6d0025b777b9d90768028d52a6ee08bbb27b1e0f251800c89a48d9
-                  name: social_image.jpg
-                createdTime: 1539682893202
-                tag:
-                - name: tag1
-                  permalink: tag1
-                - name: tag2
-                  permalink: tag2
-                id: '4000000019003'
-                seo:
-                  keywords: seo,search
-                  useTitleAsPageTitle: 'true'
-                  description: seo description
-                  title: seo title
-                categoryId: '4000000000017'
-                notifyMe: true
-                status: DRAFT
-    listAllModeratedTopics:
-      description: listAllModeratedTopics template definitions
+    listAllCommunityTopicFollowers:
+      description: listAllCommunityTopicFollowers template definitions
       content:
         application/json:
           schema:
@@ -2248,76 +2187,37 @@ components:
             additionalProperties: false
             properties:
               data:
-                $ref: ./CommunityTopic.json#/components/schemas/communityModeratedTopicListJSONArray
+                $ref: ./CommunityTopic.json#/components/schemas/topicFollowersDetailsData
             required:
             - data
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - summary: topic 2's description
-                  moderatedBy:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
-                    name: user 2
-                    id: '7000000015972'
-                    type: AGENT
-                    status: ACTIVE
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: user 2
-                    id: '7000000015972'
-                    type: AGENT
-                  subject: Topic 2
-                  moderatedOn: 1539682932716
-                  createdTime: 1539682932716
-                  id: '4000000019017'
-                  type: QUESTION
-                  permalink: topic-2
-                  categoryId: '4000000000017'
-                  status: PUBLISHED
-                - summary: Topic 1 dscription
-                  moderatedBy:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
-                    name: user 2
-                    id: '7000000015972'
-                    type: AGENT
-                    status: ACTIVE
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/portalUser/7000000015971/photo?orgId=123456
-                    name: user2
-                    id: '7000000015972'
-                    type: END_USER
-                  subject: Topic 1
-                  moderatedOn: 1539682932716
-                  createdTime: 1539682893202
-                  id: '4000000019003'
-                  type: QUESTION
-                  permalink: topic-1
-                  categoryId: '4000000000017'
-                  status: PUBLISHED
-    topicsViewsCountResponse:
-      description: topicsViewsCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: '10'
+                - photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                  name: user 1
+                  id: '7000000015971'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#23F123'
+                      textColor: '#2CA123'
+                    name: Admin
+                    id: '6000000158001'
+                    logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                  type: AGENT
+                - photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
+                  name: user 3
+                  id: '7000000015972'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#23F123'
+                      textColor: '#2CA123'
+                    name: Admin
+                    id: '6000000158001'
+                    logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                  type: AGENT
     communityMangerTopicJSON:
       description: communityMangerTopicJSON template definitions
       content:
@@ -2595,8 +2495,8 @@ components:
                 categoryId: '4000000000017'
                 status: PUBLISHED
                 notifyMe: false
-    listAllModerationTopics:
-      description: listAllModerationTopics template definitions
+    listAllModeratedTopics:
+      description: listAllModeratedTopics template definitions
       content:
         application/json:
           schema:
@@ -2606,7 +2506,7 @@ components:
             additionalProperties: false
             properties:
               data:
-                $ref: ./CommunityTopic.json#/components/schemas/communityModerationTopicListJSONArray
+                $ref: ./CommunityTopic.json#/components/schemas/communityModeratedTopicListJSONArray
             required:
             - data
           examples:
@@ -2614,42 +2514,45 @@ components:
               value:
                 data:
                 - summary: topic 2's description
+                  moderatedBy:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
+                    name: user 2
+                    id: '7000000015972'
+                    type: AGENT
+                    status: ACTIVE
                   creator:
                     photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
                     name: user 2
                     id: '7000000015972'
-                    label: null
                     type: AGENT
-                  trashedBy: null
                   subject: Topic 2
+                  moderatedOn: 1539682932716
                   createdTime: 1539682932716
                   id: '4000000019017'
                   type: QUESTION
                   permalink: topic-2
                   categoryId: '4000000000017'
-                  status: AWAITINGAPPROVAL
+                  status: PUBLISHED
                 - summary: Topic 1 dscription
+                  moderatedBy:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
+                    name: user 2
+                    id: '7000000015972'
+                    type: AGENT
+                    status: ACTIVE
                   creator:
                     photoUrl: https://desk.zoho.com/api/v1/portalUser/7000000015971/photo?orgId=123456
                     name: user2
                     id: '7000000015972'
-                    label:
-                      preferences:
-                        shape: RECTANGLE
-                        bgColor: '#23F123'
-                        textColor: '#2CA123'
-                      name: Admin
-                      id: '6000000158001'
-                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
                     type: END_USER
-                  trashedBy: null
                   subject: Topic 1
+                  moderatedOn: 1539682932716
                   createdTime: 1539682893202
                   id: '4000000019003'
                   type: QUESTION
                   permalink: topic-1
                   categoryId: '4000000000017'
-                  status: AWAITINGAPPROVAL
+                  status: PUBLISHED
     listAllUserTopics:
       description: listAllUserTopics template definitions
       content:
@@ -2816,8 +2719,8 @@ components:
                   permalink: topic-1
                   categoryId: '4000000000017'
                   status: PUBLISHED
-    myDraftedTopicsResponse:
-      description: myDraftedTopicsResponse template definitions
+    communityAddOrUpdateDraftedTopicResponseJSON:
+      description: communityAddOrUpdateDraftedTopicResponseJSON template definitions
       content:
         application/json:
           schema:
@@ -2826,43 +2729,140 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: ./CommunityTopic.json#/components/schemas/myDraftedTopicsData
-              count:
+              creator:
+                $ref: ./CommunityTopic.json#/components/schemas/creator
+              attachments:
+                $ref: ./CommunityTopic.json#/components/schemas/attachmentList
+              subject:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - QUESTION
+                - IDEA
+                - ANNOUNCEMENT
+                - PROBLEM
+                - DISCUSSION
+                maxLength: 100
+                minLength: 0
+              isSticky:
+                type:
+                - boolean
+                - 'null'
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 50000
+                minLength: 0
+              featuredImage:
+                $ref: ./CommunityTopic.json#/components/schemas/featuredImageResponse
+              mentions:
+                $ref: ./Mentions.json#/components/schemas/mentionedObj
+              portalUrl:
+                type:
+                - string
+                - 'null'
+                maxLength: 255
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              createdTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              id:
                 type:
                 - string
                 - 'null'
                 - integer
                 format: int64
                 pattern: ([0-9]+)
+              tag:
+                $ref: ./CommunityTopic.json#/components/schemas/tag
+              seo:
+                $ref: ./CommunityTopic.json#/components/schemas/seoResponse
+              categoryId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              notifyMe:
+                type:
+                - boolean
+                - 'null'
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - DRAFT
+                - PUBLISHED
+                - SPAM
+                - AWAITINGAPPROVAL
+                - TRASHED
+                maxLength: 100
+                minLength: 0
             required:
-            - count
-            - data
+            - attachments
+            - categoryId
+            - content
+            - createdTime
+            - creator
+            - featuredImage
+            - id
+            - isSticky
+            - mentions
+            - notifyMe
+            - portalUrl
+            - seo
+            - status
+            - subject
+            - tag
+            - type
           examples:
             Valid responses Definitions:
               value:
-                data:
-                - creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: alex carry
-                    id: '7000000015972'
-                    type: AGENT
-                  subject: How to change language in moblie?
-                  createdTime: 1539682893202
-                  id: '4000000168087'
-                  type: QUESTION
-                  categoryId: '7000000018007'
-                - creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: john peter
-                    id: '7000000015972'
-                    type: AGENT
-                  subject: How to delete draft posts?
-                  createdTime: 1539682893202
-                  id: '4000000168087'
-                  type: QUESTION
-                  categoryId: '7000000018007'
+                attachments:
+                - size: '1166'
+                  name: download.png
+                  id: '4000000019027'
+                  href: https://desk.zoho.com/api/v1/communityTopics/4000000019003/attachments/4000000019027/content?orgId=123456
+                subject: Topic 1
+                type: QUESTION
+                isSticky: false
+                content: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Topic 1 dscription<br /></div></div>'
+                featuredImage:
+                  imageId: '1000000061105'
+                  size: '2048'
+                  imageUrl: https://desk.zoho.com/portal/api/publicImages/42065000003493086?portalId=edbsnfb8166209e6d0025b777b9d90768028d52a6ee08bbb27b1e0f251800c89a48d9
+                  name: social_image.jpg
+                createdTime: 1539682893202
+                tag:
+                - name: tag1
+                  permalink: tag1
+                - name: tag2
+                  permalink: tag2
+                id: '4000000019003'
+                seo:
+                  keywords: seo,search
+                  useTitleAsPageTitle: 'true'
+                  description: seo description
+                  title: seo title
+                categoryId: '4000000000017'
+                notifyMe: true
+                status: DRAFT
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: CommunityTopic

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TicketTemplate API
+  title: Ticket Template API
   version: 1.0.0
 tags:
 - name: TicketTemplate
@@ -176,6 +176,128 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    addTicketTemplateRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              showInCustomerPortal:
+                type:
+                - boolean
+                - 'null'
+                description: Key that specifies if the template must be displayed in the help center or not
+              ticketTemplateName:
+                type:
+                - string
+                - 'null'
+                description: Name of the ticket template
+                maxLength: 200
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              ticketTemplateValues:
+                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
+              layoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the ticket layout from which the template is derived
+                pattern: ([0-9]+)
+            required:
+            - layoutId
+            - ticketTemplateName
+            - ticketTemplateValues
+          examples:
+            Valid requestBody Definitions:
+              value:
+                showInCustomerPortal: true
+                ticketTemplateName: temp1
+                ticketTemplateValues:
+                  cf:
+                    cf_severity_percentage: '0.0'
+                  phone: '9876545645'
+                  departmentId: '4000000007073'
+                  email: jacks@zylker.com
+                layoutId: '4000000020012'
+    updateTicketTemplate_addTicketTemplateRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              showInCustomerPortal:
+                type:
+                - boolean
+                - 'null'
+                description: Key that specifies if the template must be displayed in the help center or not
+              ticketTemplateName:
+                type:
+                - string
+                - 'null'
+                description: Name of the ticket template
+                maxLength: 200
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              ticketTemplateValues:
+                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
+              layoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the ticket layout from which the template is derived
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                showInCustomerPortal: false
+                ticketTemplateName: temptest
+                ticketTemplateValues:
+                  cf:
+                    cf_severity_percentage: '60'
+                  productId: '4000000009012'
+                  subject: UrgentProblem
+                  departmentId: '4000000007073'
+                  email: jacks@zylker.com
+    deleteTicketTemplates:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '4000000083313'
+                - '4000000082105'
   responses:
     addUpdateGetTicketTemplateResponse:
       description: addUpdateGetTicketTemplateResponse template definitions
@@ -289,129 +411,7 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  requestBodies:
-    deleteTicketTemplates:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '4000000083313'
-                - '4000000082105'
-    addTicketTemplateRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              showInCustomerPortal:
-                type:
-                - boolean
-                - 'null'
-                description: Key that specifies if the template must be displayed in the help center or not
-              ticketTemplateName:
-                type:
-                - string
-                - 'null'
-                description: Name of the ticket template
-                maxLength: 200
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              ticketTemplateValues:
-                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
-              layoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the ticket layout from which the template is derived
-                pattern: ([0-9]+)
-            required:
-            - layoutId
-            - ticketTemplateName
-            - ticketTemplateValues
-          examples:
-            Valid requestBody Definitions:
-              value:
-                showInCustomerPortal: true
-                ticketTemplateName: temp1
-                ticketTemplateValues:
-                  cf:
-                    cf_severity_percentage: '0.0'
-                  phone: '9876545645'
-                  departmentId: '4000000007073'
-                  email: jacks@zylker.com
-                layoutId: '4000000020012'
-    updateTicketTemplate_addTicketTemplateRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              showInCustomerPortal:
-                type:
-                - boolean
-                - 'null'
-                description: Key that specifies if the template must be displayed in the help center or not
-              ticketTemplateName:
-                type:
-                - string
-                - 'null'
-                description: Name of the ticket template
-                maxLength: 200
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              ticketTemplateValues:
-                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
-              layoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the ticket layout from which the template is derived
-                pattern: ([0-9]+)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                showInCustomerPortal: false
-                ticketTemplateName: temptest
-                ticketTemplateValues:
-                  cf:
-                    cf_severity_percentage: '60'
-                  productId: '4000000009012'
-                  subject: UrgentProblem
-                  departmentId: '4000000007073'
-                  email: jacks@zylker.com
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TicketTemplate

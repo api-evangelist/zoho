@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Helpcenter API
   version: 1.0.0
 tags:
-- name: Helpcenter
+- name: Help Center
 paths:
   /api/v1/helpCenters/{helpcenterId}/sitemaps:
     post:
       tags:
-      - Helpcenter
+      - Help Center
       summary: Update Helpcenter sitemaps
       description: This API will generate sitemaps for the given Helpcenter
       operationId: createSiteMaps
@@ -34,7 +34,7 @@ paths:
   /api/v1/helpCenters:
     get:
       tags:
-      - Helpcenter
+      - Help Center
       summary: List help centers
       description: This API lists the help centers configured in your Zoho Desk portal.
       operationId: getAllHelpCenters
@@ -56,7 +56,7 @@ paths:
   /api/v1/helpCenters/{helpcenterId}:
     get:
       tags:
-      - Helpcenter
+      - Help Center
       summary: Get details of help center
       description: This API fetches the details of a particular help center.
       operationId: getHelpCenter
@@ -79,54 +79,7 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    helpcenterId:
-      name: helpcenterId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
-    helpcenterListViewResponse:
-      description: helpcenterListViewResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Helpcenter.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - isDefault: true
-                  name: Zoho Cares
-                  id: '24073000002579275'
-                  departmentIds:
-                  - '24073000000102043'
-                  isMultilingualEnabled: true
-                  helpCenterLocales:
-                  - name: ZohoCorp Portal
-                    locale: en
-                    type: DEFAULT
-                    status: ACCESIBLE_IN_HELPCENTER
-                  primaryLocale: en
-                  logoUrl: https://static.zohocdn.com/desk/app/images/portalLogo.de847024ebc0131731a3.png
-                  url: https://help.zoho.com/portal/
-                  status: ACTIVE
     helpcenterDetailResponse:
       description: helpcenterDetailResponse template definitions
       content:
@@ -223,6 +176,53 @@ components:
                   uuId: 50c9bb96b17694d63cd0f03eadbe4ae5
                   status: ACTIVE
                 status: ACTIVE
+    helpcenterListViewResponse:
+      description: helpcenterListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Helpcenter.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - isDefault: true
+                  name: Zoho Cares
+                  id: '24073000002579275'
+                  departmentIds:
+                  - '24073000000102043'
+                  isMultilingualEnabled: true
+                  helpCenterLocales:
+                  - name: ZohoCorp Portal
+                    locale: en
+                    type: DEFAULT
+                    status: ACCESIBLE_IN_HELPCENTER
+                  primaryLocale: en
+                  logoUrl: https://static.zohocdn.com/desk/app/images/portalLogo.de847024ebc0131731a3.png
+                  url: https://help.zoho.com/portal/
+                  status: ACTIVE
+  parameters:
+    helpcenterId:
+      name: helpcenterId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

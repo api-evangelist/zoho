@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TaskTimeEntry API
+  title: Task Time Entry API
   version: 1.0.0
 tags:
 - name: TaskTimeEntry
@@ -217,184 +217,52 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+        maxLength: 100
+        minLength: 0
+    taskTimeEntryId:
+      name: taskTimeEntryId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
-    getTimeEntryJson:
-      description: getTimeEntryJson template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./TaskTimeEntry.json#/components/schemas/commonTimeEntryForTaskResponse
-            - type:
-              - 'null'
-              - object
-              properties:
-                parent:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 5
-                  minProperties: 5
-                  properties:
-                    ticketNumber:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                    associatedTicketId:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    subject:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    type:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                  required:
-                  - associatedTicketId
-                  - id
-                  - subject
-                  - ticketNumber
-                  - type
-                isTrashed:
-                  type:
-                  - boolean
-                  - 'null'
-                createdBy:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                requestId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                taskId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutDetails:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 2
-                  minProperties: 2
-                  properties:
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    layoutName:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 120
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                  required:
-                  - id
-                  - layoutName
-              required:
-              - createdBy
-              - isTrashed
-              - layoutDetails
-              - layoutId
-              - parent
-              - requestId
-              - taskId
-          examples:
-            Valid responses Definitions:
-              value: null
-    getSummationOfTimeEntryForTaskResponse:
-      description: getSummationOfTimeEntryForTaskResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              totalMins:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalHours:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalCosts:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalSeconds:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - totalCosts
-            - totalHours
-            - totalMins
-            - totalSeconds
-          examples:
-            Valid responses Definitions:
-              value:
-                totalMins: 5
-                totalHours: 12
-                totalCosts: 1000
-                totalSeconds: 24
     getTimeEntryByTaskIdResponse:
       description: getTimeEntryByTaskIdResponse template definitions
       content:
@@ -569,6 +437,183 @@ components:
                   requestChargeType: Customer Service
                   additionalCost: '10.0'
                   totalCost: '657.46'
+    getSummationOfTimeEntryForTaskResponse:
+      description: getSummationOfTimeEntryForTaskResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              totalMins:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalHours:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalCosts:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalSeconds:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - totalCosts
+            - totalHours
+            - totalMins
+            - totalSeconds
+          examples:
+            Valid responses Definitions:
+              value:
+                totalMins: 5
+                totalHours: 12
+                totalCosts: 1000
+                totalSeconds: 24
+    getTimeEntryJson:
+      description: getTimeEntryJson template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./TaskTimeEntry.json#/components/schemas/commonTimeEntryForTaskResponse
+            - type:
+              - 'null'
+              - object
+              properties:
+                parent:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 5
+                  minProperties: 5
+                  properties:
+                    ticketNumber:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                    associatedTicketId:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    subject:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    type:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                  required:
+                  - associatedTicketId
+                  - id
+                  - subject
+                  - ticketNumber
+                  - type
+                isTrashed:
+                  type:
+                  - boolean
+                  - 'null'
+                createdBy:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                requestId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                taskId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutDetails:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 2
+                  minProperties: 2
+                  properties:
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    layoutName:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 120
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                  required:
+                  - id
+                  - layoutName
+              required:
+              - createdBy
+              - isTrashed
+              - layoutDetails
+              - layoutId
+              - parent
+              - requestId
+              - taskId
+          examples:
+            Valid responses Definitions:
+              value: null
   requestBodies:
     updateTimeEntryForTask_timeEntryJson:
       content:
@@ -872,52 +917,7 @@ components:
                 requestChargeType: Customer Service
                 additionalCost: '10.0'
                 totalCost: '20.17'
-  parameters:
-    taskId:
-      name: taskId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    taskTimeEntryId:
-      name: taskTimeEntryId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-        maxLength: 100
-        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TaskTimeEntry

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TicketApprovals API
+  title: Ticket Approvals API
   version: 1.0.0
 tags:
 - name: TicketApprovals
@@ -90,33 +90,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    approvalId:
-      name: approvalId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
     updateApproval:
       content:
@@ -186,131 +159,6 @@ components:
                 subject: New approval
                 description: new app desc
   responses:
-    getApprovalResponse:
-      description: getApprovalResponse template definitions
-      content:
-        application/json:
-          schema:
-            oneOf:
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                approver:
-                  $ref: ./TicketApprovals.json#/components/schemas/approvalActor
-                requester:
-                  $ref: ./TicketApprovals.json#/components/schemas/approvalActor
-                requestedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[a-zA-Z_/\-\+0-9]*'
-                subject:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 1000
-                  minLength: 0
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 65535
-                  minLength: 0
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                status:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - Approved
-                  - Rejected
-                  - Pending
-                  maxLength: 100
-                  minLength: 0
-                processedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[a-zA-Z_/\-\+0-9]*'
-              required:
-              - approver
-              - description
-              - id
-              - processedTime
-              - requestedTime
-              - requester
-              - status
-              - subject
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                errorCode:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - URL_NOT_FOUND
-                  - UNAUTHORIZED
-                  - INVALID_OAUTH
-                  - SCOPE_MISMATCH
-                  - FORBIDDEN
-                  - LICENSE_ACCESS_LIMITED
-                  - METHOD_NOT_ALLOWED
-                  - RESOURCE_SIZE_EXCEEDED
-                  - UNSUPPORTED_MEDIA_TYPE
-                  - INVALID_DATA
-                  - UNPROCESSABLE_ENTITY
-                  - ONLY_LIVECHAT_USER
-                  - INTEGRATION_ADMIN_ERROR
-                  - THRESHOLD_EXCEEDED
-                  - INTERNAL_SERVER_ERROR
-                  - EMPTY_PAYLOAD
-                  maxLength: 100
-                  minLength: 0
-                message:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 255
-                  minLength: 0
-              required:
-              - errorCode
-              - message
-          examples:
-            Valid responses Definitions:
-              value:
-                approver:
-                  firstName: saran
-                  lastName: raj
-                  photoUrl: https://desk.zoho.com/api/v1/agent/4000000015001/photo
-                  id: '4000000015001'
-                  email: null
-                requester:
-                  firstName: aravind
-                  lastName: a
-                  photoUrl: https://desk.zoho.com/api/v1/agent/4000000012629/photo
-                  id: '4000000012629'
-                  email: null
-                requestedTime: 1466514974000
-                subject: Testing
-                'processedTime ': 1517998355000
-                description: testing
-                id: '1892000001054081'
-                status: Rejected
     updateApprovalResponse:
       description: updateApprovalResponse template definitions
       content:
@@ -438,6 +286,131 @@ components:
                 id: '1892000001054081'
                 status: Approved
                 processedTime: 1517998355000
+    getApprovalResponse:
+      description: getApprovalResponse template definitions
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                approver:
+                  $ref: ./TicketApprovals.json#/components/schemas/approvalActor
+                requester:
+                  $ref: ./TicketApprovals.json#/components/schemas/approvalActor
+                requestedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[a-zA-Z_/\-\+0-9]*'
+                subject:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 1000
+                  minLength: 0
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 65535
+                  minLength: 0
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                status:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - Approved
+                  - Rejected
+                  - Pending
+                  maxLength: 100
+                  minLength: 0
+                processedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[a-zA-Z_/\-\+0-9]*'
+              required:
+              - approver
+              - description
+              - id
+              - processedTime
+              - requestedTime
+              - requester
+              - status
+              - subject
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                errorCode:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - URL_NOT_FOUND
+                  - UNAUTHORIZED
+                  - INVALID_OAUTH
+                  - SCOPE_MISMATCH
+                  - FORBIDDEN
+                  - LICENSE_ACCESS_LIMITED
+                  - METHOD_NOT_ALLOWED
+                  - RESOURCE_SIZE_EXCEEDED
+                  - UNSUPPORTED_MEDIA_TYPE
+                  - INVALID_DATA
+                  - UNPROCESSABLE_ENTITY
+                  - ONLY_LIVECHAT_USER
+                  - INTEGRATION_ADMIN_ERROR
+                  - THRESHOLD_EXCEEDED
+                  - INTERNAL_SERVER_ERROR
+                  - EMPTY_PAYLOAD
+                  maxLength: 100
+                  minLength: 0
+                message:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 255
+                  minLength: 0
+              required:
+              - errorCode
+              - message
+          examples:
+            Valid responses Definitions:
+              value:
+                approver:
+                  firstName: saran
+                  lastName: raj
+                  photoUrl: https://desk.zoho.com/api/v1/agent/4000000015001/photo
+                  id: '4000000015001'
+                  email: null
+                requester:
+                  firstName: aravind
+                  lastName: a
+                  photoUrl: https://desk.zoho.com/api/v1/agent/4000000012629/photo
+                  id: '4000000012629'
+                  email: null
+                requestedTime: 1466514974000
+                subject: Testing
+                'processedTime ': 1517998355000
+                description: testing
+                id: '1892000001054081'
+                status: Rejected
     addApprovalResponse:
       description: addApprovalResponse template definitions
       content:
@@ -586,7 +559,34 @@ components:
                   id: '1892000001054081'
                   status: Approved
                   processedTime: 1517998355000
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    approvalId:
+      name: approvalId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TicketApprovals

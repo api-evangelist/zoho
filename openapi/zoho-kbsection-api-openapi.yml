@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter KBSection API
+  title: KB Section API
   version: 1.0.0
 tags:
 - name: KBSection
@@ -68,122 +68,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    createCategoryJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./KBSection.json#/components/schemas/commonCategoryJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                parentCategoryId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: Parent id (either section or rootCategoryId) below which we need to create a section
-                  pattern: ([0-9]+)
-            - type: object
-              required:
-              - groupIds
-              - ipAddresses
-              - name
-              - parentCategoryId
-              - status
-              - translations
-              - visibility
-          examples:
-            Valid requestBody Definitions:
-              value:
-                articlePermission: ALL
-                translations:
-                - name: For Agents
-                  description: Section 1 description
-                  locale: en-us
-                  permalink: for-agents
-                name: For Agents
-                description: Section 1 description
-                parentCategoryId: 5000000340014
-                logoId: '10'
-                status: SHOW_IN_HELPCENTER
-    commonCategoryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              visibility:
-                type:
-                - string
-                - 'null'
-                description: 'Visibility of the section. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@PRIVATE_IP@!,!@NONE@! '
-                enum:
-                - ALL_USERS
-                - AGENTS
-                - GROUP_USERS
-                - PRIVATE_IP
-                - NONE
-                maxLength: 100
-                minLength: 0
-              translations:
-                $ref: ./KBSection.json#/components/schemas/addSectionTranslationJsonArray
-              groupIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              name:
-                type:
-                - string
-                - 'null'
-                description: Section Name
-                maxLength: 100
-                minLength: 0
-              ipAddresses:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                uniqueItems: false
-              status:
-                type:
-                - string
-                - 'null'
-                description: Status of the section
-                enum:
-                - SHOW_IN_HELPCENTER
-                - HIDE_IN_HELPCENTER
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                articlePermission: REGISTEREDUSERS
-                translations:
-                - name: section name updated
-                  locale: pl-pl
-                status: HIDE_IN_HELPCENTER
   responses:
     sectionResponse:
       description: sectionResponse template definitions
@@ -389,7 +273,123 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+  requestBodies:
+    commonCategoryJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              visibility:
+                type:
+                - string
+                - 'null'
+                description: 'Visibility of the section. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@PRIVATE_IP@!,!@NONE@! '
+                enum:
+                - ALL_USERS
+                - AGENTS
+                - GROUP_USERS
+                - PRIVATE_IP
+                - NONE
+                maxLength: 100
+                minLength: 0
+              translations:
+                $ref: ./KBSection.json#/components/schemas/addSectionTranslationJsonArray
+              groupIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              name:
+                type:
+                - string
+                - 'null'
+                description: Section Name
+                maxLength: 100
+                minLength: 0
+              ipAddresses:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                uniqueItems: false
+              status:
+                type:
+                - string
+                - 'null'
+                description: Status of the section
+                enum:
+                - SHOW_IN_HELPCENTER
+                - HIDE_IN_HELPCENTER
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                articlePermission: REGISTEREDUSERS
+                translations:
+                - name: section name updated
+                  locale: pl-pl
+                status: HIDE_IN_HELPCENTER
+    createCategoryJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./KBSection.json#/components/schemas/commonCategoryJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                parentCategoryId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: Parent id (either section or rootCategoryId) below which we need to create a section
+                  pattern: ([0-9]+)
+            - type: object
+              required:
+              - groupIds
+              - ipAddresses
+              - name
+              - parentCategoryId
+              - status
+              - translations
+              - visibility
+          examples:
+            Valid requestBody Definitions:
+              value:
+                articlePermission: ALL
+                translations:
+                - name: For Agents
+                  description: Section 1 description
+                  locale: en-us
+                  permalink: for-agents
+                name: For Agents
+                description: Section 1 description
+                parentCategoryId: 5000000340014
+                logoId: '10'
+                status: SHOW_IN_HELPCENTER
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: KBSection

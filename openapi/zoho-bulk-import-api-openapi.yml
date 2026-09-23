@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter BulkImport API
+  title: Bulk Import API
   version: 1.0.0
 tags:
-- name: BulkImport
+- name: Bulk Import
 paths:
   /api/v1/bulkImport/{bulkImportId}/sampleData:
     get:
       tags:
-      - BulkImport
+      - Bulk Import
       summary: Get BulkImport Sample Data
       description: This API fetches sample data for a bulk import request, including headers and sample records for specified modules.
       operationId: getBulkImportSampleData
@@ -27,52 +27,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    modules:
-      name: modules
-      in: query
-      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
-      required: true
-      style: form
-      explode: true
-      schema:
-        $ref: '#/components/schemas/module'
-    bulkImportId:
-      name: bulkImportId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  schemas:
-    module:
-      type:
-      - array
-      - 'null'
-      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
-      items:
-        type:
-        - string
-        - 'null'
-        enum:
-        - accounts
-        - contacts
-        - tickets
-        - tasks
-        - calls
-        - events
-        - products
-        - articles
-        maxLength: 100
-        minLength: 0
-      style: simple
-      explode: true
   responses:
     bulkImportSampleDataResponse:
       description: bulkImportSampleDataResponse template definitions
@@ -131,7 +85,53 @@ components:
                     col5: ''
                     col6: Software
                   module: products
+  parameters:
+    bulkImportId:
+      name: bulkImportId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    modules:
+      name: modules
+      in: query
+      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/module'
+  schemas:
+    module:
+      type:
+      - array
+      - 'null'
+      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
+      items:
+        type:
+        - string
+        - 'null'
+        enum:
+        - accounts
+        - contacts
+        - tickets
+        - tasks
+        - calls
+        - events
+        - products
+        - articles
+        maxLength: 100
+        minLength: 0
+      style: simple
+      explode: true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: BulkImport

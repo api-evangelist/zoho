@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter CommunityCategory API
+  title: Community Category API
   version: 1.0.0
 tags:
 - name: CommunityCategory
@@ -84,7 +84,7 @@ paths:
       tags:
       - CommunityCategory
       summary: Follow a community category or forum
-      description: 'This API helps users to follow a community category or forum. '
+      description: This API helps users to follow a community category or forum.
       operationId: followCommunityCategory
       parameters:
       - $ref: '#/components/parameters/categoryId'
@@ -192,7 +192,7 @@ paths:
       tags:
       - CommunityCategory
       summary: Get category or forum by permalink
-      description: 'This API fetches the details of a community category or forum, based on the permalink in the API request. '
+      description: This API fetches the details of a community category or forum, based on the permalink in the API request.
       operationId: getACategoryByPermalink
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -232,50 +232,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    permalink:
-      name: permalink
-      in: query
-      description: Permalink of the category or forum to fetch
-      required: true
-      schema:
-        type:
-        - string
-        - 'null'
-        minLength: 1
-        maxLength: 1000
-        pattern: '[a-zA-Z0-9%\-._/?\P{InBasicLatin}]+'
-    categoryId:
-      name: categoryId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    include:
-      name: include
-      in: query
-      description: 'Additional information related to the category or forum. Values allowed are: @postCount@, @followersCount@, and @commentCount@.'
-      required: false
-      style: simple
-      explode: true
-      schema:
-        type:
-        - 'null'
-        - string
-        enum:
-        - postCount
-        - followersCount
-        - commentCount
-        - groups
-        maxLength: 100
-        minLength: 0
   responses:
     listAllCommunityCategories:
       description: listAllCommunityCategories template definitions
@@ -478,7 +434,51 @@ components:
                   associatedDepartmentIds:
                   - '20628000000020011'
                   deparmentIdForTicketCreation: '20628000000020011'
+  parameters:
+    categoryId:
+      name: categoryId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    permalink:
+      name: permalink
+      in: query
+      description: Permalink of the category or forum to fetch
+      required: true
+      schema:
+        type:
+        - string
+        - 'null'
+        minLength: 1
+        maxLength: 1000
+        pattern: '[a-zA-Z0-9%\-._/?\P{InBasicLatin}]+'
+    include:
+      name: include
+      in: query
+      description: 'Additional information related to the category or forum. Values allowed are: @postCount@, @followersCount@, and @commentCount@.'
+      required: false
+      style: simple
+      explode: true
+      schema:
+        type:
+        - 'null'
+        - string
+        enum:
+        - postCount
+        - followersCount
+        - commentCount
+        - groups
+        maxLength: 100
+        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: CommunityCategory

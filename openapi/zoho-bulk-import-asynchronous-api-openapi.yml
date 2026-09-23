@@ -1,8 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Bulk Import - Asynchronous API
-  version: 1.0.0
-  description: Asynchronous operations for importing data in bulk.
+  title: Zoho Analytics Bulk Bulk Import - Asynchronous API
+  version: v2
+  description: API for Zoho Analytics Bulk Operations, including data import and export.
+servers:
+- url: https://analyticsapi.zoho.com
+security:
+- iam-oauth2-schema:
+  - ZohoAnalytics.data.read
+  - ZohoAnalytics.data.create
+  - ZohoAnalytics.data.update
+  - ZohoAnalytics.data.delete
+  - ZohoAnalytics.data.all
 tags:
 - name: Bulk Import - Asynchronous
   description: Asynchronous operations for importing data in bulk.
@@ -15,7 +24,46 @@ paths:
       - iam-oauth2-schema:
         - ZohoAnalytics.data.create
       summary: Create Import Job for a New Table (Asynchronous)
-      description: "Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.\n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported."
+      description: 'Create an import job to import data into a new table asynchronously. Max allowed file size is 100 MB.
+
+
+        Workflow of Asynchronous Import API:
+
+
+        1. Create Import Job:
+
+        - Initiate the import by calling the Create Import Job API.
+
+        - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.
+
+
+        2. Check Job Status:
+
+        - Use the Get Import Job Details API to monitor the status of the import job.
+
+        - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).
+
+        - The response will include a JOBCODE, which indicates the current state of the job.
+
+
+        Handling Import Job Status Based on JOBCODE:
+
+        - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.
+
+        - If the JOBCODE is 1003, stop the status check and inspect the error message for details.
+
+        - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.
+
+        - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.
+
+
+        Limitations:
+
+        - The import job summary is retained only for one hour after job completion.
+
+        - A maximum of 5 simultaneous import jobs is allowed per organization.
+
+        - A maximum file size of 100 MB can be imported.'
       operationId: createImportJobNewTable
       parameters:
       - $ref: '#/components/parameters/org-id'
@@ -71,7 +119,46 @@ paths:
       - iam-oauth2-schema:
         - ZohoAnalytics.data.create
       summary: Create Import Job for an Existing Table (Asynchronous)
-      description: "Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB. \n\nWorkflow of Asynchronous Import API:\n\n1. Create Import Job:\n   - Initiate the import by calling the Create Import Job API.\n   - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.\n\n2. Check Job Status:\n   - Use the Get Import Job Details API to monitor the status of the import job.\n   - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).\n   - The response will include a JOBCODE, which indicates the current state of the job.\n\nHandling Import Job Status Based on JOBCODE:\n  - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.\n  - If the JOBCODE is 1003, stop the status check and inspect the error message for details.\n  - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.\n  - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.\n\nLimitations:\n  - The import job summary is retained only for one hour after job completion.\n  - A maximum of 5 simultaneous import jobs is allowed per organization.\n  - A maximum file size of 100 MB can be imported."
+      description: 'Create an import job to import data into a specified existing table asynchronously. Max allowed file size is 100 MB.
+
+
+        Workflow of Asynchronous Import API:
+
+
+        1. Create Import Job:
+
+        - Initiate the import by calling the Create Import Job API.
+
+        - A unique JOBID will be returned in the response, which serves as the reference for tracking the import job.
+
+
+        2. Check Job Status:
+
+        - Use the Get Import Job Details API to monitor the status of the import job.
+
+        - The JOBID must be used in the request to check the status periodically (e.g., every 10 seconds).
+
+        - The response will include a JOBCODE, which indicates the current state of the job.
+
+
+        Handling Import Job Status Based on JOBCODE:
+
+        - If the JOBCODE is 1001 or 1002, wait for a few seconds and repeat the status check loop.
+
+        - If the JOBCODE is 1003, stop the status check and inspect the error message for details.
+
+        - If the JOBCODE is 1005, verify the validity of the JOBID and terminate the status check.
+
+        - If the JOBCODE is 1004, the job is complete, and the import summary will be returned.
+
+
+        Limitations:
+
+        - The import job summary is retained only for one hour after job completion.
+
+        - A maximum of 5 simultaneous import jobs is allowed per organization.
+
+        - A maximum file size of 100 MB can be imported.'
       operationId: createImportJobExistingTable
       parameters:
       - $ref: '#/components/parameters/org-id'
@@ -173,36 +260,22 @@ paths:
         default:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
-  parameters:
-    job-id:
-      name: job-id
-      in: path
-      description: The unique identifier of the import/export job.
-      required: true
-      schema:
-        type: string
-    view-id:
-      name: view-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the view.
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
-    org-id:
-      name: ZANALYTICS-ORGID
-      in: header
-      required: true
-      schema:
-        type: string
-      description: Organization ID (can be obtained using Get Organizations API).
   schemas:
+    ImportJobCreationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            jobId:
+              type: string
+              description: The unique ID of the import job.
     ImportJobDetailsResponse:
       type: object
       properties:
@@ -249,22 +322,47 @@ components:
                   type: object
                   additionalProperties:
                     type: string
-    ImportJobCreationResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - success
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            jobId:
-              type: string
-              description: The unique ID of the import job.
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    job-id:
+      name: job-id
+      in: path
+      description: The unique identifier of the import/export job.
+      required: true
+      schema:
+        type: string
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoAnalytics.data.read: Read data from Zoho Analytics.
+            ZohoAnalytics.data.delete: Delete data from Zoho Analytics.
+            ZohoAnalytics.data.update: Update data in Zoho Analytics.
+            ZohoAnalytics.data.create: Create data in Zoho Analytics.
+            ZohoAnalytics.data.all: Full access to data in Zoho Analytics.
+            ZohoAnalytics.fullaccess.all: Full access to all Zoho Analytics features.

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TicketAttachment API
+  title: Ticket Attachment API
   version: 1.0.0
 tags:
 - name: TicketAttachment
@@ -168,19 +168,25 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    attachmentJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
+                type:
+                - boolean
+                - 'null'
+                description: ''
+          examples:
+            Valid requestBody Definitions:
+              value: {}
   parameters:
-    isPublic:
-      name: isPublic
-      in: query
-      description: ''
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: ''
     attachmentId:
       name: attachmentId
       in: path
@@ -211,7 +217,97 @@ components:
         format: int64
         description: ''
         pattern: ([0-9]+)
+    isPublic:
+      name: isPublic
+      in: query
+      description: ''
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: ''
   responses:
+    listAllAttachmentResponse:
+      description: listAllAttachmentResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      creator:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        description: ''
+                        maxProperties: 5
+                        minProperties: 5
+                        properties:
+                          firstName:
+                            type:
+                            - string
+                            - 'null'
+                            description: ''
+                            maxLength: 40
+                            minLength: 0
+                          lastName:
+                            type:
+                            - string
+                            - 'null'
+                            description: ''
+                            maxLength: 200
+                            minLength: 0
+                          photoURL:
+                            type:
+                            - string
+                            - 'null'
+                            description: ''
+                            maxLength: 100
+                            minLength: 0
+                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            description: ''
+                            pattern: ([0-9]+)
+                          email:
+                            type:
+                            - string
+                            - 'null'
+                            description: ''
+                            maxLength: 255
+                            minLength: 0
+                            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'\&\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+                        required:
+                        - email
+                        - firstName
+                        - id
+                        - lastName
+                        - photoURL
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./TicketAttachment.json#/components/schemas/data
+              required:
+              - data
+          examples:
+            Valid responses Definitions:
+              value: {}
     attachmentResponse:
       description: attachmentResponse template definitions
       content:
@@ -294,103 +390,7 @@ components:
           examples:
             Valid responses Definitions:
               value: {}
-    listAllAttachmentResponse:
-      description: listAllAttachmentResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      creator:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        description: ''
-                        maxProperties: 5
-                        minProperties: 5
-                        properties:
-                          firstName:
-                            type:
-                            - string
-                            - 'null'
-                            description: ''
-                            maxLength: 40
-                            minLength: 0
-                          lastName:
-                            type:
-                            - string
-                            - 'null'
-                            description: ''
-                            maxLength: 200
-                            minLength: 0
-                          photoURL:
-                            type:
-                            - string
-                            - 'null'
-                            description: ''
-                            maxLength: 100
-                            minLength: 0
-                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            description: ''
-                            pattern: ([0-9]+)
-                          email:
-                            type:
-                            - string
-                            - 'null'
-                            description: ''
-                            maxLength: 255
-                            minLength: 0
-                            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'\&\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-                        required:
-                        - email
-                        - firstName
-                        - id
-                        - lastName
-                        - photoURL
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./TicketAttachment.json#/components/schemas/data
-              required:
-              - data
-          examples:
-            Valid responses Definitions:
-              value: {}
-  requestBodies:
-    attachmentJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-                description: ''
-          examples:
-            Valid requestBody Definitions:
-              value: {}
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TicketAttachment

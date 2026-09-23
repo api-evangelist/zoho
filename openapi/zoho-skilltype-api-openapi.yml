@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter SkillType API
+  title: Skill Type API
   version: 1.0.0
 tags:
 - name: SkillType
@@ -195,73 +195,79 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    skillTypesCreateJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - departmentId
-            - name
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '1000000013248'
-                name: Country
-    skillTypesUpdateJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          examples:
-            Valid requestBody Definitions:
-              value:
-                name: Product
-  parameters:
-    skillTypeId:
-      name: skillTypeId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
+    skillTypeListViewResponse:
+      description: skillTypeListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./SkillType.json#/components/schemas/skillTypesResponseArr
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1595507804544
+                  associatedSkills:
+                  - skillName: India
+                    skillId: '1000000173029'
+                    skillStatus: ACTIVE
+                  - skillName: Russia
+                    skillId: '1000000173047'
+                    skillStatus: ACTIVE
+                  mappedSkillsStatus:
+                  - ACTIVE
+                  createdBy: '1000000000059'
+                  departmentId: '1000000013248'
+                  name: Country
+                  createdTime: 1595507804544
+                  modifiedBy: '1000000000059'
+                  id: '1000000173001'
+                - modifiedTime: 1595507939455
+                  associatedSkills:
+                  - skillName: English
+                    skillId: '1000000173097'
+                    skillStatus: ACTIVE
+                  - skillName: Malayalam
+                    skillId: '1000000173145'
+                    skillStatus: ACTIVE
+                  - skillName: Tamil
+                    skillId: '1000000173121'
+                    skillStatus: INACTIVE
+                  mappedSkillsStatus:
+                  - INACTIVE
+                  - ACTIVE
+                  createdBy: '1000000000059'
+                  departmentId: '1000000013248'
+                  name: Language
+                  createdTime: 1595507939455
+                  modifiedBy: '1000000000059'
+                  id: '1000000173013'
+                - modifiedTime: 1595507987900
+                  associatedSkills: []
+                  mappedSkillsStatus: []
+                  createdBy: '1000000000059'
+                  departmentId: '1000000013248'
+                  name: Product
+                  createdTime: 1595507951776
+                  modifiedBy: '1000000000059'
+                  id: '1000000173019'
+                - modifiedTime: 1595507933429
+                  associatedSkills: []
+                  mappedSkillsStatus: []
+                  createdBy: '1000000000059'
+                  departmentId: '1000000013248'
+                  name: Region
+                  createdTime: 1595507933429
+                  modifiedBy: '1000000000059'
+                  id: '1000000173007'
     skillTypeSingleResponse:
       description: skillTypeSingleResponse template definitions
       content:
@@ -343,8 +349,8 @@ components:
                 createdTime: 1595507951776
                 modifiedBy: '1000000000059'
                 id: '1000000173019'
-    skillTypeListViewResponse:
-      description: skillTypeListViewResponse template definitions
+  requestBodies:
+    skillTypesCreateJson:
       content:
         application/json:
           schema:
@@ -353,69 +359,63 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: ./SkillType.json#/components/schemas/skillTypesResponseArr
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
             required:
-            - data
+            - departmentId
+            - name
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                data:
-                - modifiedTime: 1595507804544
-                  associatedSkills:
-                  - skillName: India
-                    skillId: '1000000173029'
-                    skillStatus: ACTIVE
-                  - skillName: Russia
-                    skillId: '1000000173047'
-                    skillStatus: ACTIVE
-                  mappedSkillsStatus:
-                  - ACTIVE
-                  createdBy: '1000000000059'
-                  departmentId: '1000000013248'
-                  name: Country
-                  createdTime: 1595507804544
-                  modifiedBy: '1000000000059'
-                  id: '1000000173001'
-                - modifiedTime: 1595507939455
-                  associatedSkills:
-                  - skillName: English
-                    skillId: '1000000173097'
-                    skillStatus: ACTIVE
-                  - skillName: Malayalam
-                    skillId: '1000000173145'
-                    skillStatus: ACTIVE
-                  - skillName: Tamil
-                    skillId: '1000000173121'
-                    skillStatus: INACTIVE
-                  mappedSkillsStatus:
-                  - INACTIVE
-                  - ACTIVE
-                  createdBy: '1000000000059'
-                  departmentId: '1000000013248'
-                  name: Language
-                  createdTime: 1595507939455
-                  modifiedBy: '1000000000059'
-                  id: '1000000173013'
-                - modifiedTime: 1595507987900
-                  associatedSkills: []
-                  mappedSkillsStatus: []
-                  createdBy: '1000000000059'
-                  departmentId: '1000000013248'
-                  name: Product
-                  createdTime: 1595507951776
-                  modifiedBy: '1000000000059'
-                  id: '1000000173019'
-                - modifiedTime: 1595507933429
-                  associatedSkills: []
-                  mappedSkillsStatus: []
-                  createdBy: '1000000000059'
-                  departmentId: '1000000013248'
-                  name: Region
-                  createdTime: 1595507933429
-                  modifiedBy: '1000000000059'
-                  id: '1000000173007'
+                departmentId: '1000000013248'
+                name: Country
+    skillTypesUpdateJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          examples:
+            Valid requestBody Definitions:
+              value:
+                name: Product
+  parameters:
+    skillTypeId:
+      name: skillTypeId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: SkillType

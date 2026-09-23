@@ -1,16 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Recyclebin API
+  title: Recyclebin API
   version: 1.0.0
 tags:
-- name: Recyclebin
+- name: recycle bin
 paths:
   /api/v1/recycleBin/restore:
     post:
       tags:
-      - Recyclebin
+      - recycle bin
       summary: Restore deleted resources
-      description: 'This API restores the deleted resources specified in the API request. Additionally, the parent resources are also restored. '
+      description: This API restores the deleted resources specified in the API request. Additionally, the parent resources are also restored.
       operationId: restoreEntities
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -31,7 +31,7 @@ paths:
   /api/v1/recycleBin/restoreAll:
     post:
       tags:
-      - Recyclebin
+      - recycle bin
       summary: Restore all resources from Recycle Bin
       description: This API restores all deleted resources from the Recycle Bin.
       operationId: restoreAllEntities
@@ -50,7 +50,7 @@ paths:
   /api/v1/recycleBin:
     get:
       tags:
-      - Recyclebin
+      - recycle bin
       summary: List deleted resources
       description: This API lists a particular number of deleted resources, based on the limit specified.
       operationId: getRecycleBinEntities
@@ -148,7 +148,7 @@ paths:
   /api/v1/recycleBin/delete:
     post:
       tags:
-      - Recyclebin
+      - recycle bin
       summary: Delete resources from Recycle Bin
       description: This API permanently deletes the resources specified in the API request. Additionally, the child resources are also permanently deleted.
       operationId: deleteEntities
@@ -171,7 +171,7 @@ paths:
   /api/v1/recycleBin/deleteAll:
     post:
       tags:
-      - Recyclebin
+      - recycle bin
       summary: Delete all resources from Recycle Bin
       description: This API permanently deletes all resources from the Recycle Bin.
       operationId: deleteAllEntities
@@ -188,6 +188,54 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    restoreEntities:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isChildNeedToBeRestored:
+                type:
+                - boolean
+                - 'null'
+              ids:
+                $ref: ./Recyclebin.json#/components/schemas/ids
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isChildNeedToBeRestored: 'true'
+                ids:
+                - '232323'
+                - '400000005634'
+                - '232'
+                - '4000000056156'
+    deleteEntities:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                $ref: ./Recyclebin.json#/components/schemas/ids
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '232323'
+                - '3213123'
+                - '40000000561232'
+                - '4000000056156'
   responses:
     getRecycleBinEntities:
       description: getRecycleBinEntities template definitions
@@ -335,55 +383,7 @@ components:
                   id: '4000000046153'
                   type: Time Entry
                   deletedTime: '2020-06-21T16:16:16.000Z'
-  requestBodies:
-    restoreEntities:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isChildNeedToBeRestored:
-                type:
-                - boolean
-                - 'null'
-              ids:
-                $ref: ./Recyclebin.json#/components/schemas/ids
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isChildNeedToBeRestored: 'true'
-                ids:
-                - '232323'
-                - '400000005634'
-                - '232'
-                - '4000000056156'
-    deleteEntities:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                $ref: ./Recyclebin.json#/components/schemas/ids
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '232323'
-                - '3213123'
-                - '40000000561232'
-                - '4000000056156'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Recyclebin

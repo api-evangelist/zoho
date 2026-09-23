@@ -1,8 +1,32 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Holidays API
-  version: 1.0.0
-  description: Operations for managing holidays that affect business hours and shift schedules
+  title: Zoho CRM Holidays API
+  description: Manage business and shift holidays in Zoho CRM. This API allows you to create, retrieve, update, and delete holidays that affect business hours and shift schedules. Business holidays apply to all users while shift holidays apply to specific shift configurations.
+  version: '8'
+servers:
+- url: https://zohoapis.{dc}/crm/{version}
+  description: API Server URL
+  variables:
+    dc:
+      enum:
+      - com
+      - eu
+      - in
+      - cn
+      - au
+      default: com
+      description: API Server URL TLD
+    version:
+      enum:
+      - v8
+      default: v8
+      description: API version
+security:
+- iam-oauth2-schema:
+  - ZohoCRM.settings.business_hours.READ
+  - ZohoCRM.settings.business_hours.CREATE
+  - ZohoCRM.settings.business_hours.UPDATE
+  - ZohoCRM.settings.business_hours.DELETE
 tags:
 - name: Holidays
   description: Operations for managing holidays that affect business hours and shift schedules
@@ -775,6 +799,17 @@ components:
         minLength: 1
         maxLength: 30
         description: The Holiday id of the object.
+    ShiftId:
+      name: shift_id
+      in: query
+      required: false
+      description: Filter holidays by shift hour ID. Required when filtering by shift_holiday type. Must be a valid numeric string identifier.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        minLength: 1
+        maxLength: 30
+        description: The Shift id of the object.
     Type:
       name: type
       in: query
@@ -797,17 +832,6 @@ components:
         minimum: 2000
         maximum: 2100
         description: The Year of the object.
-    ShiftId:
-      name: shift_id
-      in: query
-      required: false
-      description: Filter holidays by shift hour ID. Required when filtering by shift_holiday type. Must be a valid numeric string identifier.
-      schema:
-        type: string
-        pattern: ^[0-9]+$
-        minLength: 1
-        maxLength: 30
-        description: The Shift id of the object.
   schemas:
     HolidaysSuccessResponse:
       type: object
@@ -912,5 +936,14 @@ components:
             additionalProperties: false
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoCRM.settings.business_hours.UPDATE: Access to ZohoCRM.settings.holidays.UPDATE
+            ZohoCRM.settings.business_hours.CREATE: Access to ZohoCRM.settings.holidays.CREATE
+            ZohoCRM.settings.business_hours.READ: Access to ZohoCRM.settings.holidays.READ
+            ZohoCRM.settings.business_hours.DELETE: Access to ZohoCRM.settings.holidays.DELETE

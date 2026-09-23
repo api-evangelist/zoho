@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter ArticleAttachment API
+  title: Article Attachment API
   version: 1.0.0
 tags:
 - name: ArticleAttachment
@@ -237,19 +237,18 @@ components:
                 filesize: '62'
                 url: https://desk.zoho.com/galleryDocuments/edbsnf8e40a0174a649fa9b698be5f73211329e2a7513daad01207c771fbf50e1b3e33f3f5c1d654f5a4c7805862493f6bb8a?inline=true
   parameters:
-    articleId:
-      name: articleId
-      in: path
+    attachmentType:
+      name: attachmentType
+      in: query
+      description: Attachment type. Allowed values @file@, @blob@
       required: true
-      style: simple
-      explode: false
+      style: form
+      explode: true
       schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+        type: string
+        description: Attachment type. Allowed values @file@, @blob@
+        enum:
+        - file
     locale:
       name: locale
       in: path
@@ -317,19 +316,20 @@ components:
         maxLength: 100
         minLength: 0
         pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
-    attachmentType:
-      name: attachmentType
-      in: query
-      description: Attachment type. Allowed values @file@, @blob@
+    articleId:
+      name: articleId
+      in: path
       required: true
-      style: form
-      explode: true
+      style: simple
+      explode: false
       schema:
-        type: string
-        description: Attachment type. Allowed values @file@, @blob@
-        enum:
-        - file
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: ArticleAttachment

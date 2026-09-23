@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter KBRootCategory API
+  title: KB Root Category API
   version: 1.0.0
 tags:
 - name: KBRootCategory
@@ -153,7 +153,12 @@ paths:
       tags:
       - KBRootCategory
       summary: Add moderators
-      description: This API adds moderators to a root category in your helpdesk.<br/><br/>_Note_:<br/>Moderators act as designated agents within the primary department with access to the Moderation Panel. They are responsible for reviewing and managing comments awaiting approval or flagged as spam.
+      description: 'This API adds moderators to a root category in your helpdesk.
+
+
+        _Note_:
+
+        Moderators act as designated agents within the primary department with access to the Moderation Panel. They are responsible for reviewing and managing comments awaiting approval or flagged as spam.'
       operationId: addKBRootCategoryModerators
       parameters:
       - $ref: '#/components/parameters/rootCategoryId'
@@ -303,7 +308,12 @@ paths:
       tags:
       - KBRootCategory
       summary: Remove moderators
-      description: This API removes moderators from a root category in your helpdesk.<br/><br/>_Note_:<br/>Moderators act as designated agents within the primary department with access to the Moderation Panel. They are responsible for reviewing and managing comments awaiting approval or flagged as spam.
+      description: 'This API removes moderators from a root category in your helpdesk.
+
+
+        _Note_:
+
+        Moderators act as designated agents within the primary department with access to the Moderation Panel. They are responsible for reviewing and managing comments awaiting approval or flagged as spam.'
       operationId: deleteKBRootCategoryModerators
       parameters:
       - $ref: '#/components/parameters/rootCategoryId'
@@ -321,745 +331,9 @@ paths:
       x-audience:
       - external-public
 components:
-  schemas:
-    reviewOwnersArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/reviewOwners'
-    feedbackPreferenceResponseObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        assignee:
-          $ref: '#/components/schemas/assigneeObj'
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ENABLED
-          - DISABLED
-          maxLength: 100
-          minLength: 0
-      required:
-      - assignee
-      - departmentId
-      - status
-    childTranslationResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/rootTreeTranslationResponse'
-      - type:
-        - 'null'
-        - object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
-        required:
-        - description
-    reviewOwners:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        emailId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - emailId
-      - id
-      - name
-      - photoURL
-    childTreeResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        publishedArticleTemplateCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        isFollowing:
-          type:
-          - boolean
-          - 'null'
-        visibility:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ALL_USERS
-          - AGENTS
-          - GROUP_USERS
-          - PRIVATE_IP
-          - NONE
-          maxLength: 100
-          minLength: 0
-        level:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
-        locale:
-          type:
-          - string
-          - 'null'
-          enum:
-          - en
-          - ja
-          - zh
-          - es
-          - de
-          - fr
-          - tr
-          - ru
-          - pt
-          - it
-          - nl
-          - da
-          - sv
-          - pl
-          - ar
-          - he
-          - af
-          - cs
-          - fr-ca
-          - bg
-          - fi
-          - el
-          - hu
-          - id
-          - nb
-          - ro
-          - th
-          - uk
-          - vi
-          - ur
-          - hi
-          - te
-          - kn
-          - ta
-          - mr
-          - ko
-          - fa
-          - bn
-          - gu
-          - ms
-          - ml
-          - en-gb
-          - sk
-          - hr
-          - sl
-          - zh_TW
-          - zh-tw
-          - ca
-          - ka
-          - kk
-          - my
-          - km
-          - pt-br
-          maxLength: 100
-          minLength: 0
-          pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
-        logoUrl:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        rootCategoryId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        isTrashed:
-          type:
-          - boolean
-          - 'null'
-        children:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-          uniqueItems: false
-        translations:
-          $ref: '#/components/schemas/childTranslationResponseJsonArr'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        parentCategoryId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SHOW_IN_HELPCENTER
-          - HIDE_IN_HELPCENTER
-          maxLength: 100
-          minLength: 0
-        order:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-      required:
-      - children
-      - description
-      - id
-      - isFollowing
-      - isTrashed
-      - level
-      - locale
-      - logoUrl
-      - name
-      - order
-      - parentCategoryId
-      - rootCategoryId
-      - status
-      - translations
-      - visibility
-    addReviewOwnerArray:
-      type:
-      - 'null'
-      - array
-      items:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/commonCategoryResponse'
-    childArrayOfTree:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTreeResponse'
-    childTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTranslationResponse'
-    assigneeObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ACTIVE
-          - DISABLED
-          - LICENSE_DOWNGRADED
-          - DELETED
-          - ANONYMIZED
-          - CLOSED
-          maxLength: 100
-          minLength: 0
-        zuid:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - photoURL
-      - status
-      - zuid
-    feedbackPreferenceObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the department in which the tickets must be created
-          pattern: ([0-9]+)
-        assigneeId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the user to whom the tickets must be assigned. If you do not pass a value for this key, the ticket remains unassigned.
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          description: 'Activation status of auto-conversion for the category. Values allowed are: ENABLED and DISABLED'
-          enum:
-          - ENABLED
-          - DISABLED
-          maxLength: 100
-          minLength: 0
-      required:
-      - assigneeId
-      - departmentId
-      - status
-    rootTreeTranslationResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        permalink:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
-        locale:
-          type:
-          - string
-          - 'null'
-          enum:
-          - en
-          - ja
-          - zh
-          - es
-          - de
-          - fr
-          - tr
-          - ru
-          - pt
-          - it
-          - nl
-          - da
-          - sv
-          - pl
-          - ar
-          - he
-          - af
-          - cs
-          - fr-ca
-          - bg
-          - fi
-          - el
-          - hu
-          - id
-          - nb
-          - ro
-          - th
-          - uk
-          - vi
-          - ur
-          - hi
-          - te
-          - kn
-          - ta
-          - mr
-          - ko
-          - fa
-          - bn
-          - gu
-          - ms
-          - ml
-          - en-gb
-          - sk
-          - hr
-          - sl
-          - zh_TW
-          - zh-tw
-          - ca
-          - ka
-          - kk
-          - my
-          - km
-          - pt-br
-          maxLength: 100
-          minLength: 0
-          pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
-      required:
-      - description
-      - id
-      - locale
-      - name
-      - permalink
-    rootTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
-    commonCategoryResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        modifiedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        helpcenterId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        isReviewEnabled:
-          type:
-          - boolean
-          - 'null'
-        isTrashed:
-          type:
-          - boolean
-          - 'null'
-        translations:
-          $ref: '#/components/schemas/rootTranslationResponseJsonArr'
-        moderationType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - FIRST_ACTION
-          - ALL_ACTION
-          - NONE
-          maxLength: 100
-          minLength: 0
-        createdTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        modifiedBy:
-          $ref: ./ArticleTranslation.json#/components/schemas/modifiedBy
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        primaryDepartmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        order:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        workspaceId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^([a-zA-Z0-9]{37}|-1)$
-        isFollowing:
-          type:
-          - boolean
-          - 'null'
-        articleViewType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - LISTVIEW
-          - OVERVIEW
-          maxLength: 100
-          minLength: 0
-        visibility:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ALL_USERS
-          - AGENTS
-          - GROUP_USERS
-          - PRIVATE_IP
-          - NONE
-          maxLength: 100
-          minLength: 0
-        canCurrentUserModerate:
-          type:
-          - boolean
-          - 'null'
-        groups:
-          $ref: ./KbCategory.json#/components/schemas/groupJsonArr
-        logoUrl:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        feedbackTicketConversionPreference:
-          $ref: '#/components/schemas/feedbackPreferenceResponseObj'
-        associatedDepartmentIds:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          uniqueItems: true
-        encryptedWorkspaceId:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          minLength: 0
-        createdBy:
-          $ref: ./ArticleTranslation.json#/components/schemas/modifiedBy
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SHOW_IN_HELPCENTER
-          - HIDE_IN_HELPCENTER
-          - DISABLED
-          - ENABLED
-          maxLength: 100
-          minLength: 0
-        publicArticlesCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        allArticlesCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        allArticleTemplateCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        canCurrentUserReview:
-          type:
-          - boolean
-          - 'null'
-        sectionsCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        publishedArticleCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-      required:
-      - articleViewType
-      - associatedDepartmentIds
-      - canCurrentUserModerate
-      - createdBy
-      - createdTime
-      - description
-      - encryptedWorkspaceId
-      - feedbackTicketConversionPreference
-      - groups
-      - helpcenterId
-      - id
-      - isFollowing
-      - isReviewEnabled
-      - isTrashed
-      - logoUrl
-      - moderationType
-      - modifiedBy
-      - modifiedTime
-      - name
-      - order
-      - primaryDepartmentId
-      - status
-      - translations
-      - visibility
-      - workspaceId
-    rootTreeTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/rootTreeTranslationResponse'
-    addRootTranslationJsonArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./KBRootCategoryTranslation.json#/components/schemas/addRootTranslationJson
-  requestBodies:
-    removePermalink_removePermalinkJson:
+  responses:
+    listAllCategoryResponse:
+      description: listAllCategoryResponse template definitions
       content:
         application/json:
           schema:
@@ -1068,21 +342,82 @@ components:
             - object
             additionalProperties: false
             properties:
-              permalink:
-                type:
-                - string
-                - 'null'
-                description: The permalink of Solution
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
+              data:
+                $ref: '#/components/schemas/data'
             required:
-            - permalink
+            - data
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                permalink: permalink-2
-    createCategoryJson:
+                data:
+                - modifiedTime: 1578230287000
+                  allArticlesCount: '11'
+                  helpcenterId: '5000000015871'
+                  isReviewEnabled: false
+                  isTrashed: false
+                  translations:
+                  - modifiedTime: 1570688319000
+                    createdBy:
+                      photoURL: null
+                      name: Zylker
+                      id: '5000000015867'
+                      status: ACTIVE
+                      zuid: '343224'
+                    name: Zoho Desk
+                    description: A helpdesk software
+                    createdTime: 1561359819000
+                    modifiedBy:
+                      photoURL: null
+                      name: Zylker
+                      id: '5000000015867'
+                      status: ACTIVE
+                      zuid: '343224'
+                    id: '5000000265103'
+                    permalink: zoho-desk
+                    locale: en
+                    categoryId: '5000000066427'
+                  moderationType: ALL_ACTION
+                  createdTime: 1561359819000
+                  modifiedBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  primaryDepartmentId: '5000000063894'
+                  id: '5000000066427'
+                  order: '1'
+                  workspaceId: ponaz00368c36c9274809bf96849b392f8d67
+                  visibility: ALL_USERS
+                  articleViewType: LISTVIEW
+                  canCurrentUserModerate: true
+                  groups: []
+                  sectionsCount: '7'
+                  logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
+                  feedbackTicketConversionPreference:
+                    departmentId: '5000000063895'
+                    assignee:
+                      photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
+                      name: Charlie Marlie
+                      id: '5000000000059'
+                      status: ACTIVE
+                      zuid: '15224545'
+                    status: ENABLED
+                  associatedDepartmentIds:
+                  - '5000000063895'
+                  publicArticlesCount: '3'
+                  allArticleTemplateCount: '4'
+                  encryptedWorkspaceId: 04bd200bc14c4cac0c0026a0342c1f21263012407fa56109a37788e786a96ec0383c1eeb08849f9be78a6f7b8b8f31033dde60d41ad95443c6570636db1a9b20
+                  createdBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  name: Zoho Desk
+                  status: SHOW_IN_HELPCENTER
+    reviewOwnersDataJson:
+      description: reviewOwnersDataJson template definitions
       content:
         application/json:
           schema:
@@ -1091,263 +426,110 @@ components:
             - object
             additionalProperties: false
             properties:
-              articleViewType:
-                type:
-                - string
-                - 'null'
-                description: 'View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.'
-                enum:
-                - LISTVIEW
-                - OVERVIEW
-                maxLength: 100
-                minLength: 0
-              visibility:
-                type:
-                - string
-                - 'null'
-                description: 'Visibility setting of the category. Values allowed are: AGENTS, GROUP_USERS, ALL_USERS, NONE, and PRIVATE_IP.'
-                enum:
-                - ALL_USERS
-                - AGENTS
-                - GROUP_USERS
-                - PRIVATE_IP
-                - NONE
-                maxLength: 100
-                minLength: 0
-              description:
-                type:
-                - string
-                - 'null'
-                description: A brief description of the category
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              feedbackTicketConversionPreference:
-                $ref: '#/components/schemas/feedbackPreferenceObj'
-              associatedDepartmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-              isReviewEnabled:
-                type:
-                - boolean
-                - 'null'
-                description: Key that specifies whether the category must be reviewed or not
-              translations:
-                $ref: '#/components/schemas/addRootTranslationJsonArray'
-              moderationType:
-                type:
-                - string
-                - 'null'
-                description: 'Type of moderation applied to the category. Values allowed are: @NONE@, @ALL_ACTION@, @FIRST_ACTION@'
-                enum:
-                - FIRST_ACTION
-                - ALL_ACTION
-                - NONE
-                maxLength: 100
-                minLength: 0
-              groupIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              name:
-                type:
-                - string
-                - 'null'
-                description: Name of the category
-                maxLength: 100
-                minLength: 0
-              ipAddresses:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                uniqueItems: false
-              primaryDepartmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the department to which the category belongs
-                pattern: ([0-9]+)
-              logoId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the logo to set for the category
-                pattern: ([0-9]+)
-              status:
-                type:
-                - string
-                - 'null'
-                description: Activation status of the category
-                enum:
-                - SHOW_IN_HELPCENTER
-                - HIDE_IN_HELPCENTER
-                maxLength: 100
-                minLength: 0
+              data:
+                $ref: '#/components/schemas/reviewOwnersArray'
             required:
-            - articleViewType
-            - description
-            - groupIds
-            - ipAddresses
-            - isReviewEnabled
-            - logoId
-            - name
-            - primaryDepartmentId
-            - status
-            - translations
-            - visibility
+            - data
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                isReviewEnabled: false
-                articleViewType: LISTVIEW
-                visibility: ALL_USERS
-                moderationType: ALL_ACTION
+                data:
+                - photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+    rootCategoryResponse:
+      description: rootCategoryResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonCategoryResponse'
+            - type:
+              - 'null'
+              - object
+              properties:
+                ipAddresses:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                  uniqueItems: false
+              required:
+              - ipAddresses
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1577978811000
+                helpcenterId: '5000000015871'
+                isReviewEnabled: true
+                isTrashed: false
                 translations:
-                - name: Zoho Desk
-                  description: A helpdesk software
-                  permalink: zoho-desk
+                - modifiedTime: 1577978682000
+                  createdBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  name: Root category name
+                  description: description of root
+                  createdTime: 1577978682000
+                  modifiedBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  id: '5000000336004'
+                  permalink: root-category-name
                   locale: en
-                name: Zoho Desk
+                  categoryId: '5000000319037'
+                moderationType: ALL_ACTION
+                createdTime: 1577707830000
+                modifiedBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
                 primaryDepartmentId: '5000000063894'
-                logoId: '25'
+                id: '5000000319037'
+                order: '3'
+                workspaceId: asadasda
+                isFollowing: true
+                visibility: ALL_USERS
+                articleViewType: LISTVIEW
+                canCurrentUserModerate: true
+                groups: []
+                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
                 feedbackTicketConversionPreference:
                   departmentId: '5000000063895'
-                  assigneeId: '5000000000059'
+                  assignee:
+                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
+                    name: Charlie Marlie
+                    id: '5000000000059'
+                    status: ACTIVE
+                    zuid: '15224545'
                   status: ENABLED
-                status: SHOW_IN_HELPCENTER
                 associatedDepartmentIds:
                 - '5000000063895'
-    addPermalink_addPermalinkJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isOldPermalinkNeeded:
-                type:
-                - boolean
-                - 'null'
-                description: The variable that defines if permalink needs to be added to redirect list. By default, it is true
-              permalink:
-                type:
-                - string
-                - 'null'
-                description: The permalink of Solution
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
-            required:
-            - isOldPermalinkNeeded
-            - permalink
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isOldPermalinkNeeded: true
-                permalink: new-permalink
-    removeModerators_addModeratorJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              moderatorIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - moderatorIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                moderatorIds:
-                - '5000000015867'
-    addModeratorJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              moderatorIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - moderatorIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                moderatorIds:
-                - '5000000015867'
-    addReviewOwners_addReviewOwnerJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reviewOwnerIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - reviewOwnerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reviewOwnerIds:
-                - '5000000015867'
-    addReviewOwnerJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reviewOwnerIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - reviewOwnerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reviewOwnerIds:
-                - '5000000015867'
-  responses:
+                encryptedWorkspaceId: uhahsdhada
+                createdBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
+                name: Root category name
+                ipAddresses: []
+                status: SHOW_IN_HELPCENTER
     rootCategoryTreeResponse:
       description: rootCategoryTreeResponse template definitions
       content:
@@ -1615,8 +797,745 @@ components:
                 id: '5000000066427'
                 status: SHOW_IN_HELPCENTER
                 order: '1'
-    listAllCategoryResponse:
-      description: listAllCategoryResponse template definitions
+  schemas:
+    reviewOwners:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        emailId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - emailId
+      - id
+      - name
+      - photoURL
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commonCategoryResponse'
+    childTranslationResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/rootTreeTranslationResponse'
+      - type:
+        - 'null'
+        - object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
+        required:
+        - description
+    commonCategoryResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        modifiedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        helpcenterId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        isReviewEnabled:
+          type:
+          - boolean
+          - 'null'
+        isTrashed:
+          type:
+          - boolean
+          - 'null'
+        translations:
+          $ref: '#/components/schemas/rootTranslationResponseJsonArr'
+        moderationType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - FIRST_ACTION
+          - ALL_ACTION
+          - NONE
+          maxLength: 100
+          minLength: 0
+        createdTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        modifiedBy:
+          $ref: ./ArticleTranslation.json#/components/schemas/modifiedBy
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        primaryDepartmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        order:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        workspaceId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^([a-zA-Z0-9]{37}|-1)$
+        isFollowing:
+          type:
+          - boolean
+          - 'null'
+        articleViewType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - LISTVIEW
+          - OVERVIEW
+          maxLength: 100
+          minLength: 0
+        visibility:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ALL_USERS
+          - AGENTS
+          - GROUP_USERS
+          - PRIVATE_IP
+          - NONE
+          maxLength: 100
+          minLength: 0
+        canCurrentUserModerate:
+          type:
+          - boolean
+          - 'null'
+        groups:
+          $ref: ./KbCategory.json#/components/schemas/groupJsonArr
+        logoUrl:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        feedbackTicketConversionPreference:
+          $ref: '#/components/schemas/feedbackPreferenceResponseObj'
+        associatedDepartmentIds:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          uniqueItems: true
+        encryptedWorkspaceId:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          minLength: 0
+        createdBy:
+          $ref: ./ArticleTranslation.json#/components/schemas/modifiedBy
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SHOW_IN_HELPCENTER
+          - HIDE_IN_HELPCENTER
+          - DISABLED
+          - ENABLED
+          maxLength: 100
+          minLength: 0
+        publicArticlesCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        allArticlesCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        allArticleTemplateCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        canCurrentUserReview:
+          type:
+          - boolean
+          - 'null'
+        sectionsCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        publishedArticleCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+      required:
+      - articleViewType
+      - associatedDepartmentIds
+      - canCurrentUserModerate
+      - createdBy
+      - createdTime
+      - description
+      - encryptedWorkspaceId
+      - feedbackTicketConversionPreference
+      - groups
+      - helpcenterId
+      - id
+      - isFollowing
+      - isReviewEnabled
+      - isTrashed
+      - logoUrl
+      - moderationType
+      - modifiedBy
+      - modifiedTime
+      - name
+      - order
+      - primaryDepartmentId
+      - status
+      - translations
+      - visibility
+      - workspaceId
+    rootTreeTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/rootTreeTranslationResponse'
+    childTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTranslationResponse'
+    feedbackPreferenceResponseObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        departmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        assignee:
+          $ref: '#/components/schemas/assigneeObj'
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ENABLED
+          - DISABLED
+          maxLength: 100
+          minLength: 0
+      required:
+      - assignee
+      - departmentId
+      - status
+    feedbackPreferenceObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        departmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the department in which the tickets must be created
+          pattern: ([0-9]+)
+        assigneeId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the user to whom the tickets must be assigned. If you do not pass a value for this key, the ticket remains unassigned.
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          description: 'Activation status of auto-conversion for the category. Values allowed are: ENABLED and DISABLED'
+          enum:
+          - ENABLED
+          - DISABLED
+          maxLength: 100
+          minLength: 0
+      required:
+      - assigneeId
+      - departmentId
+      - status
+    rootTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
+    reviewOwnersArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/reviewOwners'
+    assigneeObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ACTIVE
+          - DISABLED
+          - LICENSE_DOWNGRADED
+          - DELETED
+          - ANONYMIZED
+          - CLOSED
+          maxLength: 100
+          minLength: 0
+        zuid:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - photoURL
+      - status
+      - zuid
+    addRootTranslationJsonArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./KBRootCategoryTranslation.json#/components/schemas/addRootTranslationJson
+    rootTreeTranslationResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        permalink:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[a-z0-9\/%\-\P{InBasicLatin}]+'
+        locale:
+          type:
+          - string
+          - 'null'
+          enum:
+          - en
+          - ja
+          - zh
+          - es
+          - de
+          - fr
+          - tr
+          - ru
+          - pt
+          - it
+          - nl
+          - da
+          - sv
+          - pl
+          - ar
+          - he
+          - af
+          - cs
+          - fr-ca
+          - bg
+          - fi
+          - el
+          - hu
+          - id
+          - nb
+          - ro
+          - th
+          - uk
+          - vi
+          - ur
+          - hi
+          - te
+          - kn
+          - ta
+          - mr
+          - ko
+          - fa
+          - bn
+          - gu
+          - ms
+          - ml
+          - en-gb
+          - sk
+          - hr
+          - sl
+          - zh_TW
+          - zh-tw
+          - ca
+          - ka
+          - kk
+          - my
+          - km
+          - pt-br
+          maxLength: 100
+          minLength: 0
+          pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
+      required:
+      - description
+      - id
+      - locale
+      - name
+      - permalink
+    addReviewOwnerArray:
+      type:
+      - 'null'
+      - array
+      items:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    childTreeResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        publishedArticleTemplateCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        isFollowing:
+          type:
+          - boolean
+          - 'null'
+        visibility:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ALL_USERS
+          - AGENTS
+          - GROUP_USERS
+          - PRIVATE_IP
+          - NONE
+          maxLength: 100
+          minLength: 0
+        level:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
+        locale:
+          type:
+          - string
+          - 'null'
+          enum:
+          - en
+          - ja
+          - zh
+          - es
+          - de
+          - fr
+          - tr
+          - ru
+          - pt
+          - it
+          - nl
+          - da
+          - sv
+          - pl
+          - ar
+          - he
+          - af
+          - cs
+          - fr-ca
+          - bg
+          - fi
+          - el
+          - hu
+          - id
+          - nb
+          - ro
+          - th
+          - uk
+          - vi
+          - ur
+          - hi
+          - te
+          - kn
+          - ta
+          - mr
+          - ko
+          - fa
+          - bn
+          - gu
+          - ms
+          - ml
+          - en-gb
+          - sk
+          - hr
+          - sl
+          - zh_TW
+          - zh-tw
+          - ca
+          - ka
+          - kk
+          - my
+          - km
+          - pt-br
+          maxLength: 100
+          minLength: 0
+          pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
+        logoUrl:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        rootCategoryId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        isTrashed:
+          type:
+          - boolean
+          - 'null'
+        children:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+          uniqueItems: false
+        translations:
+          $ref: '#/components/schemas/childTranslationResponseJsonArr'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        parentCategoryId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SHOW_IN_HELPCENTER
+          - HIDE_IN_HELPCENTER
+          maxLength: 100
+          minLength: 0
+        order:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+      required:
+      - children
+      - description
+      - id
+      - isFollowing
+      - isTrashed
+      - level
+      - locale
+      - logoUrl
+      - name
+      - order
+      - parentCategoryId
+      - rootCategoryId
+      - status
+      - translations
+      - visibility
+    childArrayOfTree:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTreeResponse'
+  requestBodies:
+    addPermalink_addPermalinkJson:
       content:
         application/json:
           schema:
@@ -1625,82 +1544,28 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: '#/components/schemas/data'
+              isOldPermalinkNeeded:
+                type:
+                - boolean
+                - 'null'
+                description: The variable that defines if permalink needs to be added to redirect list. By default, it is true
+              permalink:
+                type:
+                - string
+                - 'null'
+                description: The permalink of Solution
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
             required:
-            - data
+            - isOldPermalinkNeeded
+            - permalink
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                data:
-                - modifiedTime: 1578230287000
-                  allArticlesCount: '11'
-                  helpcenterId: '5000000015871'
-                  isReviewEnabled: false
-                  isTrashed: false
-                  translations:
-                  - modifiedTime: 1570688319000
-                    createdBy:
-                      photoURL: null
-                      name: Zylker
-                      id: '5000000015867'
-                      status: ACTIVE
-                      zuid: '343224'
-                    name: Zoho Desk
-                    description: A helpdesk software
-                    createdTime: 1561359819000
-                    modifiedBy:
-                      photoURL: null
-                      name: Zylker
-                      id: '5000000015867'
-                      status: ACTIVE
-                      zuid: '343224'
-                    id: '5000000265103'
-                    permalink: zoho-desk
-                    locale: en
-                    categoryId: '5000000066427'
-                  moderationType: ALL_ACTION
-                  createdTime: 1561359819000
-                  modifiedBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  primaryDepartmentId: '5000000063894'
-                  id: '5000000066427'
-                  order: '1'
-                  workspaceId: ponaz00368c36c9274809bf96849b392f8d67
-                  visibility: ALL_USERS
-                  articleViewType: LISTVIEW
-                  canCurrentUserModerate: true
-                  groups: []
-                  sectionsCount: '7'
-                  logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
-                  feedbackTicketConversionPreference:
-                    departmentId: '5000000063895'
-                    assignee:
-                      photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
-                      name: Charlie Marlie
-                      id: '5000000000059'
-                      status: ACTIVE
-                      zuid: '15224545'
-                    status: ENABLED
-                  associatedDepartmentIds:
-                  - '5000000063895'
-                  publicArticlesCount: '3'
-                  allArticleTemplateCount: '4'
-                  encryptedWorkspaceId: 04bd200bc14c4cac0c0026a0342c1f21263012407fa56109a37788e786a96ec0383c1eeb08849f9be78a6f7b8b8f31033dde60d41ad95443c6570636db1a9b20
-                  createdBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  name: Zoho Desk
-                  status: SHOW_IN_HELPCENTER
-    reviewOwnersDataJson:
-      description: reviewOwnersDataJson template definitions
+                isOldPermalinkNeeded: true
+                permalink: new-permalink
+    addReviewOwners_addReviewOwnerJson:
       content:
         application/json:
           schema:
@@ -1709,110 +1574,255 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: '#/components/schemas/reviewOwnersArray'
+              reviewOwnerIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
             required:
-            - data
+            - reviewOwnerIds
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                data:
-                - photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-    rootCategoryResponse:
-      description: rootCategoryResponse template definitions
+                reviewOwnerIds:
+                - '5000000015867'
+    createCategoryJson:
       content:
         application/json:
           schema:
+            type:
+            - 'null'
+            - object
             additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonCategoryResponse'
-            - type:
-              - 'null'
-              - object
-              properties:
-                ipAddresses:
+            properties:
+              articleViewType:
+                type:
+                - string
+                - 'null'
+                description: 'View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.'
+                enum:
+                - LISTVIEW
+                - OVERVIEW
+                maxLength: 100
+                minLength: 0
+              visibility:
+                type:
+                - string
+                - 'null'
+                description: 'Visibility setting of the category. Values allowed are: AGENTS, GROUP_USERS, ALL_USERS, NONE, and PRIVATE_IP.'
+                enum:
+                - ALL_USERS
+                - AGENTS
+                - GROUP_USERS
+                - PRIVATE_IP
+                - NONE
+                maxLength: 100
+                minLength: 0
+              description:
+                type:
+                - string
+                - 'null'
+                description: A brief description of the category
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              feedbackTicketConversionPreference:
+                $ref: '#/components/schemas/feedbackPreferenceObj'
+              associatedDepartmentIds:
+                type:
+                - 'null'
+                - array
+                items:
                   type:
+                  - string
                   - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                  uniqueItems: false
-              required:
-              - ipAddresses
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+              isReviewEnabled:
+                type:
+                - boolean
+                - 'null'
+                description: Key that specifies whether the category must be reviewed or not
+              translations:
+                $ref: '#/components/schemas/addRootTranslationJsonArray'
+              moderationType:
+                type:
+                - string
+                - 'null'
+                description: 'Type of moderation applied to the category. Values allowed are: @NONE@, @ALL_ACTION@, @FIRST_ACTION@'
+                enum:
+                - FIRST_ACTION
+                - ALL_ACTION
+                - NONE
+                maxLength: 100
+                minLength: 0
+              groupIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              name:
+                type:
+                - string
+                - 'null'
+                description: Name of the category
+                maxLength: 100
+                minLength: 0
+              ipAddresses:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                uniqueItems: false
+              primaryDepartmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the department to which the category belongs
+                pattern: ([0-9]+)
+              logoId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the logo to set for the category
+                pattern: ([0-9]+)
+              status:
+                type:
+                - string
+                - 'null'
+                description: Activation status of the category
+                enum:
+                - SHOW_IN_HELPCENTER
+                - HIDE_IN_HELPCENTER
+                maxLength: 100
+                minLength: 0
+            required:
+            - articleViewType
+            - description
+            - groupIds
+            - ipAddresses
+            - isReviewEnabled
+            - logoId
+            - name
+            - primaryDepartmentId
+            - status
+            - translations
+            - visibility
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                modifiedTime: 1577978811000
-                helpcenterId: '5000000015871'
-                isReviewEnabled: true
-                isTrashed: false
-                translations:
-                - modifiedTime: 1577978682000
-                  createdBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  name: Root category name
-                  description: description of root
-                  createdTime: 1577978682000
-                  modifiedBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  id: '5000000336004'
-                  permalink: root-category-name
-                  locale: en
-                  categoryId: '5000000319037'
-                moderationType: ALL_ACTION
-                createdTime: 1577707830000
-                modifiedBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                primaryDepartmentId: '5000000063894'
-                id: '5000000319037'
-                order: '3'
-                workspaceId: asadasda
-                isFollowing: true
-                visibility: ALL_USERS
+                isReviewEnabled: false
                 articleViewType: LISTVIEW
-                canCurrentUserModerate: true
-                groups: []
-                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
+                visibility: ALL_USERS
+                moderationType: ALL_ACTION
+                translations:
+                - name: Zoho Desk
+                  description: A helpdesk software
+                  permalink: zoho-desk
+                  locale: en
+                name: Zoho Desk
+                primaryDepartmentId: '5000000063894'
+                logoId: '25'
                 feedbackTicketConversionPreference:
                   departmentId: '5000000063895'
-                  assignee:
-                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
-                    name: Charlie Marlie
-                    id: '5000000000059'
-                    status: ACTIVE
-                    zuid: '15224545'
+                  assigneeId: '5000000000059'
                   status: ENABLED
+                status: SHOW_IN_HELPCENTER
                 associatedDepartmentIds:
                 - '5000000063895'
-                encryptedWorkspaceId: uhahsdhada
-                createdBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                name: Root category name
-                ipAddresses: []
-                status: SHOW_IN_HELPCENTER
+    removePermalink_removePermalinkJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              permalink:
+                type:
+                - string
+                - 'null'
+                description: The permalink of Solution
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
+            required:
+            - permalink
+          examples:
+            Valid requestBody Definitions:
+              value:
+                permalink: permalink-2
+    removeModerators_addModeratorJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              moderatorIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - moderatorIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                moderatorIds:
+                - '5000000015867'
+    addReviewOwnerJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              reviewOwnerIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - reviewOwnerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                reviewOwnerIds:
+                - '5000000015867'
+    addModeratorJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              moderatorIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - moderatorIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                moderatorIds:
+                - '5000000015867'
   parameters:
     locale:
       name: locale
@@ -1897,4 +1907,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: KBRootCategory

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Webhook API
+  title: Webhook API
   version: 1.0.0
 tags:
 - name: Webhook
@@ -120,149 +120,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  requestBodies:
-    updateWebhook_webhookjson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              subscriptions:
-                $ref: ./Webhook.json#/components/schemas/subscriptions
-              includeEventsFrom:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (AUTOMATION)
-                uniqueItems: false
-              isEnabled:
-                type:
-                - boolean
-                - 'null'
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 3000
-                minLength: 0
-              ignoreSourceId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})$|^$
-              url:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-            required:
-            - subscriptions
-          examples:
-            Valid requestBody Definitions:
-              value: null
-    webhookjson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              subscriptions:
-                $ref: ./Webhook.json#/components/schemas/subscriptions
-              includeEventsFrom:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (AUTOMATION)
-                uniqueItems: false
-              isEnabled:
-                type:
-                - boolean
-                - 'null'
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 3000
-                minLength: 0
-              ignoreSourceId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})$|^$
-              url:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-            required:
-            - subscriptions
-            - url
-          examples:
-            Valid requestBody Definitions:
-              value:
-                subscriptions:
-                  Account_Add: null
-                  Contact_Update: null
-                  Account_Update: null
-                  Ticket_Update:
-                    departmentIds:
-                    - '1234567890'
-                    - '1234567895'
-                  Ticket_Add:
-                    departmentIds:
-                    - '1234567891'
-                    - '1234567895'
-                  Ticket_Comment_Add:
-                    departmentIds:
-                    - '1234567890'
-                  Ticket_Thread_Add:
-                    departmentIds:
-                    - '1234567891'
-                  Contact_Add: null
-                includeEventsFrom:
-                - AUTOMATION
-                name: Test webhook
-                description: This webhook listen to ticket events
-                ignoreSourceId: 49ad222a-f812-11e7-8c3f-9a214cf093ae
-                url: www.demoServer.com/webhookTest
   responses:
     webhookGetALLresponse:
       description: webhookGetALLresponse template definitions
@@ -551,7 +408,150 @@ components:
           examples:
             Valid responses Definitions:
               value: null
+  requestBodies:
+    updateWebhook_webhookjson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              subscriptions:
+                $ref: ./Webhook.json#/components/schemas/subscriptions
+              includeEventsFrom:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (AUTOMATION)
+                uniqueItems: false
+              isEnabled:
+                type:
+                - boolean
+                - 'null'
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 3000
+                minLength: 0
+              ignoreSourceId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})$|^$
+              url:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+            required:
+            - subscriptions
+          examples:
+            Valid requestBody Definitions:
+              value: null
+    webhookjson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              subscriptions:
+                $ref: ./Webhook.json#/components/schemas/subscriptions
+              includeEventsFrom:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (AUTOMATION)
+                uniqueItems: false
+              isEnabled:
+                type:
+                - boolean
+                - 'null'
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 3000
+                minLength: 0
+              ignoreSourceId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^([0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})$|^$
+              url:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+            required:
+            - subscriptions
+            - url
+          examples:
+            Valid requestBody Definitions:
+              value:
+                subscriptions:
+                  Account_Add: null
+                  Contact_Update: null
+                  Account_Update: null
+                  Ticket_Update:
+                    departmentIds:
+                    - '1234567890'
+                    - '1234567895'
+                  Ticket_Add:
+                    departmentIds:
+                    - '1234567891'
+                    - '1234567895'
+                  Ticket_Comment_Add:
+                    departmentIds:
+                    - '1234567890'
+                  Ticket_Thread_Add:
+                    departmentIds:
+                    - '1234567891'
+                  Contact_Add: null
+                includeEventsFrom:
+                - AUTOMATION
+                name: Test webhook
+                description: This webhook listen to ticket events
+                ignoreSourceId: 49ad222a-f812-11e7-8c3f-9a214cf093ae
+                url: www.demoServer.com/webhookTest
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Webhook

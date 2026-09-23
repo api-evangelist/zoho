@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Layout API
+  title: Layout API
   version: 1.0.0
 tags:
 - name: Layout
@@ -128,7 +128,11 @@ paths:
       tags:
       - Layout
       summary: Export PickList Values
-      description: 'This api behaves as below <br> (i)When Query param _fileType_=_CSV_ is passed  the picklist values gets downloaded in csv file with _*fieldlabel*_ as its name <br> (ii) When header param is not passed _empty 200_ response '
+      description: 'This api behaves as below
+
+        (i)When Query param _fileType_=_CSV_ is passed the picklist values gets downloaded in csv file with _*fieldlabel*_ as its name
+
+        (ii) When header param is not passed _empty 200_ response'
       operationId: exportPickListValues
       parameters:
       - name: fileType
@@ -205,7 +209,7 @@ paths:
       tags:
       - Layout
       summary: Delete Layout
-      description: ' This API deletes a layout'
+      description: This API deletes a layout
       operationId: deleteLayout
       parameters:
       - $ref: '#/components/parameters/layoutId'
@@ -355,7 +359,9 @@ paths:
       tags:
       - Layout
       summary: Replace PickList Value
-      description: 'This API replaces the old value with the new value for the PickList field type in all existing records only.<p><b>Note</b>: When a value that does not exist in the PickList values is provided as new value, then this API will create the new value without deleting the old one.</p>'
+      description: 'This API replaces the old value with the new value for the PickList field type in all existing records only.
+
+        Note: When a value that does not exist in the PickList values is provided as new value, then this API will create the new value without deleting the old one.'
       operationId: replacePickListValue
       parameters:
       - $ref: '#/components/parameters/layoutId'
@@ -422,6 +428,513 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    layoutProfileIdsJsonObject:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              layoutProfileIds:
+                $ref: ./Layout.json#/components/schemas/layoutProfileIdsJson
+            required:
+            - layoutProfileIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                layoutProfileIds:
+                - 4000000015183
+                - 4000000015186
+                - 4000000015189
+    layoutIdsJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              layoutIds:
+                $ref: ./Layout.json#/components/schemas/layoutIdsArray
+            required:
+            - layoutIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                layoutIds:
+                - '4000000007187'
+                - '4000000007197'
+    updateLayout_layoutRequestJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              skipDeptAccessValidation:
+                type:
+                - boolean
+                - 'null'
+                description: Key that returns if the layout is common to all profiles of the organisation and not specific to the department
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of department in which the layout is configured
+                pattern: ([0-9]+)
+              layoutDisplayName:
+                type:
+                - string
+                - 'null'
+                description: Display Name of the layout in HelpCenter
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              module:
+                type:
+                - string
+                - 'null'
+                description: mdoule name
+                enum:
+                - tickets
+                - contacts
+                - accounts
+                - tasks
+                - calls
+                - events
+                - timeEntry
+                - contracts
+                - products
+                maxLength: 100
+                minLength: 0
+              isDefaultLayout:
+                type:
+                - boolean
+                - 'null'
+                description: Key that returns if the layout is the default layout in the module
+              sections:
+                $ref: ./Layout.json#/components/schemas/sectionRequestArr
+              layoutName:
+                type:
+                - string
+                - 'null'
+                description: Name of the layout
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - departmentId
+            - isDefaultLayout
+            - layoutName
+            - module
+            - sections
+            - skipDeptAccessValidation
+          examples:
+            Valid requestBody Definitions:
+              value:
+                skipDeptAccessValidation: false
+                layoutDisplayName: ClonedLayout
+                layoutDesc: Layout cloned from default layout
+                sections:
+                - name: Ticket Information
+                  i18NLabel: Ticket Information
+                  id: 1
+                  fields:
+                  - id: '4000000000353'
+                    isMandatory: true
+                  - id: '4000000000357'
+                    isMandatory: true
+                  - id: '4000000000355'
+                    isMandatory: false
+                  - id: '4000000000359'
+                    isMandatory: false
+                  - id: '4000000000361'
+                    isMandatory: false
+                  - allowedValues:
+                    - 'Education :: University :: Private'
+                    - 'Education :: University :: Public'
+                    - 'Education :: School :: Private'
+                    - 'Education :: School :: Public'
+                    defaultValue: 'Education :: University :: Private'
+                    isNested: true
+                    sortBy: userDefined
+                    id: '4000000009999'
+                    isMandatory: false
+                  - allowedValues:
+                    - Sub General
+                    - Sub Defects
+                    defaultValue: Sub General
+                    isNested: false
+                    sortBy: userDefined
+                    id: '4000000000423'
+                    isMandatory: false
+                  - allowedValues:
+                    - General
+                    - Defects
+                    defaultValue: General
+                    isNested: false
+                    id: '4000000000421'
+                    isMandatory: false
+                  - id: '4000000000363'
+                    isMandatory: true
+                  - id: '4000000000365'
+                    isMandatory: false
+                  - allowedValues:
+                    - Open
+                    - Open_july
+                    - On Hold
+                    - Escalated
+                    - Closed1
+                    - Closed
+                    - newDeptClosed
+                    restoreOnReplyValues:
+                    - Open_july
+                    - newDeptClosed
+                    - Escalated
+                    - On Hold
+                    - Closed
+                    - Closed1
+                    - Open
+                    defaultValue: Open
+                    isNested: false
+                    sortBy: userDefined
+                    id: '4000000000367'
+                    isMandatory: true
+                  - id: '4000000000371'
+                    isMandatory: false
+                  - id: '4000000000369'
+                    isMandatory: false
+                - name: Additional Information
+                  i18NLabel: Additional Information
+                  id: 2
+                  fields:
+                  - id: '4000000000405'
+                    isMandatory: false
+                  - allowedValues:
+                    - -None-
+                    - High
+                    - Medium
+                    - Low
+                    defaultValue: -None-
+                    isNested: false
+                    id: '4000000000407'
+                    isMandatory: false
+                  - allowedValues:
+                    - Phone
+                    - Email
+                    - Web
+                    - Twitter
+                    - Facebook
+                    - Chat
+                    - Forums
+                    - Feedback Widget
+                    defaultValue: Phone
+                    isNested: false
+                    sortBy: userDefined
+                    id: '4000000000409'
+                    isMandatory: false
+                  - id: '4000000000411'
+                    isMandatory: false
+                  - id: '4000000000413'
+                    isMandatory: false
+                  - allowedValues:
+                    - -None-
+                    - Question
+                    - Problem
+                    - Feature
+                    - Others
+                    defaultValue: -None-
+                    isNested: false
+                    sortBy: userDefined
+                    id: '4000000000415'
+                    isMandatory: false
+                  - id: '4000000000417'
+                    isMandatory: false
+                  - id: '4000000000447'
+                    isMandatory: false
+                layoutName: ClonedLayout
+    layoutRequestJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              skipDeptAccessValidation:
+                type:
+                - boolean
+                - 'null'
+                description: Key that returns if the layout is common to all profiles of the organisation and not specific to the department
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of department in which the layout is configured
+                pattern: ([0-9]+)
+              layoutDisplayName:
+                type:
+                - string
+                - 'null'
+                description: Display Name of the layout in HelpCenter
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              module:
+                type:
+                - string
+                - 'null'
+                description: mdoule name
+                enum:
+                - tickets
+                - contacts
+                - accounts
+                - tasks
+                - calls
+                - events
+                - timeEntry
+                - contracts
+                - products
+                maxLength: 100
+                minLength: 0
+              isDefaultLayout:
+                type:
+                - boolean
+                - 'null'
+                description: Key that returns if the layout is the default layout in the module
+              sections:
+                $ref: ./Layout.json#/components/schemas/sectionRequestArr
+              layoutName:
+                type:
+                - string
+                - 'null'
+                description: Name of the layout
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - departmentId
+            - isDefaultLayout
+            - layoutDisplayName
+            - layoutName
+            - module
+            - sections
+            - skipDeptAccessValidation
+          examples:
+            Valid requestBody Definitions:
+              value:
+                skipDeptAccessValidation: false
+                module: accounts
+                departmentId: '4000000012710'
+                layoutDisplayName: Clonned Account Layout
+                layoutDesc: DESC
+                sections:
+                - name: Account Information
+                  i18NLabel: Account Information
+                  isCustomSection: false
+                  id: 1
+                  fields:
+                  - id: '4000000000404'
+                    isMandatory: true
+                  - id: '4000000000408'
+                    isMandatory: false
+                  - id: '4000000000406'
+                    isMandatory: false
+                  - id: '4000000000410'
+                    isMandatory: false
+                  - id: '4000000000438'
+                    isMandatory: false
+                  - id: '4000000000412'
+                    isMandatory: false
+                layoutName: 'accounts layout '
+    cloneLayoutJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              skipDeptAccessValidation:
+                type:
+                - boolean
+                - 'null'
+              layoutDisplayName:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              isDefaultLayout:
+                type:
+                - string
+                - 'null'
+                enum:
+                - 'false'
+                maxLength: 100
+                minLength: 0
+              layoutDesc:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              layoutName:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - layoutName
+          examples:
+            Valid requestBody Definitions:
+              value:
+                skipDeptAccessValidation: false
+                layoutDisplayName: Clonned Account Layout
+                isDefaultLayout: false
+                layoutDesc: Layout of the accounts
+                layoutName: cloneAccLayout1
+    replaceValueRequestJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              newValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 120
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              oldValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 120
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              fieldId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - fieldId
+            - newValue
+            - oldValue
+          examples:
+            Valid requestBody Definitions:
+              value:
+                newValue: Sub Defects1235
+                oldValue: Sub Defects
+                fieldId: '4000000000423'
+    deactivateLayoutRequestJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              transferToLayoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                transferToLayoutId: '4000000038039'
+    updateLayoutFieldRequestJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              allowedValues:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 120
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+                uniqueItems: false
+              defaultValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 120
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              sortBy:
+                type:
+                - string
+                - 'null'
+                enum:
+                - alphabetical
+                - userDefined
+                maxLength: 100
+                minLength: 0
+              isMandatory:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - allowedValues
+            - defaultValue
+            - isMandatory
+            - sortBy
+          examples:
+            Valid requestBody Definitions:
+              value:
+                allowedValues:
+                - 'Education :: University :: Private'
+                - 'Education :: University :: Public'
+                - 'Education :: School :: Private'
+                - 'Education :: School :: Public'
+                defaultValue: 'Education :: University :: Private'
+                isNested: true
+                sortBy: userDefined
+                isMandatory: true
   responses:
     getLayoutResponse:
       description: getLayoutResponse template definitions
@@ -778,8 +1291,8 @@ components:
                     isMandatory: false
                 layoutDesc: Default Layout of the Ticket
                 layoutName: Default Ticket Layout
-    getStandardLayoutFormatResponse:
-      description: getStandardLayoutFormatResponse template definitions
+    layoutProfilesData:
+      description: layoutProfilesData template definitions
       content:
         application/json:
           schema:
@@ -789,334 +1302,87 @@ components:
             additionalProperties: false
             properties:
               data:
-                $ref: ./Layout.json#/components/schemas/sectionList
+                $ref: ./Layout.json#/components/schemas/layoutProfileJsonArray
             required:
             - data
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - name: Case Information
-                  id: 1
-                  fields:
-                  - displayLabel: Department
-                    isCustomField: false
-                    name: departmentId
-                    id: '4000000000556'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: LookUp
-                    maxLength: 50
-                    isMandatory: true
-                  - displayLabel: Account Name
-                    isCustomField: false
-                    name: accountId
-                    id: '4000000000558'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: LookUp
-                    maxLength: 300
-                    isMandatory: false
-                  - displayLabel: Contact Name
-                    isCustomField: false
-                    name: contactId
-                    id: '4000000000560'
-                    isSystemMandatory: true
-                    isRemovable: false
-                    type: LookUp
-                    maxLength: 300
-                    isMandatory: true
-                  - displayLabel: Email
-                    isCustomField: false
-                    name: email
-                    id: '4000000000562'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: Email
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Phone
-                    isCustomField: false
-                    name: phone
-                    id: '4000000000564'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Phone
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Subject
-                    isCustomField: false
-                    name: subject
-                    id: '4000000000566'
-                    isSystemMandatory: true
-                    isRemovable: false
-                    type: Text
-                    maxLength: 255
-                    isMandatory: true
-                  - displayLabel: Description
-                    isCustomField: false
-                    name: description
-                    id: '4000000000568'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: Textarea
-                    maxLength: 1000000
-                    isMandatory: false
-                  - displayLabel: Status
-                    allowedValues:
-                    - Open
-                    - On Hold
-                    - Escalated
-                    - Closed
-                    isCustomField: false
-                    defaultValue: Open
-                    isSystemMandatory: true
-                    type: Picklist
-                    restoreOnReplyValues:
-                    - Open
-                    - On Hold
-                    - Escalated
-                    - Closed
-                    name: status
-                    sortBy: userDefined
-                    id: '4000000000570'
-                    isRemovable: false
-                    maxLength: 120
-                    isMandatory: true
-                  - displayLabel: Product Name
-                    isCustomField: false
-                    name: productId
-                    id: '4000000000572'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: LookUp
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Ticket Owner
-                    isCustomField: false
-                    name: assigneeId
-                    id: '4000000000574'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: LookUp
-                    maxLength: 120
-                    isMandatory: false
-                - name: Additional Information
-                  id: 2
-                  fields:
-                  - displayLabel: Due Date
-                    isCustomField: false
-                    name: dueDate
-                    id: '4000000000610'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: DateTime
-                    maxLength: 300
-                    isMandatory: false
-                  - displayLabel: Priority
-                    allowedValues:
-                    - -None-
-                    - High
-                    - Medium
-                    - Low
-                    isCustomField: false
-                    defaultValue: -None-
-                    name: priority
-                    sortBy: userDefined
-                    id: '4000000000614'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: Picklist
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Channel
-                    allowedValues:
-                    - Phone
-                    - Email
-                    - Web
-                    - Twitter
-                    - Facebook
-                    - Chat
-                    - Forums
-                    - Feedback Widget
-                    isCustomField: false
-                    defaultValue: Phone
-                    name: channel
-                    sortBy: userDefined
-                    id: '4000000000616'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: Picklist
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Classification
-                    allowedValues:
-                    - -None-
-                    - Question
-                    - Problem
-                    - Feature
-                    - Others
-                    isCustomField: false
-                    defaultValue: -None-
-                    name: classification
-                    sortBy: userDefined
-                    id: '4000000000622'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Picklist
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Resolution
-                    isCustomField: false
-                    name: resolution
-                    id: '4000000000624'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: Textarea
-                    maxLength: 1000000
-                    isMandatory: false
-    cloneLayoutResponse:
-      description: cloneLayoutResponse template definitions
+                - profileName: Support Administrator
+                  isDefault: true
+                  id: '4000000015183'
+                  type: ADMIN
+                - profileName: Agent
+                  isDefault: true
+                  id: '4000000015186'
+                  type: STANDARD
+                - profileName: Help Center
+                  isDefault: true
+                  id: '4000000015189'
+                  type: PORTAL
+                - profileName: Supervisor
+                  isDefault: false
+                  id: '4000000015192'
+                  type: CUSTOM
+                - profileName: Support Manager
+                  isDefault: false
+                  id: '4000000015195'
+                  type: CUSTOM
+                - profileName: Newbie Agent
+                  isDefault: false
+                  id: '4000000015198'
+                  type: CUSTOM
+                - profileName: Light Agent
+                  isDefault: true
+                  id: '4000000015201'
+                  type: LIGHT
+    commonFieldResponse:
+      description: commonFieldResponse template definitions
       content:
         application/json:
           schema:
-            oneOf:
-            - additionalProperties: false
-              allOf:
-              - $ref: ./Layout.json#/components/schemas/basicLayoutJson
-              - type:
-                - 'null'
-                - object
-                properties:
-                  module:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - Cases
-                    - Contacts
-                    - Accounts
-                    - Tasks
-                    - Calls
-                    - Events
-                    - TimeEntry
-                    - Contracts
-                    - Products
-                    maxLength: 100
-                    minLength: 0
-                  sections:
-                    $ref: ./Layout.json#/components/schemas/sectionListForLayout
-                required:
-                - module
-                - sections
-            - additionalProperties: false
-              allOf:
-              - $ref: ./Layout.json#/components/schemas/cloneLayoutCommonResponse
-              - type:
-                - 'null'
-                - object
-                properties:
-                  departmentId:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                required:
-                - departmentId
+            additionalProperties: false
+            allOf:
+            - $ref: ./Field.json#/components/schemas/commonFieldResponse
+            - type:
+              - 'null'
+              - object
+              properties:
+                isRemovable:
+                  type:
+                  - boolean
+                  - 'null'
+                isSystemMandatory:
+                  type:
+                  - boolean
+                  - 'null'
+              required:
+              - isRemovable
+              - isSystemMandatory
           examples:
             Valid responses Definitions:
               value:
-                modifiedTime: 1557282094000
-                module: Accounts
-                layoutDisplayName: Clonned Account Layout
-                layoutDesc: layout of the accounts
-                isDefaultLayout: false
-                sections:
-                - name: Account Information
-                  isCustomSection: true
-                  id: 1
-                  fields:
-                  - displayLabel: Account Name
-                    isCustomField: false
-                    name: accountName
-                    id: '4000000000404'
-                    isSystemMandatory: true
-                    isRemovable: false
-                    type: Text
-                    maxLength: 200
-                    isMandatory: true
-                  - displayLabel: Email
-                    isCustomField: false
-                    name: email
-                    id: '4000000000408'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Email
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Phone
-                    isCustomField: false
-                    name: phone
-                    id: '4000000000406'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Phone
-                    maxLength: 30
-                    isMandatory: false
-                  - displayLabel: Website
-                    isCustomField: false
-                    name: website
-                    id: '4000000000410'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: URL
-                    maxLength: 2083
-                    isMandatory: false
-                  - displayLabel: Country
-                    isCustomField: false
-                    name: country
-                    id: '4000000000438'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Text
-                    maxLength: 30
-                    isMandatory: false
-                  - displayLabel: Account Owner
-                    isCustomField: false
-                    name: ownerId
-                    id: '4000000000412'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: LookUp
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Education Type
-                    allowedValues:
-                    - 'Education :: University :: Private'
-                    - 'Education :: University :: Public'
-                    - 'Education :: School :: Private'
-                    - 'Education :: School :: Public'
-                    apiName: cf_education_type
-                    isCustomField: true
-                    defaultValue: 'Education :: University :: Private'
-                    isNested: true
-                    isSystemMandatory: false
-                    type: Picklist
-                    isEncryptedField: false
-                    sortBy: userDefined
-                    id: '4000000009999'
-                    isRemovable: true
-                    maxLength: 120
-                    isMandatory: false
-                layoutName: cloneAccLayout1
-                skipDeptAccessValidation: false
-                createdBy: '4000000015894'
-                createdTime: 1557282094000
-                modifiedBy: '4000000015894'
-                id: '4000000039001'
-                status: active
+                displayLabel: Education Type
+                allowedValues:
+                - 'Education :: University :: Private'
+                - 'Education :: University :: Public'
+                - 'Education :: School :: Private'
+                - 'Education :: School :: Public'
+                apiName: cf_education_type
+                isCustomField: true
+                defaultValue: 'Education :: University :: Private'
+                isNested: true
+                i18NLabel: Education Type
+                isSystemMandatory: false
+                type: Picklist
+                name: Education Type
+                isEncryptedField: false
+                sortBy: userDefined
+                id: '21000000023005'
+                isRemovable: true
+                maxLength: 120
+                isMandatory: true
     layoutJson:
       description: layoutJson template definitions
       content:
@@ -1380,6 +1646,92 @@ components:
                 modifiedBy: '4000000015894'
                 id: '4000000038033'
                 status: active
+    getLayouts:
+      description: getLayouts template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Layout.json#/components/schemas/layoutData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1557383050000
+                  departmentId: '4000000012710'
+                  module: Cases
+                  layoutDisplayName: New Layout For Tickets
+                  layoutDesc: DESC
+                  isDefaultLayout: true
+                  layoutName: New Layout For Tickets
+                  skipDeptAccessValidation: false
+                  layoutProfiles:
+                  - profileName: Support Administrator
+                    isDefault: true
+                    id: '4000000015183'
+                    type: ADMIN
+                  - profileName: Agent
+                    isDefault: true
+                    id: '4000000015186'
+                    type: STANDARD
+                  - profileName: Help Center
+                    isDefault: true
+                    id: '4000000015189'
+                    type: PORTAL
+                  createdBy: '4000000015894'
+                  createdTime: 1556865393000
+                  modifiedBy: '4000000015894'
+                  id: '4000000013464'
+                  status: active
+                - modifiedTime: 1557107158000
+                  departmentId: '4000000012710'
+                  module: Cases
+                  layoutDisplayName: cloneLayout
+                  layoutDesc: DESC
+                  isDefaultLayout: false
+                  layoutName: cloneLayout
+                  skipDeptAccessValidation: false
+                  layoutProfiles:
+                  - profileName: Support Administrator
+                    isDefault: true
+                    id: '4000000015183'
+                    type: ADMIN
+                  - profileName: Agent
+                    isDefault: true
+                    id: '4000000015186'
+                    type: STANDARD
+                  - profileName: Help Center
+                    isDefault: true
+                    id: '4000000015189'
+                    type: PORTAL
+                  - profileName: Supervisor
+                    isDefault: false
+                    id: '4000000015192'
+                    type: CUSTOM
+                  - profileName: Support Manager
+                    isDefault: false
+                    id: '4000000015195'
+                    type: CUSTOM
+                  - profileName: Newbie Agent
+                    isDefault: false
+                    id: '4000000015198'
+                    type: CUSTOM
+                  - profileName: Light Agent
+                    isDefault: true
+                    id: '4000000015201'
+                    type: LIGHT
+                  createdBy: '4000000015894'
+                  createdTime: 1557107158000
+                  modifiedBy: '4000000015894'
+                  id: '4000000017001'
+                  status: active
     updateLayoutResponse:
       description: updateLayoutResponse template definitions
       content:
@@ -1735,263 +2087,6 @@ components:
                     isMandatory: false
                 layoutDesc: Layout cloned from default layout
                 layoutName: Default Ticket Layout
-    createLayoutResponse:
-      description: createLayoutResponse template definitions
-      content:
-        application/json:
-          schema:
-            anyOf:
-            - additionalProperties: false
-              allOf:
-              - $ref: ./Layout.json#/components/schemas/basicLayoutJson
-              - type:
-                - 'null'
-                - object
-                properties:
-                  module:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - Cases
-                    - Contacts
-                    - Accounts
-                    - Tasks
-                    - Calls
-                    - Events
-                    - TimeEntry
-                    - Contracts
-                    - Products
-                    maxLength: 100
-                    minLength: 0
-                  sections:
-                    $ref: ./Layout.json#/components/schemas/sectionListForLayout
-                required:
-                - module
-                - sections
-            - additionalProperties: false
-              allOf:
-              - $ref: ./Layout.json#/components/schemas/cloneLayoutCommonResponse
-              - type:
-                - 'null'
-                - object
-                properties:
-                  departmentId:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                required:
-                - departmentId
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1557377577000
-                departmentId: '4000000012710'
-                module: Accounts
-                layoutDisplayName: Clonned Account Layout
-                layoutDesc: DESC
-                isDefaultLayout: false
-                sections:
-                - name: Account Information
-                  isCustomSection: true
-                  id: 1
-                  fields:
-                  - displayLabel: Account Name
-                    isCustomField: false
-                    name: accountName
-                    id: '4000000000404'
-                    isSystemMandatory: true
-                    isRemovable: false
-                    type: Text
-                    maxLength: 200
-                    isMandatory: true
-                  - displayLabel: Email
-                    isCustomField: false
-                    name: email
-                    id: '4000000000408'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Email
-                    maxLength: 120
-                    isMandatory: false
-                  - displayLabel: Phone
-                    isCustomField: false
-                    name: phone
-                    id: '4000000000406'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Phone
-                    maxLength: 30
-                    isMandatory: false
-                  - displayLabel: Website
-                    isCustomField: false
-                    name: website
-                    id: '4000000000410'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: URL
-                    maxLength: 2083
-                    isMandatory: false
-                  - displayLabel: Country
-                    isCustomField: false
-                    name: country
-                    id: '4000000000438'
-                    isSystemMandatory: false
-                    isRemovable: true
-                    type: Text
-                    maxLength: 30
-                    isMandatory: false
-                  - displayLabel: Account Owner
-                    isCustomField: false
-                    name: ownerId
-                    id: '4000000000412'
-                    isSystemMandatory: false
-                    isRemovable: false
-                    type: LookUp
-                    maxLength: 120
-                    isMandatory: false
-                layoutName: 'accounts layout '
-                skipDeptAccessValidation: false
-                createdBy: '4000000015894'
-                createdTime: 1557377577000
-                modifiedBy: '4000000015894'
-                id: '4000000043004'
-                status: active
-    commonFieldResponse:
-      description: commonFieldResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Field.json#/components/schemas/commonFieldResponse
-            - type:
-              - 'null'
-              - object
-              properties:
-                isRemovable:
-                  type:
-                  - boolean
-                  - 'null'
-                isSystemMandatory:
-                  type:
-                  - boolean
-                  - 'null'
-              required:
-              - isRemovable
-              - isSystemMandatory
-          examples:
-            Valid responses Definitions:
-              value:
-                displayLabel: Education Type
-                allowedValues:
-                - 'Education :: University :: Private'
-                - 'Education :: University :: Public'
-                - 'Education :: School :: Private'
-                - 'Education :: School :: Public'
-                apiName: cf_education_type
-                isCustomField: true
-                defaultValue: 'Education :: University :: Private'
-                isNested: true
-                i18NLabel: Education Type
-                isSystemMandatory: false
-                type: Picklist
-                name: Education Type
-                isEncryptedField: false
-                sortBy: userDefined
-                id: '21000000023005'
-                isRemovable: true
-                maxLength: 120
-                isMandatory: true
-    getLayouts:
-      description: getLayouts template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Layout.json#/components/schemas/layoutData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1557383050000
-                  departmentId: '4000000012710'
-                  module: Cases
-                  layoutDisplayName: New Layout For Tickets
-                  layoutDesc: DESC
-                  isDefaultLayout: true
-                  layoutName: New Layout For Tickets
-                  skipDeptAccessValidation: false
-                  layoutProfiles:
-                  - profileName: Support Administrator
-                    isDefault: true
-                    id: '4000000015183'
-                    type: ADMIN
-                  - profileName: Agent
-                    isDefault: true
-                    id: '4000000015186'
-                    type: STANDARD
-                  - profileName: Help Center
-                    isDefault: true
-                    id: '4000000015189'
-                    type: PORTAL
-                  createdBy: '4000000015894'
-                  createdTime: 1556865393000
-                  modifiedBy: '4000000015894'
-                  id: '4000000013464'
-                  status: active
-                - modifiedTime: 1557107158000
-                  departmentId: '4000000012710'
-                  module: Cases
-                  layoutDisplayName: cloneLayout
-                  layoutDesc: DESC
-                  isDefaultLayout: false
-                  layoutName: cloneLayout
-                  skipDeptAccessValidation: false
-                  layoutProfiles:
-                  - profileName: Support Administrator
-                    isDefault: true
-                    id: '4000000015183'
-                    type: ADMIN
-                  - profileName: Agent
-                    isDefault: true
-                    id: '4000000015186'
-                    type: STANDARD
-                  - profileName: Help Center
-                    isDefault: true
-                    id: '4000000015189'
-                    type: PORTAL
-                  - profileName: Supervisor
-                    isDefault: false
-                    id: '4000000015192'
-                    type: CUSTOM
-                  - profileName: Support Manager
-                    isDefault: false
-                    id: '4000000015195'
-                    type: CUSTOM
-                  - profileName: Newbie Agent
-                    isDefault: false
-                    id: '4000000015198'
-                    type: CUSTOM
-                  - profileName: Light Agent
-                    isDefault: true
-                    id: '4000000015201'
-                    type: LIGHT
-                  createdBy: '4000000015894'
-                  createdTime: 1557107158000
-                  modifiedBy: '4000000015894'
-                  id: '4000000017001'
-                  status: active
     getMyFormResponse:
       description: getMyFormResponse template definitions
       content:
@@ -2326,8 +2421,8 @@ components:
                     maxLength: 1000000
                     isMandatory: false
                 layoutName: Default Ticket Layout
-    layoutProfilesData:
-      description: layoutProfilesData template definitions
+    getStandardLayoutFormatResponse:
+      description: getStandardLayoutFormatResponse template definitions
       content:
         application/json:
           schema:
@@ -2337,202 +2432,148 @@ components:
             additionalProperties: false
             properties:
               data:
-                $ref: ./Layout.json#/components/schemas/layoutProfileJsonArray
+                $ref: ./Layout.json#/components/schemas/sectionList
             required:
             - data
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - profileName: Support Administrator
-                  isDefault: true
-                  id: '4000000015183'
-                  type: ADMIN
-                - profileName: Agent
-                  isDefault: true
-                  id: '4000000015186'
-                  type: STANDARD
-                - profileName: Help Center
-                  isDefault: true
-                  id: '4000000015189'
-                  type: PORTAL
-                - profileName: Supervisor
-                  isDefault: false
-                  id: '4000000015192'
-                  type: CUSTOM
-                - profileName: Support Manager
-                  isDefault: false
-                  id: '4000000015195'
-                  type: CUSTOM
-                - profileName: Newbie Agent
-                  isDefault: false
-                  id: '4000000015198'
-                  type: CUSTOM
-                - profileName: Light Agent
-                  isDefault: true
-                  id: '4000000015201'
-                  type: LIGHT
-  requestBodies:
-    updateLayout_layoutRequestJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              skipDeptAccessValidation:
-                type:
-                - boolean
-                - 'null'
-                description: Key that returns if the layout is common to all profiles of the organisation and not specific to the department
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of department in which the layout is configured
-                pattern: ([0-9]+)
-              layoutDisplayName:
-                type:
-                - string
-                - 'null'
-                description: Display Name of the layout in HelpCenter
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              module:
-                type:
-                - string
-                - 'null'
-                description: mdoule name
-                enum:
-                - tickets
-                - contacts
-                - accounts
-                - tasks
-                - calls
-                - events
-                - timeEntry
-                - contracts
-                - products
-                maxLength: 100
-                minLength: 0
-              isDefaultLayout:
-                type:
-                - boolean
-                - 'null'
-                description: Key that returns if the layout is the default layout in the module
-              sections:
-                $ref: ./Layout.json#/components/schemas/sectionRequestArr
-              layoutName:
-                type:
-                - string
-                - 'null'
-                description: Name of the layout
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - departmentId
-            - isDefaultLayout
-            - layoutName
-            - module
-            - sections
-            - skipDeptAccessValidation
-          examples:
-            Valid requestBody Definitions:
-              value:
-                skipDeptAccessValidation: false
-                layoutDisplayName: ClonedLayout
-                layoutDesc: Layout cloned from default layout
-                sections:
-                - name: Ticket Information
-                  i18NLabel: Ticket Information
+                - name: Case Information
                   id: 1
                   fields:
-                  - id: '4000000000353'
+                  - displayLabel: Department
+                    isCustomField: false
+                    name: departmentId
+                    id: '4000000000556'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: LookUp
+                    maxLength: 50
                     isMandatory: true
-                  - id: '4000000000357'
+                  - displayLabel: Account Name
+                    isCustomField: false
+                    name: accountId
+                    id: '4000000000558'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: LookUp
+                    maxLength: 300
+                    isMandatory: false
+                  - displayLabel: Contact Name
+                    isCustomField: false
+                    name: contactId
+                    id: '4000000000560'
+                    isSystemMandatory: true
+                    isRemovable: false
+                    type: LookUp
+                    maxLength: 300
                     isMandatory: true
-                  - id: '4000000000355'
+                  - displayLabel: Email
+                    isCustomField: false
+                    name: email
+                    id: '4000000000562'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: Email
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000359'
+                  - displayLabel: Phone
+                    isCustomField: false
+                    name: phone
+                    id: '4000000000564'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Phone
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000361'
-                    isMandatory: false
-                  - allowedValues:
-                    - 'Education :: University :: Private'
-                    - 'Education :: University :: Public'
-                    - 'Education :: School :: Private'
-                    - 'Education :: School :: Public'
-                    defaultValue: 'Education :: University :: Private'
-                    isNested: true
-                    sortBy: userDefined
-                    id: '4000000009999'
-                    isMandatory: false
-                  - allowedValues:
-                    - Sub General
-                    - Sub Defects
-                    defaultValue: Sub General
-                    isNested: false
-                    sortBy: userDefined
-                    id: '4000000000423'
-                    isMandatory: false
-                  - allowedValues:
-                    - General
-                    - Defects
-                    defaultValue: General
-                    isNested: false
-                    id: '4000000000421'
-                    isMandatory: false
-                  - id: '4000000000363'
+                  - displayLabel: Subject
+                    isCustomField: false
+                    name: subject
+                    id: '4000000000566'
+                    isSystemMandatory: true
+                    isRemovable: false
+                    type: Text
+                    maxLength: 255
                     isMandatory: true
-                  - id: '4000000000365'
+                  - displayLabel: Description
+                    isCustomField: false
+                    name: description
+                    id: '4000000000568'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: Textarea
+                    maxLength: 1000000
                     isMandatory: false
-                  - allowedValues:
+                  - displayLabel: Status
+                    allowedValues:
                     - Open
-                    - Open_july
                     - On Hold
                     - Escalated
-                    - Closed1
                     - Closed
-                    - newDeptClosed
-                    restoreOnReplyValues:
-                    - Open_july
-                    - newDeptClosed
-                    - Escalated
-                    - On Hold
-                    - Closed
-                    - Closed1
-                    - Open
+                    isCustomField: false
                     defaultValue: Open
-                    isNested: false
+                    isSystemMandatory: true
+                    type: Picklist
+                    restoreOnReplyValues:
+                    - Open
+                    - On Hold
+                    - Escalated
+                    - Closed
+                    name: status
                     sortBy: userDefined
-                    id: '4000000000367'
+                    id: '4000000000570'
+                    isRemovable: false
+                    maxLength: 120
                     isMandatory: true
-                  - id: '4000000000371'
+                  - displayLabel: Product Name
+                    isCustomField: false
+                    name: productId
+                    id: '4000000000572'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: LookUp
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000369'
+                  - displayLabel: Ticket Owner
+                    isCustomField: false
+                    name: assigneeId
+                    id: '4000000000574'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: LookUp
+                    maxLength: 120
                     isMandatory: false
                 - name: Additional Information
-                  i18NLabel: Additional Information
                   id: 2
                   fields:
-                  - id: '4000000000405'
+                  - displayLabel: Due Date
+                    isCustomField: false
+                    name: dueDate
+                    id: '4000000000610'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: DateTime
+                    maxLength: 300
                     isMandatory: false
-                  - allowedValues:
+                  - displayLabel: Priority
+                    allowedValues:
                     - -None-
                     - High
                     - Medium
                     - Low
+                    isCustomField: false
                     defaultValue: -None-
-                    isNested: false
-                    id: '4000000000407'
+                    name: priority
+                    sortBy: userDefined
+                    id: '4000000000614'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: Picklist
+                    maxLength: 120
                     isMandatory: false
-                  - allowedValues:
+                  - displayLabel: Channel
+                    allowedValues:
                     - Phone
                     - Email
                     - Web
@@ -2541,345 +2582,323 @@ components:
                     - Chat
                     - Forums
                     - Feedback Widget
+                    isCustomField: false
                     defaultValue: Phone
-                    isNested: false
+                    name: channel
                     sortBy: userDefined
-                    id: '4000000000409'
+                    id: '4000000000616'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: Picklist
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000411'
-                    isMandatory: false
-                  - id: '4000000000413'
-                    isMandatory: false
-                  - allowedValues:
+                  - displayLabel: Classification
+                    allowedValues:
                     - -None-
                     - Question
                     - Problem
                     - Feature
                     - Others
+                    isCustomField: false
                     defaultValue: -None-
-                    isNested: false
+                    name: classification
                     sortBy: userDefined
-                    id: '4000000000415'
+                    id: '4000000000622'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Picklist
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000417'
+                  - displayLabel: Resolution
+                    isCustomField: false
+                    name: resolution
+                    id: '4000000000624'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: Textarea
+                    maxLength: 1000000
                     isMandatory: false
-                  - id: '4000000000447'
-                    isMandatory: false
-                layoutName: ClonedLayout
-    layoutRequestJSON:
+    cloneLayoutResponse:
+      description: cloneLayoutResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              skipDeptAccessValidation:
-                type:
-                - boolean
+            oneOf:
+            - additionalProperties: false
+              allOf:
+              - $ref: ./Layout.json#/components/schemas/basicLayoutJson
+              - type:
                 - 'null'
-                description: Key that returns if the layout is common to all profiles of the organisation and not specific to the department
-              departmentId:
-                type:
-                - string
+                - object
+                properties:
+                  module:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - Cases
+                    - Contacts
+                    - Accounts
+                    - Tasks
+                    - Calls
+                    - Events
+                    - TimeEntry
+                    - Contracts
+                    - Products
+                    maxLength: 100
+                    minLength: 0
+                  sections:
+                    $ref: ./Layout.json#/components/schemas/sectionListForLayout
+                required:
+                - module
+                - sections
+            - additionalProperties: false
+              allOf:
+              - $ref: ./Layout.json#/components/schemas/cloneLayoutCommonResponse
+              - type:
                 - 'null'
-                - integer
-                format: int64
-                description: ID of department in which the layout is configured
-                pattern: ([0-9]+)
-              layoutDisplayName:
-                type:
-                - string
-                - 'null'
-                description: Display Name of the layout in HelpCenter
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              module:
-                type:
-                - string
-                - 'null'
-                description: mdoule name
-                enum:
-                - tickets
-                - contacts
-                - accounts
-                - tasks
-                - calls
-                - events
-                - timeEntry
-                - contracts
-                - products
-                maxLength: 100
-                minLength: 0
-              isDefaultLayout:
-                type:
-                - boolean
-                - 'null'
-                description: Key that returns if the layout is the default layout in the module
-              sections:
-                $ref: ./Layout.json#/components/schemas/sectionRequestArr
-              layoutName:
-                type:
-                - string
-                - 'null'
-                description: Name of the layout
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - departmentId
-            - isDefaultLayout
-            - layoutDisplayName
-            - layoutName
-            - module
-            - sections
-            - skipDeptAccessValidation
+                - object
+                properties:
+                  departmentId:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                required:
+                - departmentId
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                skipDeptAccessValidation: false
-                module: accounts
-                departmentId: '4000000012710'
+                modifiedTime: 1557282094000
+                module: Accounts
                 layoutDisplayName: Clonned Account Layout
-                layoutDesc: DESC
+                layoutDesc: layout of the accounts
+                isDefaultLayout: false
                 sections:
                 - name: Account Information
-                  i18NLabel: Account Information
-                  isCustomSection: false
+                  isCustomSection: true
                   id: 1
                   fields:
-                  - id: '4000000000404'
+                  - displayLabel: Account Name
+                    isCustomField: false
+                    name: accountName
+                    id: '4000000000404'
+                    isSystemMandatory: true
+                    isRemovable: false
+                    type: Text
+                    maxLength: 200
                     isMandatory: true
-                  - id: '4000000000408'
+                  - displayLabel: Email
+                    isCustomField: false
+                    name: email
+                    id: '4000000000408'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Email
+                    maxLength: 120
                     isMandatory: false
-                  - id: '4000000000406'
+                  - displayLabel: Phone
+                    isCustomField: false
+                    name: phone
+                    id: '4000000000406'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Phone
+                    maxLength: 30
                     isMandatory: false
-                  - id: '4000000000410'
+                  - displayLabel: Website
+                    isCustomField: false
+                    name: website
+                    id: '4000000000410'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: URL
+                    maxLength: 2083
                     isMandatory: false
-                  - id: '4000000000438'
+                  - displayLabel: Country
+                    isCustomField: false
+                    name: country
+                    id: '4000000000438'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Text
+                    maxLength: 30
                     isMandatory: false
-                  - id: '4000000000412'
+                  - displayLabel: Account Owner
+                    isCustomField: false
+                    name: ownerId
+                    id: '4000000000412'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: LookUp
+                    maxLength: 120
+                    isMandatory: false
+                  - displayLabel: Education Type
+                    allowedValues:
+                    - 'Education :: University :: Private'
+                    - 'Education :: University :: Public'
+                    - 'Education :: School :: Private'
+                    - 'Education :: School :: Public'
+                    apiName: cf_education_type
+                    isCustomField: true
+                    defaultValue: 'Education :: University :: Private'
+                    isNested: true
+                    isSystemMandatory: false
+                    type: Picklist
+                    isEncryptedField: false
+                    sortBy: userDefined
+                    id: '4000000009999'
+                    isRemovable: true
+                    maxLength: 120
+                    isMandatory: false
+                layoutName: cloneAccLayout1
+                skipDeptAccessValidation: false
+                createdBy: '4000000015894'
+                createdTime: 1557282094000
+                modifiedBy: '4000000015894'
+                id: '4000000039001'
+                status: active
+    createLayoutResponse:
+      description: createLayoutResponse template definitions
+      content:
+        application/json:
+          schema:
+            anyOf:
+            - additionalProperties: false
+              allOf:
+              - $ref: ./Layout.json#/components/schemas/basicLayoutJson
+              - type:
+                - 'null'
+                - object
+                properties:
+                  module:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - Cases
+                    - Contacts
+                    - Accounts
+                    - Tasks
+                    - Calls
+                    - Events
+                    - TimeEntry
+                    - Contracts
+                    - Products
+                    maxLength: 100
+                    minLength: 0
+                  sections:
+                    $ref: ./Layout.json#/components/schemas/sectionListForLayout
+                required:
+                - module
+                - sections
+            - additionalProperties: false
+              allOf:
+              - $ref: ./Layout.json#/components/schemas/cloneLayoutCommonResponse
+              - type:
+                - 'null'
+                - object
+                properties:
+                  departmentId:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                required:
+                - departmentId
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1557377577000
+                departmentId: '4000000012710'
+                module: Accounts
+                layoutDisplayName: Clonned Account Layout
+                layoutDesc: DESC
+                isDefaultLayout: false
+                sections:
+                - name: Account Information
+                  isCustomSection: true
+                  id: 1
+                  fields:
+                  - displayLabel: Account Name
+                    isCustomField: false
+                    name: accountName
+                    id: '4000000000404'
+                    isSystemMandatory: true
+                    isRemovable: false
+                    type: Text
+                    maxLength: 200
+                    isMandatory: true
+                  - displayLabel: Email
+                    isCustomField: false
+                    name: email
+                    id: '4000000000408'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Email
+                    maxLength: 120
+                    isMandatory: false
+                  - displayLabel: Phone
+                    isCustomField: false
+                    name: phone
+                    id: '4000000000406'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Phone
+                    maxLength: 30
+                    isMandatory: false
+                  - displayLabel: Website
+                    isCustomField: false
+                    name: website
+                    id: '4000000000410'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: URL
+                    maxLength: 2083
+                    isMandatory: false
+                  - displayLabel: Country
+                    isCustomField: false
+                    name: country
+                    id: '4000000000438'
+                    isSystemMandatory: false
+                    isRemovable: true
+                    type: Text
+                    maxLength: 30
+                    isMandatory: false
+                  - displayLabel: Account Owner
+                    isCustomField: false
+                    name: ownerId
+                    id: '4000000000412'
+                    isSystemMandatory: false
+                    isRemovable: false
+                    type: LookUp
+                    maxLength: 120
                     isMandatory: false
                 layoutName: 'accounts layout '
-    layoutIdsJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              layoutIds:
-                $ref: ./Layout.json#/components/schemas/layoutIdsArray
-            required:
-            - layoutIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                layoutIds:
-                - '4000000007187'
-                - '4000000007197'
-    layoutProfileIdsJsonObject:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              layoutProfileIds:
-                $ref: ./Layout.json#/components/schemas/layoutProfileIdsJson
-            required:
-            - layoutProfileIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                layoutProfileIds:
-                - 4000000015183
-                - 4000000015186
-                - 4000000015189
-    cloneLayoutJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              skipDeptAccessValidation:
-                type:
-                - boolean
-                - 'null'
-              layoutDisplayName:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              isDefaultLayout:
-                type:
-                - string
-                - 'null'
-                enum:
-                - 'false'
-                maxLength: 100
-                minLength: 0
-              layoutDesc:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              layoutName:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - layoutName
-          examples:
-            Valid requestBody Definitions:
-              value:
                 skipDeptAccessValidation: false
-                layoutDisplayName: Clonned Account Layout
-                isDefaultLayout: false
-                layoutDesc: Layout of the accounts
-                layoutName: cloneAccLayout1
-    deactivateLayoutRequestJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              transferToLayoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                transferToLayoutId: '4000000038039'
-    updateLayoutFieldRequestJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              allowedValues:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 120
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-                uniqueItems: false
-              defaultValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 120
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              sortBy:
-                type:
-                - string
-                - 'null'
-                enum:
-                - alphabetical
-                - userDefined
-                maxLength: 100
-                minLength: 0
-              isMandatory:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - allowedValues
-            - defaultValue
-            - isMandatory
-            - sortBy
-          examples:
-            Valid requestBody Definitions:
-              value:
-                allowedValues:
-                - 'Education :: University :: Private'
-                - 'Education :: University :: Public'
-                - 'Education :: School :: Private'
-                - 'Education :: School :: Public'
-                defaultValue: 'Education :: University :: Private'
-                isNested: true
-                sortBy: userDefined
-                isMandatory: true
-    replaceValueRequestJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              newValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 120
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              oldValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 120
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              fieldId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - fieldId
-            - newValue
-            - oldValue
-          examples:
-            Valid requestBody Definitions:
-              value:
-                newValue: Sub Defects1235
-                oldValue: Sub Defects
-                fieldId: '4000000000423'
+                createdBy: '4000000015894'
+                createdTime: 1557377577000
+                modifiedBy: '4000000015894'
+                id: '4000000043004'
+                status: active
   parameters:
+    fieldId:
+      name: fieldId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
     departmentId:
       name: departmentId
       in: query
@@ -2894,6 +2913,19 @@ components:
         - integer
         format: int64
         description: ID of the department in which the layouts are configured
+        pattern: ([0-9]+)
+    layoutId:
+      name: layoutId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
         pattern: ([0-9]+)
     module:
       name: module
@@ -2919,33 +2951,7 @@ components:
         - timeEntry
         maxLength: 100
         minLength: 0
-    fieldId:
-      name: fieldId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    layoutId:
-      name: layoutId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Layout

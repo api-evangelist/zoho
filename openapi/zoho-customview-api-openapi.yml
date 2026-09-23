@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter CustomView API
+  title: Custom View API
   version: 1.0.0
 tags:
 - name: CustomView
@@ -212,6 +212,21 @@ paths:
       - external-public
 components:
   parameters:
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department in which the view(s) is (are) configured.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department in which the view(s) is (are) configured.
+        pattern: ([0-9]+)
     cvId:
       name: cvId
       in: path
@@ -241,21 +256,137 @@ components:
         - tickets
         maxLength: 100
         minLength: 0
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department in which the view(s) is (are) configured.
-      required: false
-      style: form
-      explode: true
-      schema:
+  schemas:
+    starredViewsJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        createdBy:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+          properties: {}
+        isCustomView:
+          type:
+          - boolean
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        count:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        deprecatedViewId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        viewName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+      required:
+      - deprecatedViewId
+      - id
+      - isCustomView
+      - name
+      - viewName
+    customView_array:
+      type:
+      - 'null'
+      - array
+      items:
         type:
         - string
         - 'null'
         - integer
         format: int64
-        description: ID of the department in which the view(s) is (are) configured.
         pattern: ([0-9]+)
+    starredViewResponseArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/starredViewsJson'
+    viewsData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/viewsJson'
+    viewsJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        isCustomView:
+          type:
+          - boolean
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        createdBy:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        deprecatedViewId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        viewName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+      required:
+      - isCustomView
+      - name
+      - id
+      - viewName
   responses:
     getStarredViewsResponse:
       description: getStarredViewsResponse template definitions
@@ -400,137 +531,6 @@ components:
                 data:
                   name: My Records
                   id: '4000000008143'
-  schemas:
-    starredViewsJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        createdBy:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-          properties: {}
-        isCustomView:
-          type:
-          - boolean
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        count:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        deprecatedViewId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        viewName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-      required:
-      - deprecatedViewId
-      - id
-      - isCustomView
-      - name
-      - viewName
-    viewsJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        isCustomView:
-          type:
-          - boolean
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        createdBy:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        deprecatedViewId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        viewName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-      required:
-      - isCustomView
-      - name
-      - id
-      - viewName
-    customView_array:
-      type:
-      - 'null'
-      - array
-      items:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    starredViewResponseArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/starredViewsJson'
-    viewsData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/viewsJson'
   requestBodies:
     starredViewJsonOrder:
       content:
@@ -560,4 +560,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: CustomView

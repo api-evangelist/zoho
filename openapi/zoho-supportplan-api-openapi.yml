@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter SupportPlan API
+  title: Support Plan API
   version: 1.0.0
 tags:
 - name: SupportPlan
@@ -140,6 +140,80 @@ paths:
       - external-public
 components:
   responses:
+    getAllSupportPlanObject:
+      description: getAllSupportPlanObject template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./SupportPlan.json#/components/schemas/getAllSupportPlanArray
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - supportType: Hours
+                  modifiedTime: 1658829607538
+                  creditDetails:
+                    creditLimit: '10'
+                    creditCycle: Weekly
+                  createdBy:
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
+                    name: SanGhem
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  name: SupportPlan for GoldCustomer
+                  sla:
+                    name: Gold-SLA
+                    id: '4000000019056'
+                    status: ACTIVE
+                  creadtedTime: 1658829607538
+                  modifiedBy:
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
+                    name: SanGhem
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  id: '4000000019017'
+                  department:
+                    name: Automation Department
+                    id: '4000000019012'
+                  status: ACTIVE
+                - supportType: Hours
+                  modifiedTime: 1658829607590
+                  creditDetails:
+                    creditLimit: '10'
+                    creditCycle: Weekly
+                  createdBy:
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
+                    name: SanGhem
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  name: SupportPlan for SilverCustomer
+                  sla:
+                    name: Silver-SLA
+                    id: '4000000019056'
+                    status: ACTIVE
+                  creadtedTime: 1658829607590
+                  modifiedBy:
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
+                    name: SanGhem
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  id: '4000000019016'
+                  department:
+                    name: Automation Department
+                    id: '4000000019012'
+                  status: ACTIVE
     createSupportPlanResponse:
       description: createSupportPlanResponse template definitions
       content:
@@ -253,94 +327,6 @@ components:
                   name: Automation Department
                   id: '4000000019012'
                 status: ACTIVE
-    getAllSupportPlanObject:
-      description: getAllSupportPlanObject template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./SupportPlan.json#/components/schemas/getAllSupportPlanArray
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - supportType: Hours
-                  modifiedTime: 1658829607538
-                  creditDetails:
-                    creditLimit: '10'
-                    creditCycle: Weekly
-                  createdBy:
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
-                    name: SanGhem
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  name: SupportPlan for GoldCustomer
-                  sla:
-                    name: Gold-SLA
-                    id: '4000000019056'
-                    status: ACTIVE
-                  creadtedTime: 1658829607538
-                  modifiedBy:
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
-                    name: SanGhem
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  id: '4000000019017'
-                  department:
-                    name: Automation Department
-                    id: '4000000019012'
-                  status: ACTIVE
-                - supportType: Hours
-                  modifiedTime: 1658829607590
-                  creditDetails:
-                    creditLimit: '10'
-                    creditCycle: Weekly
-                  createdBy:
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
-                    name: SanGhem
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  name: SupportPlan for SilverCustomer
-                  sla:
-                    name: Silver-SLA
-                    id: '4000000019056'
-                    status: ACTIVE
-                  creadtedTime: 1658829607590
-                  modifiedBy:
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000000045/photo?orgId=234587
-                    name: SanGhem
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  id: '4000000019016'
-                  department:
-                    name: Automation Department
-                    id: '4000000019012'
-                  status: ACTIVE
-  parameters:
-    supportPlanId:
-      name: supportPlanId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
     updateSupportPlanPayload:
       content:
@@ -471,7 +457,21 @@ components:
                 departmentId: '146284000010377075'
                 name: SupportPlan for GoldCustomer
                 status: ACTIVE
+  parameters:
+    supportPlanId:
+      name: supportPlanId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: SupportPlan

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Role API
+  title: Role API
   version: 1.0.0
 tags:
 - name: Role
@@ -257,7 +257,146 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    roleupdateJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              shareDataWithPeers:
+                type:
+                - boolean
+                - 'null'
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                shareDataWithPeers: true
+                name: Customer Care and Sales Associate
+                description: Can work on own tickets and can not re-assign tickets.
+                reportsTo: 5000000008807
+    roleJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Role.json#/components/schemas/roleupdateJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                reportsTo:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+            - type: object
+              required:
+              - name
+              - shareDataWithPeers
+          examples:
+            Valid requestBody Definitions:
+              value:
+                shareDataWithPeers: true
+                name: Customer Care Associate
+                description: Can work on own tickets and can not re-assign tickets.
+                reportsTo: 5000000008807
+    deleteRoleBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              transferToRoleId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - transferToRoleId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                transferToRoleId: '5000000008807'
   responses:
+    roleResponse:
+      description: roleResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Role.json#/components/schemas/roleJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                isDefault:
+                  type:
+                  - boolean
+                  - 'null'
+                immediateSubRoles:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                isVisible:
+                  type:
+                  - boolean
+                  - 'null'
+              required:
+              - id
+              - immediateSubRoles
+              - isDefault
+              - isVisible
+          examples:
+            Valid responses Definitions:
+              value:
+                isDefault: false
+                shareDataWithPeers: true
+                immediateSubRoles: []
+                name: Customer Care Associate
+                description: Can work on own tickets and can not re-assign tickets.
+                reportsTo: 5000000008807
+                id: '5000000002973'
+                isVisible: true
     roleResponseArray:
       description: roleResponseArray template definitions
       content:
@@ -386,145 +525,6 @@ components:
                 - '50000000010011'
                 - '50000000062391'
                 - '50000000062393'
-    roleResponse:
-      description: roleResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Role.json#/components/schemas/roleJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                isDefault:
-                  type:
-                  - boolean
-                  - 'null'
-                immediateSubRoles:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                isVisible:
-                  type:
-                  - boolean
-                  - 'null'
-              required:
-              - id
-              - immediateSubRoles
-              - isDefault
-              - isVisible
-          examples:
-            Valid responses Definitions:
-              value:
-                isDefault: false
-                shareDataWithPeers: true
-                immediateSubRoles: []
-                name: Customer Care Associate
-                description: Can work on own tickets and can not re-assign tickets.
-                reportsTo: 5000000008807
-                id: '5000000002973'
-                isVisible: true
-  requestBodies:
-    roleJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Role.json#/components/schemas/roleupdateJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                reportsTo:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-            - type: object
-              required:
-              - name
-              - shareDataWithPeers
-          examples:
-            Valid requestBody Definitions:
-              value:
-                shareDataWithPeers: true
-                name: Customer Care Associate
-                description: Can work on own tickets and can not re-assign tickets.
-                reportsTo: 5000000008807
-    deleteRoleBody:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              transferToRoleId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - transferToRoleId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                transferToRoleId: '5000000008807'
-    roleupdateJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              shareDataWithPeers:
-                type:
-                - boolean
-                - 'null'
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                shareDataWithPeers: true
-                name: Customer Care and Sales Associate
-                description: Can work on own tickets and can not re-assign tickets.
-                reportsTo: 5000000008807
   parameters:
     roleId:
       name: roleId
@@ -539,18 +539,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-    isDefault:
-      name: isDefault
-      in: query
-      description: Key that denotes whether the roles must be default roles or custom roles
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes whether the roles must be default roles or custom roles
     isVisible:
       name: isVisible
       in: query
@@ -563,7 +551,19 @@ components:
         - boolean
         - 'null'
         description: Key that filters roles according to their visibility in the UI
+    isDefault:
+      name: isDefault
+      in: query
+      description: Key that denotes whether the roles must be default roles or custom roles
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes whether the roles must be default roles or custom roles
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Role

@@ -1,8 +1,17 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Bulk Import - Batch API
-  version: 1.0.0
-  description: Operations for importing large data files in batches.
+  title: Zoho Analytics Bulk Bulk Import - Batch API
+  version: v2
+  description: API for Zoho Analytics Bulk Operations, including data import and export.
+servers:
+- url: https://analyticsapi.zoho.com
+security:
+- iam-oauth2-schema:
+  - ZohoAnalytics.data.read
+  - ZohoAnalytics.data.create
+  - ZohoAnalytics.data.update
+  - ZohoAnalytics.data.delete
+  - ZohoAnalytics.data.all
 tags:
 - name: Bulk Import - Batch
   description: Operations for importing large data files in batches.
@@ -15,7 +24,38 @@ paths:
       - iam-oauth2-schema:
         - ZohoAnalytics.data.create
       summary: Batch Import Data into New Table
-      description: "Initiate an import job to create a new table and import data in batches into the created table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure."
+      description: 'Initiate an import job to create a new table and import data in batches into the created table.
+
+
+        The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.
+
+
+        To import large amounts of data using Batch Import, follow the steps below:
+
+
+        - Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API''s {"batchKey":"start"} attribute.
+
+        - The server will generate a unique job ID and batch key for the import job and send them to the user in the response.
+
+        - Use the received batch key to submit the subsequent batches to the Batch Import API.
+
+        - Mark the end of the upload by adding {"isLastBatch":true} to the final batch.
+
+
+        You can check the import job status using the ''Get Import Job Details'' API with the jobId received in the response.
+
+
+        Notes:
+
+        - After the first batch is imported, scheduled import of the remaining batches begins automatically.
+
+        - For ''Append'' and ''UpdateAdd'' import types, each batch is committed individually.
+
+        - For ''TruncateAdd'', data is committed only after the final batch is uploaded.
+
+        - Batch order is preserved throughout.
+
+        - An import summary is stored upon job completion or failure.'
       operationId: batchImportNewTable
       parameters:
       - $ref: '#/components/parameters/org-id'
@@ -75,7 +115,38 @@ paths:
       - iam-oauth2-schema:
         - ZohoAnalytics.data.create
       summary: Batch Import Data into Existing Table
-      description: "Initiate an import job to import data present in multiple batch files into the specified existing table.\n\n The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.\n\nTo import large amounts of data using Batch Import, follow the steps below:\n\n- Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API's {\"batchKey\":\"start\"} attribute.\n- The server will generate a unique job ID and batch key for the import job and send them to the user in the response.\n- Use the received batch key to submit the subsequent batches to the Batch Import API.\n- Mark the end of the upload by adding {\"isLastBatch\":true} to the final batch.\n\nYou can check the import job status using the 'Get Import Job Details' API with the jobId received in the response.\n\nNotes:\n- After the first batch is imported, scheduled import of the remaining batches begins automatically.\n- For 'Append' and 'UpdateAdd' import types, each batch is committed individually.\n- For 'TruncateAdd', data is committed only after the final batch is uploaded.\n- Batch order is preserved throughout.\n- An import summary is stored upon job completion or failure."
+      description: 'Initiate an import job to import data present in multiple batch files into the specified existing table.
+
+
+        The Batch Import API allows you to upload large amounts of data in batches. A large data file is split into small batches, each batch not exceeding 100 MB, and imported using batch import. Alternatively, you can also use Zoho Analytics SDKs to simplify the batching process.
+
+
+        To import large amounts of data using Batch Import, follow the steps below:
+
+
+        - Split the large CSV file into batches (each batch not exceeding 100MB) and upload the first batch using the Batch Import API''s {"batchKey":"start"} attribute.
+
+        - The server will generate a unique job ID and batch key for the import job and send them to the user in the response.
+
+        - Use the received batch key to submit the subsequent batches to the Batch Import API.
+
+        - Mark the end of the upload by adding {"isLastBatch":true} to the final batch.
+
+
+        You can check the import job status using the ''Get Import Job Details'' API with the jobId received in the response.
+
+
+        Notes:
+
+        - After the first batch is imported, scheduled import of the remaining batches begins automatically.
+
+        - For ''Append'' and ''UpdateAdd'' import types, each batch is committed individually.
+
+        - For ''TruncateAdd'', data is committed only after the final batch is uploaded.
+
+        - Batch order is preserved throughout.
+
+        - An import summary is stored upon job completion or failure.'
       operationId: batchImportExistingTable
       parameters:
       - $ref: '#/components/parameters/org-id'
@@ -149,6 +220,13 @@ components:
               type: string
               description: The key to identify the next batch.
   parameters:
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
     view-id:
       name: view-id
       in: path
@@ -163,14 +241,18 @@ components:
       schema:
         type: string
       description: ID of the workspace.
-    org-id:
-      name: ZANALYTICS-ORGID
-      in: header
-      required: true
-      schema:
-        type: string
-      description: Organization ID (can be obtained using Get Organizations API).
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoAnalytics.data.read: Read data from Zoho Analytics.
+            ZohoAnalytics.data.delete: Delete data from Zoho Analytics.
+            ZohoAnalytics.data.update: Update data in Zoho Analytics.
+            ZohoAnalytics.data.create: Create data in Zoho Analytics.
+            ZohoAnalytics.data.all: Full access to data in Zoho Analytics.
+            ZohoAnalytics.fullaccess.all: Full access to all Zoho Analytics features.

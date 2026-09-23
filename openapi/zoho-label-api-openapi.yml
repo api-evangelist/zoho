@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Label API
+  title: Label API
   version: 1.0.0
 tags:
 - name: Label
@@ -53,7 +53,7 @@ paths:
       tags:
       - Label
       summary: List labels
-      description: 'This API lists a particular number of labels, based on the limit defined. '
+      description: This API lists a particular number of labels, based on the limit defined.
       operationId: getLabels
       parameters:
       - $ref: '#/components/parameters/limit'
@@ -231,7 +231,7 @@ paths:
       tags:
       - Label
       summary: Remove users under a label
-      description: 'This API removes all users under a particular label. '
+      description: This API removes all users under a particular label.
       operationId: removeLabelsFromUsers
       parameters:
       - $ref: '#/components/parameters/labelId'
@@ -255,7 +255,40 @@ paths:
       - external-public
 components:
   requestBodies:
-    removeLabelsFromUsers_userIdsPayLoad:
+    createLabelPayloadJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Label.json#/components/schemas/updateLabelPayloadJSON
+            - type:
+              - 'null'
+              - object
+              properties:
+                helpCenterId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the help center in which the label must be created
+                  pattern: ([0-9]+)
+            - type: object
+              required:
+              - helpCenterId
+              - name
+          examples:
+            Valid requestBody Definitions:
+              value:
+                preferences:
+                  shape: ROUNDED
+                  bgColor: '#FFEE'
+                  textColor: '#FFEE'
+                name: Pro Customer
+                helpCenterId: '310975130119'
+                logoId: '310975130121'
+    userIdsPayLoad:
       content:
         application/json:
           schema:
@@ -286,7 +319,7 @@ components:
                 - '310975131231'
                 - '310975133141'
                 - '310975101849'
-    userIdsPayLoad:
+    removeLabelsFromUsers_userIdsPayLoad:
       content:
         application/json:
           schema:
@@ -353,39 +386,6 @@ components:
                   textColor: '#FFEE'
                 name: Pro Customer
                 logoId: '310975130121'
-    createLabelPayloadJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Label.json#/components/schemas/updateLabelPayloadJSON
-            - type:
-              - 'null'
-              - object
-              properties:
-                helpCenterId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the help center in which the label must be created
-                  pattern: ([0-9]+)
-            - type: object
-              required:
-              - helpCenterId
-              - name
-          examples:
-            Valid requestBody Definitions:
-              value:
-                preferences:
-                  shape: ROUNDED
-                  bgColor: '#FFEE'
-                  textColor: '#FFEE'
-                name: Pro Customer
-                helpCenterId: '310975130119'
-                logoId: '310975130121'
   parameters:
     from:
       name: from
@@ -402,19 +402,6 @@ components:
         format: int32
         description: 'Index number, starting from which the users must be fetched. The default value is 1. '
         minimum: 1
-        pattern: ([0-9]+)
-    labelId:
-      name: labelId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
         pattern: ([0-9]+)
     searchBy:
       name: searchBy
@@ -447,7 +434,57 @@ components:
         maximum: 50
         minimum: 1
         pattern: ([0-9]+)
+    labelId:
+      name: labelId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
+    labelListViewResponse:
+      description: labelListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Label.json#/components/schemas/labelData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1505797130000
+                  preferences:
+                    shape: ROUNDED
+                    bgColor: '#FFEE'
+                    textColor: '#FFEE'
+                  creator:
+                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  modifier:
+                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  name: Pro Customer
+                  count: '892'
+                  createdTime: 1505797130000
+                  id: '310975130110'
+                  helpCenterId: '310975130119'
+                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
     labelDetailViewResponse:
       description: labelDetailViewResponse template definitions
       content:
@@ -550,44 +587,7 @@ components:
                   id: '6000000032907'
                   assignedTime: 1565336864000
                   status: ACTIVE
-    labelListViewResponse:
-      description: labelListViewResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Label.json#/components/schemas/labelData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1505797130000
-                  preferences:
-                    shape: ROUNDED
-                    bgColor: '#FFEE'
-                    textColor: '#FFEE'
-                  creator:
-                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  modifier:
-                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  name: Pro Customer
-                  count: '892'
-                  createdTime: 1505797130000
-                  id: '310975130110'
-                  helpCenterId: '310975130119'
-                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Label

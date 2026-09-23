@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Organization API
+  title: Organization API
   version: 1.0.0
 tags:
 - name: Organization
@@ -10,7 +10,7 @@ paths:
       tags:
       - Organization
       summary: Get Organization
-      description: This API fetches the details of an organization from your help desk.
+      description: This API fetches the details of an organization from your help desk.
       operationId: getOrganization
       parameters:
       - $ref: '#/components/parameters/organizationId'
@@ -28,7 +28,7 @@ paths:
       tags:
       - Organization
       summary: Update Organization
-      description: This API updates the details of an organization.
+      description: This API updates the details of an organization.
       operationId: updateOrganization
       parameters:
       - $ref: '#/components/parameters/organizationId'
@@ -165,7 +165,9 @@ paths:
       tags:
       - Organization
       summary: Update Organization Logo
-      description: 'This API updates the logo set for an organization/portal in your help desk.<p><b>Note</b>: To upload organization logo generate OAuthToken for the scope: Desk.settings.UPDATE,profile.orglogo.UPDATE or Desk.basic.UPDATE,profile.orglogo.UPDATE </p>'
+      description: 'This API updates the logo set for an organization/portal in your help desk.
+
+        Note: To upload organization logo generate OAuthToken for the scope: Desk.settings.UPDATE,profile.orglogo.UPDATE or Desk.basic.UPDATE,profile.orglogo.UPDATE'
       operationId: updateOrganizationLogo
       parameters:
       - $ref: '#/components/parameters/organizationId'
@@ -248,225 +250,7 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    updateDefaultOrgJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - id
-          examples:
-            Valid requestBody Definitions:
-              value:
-                id: '3981311'
-    updateOrganization:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              zip:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              country:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              website:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              city:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              companyName:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-              mobile:
-                type:
-                - string
-                - 'null'
-                maxLength: 30
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 250
-                minLength: 0
-              employeeCount:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                minimum: 0
-                pattern: ([0-9]+)
-              referrerUrl:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              referrerFrom:
-                type:
-                - string
-                - 'null'
-                enum:
-                - OtherZohoServices
-                - Google
-                maxLength: 100
-                minLength: 0
-              ref_value:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              phoneNumber:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              portalName:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-z0-9]+'
-              street:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              primaryContact:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 1
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              currencyLocale:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z_]*'
-              alias:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: (null|^$|NULL|[0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s]+)
-              state:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              fax:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-          examples:
-            Valid requestBody Definitions:
-              value:
-                portalName: zylkerdesk
-                companyName: Zylker Desk
-                primaryContact: kelvin@zylker.com
-                mobile: '9848022338'
-                employeeCount: '10'
   responses:
-    organizationListArray:
-      description: organizationListArray template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Organization.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - country: United States
-                  city: Bernierview
-                  companyName: Zylker INC.
-                  description: We are Zylker Support.
-                  edition: ENTERPRISE
-                  employeeCount: '10'
-                  isAdminInOrg: true
-                  faviconURL: https://desk.zoho.com/api/v1/organizations/3981311/favicon?no-cache=d61a9627de49ffe046fcab71af3359e8
-                  portalName: zylker
-                  street: 70961 Powlowski Crossing
-                  currencyLocale: US
-                  alias: Zylker Teams
-                  id: '3981311'
-                  state: NC
-                  isPayloadEncryptionEnabled: 'false'
-                  fax: '8392839821'
-                  zip: 68838-2640
-                  website: www.zylker.com
-                  mobile: '9848022338'
-                  currencySymbol: $
-                  logoURL: https://desk.zoho.com/api/v1/organizations/3981311/logo?no-cache=ffc59c3ba6585c12fb306f5174948ff6
-                  isDefault: 'false'
-                  phoneNumber: '9884358081'
-                  portalURL: https://support.zylker.com/support/zylker/ShowHomePage.do
-                  primaryContact: steve@zylker.com
-                  currencyCode: USD
-                  isSandboxPortal: 'false'
     getOrganizationResponse:
       description: getOrganizationResponse template definitions
       content:
@@ -740,6 +524,51 @@ components:
             Valid responses Definitions:
               value:
                 companyLogoURL: https://desk.zoho.com/api/v1/organizations/3981311/logo?no-cache=ffc59c3ba6585c12fb306f5174948ff6
+    organizationListArray:
+      description: organizationListArray template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Organization.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - country: United States
+                  city: Bernierview
+                  companyName: Zylker INC.
+                  description: We are Zylker Support.
+                  edition: ENTERPRISE
+                  employeeCount: '10'
+                  isAdminInOrg: true
+                  faviconURL: https://desk.zoho.com/api/v1/organizations/3981311/favicon?no-cache=d61a9627de49ffe046fcab71af3359e8
+                  portalName: zylker
+                  street: 70961 Powlowski Crossing
+                  currencyLocale: US
+                  alias: Zylker Teams
+                  id: '3981311'
+                  state: NC
+                  isPayloadEncryptionEnabled: 'false'
+                  fax: '8392839821'
+                  zip: 68838-2640
+                  website: www.zylker.com
+                  mobile: '9848022338'
+                  currencySymbol: $
+                  logoURL: https://desk.zoho.com/api/v1/organizations/3981311/logo?no-cache=ffc59c3ba6585c12fb306f5174948ff6
+                  isDefault: 'false'
+                  phoneNumber: '9884358081'
+                  portalURL: https://support.zylker.com/support/zylker/ShowHomePage.do
+                  primaryContact: steve@zylker.com
+                  currencyCode: USD
+                  isSandboxPortal: 'false'
   parameters:
     fileSize:
       name: fileSize
@@ -771,7 +600,180 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+  requestBodies:
+    updateDefaultOrgJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - id
+          examples:
+            Valid requestBody Definitions:
+              value:
+                id: '3981311'
+    updateOrganization:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              zip:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              country:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              website:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              city:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              companyName:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+              mobile:
+                type:
+                - string
+                - 'null'
+                maxLength: 30
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 250
+                minLength: 0
+              employeeCount:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                minimum: 0
+                pattern: ([0-9]+)
+              referrerUrl:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              referrerFrom:
+                type:
+                - string
+                - 'null'
+                enum:
+                - OtherZohoServices
+                - Google
+                maxLength: 100
+                minLength: 0
+              ref_value:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              phoneNumber:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              portalName:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-z0-9]+'
+              street:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              primaryContact:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 1
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              currencyLocale:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z_]*'
+              alias:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: (null|^$|NULL|[0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s]+)
+              state:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              fax:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+          examples:
+            Valid requestBody Definitions:
+              value:
+                portalName: zylkerdesk
+                companyName: Zylker Desk
+                primaryContact: kelvin@zylker.com
+                mobile: '9848022338'
+                employeeCount: '10'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Organization

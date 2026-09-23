@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TemplateFolders API
+  title: Template Folders API
   version: 1.0.0
 tags:
-- name: TemplateFolders
+- name: Template Folders
 paths:
   /api/v1/templateFolders:
     get:
       tags:
-      - TemplateFolders
+      - Template Folders
       summary: Listing Template Folders
       description: List all Template Folders in alphabetical order
       operationId: getTemplateFolders
@@ -68,9 +68,8 @@ paths:
       - external-public
     post:
       tags:
-      - TemplateFolders
+      - Template Folders
       summary: Adding a Template Folder
-      description: Adding a Template Folder
       operationId: addTemplateFolder
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -89,9 +88,9 @@ paths:
   /api/v1/templateFolders/{folderId}:
     get:
       tags:
-      - TemplateFolders
+      - Template Folders
       summary: Getting a single Template Folder
-      description: Listing  a particular Template Folder
+      description: Listing a particular Template Folder
       operationId: getTemplateFolder
       parameters:
       - $ref: '#/components/parameters/folderId'
@@ -106,9 +105,8 @@ paths:
       - external-public
     put:
       tags:
-      - TemplateFolders
+      - Template Folders
       summary: Updating a Template Folder
-      description: Updating a Template Folder
       operationId: updateTemplateFolder
       parameters:
       - $ref: '#/components/parameters/folderId'
@@ -127,7 +125,7 @@ paths:
       - external-public
     delete:
       tags:
-      - TemplateFolders
+      - Template Folders
       summary: Delete Template Folder
       description: Delete a Template Folder
       operationId: deleteTemplateFolder
@@ -143,20 +141,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    folderId:
-      name: folderId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
     templateFolderjson:
       content:
@@ -776,7 +760,21 @@ components:
                 category: DEFAULT_FOLDER
                 createdOn: null
                 folderId: '1892000000082079'
+  parameters:
+    folderId:
+      name: folderId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TemplateFolders

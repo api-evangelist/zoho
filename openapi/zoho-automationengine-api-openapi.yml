@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter AutomationEngine API
+  title: Automation Engine API
   version: 1.0.0
 tags:
 - name: AutomationEngine
@@ -135,23 +135,6 @@ components:
             $ref: '#/components/schemas/ModuleEvent'
       required:
       - data
-    EngineModulesResponse:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/EngineModule'
-      required:
-      - data
-    events:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/eventsObject'
     actionObject:
       type:
       - 'null'
@@ -176,6 +159,12 @@ components:
       - async
       - name
       - reusable
+    modules:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/modulesObject'
     EngineModule:
       type: object
       properties:
@@ -210,32 +199,31 @@ components:
       - id
       - isCustomModule
       - isDeptSpecific
-    modules:
+    Module:
+      type: object
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+        apiName:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+      required:
+      - apiName
+      - displayLabel
+      - id
+    actions:
       type:
       - 'null'
       - array
       items:
-        $ref: '#/components/schemas/modulesObject'
-    modulesObject:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        actions:
-          $ref: '#/components/schemas/actions'
-        events:
-          $ref: '#/components/schemas/events'
-      required:
-      - actions
-      - events
-      - name
+        $ref: '#/components/schemas/actionObject'
     ModuleEvent:
       type: object
       properties:
@@ -258,12 +246,43 @@ components:
       - displayLabel
       - module
       - sysName
-    actions:
+    EngineModulesResponse:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EngineModule'
+      required:
+      - data
+    modulesObject:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        actions:
+          $ref: '#/components/schemas/actions'
+        events:
+          $ref: '#/components/schemas/events'
+      required:
+      - actions
+      - events
+      - name
+    events:
       type:
       - 'null'
       - array
       items:
-        $ref: '#/components/schemas/actionObject'
+        $ref: '#/components/schemas/eventsObject'
     eventsObject:
       type:
       - 'null'
@@ -288,25 +307,6 @@ components:
       - actions
       - name
       - submodule
-    Module:
-      type: object
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-        apiName:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-      required:
-      - apiName
-      - displayLabel
-      - id
   responses:
     engineModulesJson:
       description: Supported modules of the engine
@@ -336,6 +336,37 @@ components:
                   isCustomModule: false
                   isDeptSpecific: true
                   i18NLabel: Accounts
+    moduleEventsJson:
+      description: Supported events in a module of a specific engine
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ModuleEventsResponse'
+          examples:
+            default:
+              value:
+                data:
+                - displayLabel: Ticket Created
+                  module:
+                    displayLabel: Tickets
+                    apiName: tickets
+                    id: '1000000000585'
+                  baseEvent: CREATE
+                  sysName: tickets_create
+                - displayLabel: Ticket Updated
+                  module:
+                    displayLabel: Tickets
+                    apiName: tickets
+                    id: '1000000000585'
+                  baseEvent: UPDATE
+                  sysName: tickets_update
+                - displayLabel: Ticket Deleted
+                  module:
+                    displayLabel: Tickets
+                    apiName: tickets
+                    id: '1000000000585'
+                  baseEvent: DELETE
+                  sysName: tickets_delete
     supportedActionsResponse:
       description: supportedActionsResponse template definitions
       content:
@@ -426,38 +457,7 @@ components:
                     - async: true
                       name: NotifyUpdate
                       reusable: true
-    moduleEventsJson:
-      description: Supported events in a module of a specific engine
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ModuleEventsResponse'
-          examples:
-            default:
-              value:
-                data:
-                - displayLabel: Ticket Created
-                  module:
-                    displayLabel: Tickets
-                    apiName: tickets
-                    id: '1000000000585'
-                  baseEvent: CREATE
-                  sysName: tickets_create
-                - displayLabel: Ticket Updated
-                  module:
-                    displayLabel: Tickets
-                    apiName: tickets
-                    id: '1000000000585'
-                  baseEvent: UPDATE
-                  sysName: tickets_update
-                - displayLabel: Ticket Deleted
-                  module:
-                    displayLabel: Tickets
-                    apiName: tickets
-                    id: '1000000000585'
-                  baseEvent: DELETE
-                  sysName: tickets_delete
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: AutomationEngine

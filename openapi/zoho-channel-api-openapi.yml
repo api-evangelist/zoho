@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Channel API
+  title: Channel API
   version: 1.0.0
 tags:
 - name: Channel
@@ -76,6 +76,106 @@ paths:
       - external-public
 components:
   responses:
+    getChannelResponse:
+      description: getChannelResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              photoURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              code:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([a-zA-Z0-9_\-]+)
+              appName:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              externalId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              mappedIntegration:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              replyConfig:
+                $ref: ./Channel.json#/components/schemas/replyConfig
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - SYSTEM
+                - INTEGRATION
+                - INSTANT_MESSAGE
+                maxLength: 100
+                minLength: 0
+              acceptsReplies:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - acceptsReplies
+            - appName
+            - code
+            - departmentId
+            - externalId
+            - mappedIntegration
+            - name
+            - photoURL
+            - replyConfig
+            - type
+          examples:
+            Valid responses Definitions:
+              value:
+                photoURL: https://desk.zoho.com/api/v1/channels/sales_whatsapp_account/photo?orgId=60856948
+                code: SALES_WHATSAPP_ACCOUNT
+                appName: Sales Whatsapp Account
+                departmentId: '76389000000006907'
+                name: Sales Whatsapp Account
+                externalId: '109000000002003'
+                replyConfig:
+                  updateRecords: false
+                  acceptsAttachments: false
+                  contentTypes:
+                  - text/plain
+                  includeQuotedMessage: false
+                type: INSTANT_MESSAGE
+                acceptsReplies: true
     getChannelsResponse:
       description: getChannelsResponse template definitions
       content:
@@ -326,106 +426,6 @@ components:
                   replyConfig: null
                   type: SYSTEM
                   acceptsReplies: false
-    getChannelResponse:
-      description: getChannelResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              photoURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              code:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([a-zA-Z0-9_\-]+)
-              appName:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              externalId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              mappedIntegration:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              replyConfig:
-                $ref: ./Channel.json#/components/schemas/replyConfig
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - SYSTEM
-                - INTEGRATION
-                - INSTANT_MESSAGE
-                maxLength: 100
-                minLength: 0
-              acceptsReplies:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - acceptsReplies
-            - appName
-            - code
-            - departmentId
-            - externalId
-            - mappedIntegration
-            - name
-            - photoURL
-            - replyConfig
-            - type
-          examples:
-            Valid responses Definitions:
-              value:
-                photoURL: https://desk.zoho.com/api/v1/channels/sales_whatsapp_account/photo?orgId=60856948
-                code: SALES_WHATSAPP_ACCOUNT
-                appName: Sales Whatsapp Account
-                departmentId: '76389000000006907'
-                name: Sales Whatsapp Account
-                externalId: '109000000002003'
-                replyConfig:
-                  updateRecords: false
-                  acceptsAttachments: false
-                  contentTypes:
-                  - text/plain
-                  includeQuotedMessage: false
-                type: INSTANT_MESSAGE
-                acceptsReplies: true
   parameters:
     channelCode:
       name: channelCode
@@ -445,4 +445,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Channel

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter ArticleComment API
+  title: Article Comment API
   version: 1.0.0
 tags:
 - name: ArticleComment
@@ -165,116 +165,22 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    addCommentInput:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-                description: 'Visibility of the comment, which can be set only at the time of commenting. '
-              attachmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              contentType:
-                type:
-                - string
-                - 'null'
-                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
-                enum:
-                - plainText
-                - html
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-            - contentType
-            - isPublic
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isPublic: 'false'
-                attachmentIds:
-                - '4658200041001'
-                contentType: html
-                content: <div>Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
-    updateCommentInput:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-                description: 'Visibility of the comment, which can be set only at the time of commenting. '
-              attachmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              contentType:
-                type:
-                - string
-                - 'null'
-                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
-                enum:
-                - plainText
-                - html
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isPublic: true
-                attachmentIds:
-                - '4658200041001'
-                contentType: html
-                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
   parameters:
     articleId:
       name: articleId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    commentId:
+      name: commentId
       in: path
       required: true
       style: simple
@@ -353,20 +259,205 @@ components:
         maxLength: 100
         minLength: 0
         pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+  requestBodies:
+    updateCommentInput:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
+                type:
+                - boolean
+                - 'null'
+                description: 'Visibility of the comment, which can be set only at the time of commenting. '
+              attachmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              contentType:
+                type:
+                - string
+                - 'null'
+                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
+                enum:
+                - plainText
+                - html
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isPublic: true
+                attachmentIds:
+                - '4658200041001'
+                contentType: html
+                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
+    addCommentInput:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
+                type:
+                - boolean
+                - 'null'
+                description: 'Visibility of the comment, which can be set only at the time of commenting. '
+              attachmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              contentType:
+                type:
+                - string
+                - 'null'
+                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
+                enum:
+                - plainText
+                - html
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+            - contentType
+            - isPublic
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isPublic: 'false'
+                attachmentIds:
+                - '4658200041001'
+                contentType: html
+                content: <div>Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
   responses:
+    commentResponse:
+      description: commentResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./ArticleComment.json#/components/schemas/commentListResponse
+            - type:
+              - 'null'
+              - object
+              properties:
+                ticket:
+                  $ref: ./ArticleComment.json#/components/schemas/ticketMetaResponse
+              required:
+              - ticket
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1652101829000
+                attachments:
+                - previewurl: https://desk.zoho.com/api/v1/articles/46582000006958052/translations/en/attachments/nmhny14ce774984eb4b15891e1cbe274e612c/content?orgId=57044830
+                  size: '35594'
+                  name: Zoho desk introduction.jpg
+                  id: '4658200041001'
+                  href: https://downloadserver.zoho.com/webdownload?x-service=desk&event-id=b45a36decdceb443ccb4d3445f29c9966de7dee89041ea315318c4f358836a09e07add42e10810f8961c3f92bf853
+                tickets:
+                  ticketNumber: '115'
+                  isTrashed: 'false'
+                  webUrl: https://desk.zoho.com/agent/zohocorp/desk/tickets/details/5000000114001
+                  id: '5000000114001'
+                hashtags:
+                - offset: '47'
+                  length: '33'
+                  headerValue: Introduction
+                  headerId: Sample_header
+                commentedTime: 1652072940000
+                commenterName: Jack
+                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
+                commenterId: '4658200004039'
+                commenter:
+                  firstName: ''
+                  lastName: Jack
+                  photoURL: https://desk.zoho.com/api/v1/agents/4658200004039/photo?orgId=292828
+                  webUrl: https://desk.zoho.com/support/arunice/ShowHomePage.do#setup/users-control/agents/1000000000351
+                  roleName: CEO
+                  name: Jack
+                  id: '4658200004039'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#5C6368'
+                      textColor: '#FFFFFF'
+                    name: MVP
+                    id: '5000000081007'
+                    logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
+                  type: AGENT
+                  email: Jack@gmail.com
+                  kbRole: REVIEWER
+                mentions:
+                  groups:
+                  - offSet: '260'
+                    name: MVP
+                    length: '28'
+                    id: '5000000113025'
+                    logoUrl: https://desk.zoho.com/portal/api/publicImages/4658200004039?portalId=292828341431fq
+                  users:
+                  - firstName: ''
+                    lastName: Cristiano
+                    photoURL: https://desk.zoho.com/api/v1/agents/4658200044017/photo?orgId=292828
+                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#setup/users-control/agents/5000000000347
+                    length: '28'
+                    name: Cristiano
+                    id: '4658200044017'
+                    label:
+                      preferences:
+                        shape: ROUNDED
+                        bgColor: '#CE6785'
+                        textColor: '#FFFFFF'
+                      name: Prime user
+                      id: '5000000081001'
+                      logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n8
+                    type: AGENT
+                    email: Cristiano@gmail.com
+                    zuid: '695624'
+                    kbRole: REVIEWER
+                isPublic: true
+                id: '4658200041003'
+                contentType: html
+                ticketId: '5000000114001'
+                status: PUBLISHED
     listOfComments:
       description: listOfComments template definitions
       content:
@@ -503,98 +594,7 @@ components:
                   contentType: html
                   ticketId: '5000000114001'
                   status: PUBLISHED
-    commentResponse:
-      description: commentResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./ArticleComment.json#/components/schemas/commentListResponse
-            - type:
-              - 'null'
-              - object
-              properties:
-                ticket:
-                  $ref: ./ArticleComment.json#/components/schemas/ticketMetaResponse
-              required:
-              - ticket
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1652101829000
-                attachments:
-                - previewurl: https://desk.zoho.com/api/v1/articles/46582000006958052/translations/en/attachments/nmhny14ce774984eb4b15891e1cbe274e612c/content?orgId=57044830
-                  size: '35594'
-                  name: Zoho desk introduction.jpg
-                  id: '4658200041001'
-                  href: https://downloadserver.zoho.com/webdownload?x-service=desk&event-id=b45a36decdceb443ccb4d3445f29c9966de7dee89041ea315318c4f358836a09e07add42e10810f8961c3f92bf853
-                tickets:
-                  ticketNumber: '115'
-                  isTrashed: 'false'
-                  webUrl: https://desk.zoho.com/agent/zohocorp/desk/tickets/details/5000000114001
-                  id: '5000000114001'
-                hashtags:
-                - offset: '47'
-                  length: '33'
-                  headerValue: Introduction
-                  headerId: Sample_header
-                commentedTime: 1652072940000
-                commenterName: Jack
-                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
-                commenterId: '4658200004039'
-                commenter:
-                  firstName: ''
-                  lastName: Jack
-                  photoURL: https://desk.zoho.com/api/v1/agents/4658200004039/photo?orgId=292828
-                  webUrl: https://desk.zoho.com/support/arunice/ShowHomePage.do#setup/users-control/agents/1000000000351
-                  roleName: CEO
-                  name: Jack
-                  id: '4658200004039'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#5C6368'
-                      textColor: '#FFFFFF'
-                    name: MVP
-                    id: '5000000081007'
-                    logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
-                  type: AGENT
-                  email: Jack@gmail.com
-                  kbRole: REVIEWER
-                mentions:
-                  groups:
-                  - offSet: '260'
-                    name: MVP
-                    length: '28'
-                    id: '5000000113025'
-                    logoUrl: https://desk.zoho.com/portal/api/publicImages/4658200004039?portalId=292828341431fq
-                  users:
-                  - firstName: ''
-                    lastName: Cristiano
-                    photoURL: https://desk.zoho.com/api/v1/agents/4658200044017/photo?orgId=292828
-                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#setup/users-control/agents/5000000000347
-                    length: '28'
-                    name: Cristiano
-                    id: '4658200044017'
-                    label:
-                      preferences:
-                        shape: ROUNDED
-                        bgColor: '#CE6785'
-                        textColor: '#FFFFFF'
-                      name: Prime user
-                      id: '5000000081001'
-                      logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n8
-                    type: AGENT
-                    email: Cristiano@gmail.com
-                    zuid: '695624'
-                    kbRole: REVIEWER
-                isPublic: true
-                id: '4658200041003'
-                contentType: html
-                ticketId: '5000000114001'
-                status: PUBLISHED
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: ArticleComment

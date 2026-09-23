@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter AgentSignatures API
+  title: Agent Signatures API
   version: 1.0.0
 tags:
 - name: AgentSignatures
@@ -126,6 +126,20 @@ components:
               value:
                 signature: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Bonnie Runolfsson<br /></div><div><b>Manager</b><br /></div><div>Sales &amp; Marketing<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div><div><div><br /></div></div><div><br /></div></div><div><br /></div></div><div><br /></div></div>'
                 departmentId: 4000000015063
+  parameters:
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
     commonSignaturesResponse:
       description: commonSignaturesResponse template definitions
@@ -206,21 +220,7 @@ components:
                 defaultSignature: '<div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div style="font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif"><div>Bonnie Runolfsson<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div></div><div><br /></div></div>'
                 id: '4000000012902'
                 isActive: true
-  parameters:
-    agentId:
-      name: agentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: AgentSignatures

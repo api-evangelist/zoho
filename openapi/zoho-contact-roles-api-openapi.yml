@@ -1,7 +1,24 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Contact Roles API
-  version: 1.0.0
+  title: Deal Contact Roles API
+  description: API for managing contact roles in Deal records. Track and manage which contacts are associated with deals and their specific roles (e.g., Decision Maker, Influencer). Supports full CRUD operations to maintain accurate relationship data between contacts and deal opportunities.
+  version: '8.0'
+servers:
+- url: https://zohoapis.{dc}/crm/{version}
+  description: API Server URL
+  variables:
+    dc:
+      enum:
+      - com
+      - eu
+      - in
+      - cn
+      - au
+      default: com
+      description: API Server URL TLD
+    version:
+      default: v8
+      description: API Version
 tags:
 - name: Contact Roles
 paths:
@@ -502,106 +519,29 @@ paths:
       - Contact Roles
 components:
   schemas:
-    InvalidRelationNameError:
+    RequiredParamMissingError:
       type: object
-      description: Invalid relation name error
+      description: Required parameter missing error
       properties:
         code:
           type: string
-          description: Error code indicating invalid relation name
-          const: INVALID_DATA
+          description: Error code indicating a required parameter is missing
+          const: REQUIRED_PARAM_MISSING
         details:
           type: object
-          description: Error details containing the path index
+          description: Error details containing the missing parameter name
           properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that is invalid (2 for relation name)
-              const: 2
+            param_name:
+              type: string
+              description: Name of the missing required parameter
+              const: fields
           required:
-          - resource_path_index
+          - param_name
           additionalProperties: false
         message:
           type: string
-          description: Error message indicating the relation name is invalid
-          const: the relation name given seems to be invalid
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-    UpsertRelationsRequest:
-      type: object
-      description: Payload for adding or updating contact role relations on a deal
-      properties:
-        data:
-          type: array
-          description: List of contact role relations to upsert
-          minItems: 1
-          maxItems: 100
-          items:
-            type: object
-            description: Contact role relation definition
-            properties:
-              Contact_Role:
-                type: object
-                description: Contact role to associate with the relation
-                properties:
-                  name:
-                    type: string
-                    description: Contact role display name
-                    maxLength: 255
-                  id:
-                    type: string
-                    format: int64
-                    description: Contact role identifier
-                required:
-                - id
-                additionalProperties: false
-              id:
-                type: string
-                format: int64
-                description: Identifier of the contact relation for the deal
-            required:
-            - Contact_Role
-            - id
-            additionalProperties: false
-      required:
-      - data
-      additionalProperties: false
-    NoPermissionContactsError:
-      type: object
-      description: No permission to view contacts
-      properties:
-        code:
-          type: string
-          description: Error code indicating lack of permission
-          const: NO_PERMISSION
-        details:
-          type: object
-          description: Details about the missing permissions
-          properties:
-            permissions:
-              type: array
-              description: List of required permissions that are missing
-              items:
-                type: string
-                description: Permission identifier for viewing contacts
-                const: Crm_Implied_View_Contacts
-              maxItems: 1
-          required:
-          - permissions
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating permission denial
-          const: permission denied
+          description: Error message indicating a parameter is missing
+          const: One of the expected parameter is missing
         status:
           type: string
           description: Response status
@@ -659,29 +599,98 @@ components:
       required:
       - data
       additionalProperties: false
-    RequiredParamMissingError:
+    InvalidDataError:
       type: object
-      description: Required parameter missing error
+      description: Invalid related ID error
       properties:
         code:
           type: string
-          description: Error code indicating a required parameter is missing
-          const: REQUIRED_PARAM_MISSING
+          description: Error code indicating invalid deal ID
+          const: INVALID_DATA
         details:
           type: object
-          description: Error details containing the missing parameter name
+          description: Error details containing the path index
           properties:
-            param_name:
-              type: string
-              description: Name of the missing required parameter
-              const: fields
+            resource_path_index:
+              type: integer
+              format: int64
+              description: Index of the path parameter that is invalid (1 for deal ID)
+              const: 1
           required:
-          - param_name
+          - resource_path_index
           additionalProperties: false
         message:
           type: string
-          description: Error message indicating a parameter is missing
-          const: One of the expected parameter is missing
+          description: Error message indicating the deal ID is invalid
+          const: the related id given seems to be invalid
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Invalid module name error
+      properties:
+        code:
+          type: string
+          description: Error code indicating invalid module name
+          const: INVALID_MODULE
+        details:
+          type: object
+          description: Error details containing the path index
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that is invalid (0 for module)
+              const: 0
+          required:
+          - resource_path_index
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating the module name is invalid
+          const: the module name given seems to be invalid
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    InvalidRelationNameError:
+      type: object
+      description: Invalid relation name error
+      properties:
+        code:
+          type: string
+          description: Error code indicating invalid relation name
+          const: INVALID_DATA
+        details:
+          type: object
+          description: Error details containing the path index
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that is invalid (2 for relation name)
+              const: 2
+          required:
+          - resource_path_index
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating the relation name is invalid
+          const: the relation name given seems to be invalid
         status:
           type: string
           description: Response status
@@ -737,6 +746,82 @@ components:
       required:
       - data
       additionalProperties: false
+    NoPermissionContactsError:
+      type: object
+      description: No permission to view contacts
+      properties:
+        code:
+          type: string
+          description: Error code indicating lack of permission
+          const: NO_PERMISSION
+        details:
+          type: object
+          description: Details about the missing permissions
+          properties:
+            permissions:
+              type: array
+              description: List of required permissions that are missing
+              items:
+                type: string
+                description: Permission identifier for viewing contacts
+                const: Crm_Implied_View_Contacts
+              maxItems: 1
+          required:
+          - permissions
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating permission denial
+          const: permission denied
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    UpsertRelationsRequest:
+      type: object
+      description: Payload for adding or updating contact role relations on a deal
+      properties:
+        data:
+          type: array
+          description: List of contact role relations to upsert
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            description: Contact role relation definition
+            properties:
+              Contact_Role:
+                type: object
+                description: Contact role to associate with the relation
+                properties:
+                  name:
+                    type: string
+                    description: Contact role display name
+                    maxLength: 255
+                  id:
+                    type: string
+                    format: int64
+                    description: Contact role identifier
+                required:
+                - id
+                additionalProperties: false
+              id:
+                type: string
+                format: int64
+                description: Identifier of the contact relation for the deal
+            required:
+            - Contact_Role
+            - id
+            additionalProperties: false
+      required:
+      - data
+      additionalProperties: false
     NoPermissionDealsError:
       type: object
       description: No permission to view deals
@@ -774,80 +859,12 @@ components:
       - message
       - status
       additionalProperties: false
-    InvalidModuleError:
-      type: object
-      description: Invalid module name error
-      properties:
-        code:
-          type: string
-          description: Error code indicating invalid module name
-          const: INVALID_MODULE
-        details:
-          type: object
-          description: Error details containing the path index
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that is invalid (0 for module)
-              const: 0
-          required:
-          - resource_path_index
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating the module name is invalid
-          const: the module name given seems to be invalid
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-    InvalidDataError:
-      type: object
-      description: Invalid related ID error
-      properties:
-        code:
-          type: string
-          description: Error code indicating invalid deal ID
-          const: INVALID_DATA
-        details:
-          type: object
-          description: Error details containing the path index
-          properties:
-            resource_path_index:
-              type: integer
-              format: int64
-              description: Index of the path parameter that is invalid (1 for deal ID)
-              const: 1
-          required:
-          - resource_path_index
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating the deal ID is invalid
-          const: the related id given seems to be invalid
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
   parameters:
-    DealId:
-      name: dealId
+    Contact:
+      name: contactId
       in: path
       required: true
-      description: The unique identifier of the deal record
+      description: The unique identifier of the contact record
       schema:
         type: string
         format: int64
@@ -869,6 +886,14 @@ components:
         pattern: ^[A-Za-z_][A-Za-z0-9_]*(?:,[A-Za-z_][A-Za-z0-9_]*)*$
         minLength: 1
         maxLength: 1000
+    DealId:
+      name: dealId
+      in: path
+      required: true
+      description: The unique identifier of the deal record
+      schema:
+        type: string
+        format: int64
     Module:
       name: module
       in: path
@@ -878,14 +903,6 @@ components:
         type: string
         enum:
         - Deals
-    Contact:
-      name: contactId
-      in: path
-      required: true
-      description: The unique identifier of the contact record
-      schema:
-        type: string
-        format: int64
   responses:
     InternalServerError:
       description: Internal Server Error
@@ -920,5 +937,13 @@ components:
             additionalProperties: false
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoCRM.modules.ALL: Full access to all CRM modules
+            ZohoCRM.modules.CONTACTS.VIEW: View access to all Contacts module
+            ZohoCRM.modules.DEALS.VIEW: View access to all Deals module

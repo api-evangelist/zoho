@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Team API
+  title: Team API
   version: 1.0.0
 tags:
 - name: Team
@@ -79,7 +79,7 @@ paths:
       tags:
       - Team
       summary: Delete team
-      description: This API deletes an existing team from your help desk portal. To reassign the open and on hold tickets and tasks of the deleted team to a different team, pass the <b>ticketNewTeam</b>, <b>taskNewTeam</b>, <b>ticketNewAgent</b>, and <b>taskNewAgent</b> team parameters in the API request. If you do not want to assign the tickets to another team, pass the values of <b>ticketNewTeam</b> and <b>ticketNewAgent</b> as null. However, in the case of tasks, either <b>taskNewTeam</b> or <b>taskNewAgent</b> must have a valid value. Both parameters cannot be passed as null.
+      description: This API deletes an existing team from your help desk portal. To reassign the open and on hold tickets and tasks of the deleted team to a different team, pass the ticketNewTeam, taskNewTeam, ticketNewAgent, and taskNewAgent team parameters in the API request. If you do not want to assign the tickets to another team, pass the values of ticketNewTeam and ticketNewAgent as null. However, in the case of tasks, either taskNewTeam or taskNewAgent must have a valid value. Both parameters cannot be passed as null.
       operationId: deleteTeam
       parameters:
       - $ref: '#/components/parameters/team_id'
@@ -260,273 +260,6 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    associableTeamListResponse:
-      description: associableTeamListResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              teams:
-                $ref: ./Team.json#/components/schemas/teamIds
-            required:
-            - teams
-          examples:
-            Valid responses Definitions:
-              value:
-                teams:
-                - 6000000011303
-                - 6000000017021
-                - 6000000017023
-                - 6000000016013
-                - 6000000017017
-                - 6000000016015
-                - 6000000017019
-                - 6000000017013
-                - 6000000017015
-                - 6000000017009
-                - 6000000012001
-                - 6000000017011
-                - 6000000017005
-                - 6000000016025
-                - 6000000017007
-                - 6000000017059
-                - 6000000016027
-                - 6000000017001
-                - 6000000016029
-                - 6000000017003
-                - 6000000016031
-                - 6000000016017
-                - 6000000015001
-                - 6000000016019
-                - 6000000016021
-    teamResponse:
-      description: teamResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Team.json#/components/schemas/teamJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                derivedAgents:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: true
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                logoUrl:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 200
-                  minLength: 0
-                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              required:
-              - derivedAgents
-              - id
-              - logoUrl
-          examples:
-            Valid responses Definitions:
-              value:
-                rolesWithSubordinates:
-                - '6000000008684'
-                - '6000000008686'
-                departmentId: '6000000009893'
-                roles:
-                - '6000000011311'
-                - '6000000011307'
-                name: Sales Reps.
-                description: Sales teams for winning customers.
-                derivedAgents:
-                - '6000000009086'
-                - '6000000012003'
-                id: '6000000014007'
-                subTeams:
-                - '6000000011303'
-                logoUrl: null
-                agents:
-                - '6000000009086'
-    teamListResponse:
-      description: teamListResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              teams:
-                $ref: ./Team.json#/components/schemas/teamResponseArray
-            required:
-            - teams
-          examples:
-            Valid responses Definitions:
-              value:
-                teams:
-                - rolesWithSubordinates: []
-                  departmentId: '60000000839483'
-                  roles:
-                  - '60000000098623'
-                  name: Sales Reps.
-                  description: Sales teams for winning customers.
-                  derivedAgents:
-                  - '6000000011313'
-                  - '60000000120230'
-                  id: '6000000083003'
-                  subTeams: []
-                  logoUrl: null
-                  agents: []
-                - rolesWithSubordinates: []
-                  departmentId: '60000000839483'
-                  roles: []
-                  name: Support Teams
-                  description: Support teams for solving customer issues.
-                  derivedAgents:
-                  - '6000000011313'
-                  id: '6000000083034'
-                  subTeams: []
-                  logoUrl: null
-                  agents:
-                  - '6000000011313'
-    teamMembersListResponse:
-      description: teamMembersListResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                members:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      role:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 2
-                        minProperties: 2
-                        properties:
-                          name:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                        required:
-                        - id
-                        - name
-                      profile:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 2
-                        minProperties: 2
-                        properties:
-                          name:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 0
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                        required:
-                        - id
-                        - name
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                members:
-                  $ref: ./Team.json#/components/schemas/teamMembersDetailsList
-              required:
-              - members
-          examples:
-            Valid responses Definitions:
-              value:
-                members:
-                - firstName: ''
-                  lastName: John
-                  photoURL: https://contacts.zoho.com/file?t=user&ID=437793
-                  roleId: '7000000012324'
-                  profileId: '7000000012339'
-                  emailId: john@zylker.com
-                  id: '7000000013328'
-                  zuid: '437793'
-                - firstName: Steve
-                  lastName: Kyle
-                  photoURL: null
-                  roleId: '7000000012324'
-                  profileId: '7000000012339'
-                  emailId: kyle@zylker.com
-                  id: '7000000012958'
-                  zuid: '5625416'
-  parameters:
-    teamId:
-      name: teamId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    team_id:
-      name: team_id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
     teamRequestJson:
       content:
@@ -734,7 +467,274 @@ components:
                 ticketNewTeam: '5000000013001'
                 taskNewTeam: '5000000013001'
                 taskNewAgent: '5000000013009'
+  parameters:
+    team_id:
+      name: team_id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    teamId:
+      name: teamId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  responses:
+    teamListResponse:
+      description: teamListResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              teams:
+                $ref: ./Team.json#/components/schemas/teamResponseArray
+            required:
+            - teams
+          examples:
+            Valid responses Definitions:
+              value:
+                teams:
+                - rolesWithSubordinates: []
+                  departmentId: '60000000839483'
+                  roles:
+                  - '60000000098623'
+                  name: Sales Reps.
+                  description: Sales teams for winning customers.
+                  derivedAgents:
+                  - '6000000011313'
+                  - '60000000120230'
+                  id: '6000000083003'
+                  subTeams: []
+                  logoUrl: null
+                  agents: []
+                - rolesWithSubordinates: []
+                  departmentId: '60000000839483'
+                  roles: []
+                  name: Support Teams
+                  description: Support teams for solving customer issues.
+                  derivedAgents:
+                  - '6000000011313'
+                  id: '6000000083034'
+                  subTeams: []
+                  logoUrl: null
+                  agents:
+                  - '6000000011313'
+    associableTeamListResponse:
+      description: associableTeamListResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              teams:
+                $ref: ./Team.json#/components/schemas/teamIds
+            required:
+            - teams
+          examples:
+            Valid responses Definitions:
+              value:
+                teams:
+                - 6000000011303
+                - 6000000017021
+                - 6000000017023
+                - 6000000016013
+                - 6000000017017
+                - 6000000016015
+                - 6000000017019
+                - 6000000017013
+                - 6000000017015
+                - 6000000017009
+                - 6000000012001
+                - 6000000017011
+                - 6000000017005
+                - 6000000016025
+                - 6000000017007
+                - 6000000017059
+                - 6000000016027
+                - 6000000017001
+                - 6000000016029
+                - 6000000017003
+                - 6000000016031
+                - 6000000016017
+                - 6000000015001
+                - 6000000016019
+                - 6000000016021
+    teamMembersListResponse:
+      description: teamMembersListResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                members:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 2
+                        minProperties: 2
+                        properties:
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                        required:
+                        - id
+                        - name
+                      profile:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 2
+                        minProperties: 2
+                        properties:
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 0
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                        required:
+                        - id
+                        - name
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                members:
+                  $ref: ./Team.json#/components/schemas/teamMembersDetailsList
+              required:
+              - members
+          examples:
+            Valid responses Definitions:
+              value:
+                members:
+                - firstName: ''
+                  lastName: John
+                  photoURL: https://contacts.zoho.com/file?t=user&ID=437793
+                  roleId: '7000000012324'
+                  profileId: '7000000012339'
+                  emailId: john@zylker.com
+                  id: '7000000013328'
+                  zuid: '437793'
+                - firstName: Steve
+                  lastName: Kyle
+                  photoURL: null
+                  roleId: '7000000012324'
+                  profileId: '7000000012339'
+                  emailId: kyle@zylker.com
+                  id: '7000000012958'
+                  zuid: '5625416'
+    teamResponse:
+      description: teamResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Team.json#/components/schemas/teamJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                derivedAgents:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: true
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                logoUrl:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 200
+                  minLength: 0
+                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              required:
+              - derivedAgents
+              - id
+              - logoUrl
+          examples:
+            Valid responses Definitions:
+              value:
+                rolesWithSubordinates:
+                - '6000000008684'
+                - '6000000008686'
+                departmentId: '6000000009893'
+                roles:
+                - '6000000011311'
+                - '6000000011307'
+                name: Sales Reps.
+                description: Sales teams for winning customers.
+                derivedAgents:
+                - '6000000009086'
+                - '6000000012003'
+                id: '6000000014007'
+                subTeams:
+                - '6000000011303'
+                logoUrl: null
+                agents:
+                - '6000000009086'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Team

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter CommunityComment API
+  title: Community Comment API
   version: 1.0.0
 tags:
 - name: CommunityComment
@@ -128,7 +128,7 @@ paths:
       tags:
       - CommunityComment
       summary: Permanently delete topic comments
-      description: 'This API permanently deletes comments from the trash of your help desk portal. '
+      description: This API permanently deletes comments from the trash of your help desk portal.
       operationId: deleteCommunityTopicComments
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -451,7 +451,7 @@ paths:
       tags:
       - CommunityComment
       summary: Trash unmoderated community topic comments
-      description: 'This API trashes comments that are yet to be approved for publishing on a forum topic. '
+      description: This API trashes comments that are yet to be approved for publishing on a forum topic.
       operationId: deleteUnModeratedCommunityTopicComments
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -473,7 +473,7 @@ paths:
       tags:
       - CommunityComment
       summary: List community topic comments
-      description: 'This API lists a particular number of comments on a topic, based on the limit defined. '
+      description: This API lists a particular number of comments on a topic, based on the limit defined.
       operationId: getAllCommunityTopicComments
       parameters:
       - name: latestCommentsFirst
@@ -540,8 +540,55 @@ paths:
       - external-public
 components:
   parameters:
-    topicId:
-      name: topicId
+    categoryId:
+      name: categoryId
+      in: query
+      description: ID of the community category from which the comments must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the community category from which the comments must be fetched
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of comments to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of comments to list
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    endTime:
+      name: endTime
+      in: query
+      description: Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone.
+        maxLength: 100
+        minLength: 0
+        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+    replyId:
+      name: replyId
       in: path
       required: true
       style: simple
@@ -553,8 +600,8 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-    replyId:
-      name: replyId
+    topicId:
+      name: topicId
       in: path
       required: true
       style: simple
@@ -596,53 +643,6 @@ components:
         maxLength: 100
         minLength: 0
         pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-    endTime:
-      name: endTime
-      in: query
-      description: Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Ending time of the time range in which the comments should have been created. The value must be expressed according to the GMT time zone.
-        maxLength: 100
-        minLength: 0
-        pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-    categoryId:
-      name: categoryId
-      in: query
-      description: ID of the community category from which the comments must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the community category from which the comments must be fetched
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of comments to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of comments to list
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
     commentId:
       name: commentId
       in: path
@@ -697,6 +697,76 @@ components:
                 - '103417000000528003'
                 - '103417000000528006'
                 - '103417000000528008'
+    updateReply_communityCommentRequestJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              attachmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              content:
+                type:
+                - string
+                - 'null'
+                description: Content of the comment/reply
+                maxLength: 50000
+                minLength: 0
+              notifyMentions:
+                type:
+                - boolean
+                - 'null'
+                description: whether to notify mentioned user while updateing content.
+          examples:
+            Valid requestBody Definitions:
+              value:
+                attachmentIds:
+                - '4000000019027'
+                content: Reply updated 1
+    approveComments_moderationCommentIdsJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              commentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                minItems: 1
+                uniqueItems: false
+            required:
+            - commentIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                commentIds:
+                - '103417000000528003'
+                - '103417000000528006'
+                - '103417000000528008'
     addComment_communityAddCommentRequestJson:
       content:
         application/json:
@@ -733,6 +803,37 @@ components:
                 attachmentIds:
                 - '4000000019027'
                 content: Comment 1
+    deleteComments_moderationCommentIdsJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              commentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                minItems: 1
+                uniqueItems: false
+            required:
+            - commentIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                commentIds:
+                - '103417000000528003'
+                - '103417000000528006'
+                - '103417000000528008'
     communityAddCommentRequestJson:
       content:
         application/json:
@@ -769,37 +870,6 @@ components:
                 attachmentIds:
                 - '4000000019027'
                 content: Reply 1
-    trashComments_moderationCommentIdsJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              commentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                minItems: 1
-                uniqueItems: false
-            required:
-            - commentIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                commentIds:
-                - '103417000000528003'
-                - '103417000000528006'
-                - '103417000000528008'
     communityCommentRequestJson:
       content:
         application/json:
@@ -870,77 +940,7 @@ components:
                 - '103417000000528003'
                 - '103417000000528006'
                 - '103417000000528008'
-    approveComments_moderationCommentIdsJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              commentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                minItems: 1
-                uniqueItems: false
-            required:
-            - commentIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                commentIds:
-                - '103417000000528003'
-                - '103417000000528006'
-                - '103417000000528008'
-    updateReply_communityCommentRequestJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              attachmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              content:
-                type:
-                - string
-                - 'null'
-                description: Content of the comment/reply
-                maxLength: 50000
-                minLength: 0
-              notifyMentions:
-                type:
-                - boolean
-                - 'null'
-                description: whether to notify mentioned user while updateing content.
-          examples:
-            Valid requestBody Definitions:
-              value:
-                attachmentIds:
-                - '4000000019027'
-                content: Reply updated 1
-    deleteComments_moderationCommentIdsJSON:
+    trashComments_moderationCommentIdsJSON:
       content:
         application/json:
           schema:
@@ -1015,92 +1015,6 @@ components:
                 id: '4000000019029'
                 content: Comment 1
                 status: PUBLISHED
-    getModerationCommentsResponse:
-      description: getModerationCommentsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./CommunityComment.json#/components/schemas/getModerationCommentsData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - summary: Comment 1
-                  topicPeramlink: zoho-desk-api
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: user1
-                    id: '7000000015971'
-                    label:
-                      preferences:
-                        shape: RECTANGLE
-                        bgColor: '#23F123'
-                        textColor: '#2CA123'
-                      name: Admin
-                      id: '6000000158001'
-                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
-                    type: END_USER
-                  topicId: '4000000019013'
-                  trashedBy: null
-                  subject: Zoho Desk API
-                  createdTime: 1539682900077
-                  id: '4000000019013'
-                  categoryId: '4000000019012'
-                  status: AWAITINGAPPROVAL
-                - summary: Comment 2
-                  topicPeramlink: zoho-desk-api-features
-                  modifiedTime: 1539685739495
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: user 1
-                    id: '7000000015971'
-                    label:
-                      preferences:
-                        shape: RECTANGLE
-                        bgColor: '#23F123'
-                        textColor: '#2CA123'
-                      name: Admin
-                      id: '6000000158001'
-                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
-                    type: END_USER
-                  topicId: '4000000019013'
-                  trashedBy: null
-                  subject: Zoho Desk API Features
-                  createdTime: 1539685260386
-                  id: '4000000019029'
-                  categoryId: '4000000019012'
-                  status: AWAITINGAPPROVAL
-    commentsViewsCountResponse:
-      description: commentsViewsCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: '10'
     replyResponse:
       description: replyResponse template definitions
       content:
@@ -1201,6 +1115,148 @@ components:
                 id: '4000000019031'
                 content: Reply updated 1
                 status: PUBLISHED
+    commentsViewsCountResponse:
+      description: commentsViewsCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: '10'
+    getModerationCommentsResponse:
+      description: getModerationCommentsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./CommunityComment.json#/components/schemas/getModerationCommentsData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - summary: Comment 1
+                  topicPeramlink: zoho-desk-api
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: user1
+                    id: '7000000015971'
+                    label:
+                      preferences:
+                        shape: RECTANGLE
+                        bgColor: '#23F123'
+                        textColor: '#2CA123'
+                      name: Admin
+                      id: '6000000158001'
+                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                    type: END_USER
+                  topicId: '4000000019013'
+                  trashedBy: null
+                  subject: Zoho Desk API
+                  createdTime: 1539682900077
+                  id: '4000000019013'
+                  categoryId: '4000000019012'
+                  status: AWAITINGAPPROVAL
+                - summary: Comment 2
+                  topicPeramlink: zoho-desk-api-features
+                  modifiedTime: 1539685739495
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: user 1
+                    id: '7000000015971'
+                    label:
+                      preferences:
+                        shape: RECTANGLE
+                        bgColor: '#23F123'
+                        textColor: '#2CA123'
+                      name: Admin
+                      id: '6000000158001'
+                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                    type: END_USER
+                  topicId: '4000000019013'
+                  trashedBy: null
+                  subject: Zoho Desk API Features
+                  createdTime: 1539685260386
+                  id: '4000000019029'
+                  categoryId: '4000000019012'
+                  status: AWAITINGAPPROVAL
+    getUserCommentsResponse:
+      description: getUserCommentsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./CommunityComment.json#/components/schemas/getUserCommentsData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - summary: Comment 1
+                  topicPeramlink: zoho-desk-api
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: user2
+                    id: '7000000015972'
+                    label:
+                      preferences:
+                        shape: RECTANGLE
+                        bgColor: '#23F123'
+                        textColor: '#2CA123'
+                      name: Admin
+                      id: '6000000158001'
+                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
+                    type: AGENT
+                  topicId: '4000000019013'
+                  subject: Zoho Desk API
+                  createdTime: 1539682900077
+                  parentCommentId: '4000000019012'
+                  id: '4000000019013'
+                  categoryId: '4000000000017'
+                  status: PUBLISHED
+                  topicType: PROBLEM
+                - summary: Comment 2
+                  topicPeramlink: zoho-desk-api-features
+                  creator:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                    name: user2
+                    id: '7000000015972'
+                    type: AGENT
+                  topicId: '4000000019013'
+                  subject: Zoho Desk API Features
+                  createdTime: 1539685260386
+                  parentCommentId: null
+                  id: '4000000019029'
+                  categoryId: '4000000000017'
+                  status: PUBLISHED
+                  topicType: PROBLEM
     getComments:
       description: getComments template definitions
       content:
@@ -1280,63 +1336,7 @@ components:
                   id: '4000000019029'
                   content: <div>comment 3</div>
                   status: PUBLISHED
-    getUserCommentsResponse:
-      description: getUserCommentsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./CommunityComment.json#/components/schemas/getUserCommentsData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - summary: Comment 1
-                  topicPeramlink: zoho-desk-api
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: user2
-                    id: '7000000015972'
-                    label:
-                      preferences:
-                        shape: RECTANGLE
-                        bgColor: '#23F123'
-                        textColor: '#2CA123'
-                      name: Admin
-                      id: '6000000158001'
-                      logoUrl: https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132
-                    type: AGENT
-                  topicId: '4000000019013'
-                  subject: Zoho Desk API
-                  createdTime: 1539682900077
-                  parentCommentId: '4000000019012'
-                  id: '4000000019013'
-                  categoryId: '4000000000017'
-                  status: PUBLISHED
-                  topicType: PROBLEM
-                - summary: Comment 2
-                  topicPeramlink: zoho-desk-api-features
-                  creator:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                    name: user2
-                    id: '7000000015972'
-                    type: AGENT
-                  topicId: '4000000019013'
-                  subject: Zoho Desk API Features
-                  createdTime: 1539685260386
-                  parentCommentId: null
-                  id: '4000000019029'
-                  categoryId: '4000000000017'
-                  status: PUBLISHED
-                  topicType: PROBLEM
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: CommunityComment

@@ -1,8 +1,10 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Data APIs API
-  version: 1.0.0
-  description: Data APIs are used to perform addition, update, deletion actions on Zoho Analytics tables.
+  title: Zoho Analytics Data APIs API
+  version: v2
+  description: API for managing data in Zoho Analytics workspaces and views.
+servers:
+- url: https://analyticsapi.zoho.com
 tags:
 - name: Data APIs
   description: Data APIs are used to perform addition, update, deletion actions on Zoho Analytics tables.
@@ -196,21 +198,6 @@ paths:
         default:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
-  parameters:
-    view-id:
-      name: view-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the view.
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
   schemas:
     AddRowConfig:
       type: object
@@ -300,7 +287,33 @@ components:
           columnName1: value1
           columnName2: value2
         criteria: '"Sales Table"."Region"=''East'''
+  parameters:
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoAnalytics.data.read: Read data from Zoho Analytics.
+            ZohoAnalytics.data.delete: Delete data from Zoho Analytics.
+            ZohoAnalytics.data.update: Update data in Zoho Analytics.
+            ZohoAnalytics.data.create: Create data in Zoho Analytics.
+            ZohoAnalytics.data.all: Full access to data in Zoho Analytics.
+            ZohoAnalytics.fullaccess.all: Full access to all Zoho Analytics features.

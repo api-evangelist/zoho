@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter User API
+  title: User API
   version: 1.0.0
 tags:
 - name: User
@@ -35,7 +35,7 @@ paths:
       tags:
       - User
       summary: Update User Details
-      description: 'This API helps update the details of a particular help center user. '
+      description: This API helps update the details of a particular help center user.
       operationId: updateUserDetails
       parameters:
       - $ref: '#/components/parameters/userId'
@@ -231,7 +231,7 @@ paths:
       tags:
       - User
       summary: Assign Labels To User
-      description: 'This API assigns the labels you specify to a particular user. '
+      description: This API assigns the labels you specify to a particular user.
       operationId: assignLabelsToUser
       parameters:
       - $ref: '#/components/parameters/userId'
@@ -276,72 +276,6 @@ paths:
       - external-public
 components:
   responses:
-    getUsersResponse:
-      description: getUsersResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      count:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int32
-                        pattern: ([0-9]+)
-            - oneOf:
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./User.json#/components/schemas/data
-                required:
-                - data
-              - additionalProperties: false
-                allOf:
-                - $ref: ./User.json#/components/schemas/userListViewJson
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    count:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                  required:
-                  - count
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - lastAccessedTime: '2021-06-11T06:21:32.000Z'
-                  photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
-                  emailAddress: carol@zylker.com
-                  name: Developer
-                  id: '310975130121'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#39B54A'
-                      textColor: '#FFFFFF'
-                    name: Lock Label
-                    id: '24073000002823026'
-                    logoUrl: null
-                  type: ENDUSER
-                  status: ACTIVE
-                count: '1'
     userLabelJson:
       description: userLabelJson template definitions
       content:
@@ -390,6 +324,42 @@ components:
                   helpCenterId: '24073000002886005'
                   logoUrl: null
                   assignedTime: '2020-04-06T05:55:13.000Z'
+    userGroupJson:
+      description: userGroupJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./User.json#/components/schemas/userGroupJsonObj
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - addedTime: '2020-04-06T04:50:50.000Z'
+                  name: Zoho CRM Partners
+                  id: '24073000002957057'
+                  helpCenterId: '24073000002733221'
+                  logoUrl: null
+                  status: ACTIVE
+                - addedTime: '2020-04-06T04:50:30.000Z'
+                  name: Zoho Desk Partners
+                  id: '24073000002957051'
+                  helpCenterId: '24073000002733221'
+                  logoUrl: https://desk.zoho.com/portal/api/publicImages/24073000002959001?portalId=b363e6f8e029247a38a55e49806bf1f683801f9cd92870bf7cc50d48844902f0
+                  status: ACTIVE
+                - addedTime: '2020-04-06T04:50:14.000Z'
+                  name: Zoho One Prime Customers
+                  id: '24073000002957045'
+                  helpCenterId: '24073000002733221'
+                  logoUrl: null
+                  status: ACTIVE
     massActionListViewResponse:
       description: massActionListViewResponse template definitions
       content:
@@ -498,66 +468,73 @@ components:
                   isVerified: 'false'
                   isPrimary: 'true'
                 status: ACTIVE
-    userGroupJson:
-      description: userGroupJson template definitions
+    getUsersResponse:
+      description: getUsersResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./User.json#/components/schemas/userGroupJsonObj
-            required:
-            - data
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      count:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int32
+                        pattern: ([0-9]+)
+            - oneOf:
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./User.json#/components/schemas/data
+                required:
+                - data
+              - additionalProperties: false
+                allOf:
+                - $ref: ./User.json#/components/schemas/userListViewJson
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    count:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                  required:
+                  - count
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - addedTime: '2020-04-06T04:50:50.000Z'
-                  name: Zoho CRM Partners
-                  id: '24073000002957057'
-                  helpCenterId: '24073000002733221'
-                  logoUrl: null
+                - lastAccessedTime: '2021-06-11T06:21:32.000Z'
+                  photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
+                  emailAddress: carol@zylker.com
+                  name: Developer
+                  id: '310975130121'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#39B54A'
+                      textColor: '#FFFFFF'
+                    name: Lock Label
+                    id: '24073000002823026'
+                    logoUrl: null
+                  type: ENDUSER
                   status: ACTIVE
-                - addedTime: '2020-04-06T04:50:30.000Z'
-                  name: Zoho Desk Partners
-                  id: '24073000002957051'
-                  helpCenterId: '24073000002733221'
-                  logoUrl: https://desk.zoho.com/portal/api/publicImages/24073000002959001?portalId=b363e6f8e029247a38a55e49806bf1f683801f9cd92870bf7cc50d48844902f0
-                  status: ACTIVE
-                - addedTime: '2020-04-06T04:50:14.000Z'
-                  name: Zoho One Prime Customers
-                  id: '24073000002957045'
-                  helpCenterId: '24073000002733221'
-                  logoUrl: null
-                  status: ACTIVE
+                count: '1'
   requestBodies:
-    userLabelInputJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              labels:
-                $ref: ./User.json#/components/schemas/userLabelInputJsonArr
-            required:
-            - labels
-          examples:
-            Valid requestBody Definitions:
-              value:
-                labels:
-                - isPrimary: 'false'
-                  id: '24073000002958013'
-                - isPrimary: 'true'
-                  id: '24073000002152013'
-                - isPrimary: 'false'
-                  id: '24073000002958023'
     updateUserJson:
       content:
         application/json:
@@ -634,6 +611,29 @@ components:
             Valid requestBody Definitions:
               value:
                 anonymizedName: Guest User 001
+    userLabelInputJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              labels:
+                $ref: ./User.json#/components/schemas/userLabelInputJsonArr
+            required:
+            - labels
+          examples:
+            Valid requestBody Definitions:
+              value:
+                labels:
+                - isPrimary: 'false'
+                  id: '24073000002958013'
+                - isPrimary: 'true'
+                  id: '24073000002152013'
+                - isPrimary: 'false'
+                  id: '24073000002958023'
     userGroupInputJson:
       content:
         application/json:
@@ -672,4 +672,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: User

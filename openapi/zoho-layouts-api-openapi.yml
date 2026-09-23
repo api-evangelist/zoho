@@ -1,7 +1,24 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Layouts API
-  version: 1.0.0
+  title: Layouts API
+  description: CRUD operations on Layout customization for modules in Zoho CRM. Supports getting the details of all layouts or a specific layout of a module, updating a layout, deactivating/activating a layout, and deleting a layout.
+  version: '8'
+servers:
+- url: https://zohoapis.{dc}/crm/{version}
+  description: API Server URL
+  variables:
+    dc:
+      enum:
+      - com
+      - eu
+      - in
+      - cn
+      - au
+      default: com
+      description: API Server URL TLD
+    version:
+      default: v8
+      description: API Version
 tags:
 - name: Layouts
 paths:
@@ -56,13 +73,6 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   parameters:
-    ModuleParameter:
-      name: module
-      in: query
-      required: true
-      description: Specify the API name of the required module. Supports both standard modules (Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, Products, Vendors, Price_Books, Quotes, Sales_Orders, Purchase_Orders, Invoices, Appointments, Services) and custom modules. Module API names are case-insensitive, can contain alphanumeric characters and underscores, must not contain spaces, and have a maximum length of 50 characters. Use the GET - Modules Metadata API to retrieve all available module API names.
-      schema:
-        $ref: '#/components/schemas/ModuleName'
     LayoutIdParameter:
       name: id
       in: path
@@ -70,53 +80,76 @@ components:
       description: Unique identifier of the layout. Must be a valid 64-bit integer represented as a string. Can be obtained from the Get Layouts API.
       schema:
         $ref: '#/components/schemas/Id'
+    ModuleParameter:
+      name: module
+      in: query
+      required: true
+      description: Specify the API name of the required module. Supports both standard modules (Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, Products, Vendors, Price_Books, Quotes, Sales_Orders, Purchase_Orders, Invoices, Appointments, Services) and custom modules. Module API names are case-insensitive, can contain alphanumeric characters and underscores, must not contain spaces, and have a maximum length of 50 characters. Use the GET - Modules Metadata API to retrieve all available module API names.
+      schema:
+        $ref: '#/components/schemas/ModuleName'
   schemas:
-    UpdateLayoutErrorResponse:
+    LayoutUpdateObject:
       type: object
-      description: Error response for layout update operation.
+      description: Layout object containing the fields to update. At least one property must be provided. Maximum 5 sections and 5 fields (total across all sections) can be modified per request.
+      minProperties: 1
       properties:
-        layouts:
+        name:
+          type: string
+          description: New name for the layout. Must be unique within the module.
+          minLength: 1
+          maxLength: 255
+        show_business_card:
+          type: boolean
+          description: Enable or disable the business card display for this layout.
+        profiles:
           type: array
-          description: Array containing the error result of the layout update operation.
+          description: Array of profile objects to add or remove from the layout.
           items:
-            $ref: '#/components/schemas/LayoutUpdateErrorResult'
+            $ref: '#/components/schemas/ProfileUpdateObject'
           minItems: 1
-          maxItems: 1
+          maxItems: 50
+        sections:
+          type: array
+          description: Array of section objects to create, update, or delete. Maximum 5 sections allowed per request. Total fields across all sections must not exceed 5.
+          items:
+            $ref: '#/components/schemas/SectionUpdateObject'
+          minItems: 1
+          maxItems: 5
+      additionalProperties: false
+    LayoutUpdateSuccessResult:
+      type: object
+      description: Success result for a layout update.
+      required:
+      - code
+      - details
+      - message
+      - status
+      properties:
         code:
           type: string
-          description: Error code for non-layout-wrapped errors.
-          maxLength: 255
+          description: Success code.
+          enum:
+          - SUCCESS
         details:
-          $ref: '#/components/schemas/ErrorDetails'
+          type: object
+          description: Details about the updated layout.
+          required:
+          - id
+          properties:
+            id:
+              $ref: '#/components/schemas/Id'
+              description: Unique identifier of the updated layout.
+          additionalProperties: false
         message:
           type: string
-          description: Error message.
+          description: Success message.
           maxLength: 255
         status:
           type: string
           description: Status indicator.
           enum:
-          - error
+          - success
       additionalProperties: false
-    ProfileUpdateObject:
-      type: object
-      description: Profile object for adding or removing profile permissions.
-      required:
-      - id
-      properties:
-        id:
-          $ref: '#/components/schemas/Id'
-          description: Unique identifier of the profile.
-        _delete:
-          type: boolean
-          description: Set to true to remove this profile's access to the layout.
-      additionalProperties: false
-    ModuleName:
-      type: string
-      pattern: ^[A-Za-z0-9_]+$
-      minLength: 1
-      maxLength: 50
-      description: Module API name
     ErrorResponse:
       type: object
       description: Standard error response structure
@@ -152,6 +185,19 @@ components:
           enum:
           - error
           description: Status indicator for the response
+      additionalProperties: false
+    ProfileUpdateObject:
+      type: object
+      description: Profile object for adding or removing profile permissions.
+      required:
+      - id
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+          description: Unique identifier of the profile.
+        _delete:
+          type: boolean
+          description: Set to true to remove this profile's access to the layout.
       additionalProperties: false
     UpdateLayoutRequest:
       type: object
@@ -199,6 +245,150 @@ components:
           enum:
           - error
       additionalProperties: false
+    ModuleName:
+      type: string
+      pattern: ^[A-Za-z0-9_]+$
+      minLength: 1
+      maxLength: 50
+      description: Module API name
+    Id:
+      type: string
+      format: int64
+      pattern: ^[0-9]{1,19}$
+      minLength: 1
+      maxLength: 19
+      description: Unique identifier (64-bit integer represented as string)
+    LayoutUpdateErrorDetails:
+      type: object
+      description: Error details specific to layout update operations.
+      properties:
+        api_name:
+          type: string
+          description: API name of the field that caused the error.
+          maxLength: 100
+        json_path:
+          type: string
+          description: JSON path to the field that caused the error.
+          maxLength: 500
+        expected_data_type:
+          type: string
+          description: Expected data type for the field.
+          maxLength: 50
+        maximum_length:
+          type: integer
+          format: int32
+          description: Maximum allowed length for the field.
+        limit:
+          type: integer
+          format: int32
+          description: Maximum limit exceeded.
+      additionalProperties: true
+    SectionUpdateObject:
+      type: object
+      description: Section object for creating, updating, or deleting sections. For creating a new section, provide name, display_label, sequence_number, tab_traversal, and column_count. For updating an existing section, provide id along with properties to update. For deleting a section, provide id and _delete object.
+      minProperties: 1
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+          description: Unique identifier of the section. Required for updating or deleting existing sections. Omit when creating a new section.
+        name:
+          type: string
+          description: Internal API name of the section. Required when creating a new section. Should be unique within the layout.
+          minLength: 1
+          maxLength: 255
+        display_label:
+          type: string
+          description: Display label shown in the UI for the section. Required when creating a new section.
+          minLength: 1
+          maxLength: 255
+        sequence_number:
+          type: integer
+          format: int32
+          description: Position/order of the section in the layout (1-based). Required when creating a new section. Lower numbers appear first.
+          minimum: 1
+          maximum: 100
+        tab_traversal:
+          type: string
+          description: Tab traversal mode for the section. Defines how tab key navigation works within the section. 1 = column-wise, 2 = row-wise.
+          enum:
+          - left_to_right
+          - top_to_bottom
+        column_count:
+          type: integer
+          format: int32
+          description: Number of columns in the section layout.
+          minimum: 1
+          maximum: 2
+        fields:
+          type: array
+          description: 'Array of field objects to add, update, create, or remove from this section. Note: Total fields across all sections in the request must not exceed 5.'
+          items:
+            $ref: '#/components/schemas/FieldUpdateObject'
+          minItems: 1
+          maxItems: 5
+        _delete:
+          $ref: '#/components/schemas/DeleteObject'
+          description: Delete configuration for removing the section. When provided, the section identified by id will be deleted.
+      additionalProperties: true
+    ErrorDetails:
+      type: object
+      description: Additional context-specific error details. Properties vary based on error type.
+      properties:
+        param_name:
+          type: string
+          description: Name of the parameter that caused the error.
+          maxLength: 100
+        id:
+          $ref: '#/components/schemas/Id'
+          description: Resource ID related to the error, if applicable.
+        expected_data_type:
+          type: string
+          description: Expected data type for the parameter.
+          maxLength: 50
+        supported_values:
+          type: array
+          description: List of supported values when applicable.
+          items:
+            description: A supported value
+            type: string
+            maxLength: 100
+          maxItems: 10
+        dependee:
+          type: object
+          description: Details about the parameter that the missing dependent parameter depends on.
+          additionalProperties: false
+          properties:
+            param_name:
+              type: string
+              description: Name of the dependee parameter that requires the dependent parameter to be specified.
+              maxLength: 100
+        resource_path_index:
+          type: integer
+          format: int32
+          description: Index in the resource path where the error occurred. Typically indicates the position of the invalid ID in the URL path.
+        permissions:
+          type: array
+          description: List of permissions required to perform the action. Returned when the user lacks necessary permissions.
+          items:
+            type: string
+            description: Permission identifier required for the action.
+            maxLength: 100
+          maxItems: 20
+      additionalProperties: true
+    UpdateLayoutSuccessResponse:
+      type: object
+      description: Successful response for layout update operation.
+      required:
+      - layouts
+      properties:
+        layouts:
+          type: array
+          description: Array containing the result of the layout update operation.
+          items:
+            $ref: '#/components/schemas/LayoutUpdateSuccessResult'
+          minItems: 1
+          maxItems: 1
+      additionalProperties: false
     DeleteObject:
       type: object
       description: Delete configuration object.
@@ -208,40 +398,6 @@ components:
         permanent:
           type: boolean
           description: If true, permanently deletes the resource. If false, moves it to unused section (for fields).
-      additionalProperties: false
-    LayoutUpdateSuccessResult:
-      type: object
-      description: Success result for a layout update.
-      required:
-      - code
-      - details
-      - message
-      - status
-      properties:
-        code:
-          type: string
-          description: Success code.
-          enum:
-          - SUCCESS
-        details:
-          type: object
-          description: Details about the updated layout.
-          required:
-          - id
-          properties:
-            id:
-              $ref: '#/components/schemas/Id'
-              description: Unique identifier of the updated layout.
-          additionalProperties: false
-        message:
-          type: string
-          description: Success message.
-          maxLength: 255
-        status:
-          type: string
-          description: Status indicator.
-          enum:
-          - success
       additionalProperties: false
     FieldUpdateObject:
       type: object
@@ -303,186 +459,58 @@ components:
           $ref: '#/components/schemas/DeleteObject'
           description: Delete configuration for removing the field. Set permanent to false to move to unused section (can be re-added later), true to permanently delete the field and its data.
       additionalProperties: false
-    ErrorDetails:
+    UpdateLayoutErrorResponse:
       type: object
-      description: Additional context-specific error details. Properties vary based on error type.
-      properties:
-        param_name:
-          type: string
-          description: Name of the parameter that caused the error.
-          maxLength: 100
-        id:
-          $ref: '#/components/schemas/Id'
-          description: Resource ID related to the error, if applicable.
-        expected_data_type:
-          type: string
-          description: Expected data type for the parameter.
-          maxLength: 50
-        supported_values:
-          type: array
-          description: List of supported values when applicable.
-          items:
-            description: A supported value
-            type: string
-            maxLength: 100
-          maxItems: 10
-        dependee:
-          type: object
-          description: Details about the parameter that the missing dependent parameter depends on.
-          additionalProperties: false
-          properties:
-            param_name:
-              type: string
-              description: Name of the dependee parameter that requires the dependent parameter to be specified.
-              maxLength: 100
-        resource_path_index:
-          type: integer
-          format: int32
-          description: Index in the resource path where the error occurred. Typically indicates the position of the invalid ID in the URL path.
-        permissions:
-          type: array
-          description: List of permissions required to perform the action. Returned when the user lacks necessary permissions.
-          items:
-            type: string
-            description: Permission identifier required for the action.
-            maxLength: 100
-          maxItems: 20
-      additionalProperties: true
-    UpdateLayoutSuccessResponse:
-      type: object
-      description: Successful response for layout update operation.
-      required:
-      - layouts
+      description: Error response for layout update operation.
       properties:
         layouts:
           type: array
-          description: Array containing the result of the layout update operation.
+          description: Array containing the error result of the layout update operation.
           items:
-            $ref: '#/components/schemas/LayoutUpdateSuccessResult'
+            $ref: '#/components/schemas/LayoutUpdateErrorResult'
           minItems: 1
           maxItems: 1
-      additionalProperties: false
-    SectionUpdateObject:
-      type: object
-      description: Section object for creating, updating, or deleting sections. For creating a new section, provide name, display_label, sequence_number, tab_traversal, and column_count. For updating an existing section, provide id along with properties to update. For deleting a section, provide id and _delete object.
-      minProperties: 1
-      properties:
-        id:
-          $ref: '#/components/schemas/Id'
-          description: Unique identifier of the section. Required for updating or deleting existing sections. Omit when creating a new section.
-        name:
+        code:
           type: string
-          description: Internal API name of the section. Required when creating a new section. Should be unique within the layout.
-          minLength: 1
+          description: Error code for non-layout-wrapped errors.
           maxLength: 255
-        display_label:
+        details:
+          $ref: '#/components/schemas/ErrorDetails'
+        message:
           type: string
-          description: Display label shown in the UI for the section. Required when creating a new section.
-          minLength: 1
+          description: Error message.
           maxLength: 255
-        sequence_number:
-          type: integer
-          format: int32
-          description: Position/order of the section in the layout (1-based). Required when creating a new section. Lower numbers appear first.
-          minimum: 1
-          maximum: 100
-        tab_traversal:
+        status:
           type: string
-          description: Tab traversal mode for the section. Defines how tab key navigation works within the section. 1 = column-wise, 2 = row-wise.
+          description: Status indicator.
           enum:
-          - left_to_right
-          - top_to_bottom
-        column_count:
-          type: integer
-          format: int32
-          description: Number of columns in the section layout.
-          minimum: 1
-          maximum: 2
-        fields:
-          type: array
-          description: 'Array of field objects to add, update, create, or remove from this section. Note: Total fields across all sections in the request must not exceed 5.'
-          items:
-            $ref: '#/components/schemas/FieldUpdateObject'
-          minItems: 1
-          maxItems: 5
-        _delete:
-          $ref: '#/components/schemas/DeleteObject'
-          description: Delete configuration for removing the section. When provided, the section identified by id will be deleted.
-      additionalProperties: true
-    Id:
-      type: string
-      format: int64
-      pattern: ^[0-9]{1,19}$
-      minLength: 1
-      maxLength: 19
-      description: Unique identifier (64-bit integer represented as string)
-    LayoutUpdateErrorDetails:
-      type: object
-      description: Error details specific to layout update operations.
-      properties:
-        api_name:
-          type: string
-          description: API name of the field that caused the error.
-          maxLength: 100
-        json_path:
-          type: string
-          description: JSON path to the field that caused the error.
-          maxLength: 500
-        expected_data_type:
-          type: string
-          description: Expected data type for the field.
-          maxLength: 50
-        maximum_length:
-          type: integer
-          format: int32
-          description: Maximum allowed length for the field.
-        limit:
-          type: integer
-          format: int32
-          description: Maximum limit exceeded.
-      additionalProperties: true
-    LayoutUpdateObject:
-      type: object
-      description: Layout object containing the fields to update. At least one property must be provided. Maximum 5 sections and 5 fields (total across all sections) can be modified per request.
-      minProperties: 1
-      properties:
-        name:
-          type: string
-          description: New name for the layout. Must be unique within the module.
-          minLength: 1
-          maxLength: 255
-        show_business_card:
-          type: boolean
-          description: Enable or disable the business card display for this layout.
-        profiles:
-          type: array
-          description: Array of profile objects to add or remove from the layout.
-          items:
-            $ref: '#/components/schemas/ProfileUpdateObject'
-          minItems: 1
-          maxItems: 50
-        sections:
-          type: array
-          description: Array of section objects to create, update, or delete. Maximum 5 sections allowed per request. Total fields across all sections must not exceed 5.
-          items:
-            $ref: '#/components/schemas/SectionUpdateObject'
-          minItems: 1
-          maxItems: 5
+          - error
       additionalProperties: false
   responses:
-    InternalServerErrorResponse:
-      description: Internal Server Error - An unexpected error occurred on the server
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     UnauthorizedResponse:
       description: Unauthorized - Authentication failed or invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    InternalServerErrorResponse:
+      description: Internal Server Error - An unexpected error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoCRM.settings.ALL: All access to CRM settings
+            ZohoCRM.settings.layouts.ALL: All access to CRM layouts
+            ZohoCRM.settings.layouts.READ: Read access to CRM layouts
+            ZohoCRM.settings.layouts.UPDATE: Update access to CRM layouts
+            ZohoCRM.settings.layouts.DELETE: Delete access to CRM layouts
+            ZohoCRM.settings.convert_mapping.UPDATE: Update access to CRM layout convert mappings

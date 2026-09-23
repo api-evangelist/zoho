@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter PinnedConversation API
+  title: Pinned Conversation API
   version: 1.0.0
 tags:
 - name: PinnedConversation
@@ -90,123 +90,336 @@ paths:
       x-audience:
       - external-public
 components:
-  schemas:
-    unPinConversationData:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        success:
-          type:
-          - boolean
-          - 'null'
-        errors:
-          type:
-          - 'null'
-          - string
-      required:
-      - errors
-      - id
-      - success
-  requestBodies:
-    unPinConversationRequest:
-      description: unPinConversationRequest Payload template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                $ref: ./PinnedConversation.json#/components/schemas/long_array
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - 1235000000013295
-                - 1235000000013345
-    pinAConversationRequest:
-      description: pinConversationRequest Payload template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-              entityId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - COMMENTS
-                - THREADS
-                maxLength: 100
-                minLength: 0
-            required:
-            - entityId
-            - type
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isPublic: false
-                entityId: '1235000000013468'
-                type: comments
-  parameters:
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
-    unPinAConversationResponse:
-      description: getUnPinnedConversationsResponse template definitions
+    pinAConversationResponse:
+      description: pinAConversationResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              results:
+            anyOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./Thread.json#/components/schemas/threadKeys
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
                 type:
-                - 'null'
-                - array
-                items:
-                  $ref: '#/components/schemas/unPinConversationData'
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./Thread.json#/components/schemas/facebookThreadKeys
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./Thread.json#/components/schemas/twitterThreadKeys
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./Thread.json#/components/schemas/forumThreadKeys
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./Thread.json#/components/schemas/emailThreadKeys
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                pinnedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                pinnedById:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                entityPinned:
+                  $ref: ./TicketComment.json#/components/schemas/commentResponse
+                isPublic:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - COMMENTS
+                  - THREADS
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - entityPinned
+              - id
+              - isPublic
+              - pinnedById
+              - pinnedTime
+              - type
+          examples:
+            Valid responses Definitions:
+              value:
+                pinnedTime: '2024-05-07T05:24:34Z'
+                isPublic: false
+                id: '1235000000013295'
+                pinnedBy:
+                  firstName: Nirmal
+                  lastName: Kumar
+                  photoURL: https://desk.zoho.com/api/v1/agents/1235000000010078/photo?orgId=61815772
+                  id: '1235000000010078'
+                  email: nirmalkumar@zylker.com
+                type: comments
+                pinnedEntity:
+                  modifiedTime: '2024-05-06T13:05:50.000Z'
+                  attachments: []
+                  encodedContent: '&lt;div style&#x3d;&quot;font-size&#x3a; 13px&#x3b; font-family&#x3a; Arial, Helvetica, sans-serif&quot;&gt;&lt;div&gt;zsu&#x5b;&#x40;user&#x3a;76260187&#x5d;zsu a comment.&lt;br&gt;&lt;&#x2f;div&gt;&lt;&#x2f;div&gt;'
+                  commentedTime: '2024-05-06T13:05:50.000Z'
+                  isPublic: false
+                  id: '1235000000013468'
+                  contentType: html
+                  content: '<div style="font-size: 13px; font-family: Arial, Helvetica, sans-serif"><div>zsu[@user:76260187]zsu a comment.<br></div></div>'
+                  commenterId: '1235000000010078'
+                  commenter:
+                    photoURL: https://desk.zoho.com/api/v1/agents/1235000000010078/photo?orgId=61815772
+                    firstName: Immanuel
+                    lastName: T
+                    id: '1235000000010078'
+                    type: AGENT
+                    email: immanuel.t@zylker.com
+                  impersonatedUser: null
+                  mention:
+                  - firstName: Kamalesh
+                    lastName: SN
+                    photoURL: https://desk.zoho.com/api/v1/agents/1235000000034048/photo?orgId=61815772
+                    offSet: '77'
+                    length: '22'
+                    id: '1235000000034048'
+                    type: AGENT
+                    email: kamalesh.sn@zylker.com
+                    zuid: '76260187'
     getPinnedConversationsResponse:
       description: getPinnedConversationsResponse template definitions
       content:
@@ -578,336 +791,123 @@ components:
                     fromEmailAddress: '"kamelesh sn"<kamelsh.sn@zylker.com>'
                     actions: []
                     status: SUCCESS
-    pinAConversationResponse:
-      description: pinAConversationResponse template definitions
+    unPinAConversationResponse:
+      description: getUnPinnedConversationsResponse template definitions
       content:
         application/json:
           schema:
-            anyOf:
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./Thread.json#/components/schemas/threadKeys
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              results:
                 type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./Thread.json#/components/schemas/facebookThreadKeys
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
+                - 'null'
+                - array
+                items:
+                  $ref: '#/components/schemas/unPinConversationData'
+  requestBodies:
+    pinAConversationRequest:
+      description: pinConversationRequest Payload template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
                 type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./Thread.json#/components/schemas/twitterThreadKeys
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
+                - boolean
+                - 'null'
+              entityId:
                 type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./Thread.json#/components/schemas/forumThreadKeys
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              type:
                 type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./Thread.json#/components/schemas/emailThreadKeys
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                pinnedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                pinnedById:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                entityPinned:
-                  $ref: ./TicketComment.json#/components/schemas/commentResponse
-                isPublic:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - COMMENTS
-                  - THREADS
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - entityPinned
-              - id
-              - isPublic
-              - pinnedById
-              - pinnedTime
-              - type
+                - string
+                - 'null'
+                enum:
+                - COMMENTS
+                - THREADS
+                maxLength: 100
+                minLength: 0
+            required:
+            - entityId
+            - type
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                pinnedTime: '2024-05-07T05:24:34Z'
                 isPublic: false
-                id: '1235000000013295'
-                pinnedBy:
-                  firstName: Nirmal
-                  lastName: Kumar
-                  photoURL: https://desk.zoho.com/api/v1/agents/1235000000010078/photo?orgId=61815772
-                  id: '1235000000010078'
-                  email: nirmalkumar@zylker.com
+                entityId: '1235000000013468'
                 type: comments
-                pinnedEntity:
-                  modifiedTime: '2024-05-06T13:05:50.000Z'
-                  attachments: []
-                  encodedContent: '&lt;div style&#x3d;&quot;font-size&#x3a; 13px&#x3b; font-family&#x3a; Arial, Helvetica, sans-serif&quot;&gt;&lt;div&gt;zsu&#x5b;&#x40;user&#x3a;76260187&#x5d;zsu a comment.&lt;br&gt;&lt;&#x2f;div&gt;&lt;&#x2f;div&gt;'
-                  commentedTime: '2024-05-06T13:05:50.000Z'
-                  isPublic: false
-                  id: '1235000000013468'
-                  contentType: html
-                  content: '<div style="font-size: 13px; font-family: Arial, Helvetica, sans-serif"><div>zsu[@user:76260187]zsu a comment.<br></div></div>'
-                  commenterId: '1235000000010078'
-                  commenter:
-                    photoURL: https://desk.zoho.com/api/v1/agents/1235000000010078/photo?orgId=61815772
-                    firstName: Immanuel
-                    lastName: T
-                    id: '1235000000010078'
-                    type: AGENT
-                    email: immanuel.t@zylker.com
-                  impersonatedUser: null
-                  mention:
-                  - firstName: Kamalesh
-                    lastName: SN
-                    photoURL: https://desk.zoho.com/api/v1/agents/1235000000034048/photo?orgId=61815772
-                    offSet: '77'
-                    length: '22'
-                    id: '1235000000034048'
-                    type: AGENT
-                    email: kamalesh.sn@zylker.com
-                    zuid: '76260187'
+    unPinConversationRequest:
+      description: unPinConversationRequest Payload template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                $ref: ./PinnedConversation.json#/components/schemas/long_array
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - 1235000000013295
+                - 1235000000013345
+  schemas:
+    unPinConversationData:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        success:
+          type:
+          - boolean
+          - 'null'
+        errors:
+          type:
+          - 'null'
+          - string
+      required:
+      - errors
+      - id
+      - success
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: PinnedConversation

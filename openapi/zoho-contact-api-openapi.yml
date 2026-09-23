@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Contact API
+  title: Contact API
   version: 1.0.0
 tags:
 - name: Contact
@@ -221,7 +221,7 @@ paths:
       tags:
       - Contact
       summary: Get status of contact in help centers
-      description: This API fetches a particular contact's activation status in all the help centers they are part of.
+      description: This API fetches a particular contact's activation status in all the help centers they are part of.
       operationId: getContactActivationStatusAcrossHelpCenters
       parameters:
       - $ref: '#/components/parameters/contactId'
@@ -298,7 +298,7 @@ paths:
       tags:
       - Contact
       summary: List Contacts
-      description: 'This API lists a particular number of contacts, based on the limit specified. '
+      description: This API lists a particular number of contacts, based on the limit specified.
       operationId: getContacts
       parameters:
       - name: include
@@ -542,7 +542,12 @@ paths:
       tags:
       - Contact
       summary: Merge Contacts
-      description: This API merges two or more contacts  <br/></br/>_Note:_<br/>Though portal users (users who signed up via the help center) are saved as contacts in the help desk, their records cannot be merged with other records/contacts.
+      description: 'This API merges two or more contacts
+
+
+        _Note:_
+
+        Though portal users (users who signed up via the help center) are saved as contacts in the help desk, their records cannot be merged with other records/contacts.'
       operationId: mergeContacts
       parameters:
       - $ref: '#/components/parameters/contactId'
@@ -775,7 +780,122 @@ paths:
       - external-public
 components:
   requestBodies:
-    deleteSpamContacts_deleteContactsRequest:
+    updateContact_contactjson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Contact.json#/components/schemas/commonJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                zip:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int32
+                  description: Zip code
+                  pattern: ([0-9]+)
+                country:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact's country of residence
+                  maxLength: 30
+                  minLength: 0
+                twitter:
+                  type:
+                  - string
+                  - 'null'
+                  description: Twitter ID of the contact
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                city:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact's city of residence
+                  maxLength: 30
+                  minLength: 0
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                street:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact's address
+                  maxLength: 250
+                  minLength: 0
+                facebook:
+                  type:
+                  - string
+                  - 'null'
+                  description: Facebook ID of the contact
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                mobile:
+                  type:
+                  - string
+                  - 'null'
+                  description: Mobile number of the contact
+                  maxLength: 50
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact description
+                  maxLength: 65535
+                  minLength: 0
+                state:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact's state of residence
+                  maxLength: 30
+                  minLength: 0
+                title:
+                  type:
+                  - string
+                  - 'null'
+                  description: Contact title
+                  maxLength: 100
+                  minLength: 0
+            - type: object
+          examples:
+            Valid requestBody Definitions:
+              value: null
+    contact_massupdate:
       content:
         application/json:
           schema:
@@ -784,7 +904,56 @@ components:
             - object
             additionalProperties: false
             properties:
-              contactIds:
+              isCustomField:
+                type:
+                - boolean
+                - 'null'
+              fieldName:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              ids:
+                $ref: ./Contact.json#/components/schemas/long_array
+              fieldValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - fieldName
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                fieldName: mobile
+                isCustomField: false
+                ids:
+                - '1892000000093303'
+                - '1892000000085009'
+                - '1892000000050003'
+                fieldValue: '8508569875'
+    associateProductsWithContact:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              ids:
                 type:
                 - 'null'
                 - array
@@ -796,14 +965,21 @@ components:
                   format: int64
                   pattern: ([0-9]+)
                 uniqueItems: false
+              associate:
+                type:
+                - boolean
+                - 'null'
             required:
-            - contactIds
+            - associate
+            - ids
           examples:
             Valid requestBody Definitions:
               value:
-                contactIds:
-                - '1892000000004507'
-                - '1892000000004508'
+                departmentId: '7000000062800'
+                ids:
+                - '7000000027223'
+                - '7000000043968'
+                associate: true
     contactMergeRequest:
       content:
         application/json:
@@ -873,6 +1049,163 @@ components:
                 - '4000000012902'
                 - '40000000212902'
                 - '40000002129122'
+    deleteContactsRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contactIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - contactIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contactIds:
+                - '2000032002145'
+    inviteContactAsEndUser:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              helpCenterId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - helpCenterId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                helpCenterId: '4000000021302'
+    markSpamContactPayload:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ids:
+                type: array
+                description: ID(s) of the contact(s) that must be marked or unmarked as spam
+                items:
+                  type:
+                  - string
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+              isSpam:
+                type: boolean
+                description: Key that marks or unmarks a single contact or multiple contacts as spam
+              handleExistingTickets:
+                type: boolean
+                description: Key that marks or unmarks tickets from the contact(s) as spam
+            required:
+            - ids
+            - isSpam
+          examples:
+            Valid requestBody Definitions:
+              value:
+                handleExistingTickets: 'true'
+                ids:
+                - '1000000030065'
+                - '1000000030068'
+                isSpam: 'true'
+    dissociateAccountsWithContact:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '7000000027223'
+                - '7000000043968'
+    associateAccountsWithContact:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 2
+                  minProperties: 2
+                  properties:
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    isAccountTicketsViewable:
+                      type:
+                      - boolean
+                      - 'null'
+                  required:
+                  - id
+                  - isAccountTicketsViewable
+                uniqueItems: false
+            required:
+            - data
+          examples:
+            Valid requestBody Definitions:
+              value:
+                data:
+                - id: 7000000027223
+                  isAccountTicketsViewable: true
+                - id: 7000000043968
+                  isAccountTicketsViewable: false
     rejectEndUserInvite_updateSignupApproval:
       content:
         application/json:
@@ -901,6 +1234,35 @@ components:
               value:
                 helpCenterIds:
                 - '4000000021302'
+    deleteSpamContacts_deleteContactsRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contactIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - contactIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contactIds:
+                - '1892000000004507'
+                - '1892000000004508'
     contactjson:
       content:
         application/json:
@@ -1036,123 +1398,6 @@ components:
                 street: North street
                 state: Austin
                 email: jack@zylker.com
-    markSpamContactPayload:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              ids:
-                type: array
-                description: ID(s) of the contact(s) that must be marked or unmarked as spam
-                items:
-                  type:
-                  - string
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-              isSpam:
-                type: boolean
-                description: Key that marks or unmarks a single contact or multiple contacts as spam
-              handleExistingTickets:
-                type: boolean
-                description: Key that marks or unmarks tickets from the contact(s) as spam
-            required:
-            - ids
-            - isSpam
-          examples:
-            Valid requestBody Definitions:
-              value:
-                handleExistingTickets: 'true'
-                ids:
-                - '1000000030065'
-                - '1000000030068'
-                isSpam: 'true'
-    associateProductsWithContact:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              associate:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - associate
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '7000000062800'
-                ids:
-                - '7000000027223'
-                - '7000000043968'
-                associate: true
-    contact_massupdate:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isCustomField:
-                type:
-                - boolean
-                - 'null'
-              fieldName:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              ids:
-                $ref: ./Contact.json#/components/schemas/long_array
-              fieldValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - fieldName
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                fieldName: mobile
-                isCustomField: false
-                ids:
-                - '1892000000093303'
-                - '1892000000085009'
-                - '1892000000050003'
-                fieldValue: '8508569875'
     updateSignupApproval:
       content:
         application/json:
@@ -1181,288 +1426,7 @@ components:
               value:
                 helpCenterIds:
                 - '4000000021302'
-    updateContact_contactjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Contact.json#/components/schemas/commonJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                zip:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int32
-                  description: Zip code
-                  pattern: ([0-9]+)
-                country:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact's country of residence
-                  maxLength: 30
-                  minLength: 0
-                twitter:
-                  type:
-                  - string
-                  - 'null'
-                  description: Twitter ID of the contact
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                city:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact's city of residence
-                  maxLength: 30
-                  minLength: 0
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                street:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact's address
-                  maxLength: 250
-                  minLength: 0
-                facebook:
-                  type:
-                  - string
-                  - 'null'
-                  description: Facebook ID of the contact
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                mobile:
-                  type:
-                  - string
-                  - 'null'
-                  description: Mobile number of the contact
-                  maxLength: 50
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact description
-                  maxLength: 65535
-                  minLength: 0
-                state:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact's state of residence
-                  maxLength: 30
-                  minLength: 0
-                title:
-                  type:
-                  - string
-                  - 'null'
-                  description: Contact title
-                  maxLength: 100
-                  minLength: 0
-            - type: object
-          examples:
-            Valid requestBody Definitions:
-              value: null
-    deleteContactsRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contactIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - contactIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contactIds:
-                - '2000032002145'
-    associateAccountsWithContact:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 2
-                  minProperties: 2
-                  properties:
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    isAccountTicketsViewable:
-                      type:
-                      - boolean
-                      - 'null'
-                  required:
-                  - id
-                  - isAccountTicketsViewable
-                uniqueItems: false
-            required:
-            - data
-          examples:
-            Valid requestBody Definitions:
-              value:
-                data:
-                - id: 7000000027223
-                  isAccountTicketsViewable: true
-                - id: 7000000043968
-                  isAccountTicketsViewable: false
-    dissociateAccountsWithContact:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '7000000027223'
-                - '7000000043968'
-    inviteContactAsEndUser:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              helpCenterId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - helpCenterId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                helpCenterId: '4000000021302'
   parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the contacts must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the contacts must be listed
-        pattern: ([0-9]+)
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    contactId:
-      name: contactId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
     viewId:
       name: viewId
       in: query
@@ -1505,30 +1469,48 @@ components:
         - boolean
         - 'null'
         description: Filters Spam contacts
+    contactId:
+      name: contactId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the contacts must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the contacts must be listed
+        pattern: ([0-9]+)
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
-    countJson:
-      description: countJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: '10'
     contactListViewArray:
       description: contactListViewArray template definitions
       content:
@@ -1591,180 +1573,6 @@ components:
                     goodPercentage: '47'
                   isSpam: false
                   email: jade@zylker.com
-    getStatistics:
-      description: getStatistics template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              firstResponseTime:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              openTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              responseTime:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              spamTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              totalTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              customerHappiness:
-                $ref: ./Contact.json#/components/schemas/customerHappinessCount
-              resolutionTime:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              closedTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              channelWiseCount:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9]+):
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-              escalatedTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              onholdTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              overdueTickets:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - channelWiseCount
-            - closedTickets
-            - customerHappiness
-            - escalatedTickets
-            - firstResponseTime
-            - onholdTickets
-            - openTickets
-            - overdueTickets
-            - resolutionTime
-            - responseTime
-            - spamTickets
-            - totalTickets
-          examples:
-            Valid responses Definitions:
-              value:
-                firstResponseTime: '120000'
-                openTickets: '11'
-                responseTime: '13150000'
-                spamTickets: '0'
-                totalTickets: '36'
-                customerHappiness:
-                  badCount: '50'
-                  goodCount: '0'
-                  okCount: '50'
-                closedTickets: '23'
-                resolutionTime: '0'
-                channelWiseCount:
-                  Web: '12'
-                  Forums: '14'
-                  Chat: '10'
-                onholdTickets: '2'
-                escalatedTickets: '0'
-                overdueTickets: '0'
-    contactListViewArrayWithMappingInfo:
-      description: contactListViewArrayWithMappingInfo template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Contact.json#/components/schemas/dataWithMappingInfo
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - lastName: Lawrence
-                  secondaryEmail: null
-                  mappingInfo:
-                    mappingId: '18026000003237019'
-                    mappingType: PRIMARY
-                    isAccountTicketsViewable: true
-                  mobile: '109000000002003'
-                  type: null
-                  ownerId: '4000000008734'
-                  firstName: null
-                  accountId: '4000000008784'
-                  photoURL: null
-                  isAnonymous: true
-                  phone: 1 888 900 9646
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                  createdTime: 1507813910000
-                  isEndUser: 'false'
-                  zohoCRMContact:
-                    id: '5000000014010'
-                    type: contacts_leads
-                  customerHappiness:
-                    badPercentage: '0'
-                    okPercentage: '0'
-                    goodPercentage: '0'
-                  id: '4000000008786'
-                  isSpam: false
-                  email: support@zylker.com
     contactResponse:
       description: contactResponse template definitions
       content:
@@ -2034,7 +1842,204 @@ components:
                 phone: 1 888 900 9646
                 webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
                 isSpam: false
+    getStatistics:
+      description: getStatistics template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              firstResponseTime:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              openTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              responseTime:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              spamTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              totalTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              customerHappiness:
+                $ref: ./Contact.json#/components/schemas/customerHappinessCount
+              resolutionTime:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              closedTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              channelWiseCount:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9]+):
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+              escalatedTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              onholdTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              overdueTickets:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - channelWiseCount
+            - closedTickets
+            - customerHappiness
+            - escalatedTickets
+            - firstResponseTime
+            - onholdTickets
+            - openTickets
+            - overdueTickets
+            - resolutionTime
+            - responseTime
+            - spamTickets
+            - totalTickets
+          examples:
+            Valid responses Definitions:
+              value:
+                firstResponseTime: '120000'
+                openTickets: '11'
+                responseTime: '13150000'
+                spamTickets: '0'
+                totalTickets: '36'
+                customerHappiness:
+                  badCount: '50'
+                  goodCount: '0'
+                  okCount: '50'
+                closedTickets: '23'
+                resolutionTime: '0'
+                channelWiseCount:
+                  Web: '12'
+                  Forums: '14'
+                  Chat: '10'
+                onholdTickets: '2'
+                escalatedTickets: '0'
+                overdueTickets: '0'
+    contactListViewArrayWithMappingInfo:
+      description: contactListViewArrayWithMappingInfo template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Contact.json#/components/schemas/dataWithMappingInfo
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - lastName: Lawrence
+                  secondaryEmail: null
+                  mappingInfo:
+                    mappingId: '18026000003237019'
+                    mappingType: PRIMARY
+                    isAccountTicketsViewable: true
+                  mobile: '109000000002003'
+                  type: null
+                  ownerId: '4000000008734'
+                  firstName: null
+                  accountId: '4000000008784'
+                  photoURL: null
+                  isAnonymous: true
+                  phone: 1 888 900 9646
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                  createdTime: 1507813910000
+                  isEndUser: 'false'
+                  zohoCRMContact:
+                    id: '5000000014010'
+                    type: contacts_leads
+                  customerHappiness:
+                    badPercentage: '0'
+                    okPercentage: '0'
+                    goodPercentage: '0'
+                  id: '4000000008786'
+                  isSpam: false
+                  email: support@zylker.com
+    countJson:
+      description: countJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: '10'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Contact

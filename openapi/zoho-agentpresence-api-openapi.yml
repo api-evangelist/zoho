@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter AgentPresence API
+  title: Agent Presence API
   version: 1.0.0
 tags:
 - name: AgentPresence
@@ -10,7 +10,7 @@ paths:
       tags:
       - AgentPresence
       summary: Get Agent Availability Configuration
-      description: 'This API fetches the agent availability setting configured in your help desk portal. '
+      description: This API fetches the agent availability setting configured in your help desk portal.
       operationId: getConfig
       parameters:
       - $ref: ./Common.json#/components/parameters/orgId
@@ -182,34 +182,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    getConfig:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              agentIdleTime:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                maximum: 360
-                minimum: 1
-                pattern: ([0-9]+)
-              treatIdleAgentsAsOffline:
-                type:
-                - boolean
-                - 'null'
-          examples:
-            Valid requestBody Definitions:
-              value:
-                agentIdleTime: '30'
-                treatIdleAgentsAsOffline: true
   responses:
     getCurrentAvailability:
       description: getCurrentAvailability template definitions
@@ -345,21 +317,6 @@ components:
                 agentIdleTime: '30'
                 treatIdleAgentsAsOffline: true
   parameters:
-    limit:
-      name: limit
-      in: query
-      description: Number of agents to list. The default value is 20 and the maximum value allowed is 6000.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of agents to list. The default value is 20 and the maximum value allowed is 6000.
-        pattern: ([0-9]+)
     departmentId:
       name: departmentId
       in: query
@@ -375,7 +332,50 @@ components:
         format: int64
         description: ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@.
         pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of agents to list. The default value is 20 and the maximum value allowed is 6000.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of agents to list. The default value is 20 and the maximum value allowed is 6000.
+        pattern: ([0-9]+)
+  requestBodies:
+    getConfig:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              agentIdleTime:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                maximum: 360
+                minimum: 1
+                pattern: ([0-9]+)
+              treatIdleAgentsAsOffline:
+                type:
+                - boolean
+                - 'null'
+          examples:
+            Valid requestBody Definitions:
+              value:
+                agentIdleTime: '30'
+                treatIdleAgentsAsOffline: true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: AgentPresence

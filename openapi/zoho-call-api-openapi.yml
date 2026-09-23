@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Call API
+  title: Call API
   version: 1.0.0
 tags:
 - name: Call
@@ -138,7 +138,7 @@ paths:
     get:
       tags:
       - Call
-      summary: ' List calls'
+      summary: List calls
       description: This API fetches a particular number of calls, based on the limit specified.
       operationId: getCalls
       parameters:
@@ -372,456 +372,47 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the calls must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the calls must be listed
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department from which the calls count must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the calls count must be fetched
-        pattern: ([0-9]+)
-    isCompleted:
-      name: isCompleted
-      in: query
-      description: Key that denotes if the call was completed or not
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes if the call was completed or not
-    limit:
-      name: limit
-      in: query
-      description: Number of calls to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of calls to list
-        maximum: 99
-        minimum: 1
-        pattern: ([0-9]+)
-    callId:
-      name: callId
-      in: path
-      description: ID of the live call
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the live call
-        pattern: ([0-9]+)
-    isSpam:
-      name: isSpam
-      in: query
-      description: Key that denotes whether to fetch spam calls or not
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes whether to fetch spam calls or not
-  requestBodies:
-    calljson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                duration:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int32
-                  description: Duration of the call in seconds
-                  pattern: ([0-9]+)
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                reminder:
-                  $ref: '#/components/schemas/reminderArray'
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                ticketId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the ticket associated with the call
-                  pattern: ([0-9]+)
-                direction:
-                  type:
-                  - string
-                  - 'null'
-                  description: 'Direction of the call: inbound or outbound'
-                  enum:
-                  - outbound
-                  - inbound
-                  maxLength: 100
-                  minLength: 0
-            - type: object
-          examples:
-            Valid requestBody Definitions:
-              value: null
-    emptyCallsSpamResponse:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the department to which the activities belong
-                pattern: ([0-9]+)
-            required:
-            - departmentId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '4000000025121'
-    spamDeleteJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              callIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - callIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                callIds:
-                - '1892000000007107'
-                - '1892000000001208'
-    call_massupdate:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isCustomField:
-                type:
-                - boolean
-                - 'null'
-              fieldName:
-                type:
-                - string
-                - 'null'
-                x-dynamic-enum: true
-              ids:
-                $ref: '#/components/schemas/long_array'
-              fieldValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - fieldName
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                fieldName: mobile
-                isCustomField: false
-                ids:
-                - '1892000000093303'
-                - '1892000000085009'
-                - '1892000000050003'
-                fieldValue: '8508569875'
-    trashJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              entityIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - entityIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                entityIds:
-                - '3000000053002'
-    addCall_calljson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                duration:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int32
-                  description: Duration of the call in seconds
-                  pattern: ([0-9]+)
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      description: Call custom fields
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                reminder:
-                  $ref: '#/components/schemas/reminderArray'
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      description: Call custom fields
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                ticketId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the ticket associated with the call
-                  pattern: ([0-9]+)
-                direction:
-                  type:
-                  - string
-                  - 'null'
-                  description: 'Direction of the call: inbound or outbound'
-                  enum:
-                  - outbound
-                  - inbound
-            - type: object
-              required:
-              - contactId
-              - departmentId
-              - direction
-              - duration
-              - startTime
-              - status
-              - subject
-          examples:
-            Valid requestBody Definitions:
-              value:
-                duration: '300'
-                reminder:
-                - alertType:
-                  - EMAIL
-                  - SMS
-                  - POPUP
-                  reminderType: ABSOLUTE
-                  reminderTime: 1545713533000
-                contactId: '1892000000088017'
-                subject: New Testing Call
-                departmentId: '3000000007043'
-                startTime: 1469465531000
-                priority: High
-                ticketId: '3000000008753'
-                direction: inbound
-                status: In Progress
   schemas:
-    commonJson:
+    relativeReminder:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        contactId:
+        relativeReminderInMin:
           type:
           - string
           - 'null'
           - integer
-          format: int64
-          description: ID of the contact associated with the call
+          format: int32
           pattern: ([0-9]+)
-        subject:
+        alertType:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            enum:
+            - EMAIL
+            - POPUP
+            - SMS
+            maxLength: 100
+            minLength: 0
+          uniqueItems: true
+        reminderType:
           type:
           - string
           - 'null'
-          description: Subject of the call
-          maxLength: 300
-          minLength: 0
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the department from which the activities must be fetched
-          pattern: ([0-9]+)
-        startTime:
-          type:
-          - string
-          - 'null'
-          description: Time when the call started. The value of this key must be recorded in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.
+          enum:
+          - RELATIVE
           maxLength: 100
           minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        ownerId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the user to whom the call is assigned
-          pattern: ([0-9]+)
-        priority:
-          type:
-          - string
-          - 'null'
-          description: Priority of the call
-          x-dynamic-enum: true
-        ticketId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the ticket associated with the call
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          description: Completion status of the call
-          enum:
-          - Completed
-          - Scheduled
-          - Missed
-          - Canceled
-          - In Progress
       required:
-      - contactId
-      - departmentId
-      - ownerId
-      - priority
-      - startTime
-      - status
-      - subject
-      - ticketId
+      - alertType
+      - relativeReminderInMin
+      - reminderType
     assignee:
       type:
       - 'null'
@@ -867,171 +458,6 @@ components:
       - id
       - lastName
       - photoURL
-    long_array:
-      type:
-      - 'null'
-      - array
-      items:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/callListViewJson'
-    contactJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      maxProperties: 8
-      minProperties: 8
-      properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 40
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-        accountId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-        mobile:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        isSpam:
-          type:
-          - boolean
-          - 'null'
-        email:
-          type:
-          - string
-          - 'null'
-          maxLength: 255
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'\&\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-      required:
-      - accountId
-      - email
-      - firstName
-      - id
-      - isSpam
-      - lastName
-      - mobile
-      - phone
-    relativeReminder:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        relativeReminderInMin:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        alertType:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            enum:
-            - EMAIL
-            - POPUP
-            - SMS
-            maxLength: 100
-            minLength: 0
-          uniqueItems: true
-        reminderType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - RELATIVE
-          maxLength: 100
-          minLength: 0
-      required:
-      - alertType
-      - relativeReminderInMin
-      - reminderType
-    absoluteReminder:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        alertType:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            enum:
-            - EMAIL
-            - POPUP
-            - SMS
-            maxLength: 100
-            minLength: 0
-          uniqueItems: true
-        reminderType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ABSOLUTE
-          maxLength: 100
-          minLength: 0
-        reminderTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-      required:
-      - alertType
-      - reminderTime
-      - reminderType
     callListViewJson:
       additionalProperties: false
       allOf:
@@ -1152,6 +578,210 @@ components:
         - modifiedTime
         - statusType
         - webUrl
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/callListViewJson'
+    commonJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        contactId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the contact associated with the call
+          pattern: ([0-9]+)
+        subject:
+          type:
+          - string
+          - 'null'
+          description: Subject of the call
+          maxLength: 300
+          minLength: 0
+        departmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the department from which the activities must be fetched
+          pattern: ([0-9]+)
+        startTime:
+          type:
+          - string
+          - 'null'
+          description: Time when the call started. The value of this key must be recorded in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        ownerId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the user to whom the call is assigned
+          pattern: ([0-9]+)
+        priority:
+          type:
+          - string
+          - 'null'
+          description: Priority of the call
+          x-dynamic-enum: true
+        ticketId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the ticket associated with the call
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          description: Completion status of the call
+          enum:
+          - Completed
+          - Scheduled
+          - Missed
+          - Canceled
+          - In Progress
+      required:
+      - contactId
+      - departmentId
+      - ownerId
+      - priority
+      - startTime
+      - status
+      - subject
+      - ticketId
+    absoluteReminder:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        alertType:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            enum:
+            - EMAIL
+            - POPUP
+            - SMS
+            maxLength: 100
+            minLength: 0
+          uniqueItems: true
+        reminderType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ABSOLUTE
+          maxLength: 100
+          minLength: 0
+        reminderTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+      required:
+      - alertType
+      - reminderTime
+      - reminderType
+    contactJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      maxProperties: 8
+      minProperties: 8
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 40
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+        accountId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+        mobile:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        isSpam:
+          type:
+          - boolean
+          - 'null'
+        email:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'\&\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+      required:
+      - accountId
+      - email
+      - firstName
+      - id
+      - isSpam
+      - lastName
+      - mobile
+      - phone
+    long_array:
+      type:
+      - 'null'
+      - array
+      items:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
     reminderArray:
       type:
       - 'null'
@@ -1160,7 +790,958 @@ components:
         oneOf:
         - $ref: '#/components/schemas/relativeReminder'
         - $ref: '#/components/schemas/absoluteReminder'
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of calls to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of calls to list
+        maximum: 99
+        minimum: 1
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the calls count must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the calls count must be fetched
+        pattern: ([0-9]+)
+    isSpam:
+      name: isSpam
+      in: query
+      description: Key that denotes whether to fetch spam calls or not
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes whether to fetch spam calls or not
+    isCompleted:
+      name: isCompleted
+      in: query
+      description: Key that denotes if the call was completed or not
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes if the call was completed or not
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the calls must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the calls must be listed
+        pattern: ([0-9]+)
+    callId:
+      name: callId
+      in: path
+      description: ID of the live call
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the live call
+        pattern: ([0-9]+)
+  requestBodies:
+    spamDeleteJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              callIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - callIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                callIds:
+                - '1892000000007107'
+                - '1892000000001208'
+    trashJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              entityIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - entityIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                entityIds:
+                - '3000000053002'
+    calljson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                duration:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int32
+                  description: Duration of the call in seconds
+                  pattern: ([0-9]+)
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                reminder:
+                  $ref: '#/components/schemas/reminderArray'
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                ticketId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the ticket associated with the call
+                  pattern: ([0-9]+)
+                direction:
+                  type:
+                  - string
+                  - 'null'
+                  description: 'Direction of the call: inbound or outbound'
+                  enum:
+                  - outbound
+                  - inbound
+                  maxLength: 100
+                  minLength: 0
+            - type: object
+          examples:
+            Valid requestBody Definitions:
+              value: null
+    call_massupdate:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isCustomField:
+                type:
+                - boolean
+                - 'null'
+              fieldName:
+                type:
+                - string
+                - 'null'
+                x-dynamic-enum: true
+              ids:
+                $ref: '#/components/schemas/long_array'
+              fieldValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - fieldName
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                fieldName: mobile
+                isCustomField: false
+                ids:
+                - '1892000000093303'
+                - '1892000000085009'
+                - '1892000000050003'
+                fieldValue: '8508569875'
+    emptyCallsSpamResponse:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the department to which the activities belong
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                departmentId: '4000000025121'
+    addCall_calljson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                duration:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int32
+                  description: Duration of the call in seconds
+                  pattern: ([0-9]+)
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      description: Call custom fields
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                reminder:
+                  $ref: '#/components/schemas/reminderArray'
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      description: Call custom fields
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                ticketId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the ticket associated with the call
+                  pattern: ([0-9]+)
+                direction:
+                  type:
+                  - string
+                  - 'null'
+                  description: 'Direction of the call: inbound or outbound'
+                  enum:
+                  - outbound
+                  - inbound
+            - type: object
+              required:
+              - contactId
+              - departmentId
+              - direction
+              - duration
+              - startTime
+              - status
+              - subject
+          examples:
+            Valid requestBody Definitions:
+              value:
+                duration: '300'
+                reminder:
+                - alertType:
+                  - EMAIL
+                  - SMS
+                  - POPUP
+                  reminderType: ABSOLUTE
+                  reminderTime: 1545713533000
+                contactId: '1892000000088017'
+                subject: New Testing Call
+                departmentId: '3000000007043'
+                startTime: 1469465531000
+                priority: High
+                ticketId: '3000000008753'
+                direction: inbound
+                status: In Progress
   responses:
+    callResponse:
+      description: callResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                callId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                modifiedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                reminder:
+                  $ref: '#/components/schemas/reminderArray'
+                statusType:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - Open
+                  - Closed
+                  maxLength: 100
+                  minLength: 0
+                completedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                creatorId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 65535
+                  minLength: 0
+                activityTime:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                duration:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int32
+                  pattern: ([0-9]+)
+                isTrashed:
+                  type:
+                  - boolean
+                  - 'null'
+                webUrl:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 500
+                  minLength: 0
+                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                createdTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                modifiedBy:
+                  $ref: '#/components/schemas/assignee'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                isSpam:
+                  type:
+                  - boolean
+                  - 'null'
+                direction:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - outbound
+                  - inbound
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - activityTime
+              - callId
+              - cf
+              - completedTime
+              - createdTime
+              - creatorId
+              - customFields
+              - description
+              - direction
+              - duration
+              - id
+              - isSpam
+              - isTrashed
+              - layoutId
+              - modifiedBy
+              - modifiedTime
+              - reminder
+              - statusType
+              - webUrl
+          examples:
+            Valid responses Definitions:
+              value:
+                cf: {}
+                contactId: '1892000000088017'
+                subject: New Testing Call
+                departmentId: '3000000007043'
+                creatorId: '3000000008692'
+                description: null
+                ownerId: null
+                priority: High
+                duration: '300'
+                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/51123033fe97b2f886f750280ded9c40
+                createdTime: 1468484846000
+                startTime: 1469465531000
+                id: '3000000054002'
+                ticketId: '3000000008753'
+                direction: inbound
+                status: In Progress
+    getCallsListResponse:
+      description: getCallsListResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      ticket:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 13
+                        minProperties: 13
+                        properties:
+                          contact:
+                            $ref: '#/components/schemas/contactJson'
+                          team:
+                            type:
+                            - 'null'
+                            - object
+                            additionalProperties: false
+                            maxProperties: 3
+                            minProperties: 3
+                            properties:
+                              name:
+                                type:
+                                - string
+                                - 'null'
+                                maxLength: 50
+                                minLength: 1
+                                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                              id:
+                                type:
+                                - string
+                                - 'null'
+                                - integer
+                                format: int64
+                                pattern: ([0-9]+)
+                              logoUrl:
+                                type:
+                                - string
+                                - 'null'
+                                maxLength: 200
+                                minLength: 0
+                                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                            required:
+                            - id
+                            - logoUrl
+                            - name
+                          ticketNumber:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int32
+                            pattern: ([0-9]+)
+                          subject:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 1000
+                            minLength: 0
+                          isArchived:
+                            type:
+                            - boolean
+                            - 'null'
+                          dueDate:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                          channel:
+                            type:
+                            - string
+                            - 'null'
+                            x-dynamic-enum: true
+                          closedTime:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                          phone:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 120
+                            minLength: 0
+                            pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+                          teamId:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                          createdTime:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                          assignee:
+                            type:
+                            - 'null'
+                            - object
+                            additionalProperties: false
+                            maxProperties: 4
+                            minProperties: 4
+                            properties:
+                              firstName:
+                                type:
+                                - string
+                                - 'null'
+                                maxLength: 50
+                                minLength: 0
+                              lastName:
+                                type:
+                                - string
+                                - 'null'
+                                maxLength: 50
+                                minLength: 0
+                              photoURL:
+                                type:
+                                - string
+                                - 'null'
+                                maxLength: 100
+                                minLength: 0
+                                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                              id:
+                                type:
+                                - string
+                                - 'null'
+                                - integer
+                                format: int64
+                                pattern: ([0-9]+)
+                            required:
+                            - firstName
+                            - id
+                            - lastName
+                            - photoURL
+                          isSpam:
+                            type:
+                            - boolean
+                            - 'null'
+                          status:
+                            type:
+                            - string
+                            - 'null'
+                            x-dynamic-enum: true
+                        required:
+                        - assignee
+                        - channel
+                        - closedTime
+                        - createdTime
+                        - dueDate
+                        - id
+                        - isArchived
+                        - isSpam
+                        - phone
+                        - status
+                        - subject
+                        - teamId
+                        - ticketNumber
+                      contact:
+                        $ref: '#/components/schemas/contactJson'
+                      assignee:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 5
+                        minProperties: 5
+                        properties:
+                          firstName:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 0
+                          lastName:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 0
+                          photoURL:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                          emailId:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                        required:
+                        - emailId
+                        - firstName
+                        - id
+                        - lastName
+                        - photoURL
+                      team:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 3
+                        minProperties: 3
+                        properties:
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 1
+                            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                          logoUrl:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 200
+                            minLength: 0
+                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                        required:
+                        - id
+                        - logoUrl
+                        - name
+            - oneOf:
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: '#/components/schemas/data'
+                required:
+                - data
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./Task.json#/components/schemas/tableViewData
+                required:
+                - data
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./Task.json#/components/schemas/tableViewIncludeData
+                required:
+                - data
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./Task.json#/components/schemas/tableViewTicketIdData
+                required:
+                - data
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./Task.json#/components/schemas/tableViewContactIdData
+                required:
+                - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ticket: null
+                  contactId: null
+                  subject: hRl
+                  completedTime: 1554187003000
+                  departmentId: '5000000012710'
+                  dueDate: null
+                  creatorId: '5000000015911'
+                  team: null
+                  ownerId: '5000000015911'
+                  priority: Normal
+                  isCommented: true
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e48740f9abf01f71bf
+                  contact: null
+                  createdTime: 1554187003000
+                  startTime: 1553427601000
+                  id: '5000000049385'
+                  assignee:
+                    firstName: George
+                    lastName: McKinson
+                    photoURL: null
+                    id: '5000000015911'
+                  isSpam: false
+                  category: null
+                  activityType: Calls
+                  ticketId: null
+                  status: Canceled
+                  direction: inbound
+                - ticket: null
+                  contactId: null
+                  subject: Irt
+                  completedTime: 1554187026000
+                  departmentId: '5000000012710'
+                  dueDate: null
+                  creatorId: '5000000015911'
+                  team: null
+                  ownerId: '5000000015911'
+                  priority: Normal
+                  isCommented: true
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e4603451fcf41c54b2
+                  contact: null
+                  createdTime: 1554187026000
+                  startTime: 1553427624000
+                  id: '5000000053840'
+                  assignee:
+                    firstName: George
+                    lastName: McKinson
+                    photoURL: null
+                    id: '5000000015911'
+                  isSpam: false
+                  category: null
+                  activityType: Calls
+                  ticketId: null
+                  status: Canceled
+                  direction: inbound
+                - ticket: null
+                  contactId: null
+                  subject: SG0
+                  completedTime: 1554186988000
+                  departmentId: '5000000012710'
+                  dueDate: null
+                  creatorId: '5000000015911'
+                  team:
+                    name: Testing Team
+                    id: '3691000006805001'
+                    logoUrl: https://desk.zoho.com/api/v1/teams/3691000006805001/logo?orgId=11278831
+                  ownerId: '5000000015911'
+                  priority: Normal
+                  isCommented: true
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e46c76cc4bfd688f1b
+                  contact: null
+                  createdTime: 1554186988000
+                  startTime: 1554118784000
+                  id: '5000000047098'
+                  assignee:
+                    firstName: George
+                    lastName: McKinson
+                    photoURL: null
+                    id: '5000000015911'
+                  isSpam: false
+                  category: null
+                  activityType: Calls
+                  ticketId: null
+                  status: Completed
+                  direction: inbound
     callListViewArray:
       description: callListViewArray template definitions
       content:
@@ -1578,588 +2159,7 @@ components:
                   activityType: Calls
                   ticketId: '5000000016294'
                   status: Completed
-    getCallsListResponse:
-      description: getCallsListResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      ticket:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 13
-                        minProperties: 13
-                        properties:
-                          contact:
-                            $ref: '#/components/schemas/contactJson'
-                          team:
-                            type:
-                            - 'null'
-                            - object
-                            additionalProperties: false
-                            maxProperties: 3
-                            minProperties: 3
-                            properties:
-                              name:
-                                type:
-                                - string
-                                - 'null'
-                                maxLength: 50
-                                minLength: 1
-                                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                              id:
-                                type:
-                                - string
-                                - 'null'
-                                - integer
-                                format: int64
-                                pattern: ([0-9]+)
-                              logoUrl:
-                                type:
-                                - string
-                                - 'null'
-                                maxLength: 200
-                                minLength: 0
-                                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                            required:
-                            - id
-                            - logoUrl
-                            - name
-                          ticketNumber:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int32
-                            pattern: ([0-9]+)
-                          subject:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 1000
-                            minLength: 0
-                          isArchived:
-                            type:
-                            - boolean
-                            - 'null'
-                          dueDate:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                          channel:
-                            type:
-                            - string
-                            - 'null'
-                            x-dynamic-enum: true
-                          closedTime:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                          phone:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 120
-                            minLength: 0
-                            pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-                          teamId:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                          createdTime:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                            pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                          assignee:
-                            type:
-                            - 'null'
-                            - object
-                            additionalProperties: false
-                            maxProperties: 4
-                            minProperties: 4
-                            properties:
-                              firstName:
-                                type:
-                                - string
-                                - 'null'
-                                maxLength: 50
-                                minLength: 0
-                              lastName:
-                                type:
-                                - string
-                                - 'null'
-                                maxLength: 50
-                                minLength: 0
-                              photoURL:
-                                type:
-                                - string
-                                - 'null'
-                                maxLength: 100
-                                minLength: 0
-                                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                              id:
-                                type:
-                                - string
-                                - 'null'
-                                - integer
-                                format: int64
-                                pattern: ([0-9]+)
-                            required:
-                            - firstName
-                            - id
-                            - lastName
-                            - photoURL
-                          isSpam:
-                            type:
-                            - boolean
-                            - 'null'
-                          status:
-                            type:
-                            - string
-                            - 'null'
-                            x-dynamic-enum: true
-                        required:
-                        - assignee
-                        - channel
-                        - closedTime
-                        - createdTime
-                        - dueDate
-                        - id
-                        - isArchived
-                        - isSpam
-                        - phone
-                        - status
-                        - subject
-                        - teamId
-                        - ticketNumber
-                      contact:
-                        $ref: '#/components/schemas/contactJson'
-                      assignee:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 5
-                        minProperties: 5
-                        properties:
-                          firstName:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 0
-                          lastName:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 0
-                          photoURL:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                          emailId:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                        required:
-                        - emailId
-                        - firstName
-                        - id
-                        - lastName
-                        - photoURL
-                      team:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 3
-                        minProperties: 3
-                        properties:
-                          name:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 1
-                            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                          logoUrl:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 200
-                            minLength: 0
-                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                        required:
-                        - id
-                        - logoUrl
-                        - name
-            - oneOf:
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: '#/components/schemas/data'
-                required:
-                - data
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./Task.json#/components/schemas/tableViewData
-                required:
-                - data
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./Task.json#/components/schemas/tableViewIncludeData
-                required:
-                - data
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./Task.json#/components/schemas/tableViewTicketIdData
-                required:
-                - data
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./Task.json#/components/schemas/tableViewContactIdData
-                required:
-                - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ticket: null
-                  contactId: null
-                  subject: hRl
-                  completedTime: 1554187003000
-                  departmentId: '5000000012710'
-                  dueDate: null
-                  creatorId: '5000000015911'
-                  team: null
-                  ownerId: '5000000015911'
-                  priority: Normal
-                  isCommented: true
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e48740f9abf01f71bf
-                  contact: null
-                  createdTime: 1554187003000
-                  startTime: 1553427601000
-                  id: '5000000049385'
-                  assignee:
-                    firstName: George
-                    lastName: McKinson
-                    photoURL: null
-                    id: '5000000015911'
-                  isSpam: false
-                  category: null
-                  activityType: Calls
-                  ticketId: null
-                  status: Canceled
-                  direction: inbound
-                - ticket: null
-                  contactId: null
-                  subject: Irt
-                  completedTime: 1554187026000
-                  departmentId: '5000000012710'
-                  dueDate: null
-                  creatorId: '5000000015911'
-                  team: null
-                  ownerId: '5000000015911'
-                  priority: Normal
-                  isCommented: true
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e4603451fcf41c54b2
-                  contact: null
-                  createdTime: 1554187026000
-                  startTime: 1553427624000
-                  id: '5000000053840'
-                  assignee:
-                    firstName: George
-                    lastName: McKinson
-                    photoURL: null
-                    id: '5000000015911'
-                  isSpam: false
-                  category: null
-                  activityType: Calls
-                  ticketId: null
-                  status: Canceled
-                  direction: inbound
-                - ticket: null
-                  contactId: null
-                  subject: SG0
-                  completedTime: 1554186988000
-                  departmentId: '5000000012710'
-                  dueDate: null
-                  creatorId: '5000000015911'
-                  team:
-                    name: Testing Team
-                    id: '3691000006805001'
-                    logoUrl: https://desk.zoho.com/api/v1/teams/3691000006805001/logo?orgId=11278831
-                  ownerId: '5000000015911'
-                  priority: Normal
-                  isCommented: true
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/9d4883f2d94d59e46c76cc4bfd688f1b
-                  contact: null
-                  createdTime: 1554186988000
-                  startTime: 1554118784000
-                  id: '5000000047098'
-                  assignee:
-                    firstName: George
-                    lastName: McKinson
-                    photoURL: null
-                    id: '5000000015911'
-                  isSpam: false
-                  category: null
-                  activityType: Calls
-                  ticketId: null
-                  status: Completed
-                  direction: inbound
-    callResponse:
-      description: callResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                callId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                modifiedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                reminder:
-                  $ref: '#/components/schemas/reminderArray'
-                statusType:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - Open
-                  - Closed
-                  maxLength: 100
-                  minLength: 0
-                completedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                creatorId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 65535
-                  minLength: 0
-                activityTime:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                duration:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int32
-                  pattern: ([0-9]+)
-                isTrashed:
-                  type:
-                  - boolean
-                  - 'null'
-                webUrl:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 500
-                  minLength: 0
-                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                createdTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                modifiedBy:
-                  $ref: '#/components/schemas/assignee'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                isSpam:
-                  type:
-                  - boolean
-                  - 'null'
-                direction:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - outbound
-                  - inbound
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - activityTime
-              - callId
-              - cf
-              - completedTime
-              - createdTime
-              - creatorId
-              - customFields
-              - description
-              - direction
-              - duration
-              - id
-              - isSpam
-              - isTrashed
-              - layoutId
-              - modifiedBy
-              - modifiedTime
-              - reminder
-              - statusType
-              - webUrl
-          examples:
-            Valid responses Definitions:
-              value:
-                cf: {}
-                contactId: '1892000000088017'
-                subject: New Testing Call
-                departmentId: '3000000007043'
-                creatorId: '3000000008692'
-                description: null
-                ownerId: null
-                priority: High
-                duration: '300'
-                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/51123033fe97b2f886f750280ded9c40
-                createdTime: 1468484846000
-                startTime: 1469465531000
-                id: '3000000054002'
-                ticketId: '3000000008753'
-                direction: inbound
-                status: In Progress
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Call

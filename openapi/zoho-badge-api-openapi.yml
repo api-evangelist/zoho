@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Badge API
+  title: Badge API
   version: 1.0.0
 tags:
 - name: Badge
@@ -169,19 +169,6 @@ components:
         format: int32
         description: Index number starting from which the badges must be listed
         pattern: ([0-9]+)
-    userId:
-      name: userId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
     limit:
       name: limit
       in: query
@@ -198,6 +185,19 @@ components:
         description: Number of badges to list
         maximum: 100
         minimum: 1
+        pattern: ([0-9]+)
+    userId:
+      name: userId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
         pattern: ([0-9]+)
   responses:
     badgesArray:
@@ -242,36 +242,6 @@ components:
                 id: '1'
                 iconUrl: https://www.zylker.com/badge1.jpg
   requestBodies:
-    badgeIdsJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              badgeIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                minItems: 1
-                uniqueItems: false
-            required:
-            - badgeIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                badgeIds:
-                - '24073000002823212'
-                - '24073000002832252'
     dissociateBadgesFromUsers_badgeIdsJSON:
       content:
         application/json:
@@ -302,7 +272,37 @@ components:
                 badgeIds:
                 - '24073000002957051'
                 - '24073000002953232'
+    badgeIdsJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              badgeIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                minItems: 1
+                uniqueItems: false
+            required:
+            - badgeIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                badgeIds:
+                - '24073000002823212'
+                - '24073000002832252'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Badge

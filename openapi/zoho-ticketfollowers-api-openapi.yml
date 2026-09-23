@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter TicketFollowers API
+  title: Ticket Followers API
   version: 1.0.0
 tags:
 - name: TicketFollowers
@@ -58,7 +58,15 @@ paths:
       tags:
       - TicketFollowers
       summary: Get ticket followers
-      description: This API fetches the list of users following a ticket. <br/></br/>_Note:_<br/>Sometimes, followers of a contact/account indirectly end up as ticket followers if the ticket is associated with the contact/account they follow. In that case, the _following_ key returns the value of the original module the user follows--*contact* or account. <br/></br/>Even in a case where the user first followed the ticket and then followed the contact/account associated with it, the following key returns the value contact or account. This is because the contact/account is the parent resource of the ticket.
+      description: 'This API fetches the list of users following a ticket.
+
+
+        _Note:_
+
+        Sometimes, followers of a contact/account indirectly end up as ticket followers if the ticket is associated with the contact/account they follow. In that case, the _following_ key returns the value of the original module the user follows--*contact* or account.
+
+
+        Even in a case where the user first followed the ticket and then followed the contact/account associated with it, the following key returns the value contact or account. This is because the contact/account is the parent resource of the ticket.'
       operationId: getTicketFollowers
       parameters:
       - $ref: '#/components/parameters/ticketId'
@@ -74,8 +82,22 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   requestBodies:
-    removeFollowers:
+    addFollowers:
       content:
         application/json:
           schema:
@@ -103,7 +125,7 @@ components:
               value:
                 followerIds:
                 - 5000000013292
-    addFollowers:
+    removeFollowers:
       content:
         application/json:
           schema:
@@ -200,21 +222,7 @@ components:
                   following: contact
                   id: '5000000012902'
                   email: deskagent@zylker.com
-  parameters:
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: TicketFollowers

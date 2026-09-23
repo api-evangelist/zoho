@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter DashboardMetrics API
+  title: Dashboard Metrics API
   version: 1.0.0
 tags:
 - name: DashboardMetrics
@@ -233,19 +233,6 @@ paths:
       - external-public
 components:
   parameters:
-    channel:
-      name: channel
-      in: query
-      description: Channel through which the tickets were received
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Channel through which the tickets were received
-        x-dynamic-enum: true
     departmentId:
       name: departmentId
       in: query
@@ -260,21 +247,6 @@ components:
         - integer
         format: int64
         description: ID(s) of the department(s) from which the stats must be fetched
-        pattern: ([0-9]+)
-    agentId:
-      name: agentId
-      in: query
-      description: ID(s) of the agent(s) whose stats must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID(s) of the agent(s) whose stats must be fetched
         pattern: ([0-9]+)
     duration:
       name: duration
@@ -297,6 +269,49 @@ components:
         - LAST_MONTH
         maxLength: 100
         minLength: 0
+    channel:
+      name: channel
+      in: query
+      description: Channel through which the tickets were received
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Channel through which the tickets were received
+        x-dynamic-enum: true
+    agentId:
+      name: agentId
+      in: query
+      description: ID(s) of the agent(s) whose stats must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID(s) of the agent(s) whose stats must be fetched
+        pattern: ([0-9]+)
+    teamId:
+      name: teamId
+      in: query
+      description: ID(s) of the team(s) from which the stats must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID(s) of the team(s) from which the stats must be fetched
+        pattern: ([0-9]+)
     groupBy:
       name: groupBy
       in: query
@@ -316,86 +331,7 @@ components:
         - hour
         maxLength: 100
         minLength: 0
-    teamId:
-      name: teamId
-      in: query
-      description: ID(s) of the team(s) from which the stats must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID(s) of the team(s) from which the stats must be fetched
-        pattern: ([0-9]+)
   responses:
-    responseCount:
-      description: responseCount template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - object
-            - 'null'
-            additionalProperties: false
-            properties:
-              avg:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              groupedBy:
-                type:
-                - string
-                - 'null'
-                enum:
-                - date
-                - channel
-                - agent
-                - hour
-                maxLength: 100
-                minLength: 0
-              totalResponseCount:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              responseCount:
-                $ref: ./DashboardMetrics.json#/components/schemas/countArray
-            required:
-            - avg
-            - groupedBy
-            - responseCount
-            - totalResponseCount
-          examples:
-            Valid responses Definitions:
-              value:
-                avg: '0.0'
-                groupedBy: date
-                totalResponseCount: '0'
-                responseCount:
-                - count: '0'
-                  value: '2018-04-06'
-                  referenceValue: null
-                - count: '0'
-                  value: '2018-04-07'
-                  referenceValue: null
-                - count: '0'
-                  value: '2018-04-08'
-                  referenceValue: null
-                - count: '0'
-                  value: '2018-04-09'
-                  referenceValue: null
-                - count: '0'
-                  value: '2018-04-10'
-                  referenceValue: null
     responseTime:
       description: responseTime template definitions
       content:
@@ -564,6 +500,70 @@ components:
                   value: '2018-04-07'
                   referenceValue: null
                 groupedBy: date
+    responseCount:
+      description: responseCount template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - object
+            - 'null'
+            additionalProperties: false
+            properties:
+              avg:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              groupedBy:
+                type:
+                - string
+                - 'null'
+                enum:
+                - date
+                - channel
+                - agent
+                - hour
+                maxLength: 100
+                minLength: 0
+              totalResponseCount:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              responseCount:
+                $ref: ./DashboardMetrics.json#/components/schemas/countArray
+            required:
+            - avg
+            - groupedBy
+            - responseCount
+            - totalResponseCount
+          examples:
+            Valid responses Definitions:
+              value:
+                avg: '0.0'
+                groupedBy: date
+                totalResponseCount: '0'
+                responseCount:
+                - count: '0'
+                  value: '2018-04-06'
+                  referenceValue: null
+                - count: '0'
+                  value: '2018-04-07'
+                  referenceValue: null
+                - count: '0'
+                  value: '2018-04-08'
+                  referenceValue: null
+                - count: '0'
+                  value: '2018-04-09'
+                  referenceValue: null
+                - count: '0'
+                  value: '2018-04-10'
+                  referenceValue: null
     resolutionTime:
       description: resolutionTime template definitions
       content:
@@ -630,4 +630,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: DashboardMetrics

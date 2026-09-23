@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Finance API
+  title: Finance API
   version: 1.0.0
 tags:
 - name: Finance
@@ -83,7 +83,7 @@ paths:
     patch:
       tags:
       - Finance
-      summary: 'Update estimate status '
+      summary: Update estimate status
       description: This will update status of estimate.
       operationId: updateEstimateStatus
       parameters:
@@ -110,8 +110,8 @@ paths:
     patch:
       tags:
       - Finance
-      summary: 'Update invoice status '
-      description: This will  update status of invoice.
+      summary: Update invoice status
+      description: This will update status of invoice.
       operationId: updateInvoiceStatus
       parameters:
       - $ref: '#/components/parameters/financeService'
@@ -186,20 +186,82 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    markInvoicesAsSent_financeMarkAsSent:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '1332784000000108001'
+                - '1332784000000108004'
+                - '1332784000000108006'
+    updateInvoiceStatus_financeUpdateStatus:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - sent
+                maxLength: 100
+                minLength: 0
+            required:
+            - status
+          examples:
+            Valid requestBody Definitions:
+              value:
+                status: draft
+    financeUpdateStatus:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - sent
+                maxLength: 100
+                minLength: 0
+            required:
+            - status
+          examples:
+            Valid requestBody Definitions:
+              value:
+                status: draft
   parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
     deskEntityId:
       name: deskEntityId
       in: query
@@ -215,39 +277,6 @@ components:
         format: int64
         description: To fetch invoice by desk contact or account or ticket id
         pattern: ([0-9]+)
-    pageNumber:
-      name: pageNumber
-      in: query
-      description: page number
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: page number
-        pattern: ([0-9]+)
-    deskModuleName:
-      name: deskModuleName
-      in: query
-      description: 'Desk Module Name:  Contacts or Cases or Accounts'
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Desk Module Name:  Contacts or Cases or Accounts'
-        enum:
-        - Cases
-        - Contacts
-        - Accounts
-        maxLength: 100
-        minLength: 0
     status:
       name: status
       in: query
@@ -286,56 +315,53 @@ components:
         maxLength: 100
         minLength: 0
         pattern: ([a-z]+)
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    pageNumber:
+      name: pageNumber
+      in: query
+      description: page number
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: page number
+        pattern: ([0-9]+)
+    deskModuleName:
+      name: deskModuleName
+      in: query
+      description: 'Desk Module Name:  Contacts or Cases or Accounts'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Desk Module Name:  Contacts or Cases or Accounts'
+        enum:
+        - Cases
+        - Contacts
+        - Accounts
+        maxLength: 100
+        minLength: 0
   responses:
-    getEstimates:
-      description: getEstimates template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              deskEntityId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              data:
-                $ref: ./Finance.json#/components/schemas/dataArr5
-              deskModuleName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - Cases
-                - Contacts
-                - Accounts
-                maxLength: 100
-                minLength: 0
-            required:
-            - data
-            - deskEntityId
-            - deskModuleName
-          examples:
-            Valid responses Definitions:
-              value:
-                deskEntityId: '5000000014010'
-                data:
-                - date: '2018-09-23'
-                  total: 117
-                  isViewdByClient: false
-                  estimateNumber: INV-000025
-                  totalFormatted: AED117.00
-                  id: '1332784000000108001'
-                  dateFormatted: 23 Sep 2018
-                  currencyCode: AED
-                  statusFormatted: Draft
-                  status: draft
-                deskModuleName: Contacts
     getInvoices:
       description: getInvoices template definitions
       content:
@@ -385,6 +411,55 @@ components:
                   statusFormatted: Draft
                   status: draft
                 deskModuleName: Contacts
+    getEstimates:
+      description: getEstimates template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              deskEntityId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              data:
+                $ref: ./Finance.json#/components/schemas/dataArr5
+              deskModuleName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - Cases
+                - Contacts
+                - Accounts
+                maxLength: 100
+                minLength: 0
+            required:
+            - data
+            - deskEntityId
+            - deskModuleName
+          examples:
+            Valid responses Definitions:
+              value:
+                deskEntityId: '5000000014010'
+                data:
+                - date: '2018-09-23'
+                  total: 117
+                  isViewdByClient: false
+                  estimateNumber: INV-000025
+                  totalFormatted: AED117.00
+                  id: '1332784000000108001'
+                  dateFormatted: 23 Sep 2018
+                  currencyCode: AED
+                  statusFormatted: Draft
+                  status: draft
+                deskModuleName: Contacts
     getTicketsForInvoiceId:
       description: getTicketsForInvoiceId template definitions
       content:
@@ -423,82 +498,7 @@ components:
                   priority: High
                   status: Closed
                   commentCount: '3'
-  requestBodies:
-    updateInvoiceStatus_financeUpdateStatus:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - sent
-                maxLength: 100
-                minLength: 0
-            required:
-            - status
-          examples:
-            Valid requestBody Definitions:
-              value:
-                status: draft
-    markInvoicesAsSent_financeMarkAsSent:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '1332784000000108001'
-                - '1332784000000108004'
-                - '1332784000000108006'
-    financeUpdateStatus:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - sent
-                maxLength: 100
-                minLength: 0
-            required:
-            - status
-          examples:
-            Valid requestBody Definitions:
-              value:
-                status: draft
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Finance

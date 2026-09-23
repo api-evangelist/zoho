@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Followers API
+  title: Followers API
   version: 1.0.0
 tags:
 - name: Followers
@@ -127,64 +127,6 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    followersCountJSON:
-      description: followersCountJSON template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: 289
-    followersListJson:
-      description: followersListJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Followers.json#/components/schemas/followersList
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - firstName: ''
-                  lastName: deskagent
-                  photoURL: https://desk.zoho.com/api/v1/agent/5000000012902/photo?orgId=3115331
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#setup/users-control/agents/5000000000347
-                  name: Desk Agent
-                  id: '5000000012902'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#5C6368'
-                      textColor: '#FFFFFF'
-                    name: MVP
-                    id: '5000000081009'
-                    logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
-                  userType: AGENT
-                  email: deskagent@zylker.com
   parameters:
     userType:
       name: userType
@@ -233,7 +175,65 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+  responses:
+    followersListJson:
+      description: followersListJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Followers.json#/components/schemas/followersList
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - firstName: ''
+                  lastName: deskagent
+                  photoURL: https://desk.zoho.com/api/v1/agent/5000000012902/photo?orgId=3115331
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#setup/users-control/agents/5000000000347
+                  name: Desk Agent
+                  id: '5000000012902'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#5C6368'
+                      textColor: '#FFFFFF'
+                    name: MVP
+                    id: '5000000081009'
+                    logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
+                  userType: AGENT
+                  email: deskagent@zylker.com
+    followersCountJSON:
+      description: followersCountJSON template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: 289
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Followers

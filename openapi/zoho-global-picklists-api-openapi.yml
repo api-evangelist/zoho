@@ -1,7 +1,32 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Global Picklists API
-  version: 1.0.0
+  title: Global Picklists API
+  description: Global sets are collections of picklist values that can be associated with multiple picklists across modules.
+  version: '8.0'
+servers:
+- url: https://zohoapis.{dc}/crm/{version}
+  description: API Server URL
+  variables:
+    dc:
+      enum:
+      - com
+      - eu
+      - in
+      - cn
+      - au
+      default: com
+      description: API Server URL TLD
+    version:
+      description: API Version
+      default: v8
+security:
+- iam-oauth2-schema:
+  - ZohoCRM.settings.global_picklist.ALL
+  - ZohoCRM.settings.ALL
+  - ZohoCRM.settings.global_picklist.READ
+  - ZohoCRM.settings.global_picklist.CREATE
+  - ZohoCRM.settings.global_picklist.UPDATE
+  - ZohoCRM.settings.global_picklist.DELETE
 tags:
 - name: Global Picklists
 paths:
@@ -563,19 +588,41 @@ paths:
       - iam-oauth2-schema:
         - ZohoCRM.settings.global_picklist.READ
 components:
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Numeric id of the resource.
+      schema:
+        type: string
+        format: int64
+    Page:
+      name: page
+      in: query
+      required: false
+      description: 'Page number (positive integer). Default: 1.'
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: 'Number of records per page. Default and maximum: 200.'
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 200
+        format: int64
   schemas:
-    LayoutName:
+    ModulepluralLabel:
       type: string
-      description: Name of the layout
-      maxLength: 50
-    PickListReferenceValue:
-      type: string
-      maxLength: 120
-      description: Reference value of the picklist field.
-    PickListDisplayValue:
-      type: string
-      maxLength: 120
-      description: The picklist display value(translated value if translation enabled).
+      description: Plural label of the module.
+      maxLength: 25
     FieldLabel:
       type: string
       description: Name of the field label.
@@ -584,51 +631,28 @@ components:
       type: string
       description: Name of the module
       maxLength: 100
-    ModulepluralLabel:
-      type: string
-      description: Plural label of the module.
-      maxLength: 25
     ApiName:
       type: string
       description: API name of the resource. It will start with alphabets and can contain alphanumeric characters and underscores.
       pattern: ^[A-Za-z][A-Za-z0-9_]*$
       maxLength: 50
+    PickListDisplayValue:
+      type: string
+      maxLength: 120
+      description: The picklist display value(translated value if translation enabled).
+    PickListReferenceValue:
+      type: string
+      maxLength: 120
+      description: Reference value of the picklist field.
     Id:
       type: string
       description: Id of the resource.
       format: int64
+    LayoutName:
+      type: string
+      description: Name of the layout
+      maxLength: 50
   responses:
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            description: Internal server error response object containing code, message, details, and status.
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error.
-                maxLength: 50
-              message:
-                type: string
-                description: Human-readable error message.
-                maxLength: 255
-              details:
-                type: object
-                description: Additional details about the error.
-                additionalProperties: true
-              status:
-                type: string
-                description: Status of the error response.
-                enum:
-                - error
-            required:
-            - code
-            - message
-            - details
-            - status
-            additionalProperties: false
     Forbidden:
       description: Forbidden
       content:
@@ -671,37 +695,49 @@ components:
             - details
             - status
             additionalProperties: false
-  parameters:
-    PerPage:
-      name: per_page
-      in: query
-      required: false
-      description: 'Number of records per page. Default and maximum: 200.'
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 200
-        default: 200
-        format: int64
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Numeric id of the resource.
-      schema:
-        type: string
-        format: int64
-    Page:
-      name: page
-      in: query
-      required: false
-      description: 'Page number (positive integer). Default: 1.'
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Internal server error response object containing code, message, details, and status.
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error.
+                maxLength: 50
+              message:
+                type: string
+                description: Human-readable error message.
+                maxLength: 255
+              details:
+                type: object
+                description: Additional details about the error.
+                additionalProperties: true
+              status:
+                type: string
+                description: Status of the error response.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - details
+            - status
+            additionalProperties: false
   securitySchemes:
     iam-oauth2-schema:
-      $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          refreshUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes:
+            ZohoCRM.settings.global_picklist.ALL: Access to all global picklist operations
+            ZohoCRM.settings.global_picklist.READ: Access to read global picklist details
+            ZohoCRM.settings.global_picklist.CREATE: Access to create global picklists
+            ZohoCRM.settings.global_picklist.UPDATE: Access to update global picklists
+            ZohoCRM.settings.global_picklist.DELETE: Access to delete global picklists
+            ZohoCRM.settings.ALL: Access to all settings operations

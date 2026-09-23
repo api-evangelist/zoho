@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter ContactDeduplication API
+  title: Contact Deduplication API
   version: 1.0.0
 tags:
 - name: ContactDeduplication
@@ -10,7 +10,12 @@ paths:
       tags:
       - ContactDeduplication
       summary: List duplicate contacts
-      description: This API lists the duplicate entries of a contact.The _fieldName_ parameters is mandatory in the API request <br/></br/>_Note:_<br/> If you encounter a 202 status code while executing this API request, it means there are 100,000 or more contacts in the help desk portal. Matching the records and finding duplicates will be time-consuming in such a scenario. Therefore, the deduplication request will be accepted, and after the process is completed, an automated report will be sent to the user who initiated the deduplication.
+      description: 'This API lists the duplicate entries of a contact.The _fieldName_ parameters is mandatory in the API request
+
+
+        _Note:_
+
+        If you encounter a 202 status code while executing this API request, it means there are 100,000 or more contacts in the help desk portal. Matching the records and finding duplicates will be time-consuming in such a scenario. Therefore, the deduplication request will be accepted, and after the process is completed, an automated report will be sent to the user who initiated the deduplication.'
       operationId: getDuplicateContactFieldValueCounts
       parameters:
       - $ref: '#/components/parameters/fieldName'
@@ -194,23 +199,6 @@ components:
         description: Index number starting from which the contacts must be fetched
         minimum: 0
         pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of contacts to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of contacts to fetch
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
     fieldName:
       name: fieldName
       in: query
@@ -233,7 +221,75 @@ components:
         - bothEmail
         maxLength: 100
         minLength: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of contacts to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of contacts to fetch
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
   responses:
+    getDefaultField:
+      description: getDefaultField template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              fieldName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - firstName
+                - lastName
+                - email
+                - secondaryEmail
+                - phone
+                - fullName
+                - bothEmail
+                - null
+            required:
+            - fieldName
+          examples:
+            Valid responses Definitions:
+              value:
+                fieldName: email
+    listDuplicateContactCountResponse:
+      description: listDuplicateContactCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./ContactDeduplication.json#/components/schemas/counts
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - count: 16
+                  fieldValue: Jade
+                - count: 2
+                  fieldValue: saran
     listDuplicateContactResponse:
       description: listDuplicateContactResponse template definitions
       content:
@@ -371,57 +427,6 @@ components:
                       okPercentage: '31'
                       goodPercentage: '47'
                     email: jade@zylker.com
-    getDefaultField:
-      description: getDefaultField template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              fieldName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - firstName
-                - lastName
-                - email
-                - secondaryEmail
-                - phone
-                - fullName
-                - bothEmail
-                - null
-            required:
-            - fieldName
-          examples:
-            Valid responses Definitions:
-              value:
-                fieldName: email
-    listDuplicateContactCountResponse:
-      description: listDuplicateContactCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./ContactDeduplication.json#/components/schemas/counts
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - count: 16
-                  fieldValue: Jade
-                - count: 2
-                  fieldValue: saran
   requestBodies:
     setDefaultField:
       content:
@@ -461,4 +466,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: ContactDeduplication

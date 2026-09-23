@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter AgentTimeEntry API
+  title: Agent Time Entry API
   version: 1.0.0
 tags:
 - name: AgentTimeEntry
@@ -171,7 +171,178 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - integer
+        format: int64
+        description: ID of the department
+        pattern: ([0-9]+)
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+        enum:
+        - tickets
+        - tasks
+        - calls
+        - events
   responses:
+    getTimeEntryForAgentResponse:
+      description: getTimeEntryForAgentResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                owner:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 5
+                  minProperties: 5
+                  properties:
+                    firstName:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 50
+                      minLength: 0
+                    lastName:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 50
+                      minLength: 0
+                    photoURL:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 50
+                      minLength: 0
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                  required:
+                  - firstName
+                  - id
+                  - lastName
+                  - name
+                  - photoURL
+            - oneOf:
+              - additionalProperties: false
+                allOf:
+                - $ref: ./AgentTimeEntry.json#/components/schemas/getTimeEntryForAgentResponse
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    parent:
+                      $ref: ./AgentTimeEntry.json#/components/schemas/getTicketParent
+                  required:
+                  - parent
+              - additionalProperties: false
+                allOf:
+                - $ref: ./AgentTimeEntry.json#/components/schemas/getTimeEntryForAgentResponse
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    parent:
+                      $ref: ./AgentTimeEntry.json#/components/schemas/getActivityParent
+                  required:
+                  - parent
+          examples:
+            Valid responses Definitions:
+              value:
+                owner:
+                  firstName: Eswer
+                  lastName: KM
+                  photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
+                  name: Eswer KM
+                  id: '4000000008688129'
+                secondsSpent: '21'
+                parent:
+                  ticketNumber: '1001'
+                  associatedTicketId: '4000000031007'
+                  subject: Task subject
+                  id: '4000000031010'
+                  type: TASKS
+                cf:
+                  cf_timeentryname: time1
+                executedTime: 1466627400000
+                fixedCost: null
+                departmentId: '4000000008694'
+                minutesSpent: '23'
+                creatorId: '4000000008692'
+                agentCostPerHour: '3.0'
+                description: Time Entry description
+                hoursSpent: '3'
+                ownerId: '4000000008692'
+                isBillable: true
+                mode: MANUAL
+                isTrashed: 'false'
+                billingType: FIXED_COST_FOR_TICKETS
+                createdTime: 1466061884000
+                invoiceId: '40000000086881212'
+                id: '4000000033001'
+                requestChargeType: Customer Service
+                additionalCost: '10.0'
+                totalCost: '20.17'
     getSummationOfTimeEntryForAgentResponse:
       description: getSummationOfTimeEntryForAgentResponse template definitions
       content:
@@ -389,178 +560,7 @@ components:
                   requestChargeType: Customer Service
                   additionalCost: '10.0'
                   totalCost: '657.46'
-    getTimeEntryForAgentResponse:
-      description: getTimeEntryForAgentResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                owner:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 5
-                  minProperties: 5
-                  properties:
-                    firstName:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 50
-                      minLength: 0
-                    lastName:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 50
-                      minLength: 0
-                    photoURL:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                    name:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 50
-                      minLength: 0
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                  required:
-                  - firstName
-                  - id
-                  - lastName
-                  - name
-                  - photoURL
-            - oneOf:
-              - additionalProperties: false
-                allOf:
-                - $ref: ./AgentTimeEntry.json#/components/schemas/getTimeEntryForAgentResponse
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    parent:
-                      $ref: ./AgentTimeEntry.json#/components/schemas/getTicketParent
-                  required:
-                  - parent
-              - additionalProperties: false
-                allOf:
-                - $ref: ./AgentTimeEntry.json#/components/schemas/getTimeEntryForAgentResponse
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    parent:
-                      $ref: ./AgentTimeEntry.json#/components/schemas/getActivityParent
-                  required:
-                  - parent
-          examples:
-            Valid responses Definitions:
-              value:
-                owner:
-                  firstName: Eswer
-                  lastName: KM
-                  photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
-                  name: Eswer KM
-                  id: '4000000008688129'
-                secondsSpent: '21'
-                parent:
-                  ticketNumber: '1001'
-                  associatedTicketId: '4000000031007'
-                  subject: Task subject
-                  id: '4000000031010'
-                  type: TASKS
-                cf:
-                  cf_timeentryname: time1
-                executedTime: 1466627400000
-                fixedCost: null
-                departmentId: '4000000008694'
-                minutesSpent: '23'
-                creatorId: '4000000008692'
-                agentCostPerHour: '3.0'
-                description: Time Entry description
-                hoursSpent: '3'
-                ownerId: '4000000008692'
-                isBillable: true
-                mode: MANUAL
-                isTrashed: 'false'
-                billingType: FIXED_COST_FOR_TICKETS
-                createdTime: 1466061884000
-                invoiceId: '40000000086881212'
-                id: '4000000033001'
-                requestChargeType: Customer Service
-                additionalCost: '10.0'
-                totalCost: '20.17'
-  parameters:
-    module:
-      name: module
-      in: query
-      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type: string
-        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-        enum:
-        - tickets
-        - tasks
-        - calls
-        - events
-    agentId:
-      name: agentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type: string
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - integer
-        format: int64
-        description: ID of the department
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: AgentTimeEntry

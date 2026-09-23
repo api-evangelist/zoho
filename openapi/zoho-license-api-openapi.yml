@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter License API
-  version: 1.0.0
-  description: Operations related to license features and plan information.
+  title: License API
+  version: v1
+  description: API for managing and querying license information, features, and plan details.
 tags:
 - name: License
   description: Operations related to license features and plan information.
@@ -153,6 +153,22 @@ paths:
           $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
 components:
   schemas:
+    SimpleLicenseUnit:
+      type: object
+      description: Simple license unit with only max value
+      properties:
+        unitCode:
+          type: string
+          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
+          example: ORG
+        maxValue:
+          type: integer
+          description: Maximum allowed value for this unit
+          example: 33
+      required:
+      - unitCode
+      - maxValue
+      additionalProperties: false
     PlanInfoResponse:
       type: object
       description: Detailed information about the current license plan.
@@ -201,29 +217,6 @@ components:
           example: true
       required:
       - isAllowed
-    SimpleLicenseUnit:
-      type: object
-      description: Simple license unit with only max value
-      properties:
-        unitCode:
-          type: string
-          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
-          example: ORG
-        maxValue:
-          type: integer
-          description: Maximum allowed value for this unit
-          example: 33
-      required:
-      - unitCode
-      - maxValue
-      additionalProperties: false
-    LicenseFeatureListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeatureAllowed'
     FeatureAllowed:
       type: object
       description: Details of an allowed feature with flexible limit information.
@@ -279,7 +272,14 @@ components:
       required:
       - unitCode
       - maxValue
+    LicenseFeatureListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAllowed'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: License

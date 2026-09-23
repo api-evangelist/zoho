@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter Field API
+  title: Field API
   version: 1.0.0
 tags:
 - name: Field
@@ -371,24 +371,30 @@ paths:
       - external-public
 components:
   schemas:
-    getMultiPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/multiPickListFieldResponse'
-      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
-    urlFieldResponse:
+    textAreaFieldResponse:
       additionalProperties: false
       allOf:
       - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    createDateFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/dateFieldResponse'
-      - $ref: '#/components/schemas/dateFieldResponseForTickets'
-    editDateTimeFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/dateTimeFieldResponse'
-      - $ref: '#/components/schemas/dateTimeFieldResponseForTickets'
+    booleanFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          defaultValue:
+            type:
+            - string
+            - 'null'
+            description: ''
+            enum:
+            - 'true'
+            - 'false'
+            maxLength: 100
+            minLength: 0
+        required:
+        - defaultValue
     largeTextFieldResponse:
       additionalProperties: false
       allOf:
@@ -401,10 +407,14 @@ components:
             $ref: ./Field.json#/components/schemas/largeTextFieldProperties
         required:
         - properties
-    booleanFieldResponseForTickets:
+    getDateTimeFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/dateTimeFieldResponse'
+      - $ref: '#/components/schemas/dateTimeFieldResponseForTickets'
+    pickListFieldBasicResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/booleanFieldResponse
+      - $ref: ./Field.json#/components/schemas/pickListFieldBasicResponse
       - type:
         - object
         - 'null'
@@ -416,7 +426,48 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    dateFieldJson:
+    pickListFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          allowedValues:
+            type:
+            - 'null'
+            - array
+            description: ''
+            items:
+              type:
+              - 'null'
+              - object
+              additionalProperties: false
+              description: ''
+              maxProperties: 1
+              minProperties: 1
+              properties:
+                value:
+                  type:
+                  - string
+                  - 'null'
+                  description: ''
+                  maxLength: 120
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              required:
+              - value
+            uniqueItems: false
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - allowedValues
+        - showToHelpCenter
+    textAreaFieldJson:
       type:
       - object
       - 'null'
@@ -443,22 +494,14 @@ components:
           - 'null'
           description: ''
           enum:
-          - Date
+          - Textarea
           maxLength: 100
           minLength: 0
       required:
       - displayLabel
       - type
       - type
-    getCurrencyFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/currencyFieldResponse'
-      - $ref: '#/components/schemas/currencyFieldResponseForTickets'
-    editPercentFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/percentFieldResponse'
-      - $ref: '#/components/schemas/percentFieldResponseForTickets'
-    integerFieldJson:
+    textFieldJson:
       type:
       - object
       - 'null'
@@ -485,7 +528,7 @@ components:
           - 'null'
           description: ''
           enum:
-          - Number
+          - Text
           maxLength: 100
           minLength: 0
         maxLength:
@@ -495,86 +538,19 @@ components:
           - integer
           format: int32
           description: ''
-          maximum: 9
+          maximum: 255
           minimum: 1
           pattern: ([0-9]+)
       required:
       - displayLabel
       - maxLength
       - type
-    createTextAreaFieldResponse:
+    createMultiPickListFieldResponse:
       anyOf:
-      - $ref: '#/components/schemas/textAreaFieldResponse'
-      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
-    emailFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/emailFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    editTextAreaFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/textAreaFieldResponse'
-      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
-    editLargeTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/largeTextFieldResponse'
-      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
-    getDateTimeFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/dateTimeFieldResponse'
-      - $ref: '#/components/schemas/dateTimeFieldResponseForTickets'
-    editIntegerFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/integerFieldResponse'
-      - $ref: '#/components/schemas/integerFieldResponseForTickets'
-    editURLFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/urlFieldResponse'
-      - $ref: '#/components/schemas/urlFieldResponseForTickets'
-    createDecimalFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/decimalFieldResponse'
-      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
-    urlFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/urlFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    decimalFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/decimalFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
+      - $ref: '#/components/schemas/multiPickListFieldResponse'
+      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
     currencyFieldResponse:
       additionalProperties: false
       allOf:
@@ -619,10 +595,26 @@ components:
         - decimalPlaces
         - roundingOption
         - roundingPrecision
-    textFieldResponseForTickets:
+    createEmailFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/emailFieldResponse'
+      - $ref: '#/components/schemas/emailFieldResponseForTickets'
+    editDecimalFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/decimalFieldResponse'
+      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
+    createLargeTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/largeTextFieldResponse'
+      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
+    createTextAreaFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textAreaFieldResponse'
+      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
+    multiPickListFieldBasicResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/textFieldResponse
+      - $ref: ./Field.json#/components/schemas/multiPickListFieldBasicResponse
       - type:
         - object
         - 'null'
@@ -634,7 +626,15 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    pickListFieldRequestJson:
+    getLargeTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/largeTextFieldResponse'
+      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
+    editIntegerFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/integerFieldResponse'
+      - $ref: '#/components/schemas/integerFieldResponseForTickets'
+    urlFieldJson:
       type:
       - object
       - 'null'
@@ -661,25 +661,223 @@ components:
           - 'null'
           description: ''
           enum:
-          - Picklist
+          - URL
           maxLength: 100
           minLength: 0
       required:
       - displayLabel
       - type
       - type
-    getTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/textFieldResponse'
-      - $ref: '#/components/schemas/textFieldResponseForTickets'
-    getDecimalFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/decimalFieldResponse'
-      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
-    integerFieldResponse:
+    multiPickListFieldResponse:
       additionalProperties: false
       allOf:
       - $ref: ./Field.json#/components/schemas/commonFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          allowedValues:
+            type:
+            - 'null'
+            - array
+            description: ''
+            items:
+              type:
+              - 'null'
+              - object
+              additionalProperties: false
+              description: ''
+              maxProperties: 1
+              minProperties: 1
+              properties:
+                value:
+                  type:
+                  - string
+                  - 'null'
+                  description: ''
+                  maxLength: 120
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              required:
+              - value
+            uniqueItems: false
+        required:
+        - allowedValues
+    createPhoneFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/phoneFieldResponse'
+      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
+    createURLFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/urlFieldResponse'
+      - $ref: '#/components/schemas/urlFieldResponseForTickets'
+    createPercentFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/percentFieldResponse'
+      - $ref: '#/components/schemas/percentFieldResponseForTickets'
+    editEmailFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/emailFieldResponse'
+      - $ref: '#/components/schemas/emailFieldResponseForTickets'
+    textFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    createBooleanFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/booleanFieldResponse'
+      - $ref: '#/components/schemas/booleanFieldResponseForTickets'
+    dateTimeFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/dateTimeFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    percentFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    editCurrencyFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/currencyFieldResponse'
+      - $ref: '#/components/schemas/currencyFieldResponseForTickets'
+    booleanFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/booleanFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    currencyFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/currencyFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    decimalFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          decimalPlaces:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            description: ''
+            maximum: 9
+            minimum: 0
+            pattern: ([0-9]+)
+        required:
+        - decimalPlaces
+    editTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textFieldResponse'
+      - $ref: '#/components/schemas/textFieldResponseForTickets'
+    dateFieldJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - Date
+          maxLength: 100
+          minLength: 0
+      required:
+      - displayLabel
+      - type
+      - type
+    emailFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/emailFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    createDateFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/dateFieldResponse'
+      - $ref: '#/components/schemas/dateFieldResponseForTickets'
+    createPickListFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/pickListFieldResponse'
+      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/pickListFieldBasicResponse'
+      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
+    decimalFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/decimalFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
     percentFieldJson:
       type:
       - object
@@ -714,14 +912,111 @@ components:
       - displayLabel
       - type
       - type
-    createCurrencyFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/currencyFieldResponse'
-      - $ref: '#/components/schemas/currencyFieldResponseForTickets'
-    pickListFieldBasicResponseForTickets:
+    pickListFieldBasicResponse:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/pickListFieldBasicResponse
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    createTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textFieldResponse'
+      - $ref: '#/components/schemas/textFieldResponseForTickets'
+    multiPickListFieldJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - Multiselect
+          maxLength: 100
+          minLength: 0
+      required:
+      - displayLabel
+      - type
+      - type
+    phoneFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    emailFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    dateFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/dateFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    editLargeTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/largeTextFieldResponse'
+      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
+    getPickListFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/pickListFieldResponse'
+      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/pickListFieldBasicResponse'
+      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
+    editPickListFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/pickListFieldResponse'
+      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/pickListFieldBasicResponse'
+      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
+    editDateFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/dateFieldResponse'
+      - $ref: '#/components/schemas/dateFieldResponseForTickets'
+    getTextAreaFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textAreaFieldResponse'
+      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
+    dateFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    getURLFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/urlFieldResponse'
+      - $ref: '#/components/schemas/urlFieldResponseForTickets'
+    getBooleanFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/booleanFieldResponse'
+      - $ref: '#/components/schemas/booleanFieldResponseForTickets'
+    textAreaFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/textAreaFieldResponse
       - type:
         - object
         - 'null'
@@ -767,10 +1062,18 @@ components:
       - displayLabel
       - type
       - type
-    phoneFieldResponseForTickets:
+    getPhoneFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/phoneFieldResponse'
+      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
+    editTextAreaFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textAreaFieldResponse'
+      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
+    urlFieldResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/phoneFieldResponse
+      - $ref: ./Field.json#/components/schemas/urlFieldResponse
       - type:
         - object
         - 'null'
@@ -782,67 +1085,36 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    textAreaFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - Textarea
-          maxLength: 100
-          minLength: 0
-      required:
-      - displayLabel
-      - type
-      - type
-    currencyFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/currencyFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    multiPickListFieldBasicResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    editDateFieldResponse:
+    createIntegerFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/integerFieldResponse'
+      - $ref: '#/components/schemas/integerFieldResponseForTickets'
+    getDateFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/dateFieldResponse'
       - $ref: '#/components/schemas/dateFieldResponseForTickets'
-    textAreaFieldResponseForTickets:
+    createCurrencyFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/currencyFieldResponse'
+      - $ref: '#/components/schemas/currencyFieldResponseForTickets'
+    editPhoneFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/phoneFieldResponse'
+      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
+    editMultiPickListFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/multiPickListFieldResponse'
+      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
+    urlFieldResponse:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/textAreaFieldResponse
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    textFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/textFieldResponse
       - type:
         - object
         - 'null'
@@ -854,11 +1126,7 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    getURLFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/urlFieldResponse'
-      - $ref: '#/components/schemas/urlFieldResponseForTickets'
-    textFieldJson:
+    decimalFieldJson:
       type:
       - object
       - 'null'
@@ -872,6 +1140,16 @@ components:
           maxLength: 200
           minLength: 0
           pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        decimalPlaces:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          description: ''
+          maximum: 9
+          minimum: 0
+          pattern: ([0-9]+)
         isTrackLastActivityTime:
           type:
           - boolean
@@ -885,7 +1163,7 @@ components:
           - 'null'
           description: ''
           enum:
-          - Text
+          - Decimal
           maxLength: 100
           minLength: 0
         maxLength:
@@ -895,150 +1173,31 @@ components:
           - integer
           format: int32
           description: ''
-          maximum: 255
+          maximum: 16
           minimum: 1
           pattern: ([0-9]+)
       required:
+      - decimalPlaces
       - displayLabel
       - maxLength
       - type
-    multiPickListFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - Multiselect
-          maxLength: 100
-          minLength: 0
-      required:
-      - displayLabel
       - type
-      - type
-    editTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/textFieldResponse'
-      - $ref: '#/components/schemas/textFieldResponseForTickets'
-    createIntegerFieldResponse:
+    getIntegerFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/integerFieldResponse'
       - $ref: '#/components/schemas/integerFieldResponseForTickets'
-    createDateTimeFieldResponse:
+    editDateTimeFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/dateTimeFieldResponse'
       - $ref: '#/components/schemas/dateTimeFieldResponseForTickets'
-    emailFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - Email
-          maxLength: 100
-          minLength: 0
-      required:
-      - displayLabel
-      - type
-      - type
-    editPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/pickListFieldResponse'
-      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/pickListFieldBasicResponse'
-      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
-    pickListFieldResponseForTickets:
+    multiPickListFieldBasicResponse:
       additionalProperties: false
       allOf:
       - $ref: ./Field.json#/components/schemas/commonFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          allowedValues:
-            type:
-            - 'null'
-            - array
-            description: ''
-            items:
-              type:
-              - 'null'
-              - object
-              additionalProperties: false
-              description: ''
-              maxProperties: 1
-              minProperties: 1
-              properties:
-                value:
-                  type:
-                  - string
-                  - 'null'
-                  description: ''
-                  maxLength: 120
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              required:
-              - value
-            uniqueItems: false
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - allowedValues
-        - showToHelpCenter
-    editMultiPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/multiPickListFieldResponse'
-      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
-    dateFieldResponseForTickets:
+    multiPickListFieldResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/dateFieldResponse
+      - $ref: ./Field.json#/components/schemas/multiPickListFieldResponse
       - type:
         - object
         - 'null'
@@ -1050,231 +1209,37 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    phoneFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    getBooleanFieldResponse:
+    editBooleanFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/booleanFieldResponse'
       - $ref: '#/components/schemas/booleanFieldResponseForTickets'
-    createTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/textFieldResponse'
-      - $ref: '#/components/schemas/textFieldResponseForTickets'
-    editCurrencyFieldResponse:
+    integerFieldResponseForTickets:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/integerFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    getCurrencyFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/currencyFieldResponse'
       - $ref: '#/components/schemas/currencyFieldResponseForTickets'
-    getPercentFieldResponse:
+    dateTimeFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    editPercentFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/percentFieldResponse'
       - $ref: '#/components/schemas/percentFieldResponseForTickets'
-    pickListFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          allowedValues:
-            type:
-            - 'null'
-            - array
-            description: ''
-            items:
-              type:
-              - 'null'
-              - object
-              additionalProperties: false
-              description: ''
-              maxProperties: 1
-              minProperties: 1
-              properties:
-                value:
-                  type:
-                  - string
-                  - 'null'
-                  description: ''
-                  maxLength: 120
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              required:
-              - value
-            uniqueItems: false
-        required:
-        - allowedValues
-    dateFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    createEmailFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/emailFieldResponse'
-      - $ref: '#/components/schemas/emailFieldResponseForTickets'
-    largeTextFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/largeTextFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    largeTextFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - LargeText
-          maxLength: 100
-          minLength: 0
-        properties:
-          $ref: ./Field.json#/components/schemas/largeTextFieldProperties
-      required:
-      - displayLabel
-      - type
-      - type
-    getEmailFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/emailFieldResponse'
-      - $ref: '#/components/schemas/emailFieldResponseForTickets'
-    editDecimalFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/decimalFieldResponse'
-      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
-    createBooleanFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/booleanFieldResponse'
-      - $ref: '#/components/schemas/booleanFieldResponseForTickets'
-    createPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/pickListFieldResponse'
-      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/pickListFieldBasicResponse'
-      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
-    multiPickListFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          allowedValues:
-            type:
-            - 'null'
-            - array
-            description: ''
-            items:
-              type:
-              - 'null'
-              - object
-              additionalProperties: false
-              description: ''
-              maxProperties: 1
-              minProperties: 1
-              properties:
-                value:
-                  type:
-                  - string
-                  - 'null'
-                  description: ''
-                  maxLength: 120
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
-              required:
-              - value
-            uniqueItems: false
-        required:
-        - allowedValues
-    editPhoneFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/phoneFieldResponse'
-      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
-    decimalFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          decimalPlaces:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            description: ''
-            maximum: 9
-            minimum: 0
-            pattern: ([0-9]+)
-        required:
-        - decimalPlaces
-    getPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/pickListFieldResponse'
-      - $ref: '#/components/schemas/pickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/pickListFieldBasicResponse'
-      - $ref: '#/components/schemas/pickListFieldBasicResponseForTickets'
-    getLargeTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/largeTextFieldResponse'
-      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
-    createLargeTextFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/largeTextFieldResponse'
-      - $ref: '#/components/schemas/largeTextFieldResponseForTickets'
-    booleanFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          defaultValue:
-            type:
-            - string
-            - 'null'
-            description: ''
-            enum:
-            - 'true'
-            - 'false'
-            maxLength: 100
-            minLength: 0
-        required:
-        - defaultValue
     phoneFieldJson:
       type:
       - object
@@ -1320,30 +1285,67 @@ components:
       - maxLength
       - type
       - type
-    textFieldResponse:
+    phoneFieldResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    getIntegerFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/integerFieldResponse'
-      - $ref: '#/components/schemas/integerFieldResponseForTickets'
-    createPercentFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/percentFieldResponse'
-      - $ref: '#/components/schemas/percentFieldResponseForTickets'
-    getPhoneFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/phoneFieldResponse'
-      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
-    createURLFieldResponse:
+      - $ref: ./Field.json#/components/schemas/phoneFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          showToHelpCenter:
+            type:
+            - boolean
+            - 'null'
+            description: ''
+        required:
+        - showToHelpCenter
+    pickListFieldRequestJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - Picklist
+          maxLength: 100
+          minLength: 0
+      required:
+      - displayLabel
+      - type
+      - type
+    editURLFieldResponse:
       anyOf:
       - $ref: '#/components/schemas/urlFieldResponse'
       - $ref: '#/components/schemas/urlFieldResponseForTickets'
-    integerFieldResponseForTickets:
+    getPercentFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/percentFieldResponse'
+      - $ref: '#/components/schemas/percentFieldResponseForTickets'
+    largeTextFieldResponseForTickets:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/integerFieldResponse
+      - $ref: ./Field.json#/components/schemas/largeTextFieldResponse
       - type:
         - object
         - 'null'
@@ -1355,21 +1357,100 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    multiPickListFieldResponseForTickets:
+    integerFieldResponse:
       additionalProperties: false
       allOf:
-      - $ref: ./Field.json#/components/schemas/multiPickListFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+    integerFieldJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - Number
+          maxLength: 100
+          minLength: 0
+        maxLength:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          description: ''
+          maximum: 9
+          minimum: 1
+          pattern: ([0-9]+)
+      required:
+      - displayLabel
+      - maxLength
+      - type
+    getTextFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/textFieldResponse'
+      - $ref: '#/components/schemas/textFieldResponseForTickets'
+    createDecimalFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/decimalFieldResponse'
+      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
+    emailFieldJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - Email
+          maxLength: 100
+          minLength: 0
+      required:
+      - displayLabel
+      - type
+      - type
+    getEmailFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/emailFieldResponse'
+      - $ref: '#/components/schemas/emailFieldResponseForTickets'
     currencyFieldJson:
       type:
       - object
@@ -1447,58 +1528,6 @@ components:
       - displayLabel
       - maxLength
       - type
-    textAreaFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    percentFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    createMultiPickListFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/multiPickListFieldResponse'
-      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
-      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
-    editBooleanFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/booleanFieldResponse'
-      - $ref: '#/components/schemas/booleanFieldResponseForTickets'
-    urlFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - URL
-          maxLength: 100
-          minLength: 0
-      required:
-      - displayLabel
-      - type
-      - type
     booleanFieldJson:
       type:
       - object
@@ -1543,6 +1572,91 @@ components:
       - displayLabel
       - type
       - type
+    largeTextFieldJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          description: ''
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isTrackLastActivityTime:
+          type:
+          - boolean
+          - 'null'
+          description: ''
+          maxLength: 100
+          minLength: 0
+        type:
+          type:
+          - string
+          - 'null'
+          description: ''
+          enum:
+          - LargeText
+          maxLength: 100
+          minLength: 0
+        properties:
+          $ref: ./Field.json#/components/schemas/largeTextFieldProperties
+      required:
+      - displayLabel
+      - type
+      - type
+    getMultiPickListFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/multiPickListFieldResponse'
+      - $ref: '#/components/schemas/multiPickListFieldResponseForTickets'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponse'
+      - $ref: '#/components/schemas/multiPickListFieldBasicResponseForTickets'
+    getDecimalFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/decimalFieldResponse'
+      - $ref: '#/components/schemas/decimalFieldResponseForTickets'
+    pickListFieldResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: ./Field.json#/components/schemas/commonFieldResponse
+      - type:
+        - object
+        - 'null'
+        properties:
+          allowedValues:
+            type:
+            - 'null'
+            - array
+            description: ''
+            items:
+              type:
+              - 'null'
+              - object
+              additionalProperties: false
+              description: ''
+              maxProperties: 1
+              minProperties: 1
+              properties:
+                value:
+                  type:
+                  - string
+                  - 'null'
+                  description: ''
+                  maxLength: 120
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\-\.\$@\?\:\/\!\P{InBasicLatin}\s()]+'
+              required:
+              - value
+            uniqueItems: false
+        required:
+        - allowedValues
+    createDateTimeFieldResponse:
+      anyOf:
+      - $ref: '#/components/schemas/dateTimeFieldResponse'
+      - $ref: '#/components/schemas/dateTimeFieldResponseForTickets'
     percentFieldResponseForTickets:
       additionalProperties: false
       allOf:
@@ -1558,174 +1672,24 @@ components:
             description: ''
         required:
         - showToHelpCenter
-    editEmailFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/emailFieldResponse'
-      - $ref: '#/components/schemas/emailFieldResponseForTickets'
-    decimalFieldJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          description: ''
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        decimalPlaces:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          description: ''
-          maximum: 9
-          minimum: 0
-          pattern: ([0-9]+)
-        isTrackLastActivityTime:
-          type:
-          - boolean
-          - 'null'
-          description: ''
-          maxLength: 100
-          minLength: 0
-        type:
-          type:
-          - string
-          - 'null'
-          description: ''
-          enum:
-          - Decimal
-          maxLength: 100
-          minLength: 0
-        maxLength:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          description: ''
-          maximum: 16
-          minimum: 1
-          pattern: ([0-9]+)
-      required:
-      - decimalPlaces
-      - displayLabel
-      - maxLength
-      - type
-      - type
-    dateTimeFieldResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/dateTimeFieldResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    getTextAreaFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/textAreaFieldResponse'
-      - $ref: '#/components/schemas/textAreaFieldResponseForTickets'
-    emailFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    createPhoneFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/phoneFieldResponse'
-      - $ref: '#/components/schemas/phoneFieldResponseForTickets'
-    dateTimeFieldResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    multiPickListFieldBasicResponseForTickets:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/multiPickListFieldBasicResponse
-      - type:
-        - object
-        - 'null'
-        properties:
-          showToHelpCenter:
-            type:
-            - boolean
-            - 'null'
-            description: ''
-        required:
-        - showToHelpCenter
-    pickListFieldBasicResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: ./Field.json#/components/schemas/commonFieldResponse
-    getDateFieldResponse:
-      anyOf:
-      - $ref: '#/components/schemas/dateFieldResponse'
-      - $ref: '#/components/schemas/dateFieldResponseForTickets'
-  parameters:
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department in which the layouts are configured
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ''
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: the module name with in which search to be done. Value may be tickets, contacts , accounts  ,tasks , timeEntry,products, contracts
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: ''
-        enum:
-        - tickets
-        - contacts
-        - accounts
-        - tasks
-        - calls
-        - events
-        - contracts
-        - products
-        maxLength: 100
-        minLength: 0
-    fieldId:
-      name: fieldId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ''
-        pattern: ([0-9]+)
   responses:
+    fieldPermissionsResponse:
+      description: fieldPermissionsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - object
+            - 'null'
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Field.json#/components/schemas/fieldPermissionsResponseArray
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value: {}
     getFieldsResponse:
       description: getFieldsResponse template definitions
       content:
@@ -1769,23 +1733,59 @@ components:
           examples:
             Valid responses Definitions:
               value: {}
-    fieldPermissionsResponse:
-      description: fieldPermissionsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - object
-            - 'null'
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Field.json#/components/schemas/fieldPermissionsResponseArray
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value: {}
+  parameters:
+    module:
+      name: module
+      in: query
+      description: the module name with in which search to be done. Value may be tickets, contacts , accounts  ,tasks , timeEntry,products, contracts
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: ''
+        enum:
+        - tickets
+        - contacts
+        - accounts
+        - tasks
+        - calls
+        - events
+        - contracts
+        - products
+        maxLength: 100
+        minLength: 0
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department in which the layouts are configured
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ''
+        pattern: ([0-9]+)
+    fieldId:
+      name: fieldId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ''
+        pattern: ([0-9]+)
   requestBodies:
     fieldPermissionsRequestJson:
       content:
@@ -1804,4 +1804,4 @@ components:
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: Field

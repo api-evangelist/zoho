@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Helpcenter DependencyMappings API
+  title: Dependency Mappings API
   version: 1.0.0
 tags:
 - name: DependencyMappings
@@ -30,7 +30,7 @@ paths:
       tags:
       - DependencyMappings
       summary: List dependency mappings in a layout
-      description: This API lists the dependency mappings configured in a layout. 
+      description: This API lists the dependency mappings configured in a layout.
       operationId: getDependencyMappingsByLayoutId
       parameters:
       - $ref: '#/components/parameters/layoutId'
@@ -48,23 +48,77 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    layoutId:
-      name: layoutId
-      in: query
-      description: ID of the layout in which the dependency is mapped
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the layout in which the dependency is mapped
-        pattern: ([0-9]+)
   responses:
+    getAvailableDepMappings:
+      description: getAvailableDepMappings template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              children:
+                $ref: ./DependencyMappings.json#/components/schemas/picklistJSONArr
+              parents:
+                $ref: ./DependencyMappings.json#/components/schemas/picklistJSONArr
+            required:
+            - children
+            - parents
+          examples:
+            Valid responses Definitions:
+              value:
+                children:
+                - displayLabel: Category
+                  allowedValues:
+                  - -None-
+                  - Call
+                  - Meeting
+                  - Demo
+                  id: '4000000000145'
+                - displayLabel: Status
+                  allowedValues:
+                  - Not Started
+                  - Deferred
+                  - In Progress
+                  - Waiting on someone else
+                  - Completed_july1
+                  - Completed_newDept
+                  id: '4000000000147'
+                - displayLabel: Priority
+                  allowedValues:
+                  - High
+                  - Highest
+                  - Low
+                  - Lowest
+                  - Normal
+                  id: '4000000000149'
+                parents:
+                - displayLabel: Category
+                  allowedValues:
+                  - -None-
+                  - Call
+                  - Meeting
+                  - Demo
+                  id: '4000000000145'
+                - displayLabel: Status
+                  allowedValues:
+                  - Not Started
+                  - Deferred
+                  - In Progress
+                  - Waiting on someone else
+                  - Completed_july1
+                  - Completed_newDept
+                  id: '4000000000147'
+                - displayLabel: Priority
+                  allowedValues:
+                  - High
+                  - Highest
+                  - Low
+                  - Lowest
+                  - Normal
+                  id: '4000000000149'
     getDependencyMappingsByLayoutIdResponse:
       description: getDependencyMappingsByLayoutIdResponse template definitions
       content:
@@ -269,77 +323,23 @@ components:
                     - Forums
                     - Feedback Widget
                     id: '4000000000409'
-    getAvailableDepMappings:
-      description: getAvailableDepMappings template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              children:
-                $ref: ./DependencyMappings.json#/components/schemas/picklistJSONArr
-              parents:
-                $ref: ./DependencyMappings.json#/components/schemas/picklistJSONArr
-            required:
-            - children
-            - parents
-          examples:
-            Valid responses Definitions:
-              value:
-                children:
-                - displayLabel: Category
-                  allowedValues:
-                  - -None-
-                  - Call
-                  - Meeting
-                  - Demo
-                  id: '4000000000145'
-                - displayLabel: Status
-                  allowedValues:
-                  - Not Started
-                  - Deferred
-                  - In Progress
-                  - Waiting on someone else
-                  - Completed_july1
-                  - Completed_newDept
-                  id: '4000000000147'
-                - displayLabel: Priority
-                  allowedValues:
-                  - High
-                  - Highest
-                  - Low
-                  - Lowest
-                  - Normal
-                  id: '4000000000149'
-                parents:
-                - displayLabel: Category
-                  allowedValues:
-                  - -None-
-                  - Call
-                  - Meeting
-                  - Demo
-                  id: '4000000000145'
-                - displayLabel: Status
-                  allowedValues:
-                  - Not Started
-                  - Deferred
-                  - In Progress
-                  - Waiting on someone else
-                  - Completed_july1
-                  - Completed_newDept
-                  id: '4000000000147'
-                - displayLabel: Priority
-                  allowedValues:
-                  - High
-                  - Highest
-                  - Low
-                  - Lowest
-                  - Normal
-                  id: '4000000000149'
+  parameters:
+    layoutId:
+      name: layoutId
+      in: query
+      description: ID of the layout in which the dependency is mapped
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the layout in which the dependency is mapped
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema
-x-entity: Helpcenter
+x-entity: DependencyMappings

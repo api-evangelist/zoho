@@ -178,64 +178,6 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    uploadArticleAttachmentResponse:
-      description: uploadArticleAttachmentResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              resourceId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^([a-zA-Z0-9]{37}|-1)$
-              extension:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 500
-                minLength: 0
-              filesize:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              url:
-                type:
-                - string
-                - 'null'
-                maxLength: 255
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-            required:
-            - extension
-            - filesize
-            - name
-            - resourceId
-            - url
-          examples:
-            Valid responses Definitions:
-              value:
-                resourceId: 96b17694d63cd0f03eadbe4ae534f4ba993bb0
-                extension: png
-                name: Screen Shot 2018-12-28 at 7.21.58 PM.png
-                filesize: '62'
-                url: https://desk.zoho.com/galleryDocuments/edbsnf8e40a0174a649fa9b698be5f73211329e2a7513daad01207c771fbf50e1b3e33f3f5c1d654f5a4c7805862493f6bb8a?inline=true
   parameters:
     attachmentType:
       name: attachmentType
@@ -329,6 +271,64 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+  responses:
+    uploadArticleAttachmentResponse:
+      description: uploadArticleAttachmentResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              resourceId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^([a-zA-Z0-9]{37}|-1)$
+              extension:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 500
+                minLength: 0
+              filesize:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              url:
+                type:
+                - string
+                - 'null'
+                maxLength: 255
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+            required:
+            - extension
+            - filesize
+            - name
+            - resourceId
+            - url
+          examples:
+            Valid responses Definitions:
+              value:
+                resourceId: 96b17694d63cd0f03eadbe4ae534f4ba993bb0
+                extension: png
+                name: Screen Shot 2018-12-28 at 7.21.58 PM.png
+                filesize: '62'
+                url: https://desk.zoho.com/galleryDocuments/edbsnf8e40a0174a649fa9b698be5f73211329e2a7513daad01207c771fbf50e1b3e33f3f5c1d654f5a4c7805862493f6bb8a?inline=true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

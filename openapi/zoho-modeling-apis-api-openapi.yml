@@ -2000,86 +2000,262 @@ paths:
         default:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
-  parameters:
-    analysis-id:
-      name: analysis-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the AutoML analysis.
-    org-id:
-      name: ZANALYTICS-ORGID
-      in: header
-      required: true
-      schema:
-        type: string
-      description: Organization ID (can be obtained using Get Organizations API).
-    deployment-id:
-      name: deployment-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the AutoML analysis deployment.
-    view-id:
-      name: view-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the view.
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
-    model-id:
-      name: model-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the AutoML analysis model.
-    folder-id:
-      name: folder-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the folder.
-    column-id:
-      name: column-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the column.
-    formula-id:
-      name: formula-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the formula.
-    schedule-id:
-      name: schedule-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the email schedule.
-    variable-id:
-      name: variable-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the variable.
   schemas:
-    CopyWorkspaceResponse:
+    UpdateEmailScheduleConfig:
+      type: object
+      properties:
+        scheduleName:
+          type: string
+          description: Name of the schedule
+        scheduleDetails:
+          type: object
+          description: Detailed scheduling configuration
+          properties:
+            calendarFrequency:
+              type: string
+              enum:
+              - daily
+              - weekly
+              - monthly
+              - yearly
+            hour:
+              type: integer
+              minimum: 0
+              maximum: 23
+            minute:
+              type: integer
+              enum:
+              - 0
+              - 5
+              - 10
+              - 15
+              - 20
+              - 25
+              - 30
+              - 35
+              - 40
+              - 45
+              - 50
+              - 55
+            weekDay:
+              type: integer
+              minimum: 1
+              maximum: 7
+            weekDays:
+              type: array
+              items:
+                type: integer
+                minimum: 1
+                maximum: 7
+            weekNumber:
+              type: integer
+              minimum: 1
+              maximum: 5
+            monthDay:
+              type: integer
+            monthDays:
+              type: array
+              items:
+                type: integer
+            months:
+              type: array
+              items:
+                type: integer
+                minimum: 1
+                maximum: 12
+          required:
+          - calendarFrequency
+          - hour
+          - minute
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        groupIds:
+          type: array
+          items:
+            type: string
+        cc:
+          type: object
+          properties:
+            emailIds:
+              type: array
+              items:
+                type: string
+                format: email
+            groupIds:
+              type: array
+              items:
+                type: string
+        subject:
+          type: string
+        message:
+          type: string
+      required:
+      - scheduleName
+      - scheduleDetails
+      examples:
+      - scheduleName: Updated Monthly Report
+        scheduleDetails:
+          calendarFrequency: daily
+          hour: 10
+          minute: 30
+        subject: Daily Sales Overview
+        emailIds:
+        - sales@example.com
+        groupIds:
+        - group789
+        cc:
+          emailIds:
+          - admin@example.com
+          groupIds:
+          - group999
+        message: Here's your updated schedule report.
+    CreateReportConfig:
+      type: object
+      properties:
+        baseTableName:
+          type: string
+          description: Name of the base table used to create report.
+        title:
+          type: string
+          description: Name of the report.
+        description:
+          type: string
+          description: Description of the report.
+        reportType:
+          type: string
+          description: Specifies the type of report to be created.
+          enum:
+          - chart
+          - pivot
+          - summary
+        chartType:
+          type: string
+          description: Specifies the type of chart to be created.
+          enum:
+          - area
+          - area with points
+          - area without points
+          - smooth area
+          - smooth area with points
+          - smooth area without points
+          - stacked area
+          - stacked area with points
+          - stacked smooth area
+          - stacked smooth area with points
+          - stacked smooth area without points
+          - bar
+          - horizontal bar
+          - stacked bar
+          - horizontal stacked bar
+          - bubble
+          - packed bubble
+          - combo
+          - combo bar with smooth line
+          - funnel
+          - pyramid
+          - line
+          - line with points
+          - line without points
+          - smooth line
+          - smooth line with points
+          - smooth line without points
+          - step
+          - map area
+          - map bubble
+          - map filled
+          - map pie
+          - map pie bubble
+          - map bubble pie
+          - map scatter
+          - geo heat map
+          - pie
+          - ring
+          - semi pie
+          - semi ring
+          - scatter
+          - web
+          - web with fill
+          - web without fill
+          - heat map
+          - butterfly
+          - table chart
+        axisColumns:
+          type: array
+          description: Details of the columns like type, column name, and functions used.
+          items:
+            $ref: '#/components/schemas/AxisColumn'
+        filters:
+          type: array
+          description: Filter conditions to be applied to the report.
+          items:
+            $ref: '#/components/schemas/FilterColumn'
+        userFilters:
+          type: array
+          description: User-defined filters for report customization.
+          items:
+            $ref: '#/components/schemas/FilterColumn'
+        isAxisMerge:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          description: Gives information about merge axis.
+        mergeAxisInfo:
+          type: string
+          description: 'Details about merged Y-axis. Example: {"axisIndex":[2,3],"labelName":"Merge_axis"}'
+      required:
+      - baseTableName
+      - title
+      - reportType
+      - axisColumns
+      examples:
+      - baseTableName: Sales
+        title: Sales By Region
+        reportType: chart
+        description: Shows regional sales performance
+        axisColumns:
+        - type: xAxis
+          columnName: Region
+          operation: year
+        - type: yAxis
+          columnName: Sales
+          operation: sum
+    DeleteFormulaColumnConfig:
+      type: object
+      properties:
+        deleteDependentViews:
+          type: boolean
+          description: To delete the column along with dependent views. Default is false
+      examples:
+      - summary: Delete formula with dependent views false
+        value:
+          deleteDependentViews: false
+    CreateFolderConfig:
+      type: object
+      properties:
+        folderName:
+          type: string
+          description: The name of the folder.
+        folderDesc:
+          type: string
+          description: The description of the folder.
+        parentFolderId:
+          type: string
+          description: Id of the parent folder. Newly created folder will be placed under this folder.
+        makeDefaultFolder:
+          type: boolean
+          description: Make the created folder as default. Default value - false.
+      required:
+      - folderName
+      examples:
+      - folderName: My Tables
+        folderDesc: Folder for storing new tables
+        parentFolderId: '1767024000004536004'
+        makeDefaultFolder: true
+    CreateFolderResponse:
       type: object
       properties:
         status:
@@ -2089,65 +2265,405 @@ components:
         data:
           type: object
           properties:
-            workspaceId:
+            folderId:
               type: string
       examples:
       - status: success
-        summary: Copy workspace
+        summary: Create folder
         data:
-          workspaceId: '1767024000003145006'
-    FilterColumn:
+          folderId: '1767024000004578011'
+    EditQueryTableConfig:
       type: object
       properties:
-        tableName:
+        sqlQuery:
           type: string
-          description: Name of the table the filter column belongs to.
-        columnName:
+          description: New SQL query to be updated.
+        folderId:
           type: string
-          description: Name of the column used for filtering.
-        operation:
-          type: string
-          description: Function applied to the column in the filter.
+          description: Id of the folder where the query table has to be moved.
       required:
-      - tableName
-      - columnName
-      - operation
-    CreateWorkspaceConfig:
+      - sqlQuery
+      examples:
+      - sqlQuery: SELECT Region, SUM(Amount) FROM Sales GROUP BY Region
+    EditAggregateFormulaConfig:
+      type: object
+      properties:
+        expression:
+          type: string
+          description: Updated aggregate formula expression
+        description:
+          type: string
+          description: Updated description of the aggregate formula column
+      required:
+      - expression
+      examples:
+      - summary: Edit aggregate formula column
+        value:
+          expression: avg("Sales")
+          description: Average Sales
+    RenameWorkspaceConfig:
       type: object
       properties:
         workspaceName:
           type: string
-          description: The name of the workspace
-        workspaceDesc:
-          type: string
-          description: Optional description for the workspace
+          description: New name of the workspace
       required:
       - workspaceName
       examples:
-      - workspaceName: Sales Analytics
-        workspaceDesc: Workspace for quarterly sales
-    RenameViewConfig:
+      - workspaceName: Q4 Sales Workspace
+    AddLookupConfig:
       type: object
       properties:
-        viewName:
+        referenceViewId:
           type: string
-          description: The new name of the view.
-        viewDesc:
+          description: The reference view ID.
+        referenceColumnId:
           type: string
-          description: The new description of the view.
+          description: The reference column ID.
       required:
-      - viewName
+      - referenceViewId
+      - referenceColumnId
       examples:
-      - viewName: Renamed Sales View
-        viewDesc: View renamed for clarity
-    DeleteColumnConfig:
+      - referenceViewId: '1767024000003145012'
+        referenceColumnId: '1767024000003145013'
+    CopyWorkspaceConfig:
+      type: object
+      properties:
+        newWorkspaceName:
+          type: string
+        newWorkspaceDesc:
+          type: string
+        workspaceKey:
+          type: string
+        copyWithData:
+          type: boolean
+        copyWithImportSource:
+          type: boolean
+      required:
+      - newWorkspaceName
+      examples:
+      - newWorkspaceName: Cloned Workspace
+        copyWithData: true
+    CreateEmailScheduleResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            scheduleId:
+              type: string
+      examples:
+      - status: success
+        summary: Create Email Schedule
+        data:
+          scheduleId: '1767024000010886001'
+    AddColumnConfig:
+      type: object
+      properties:
+        columnName:
+          type: string
+          description: The name of the column.
+        dataType:
+          type: string
+          description: The data type of the column.
+          enum:
+          - PLAIN
+          - MULTI_LINE
+          - EMAIL
+          - NUMBER
+          - POSITIVE_NUMBER
+          - DECIMAL_NUMBER
+          - CURRENCY
+          - PERCENT
+          - DATE
+          - BOOLEAN
+          - URL
+          - AUTO_NUMBER
+          - GEO
+          - DURATION
+        isPIIColumn:
+          type: boolean
+          description: To mark as personal data column. Default is false.
+        geoRole:
+          type: integer
+          description: To specify the geo location type. Required if dataType is GEO.
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+      required:
+      - columnName
+      - dataType
+      examples:
+      - columnName: Region
+        dataType: GEO
+        isPIIColumn: false
+        geoRole: 2
+    CreateAutoMLAnalysisDeploymentConfig:
+      type: object
+      properties:
+        inputTableId:
+          type: integer
+          description: Unique ID of the input table from which data will be read for AutoML analysis deployment.
+          maxLength: 60
+        outputTable:
+          type: string
+          description: Name of the output table where the prediction results will be stored.
+        scheduleDetails:
+          type: object
+          properties:
+            calendarFrequency:
+              type: string
+              enum:
+              - none
+              - hourly
+              - daily
+              - weekly
+              - monthly
+              description: Defines the frequency at which the deployment job should run.
+            interval:
+              type: integer
+              description: Specifies the interval for the schedule based on calendarFrequency.
+            hour:
+              type: integer
+              description: Specifies the hour of the day (0-23) when the deployment job should be triggered.
+            hourInterval:
+              type: integer
+              description: Specifies the hour interval between executions when applicable.
+            minute:
+              type: integer
+              description: Specifies the minute within the hour (0-59) when the deployment job should be triggered.
+            weekDay:
+              type: integer
+              description: Specifies the day of the week when the deployment job should be triggered.
+              enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+            monthDay:
+              type: integer
+              description: Specifies a particular day of the month when the deployment job should be triggered.
+              enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              - 6
+              - 7
+              - 8
+              - 9
+              - 10
+              - 11
+              - 12
+              - 13
+              - 14
+              - 15
+              - 16
+              - 17
+              - 18
+              - 19
+              - 20
+              - 21
+              - 22
+              - 23
+              - 24
+              - 25
+              - 26
+              - 27
+              - 28
+              - 29
+              - 30
+              - 31
+              - 99
+          required:
+          - calendarFrequency
+        outputColumns:
+          type: array
+          items:
+            type: string
+            description: Each value must be a valid column name.
+          minItems: 1
+          maxItems: 100
+          description: List of column names that will be written to the output table as part of the prediction results.
+        predictionColumn:
+          type: string
+          description: Name of the column for which predictions will be generated.
+        serverOption:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          description: Specifies the server memory configuration for executing the AutoML deployment job.
+        timezone:
+          type: string
+          description: Timezone to be used for scheduling the deployment job.
+        importType:
+          type: string
+          enum:
+          - APPEND
+          - TRUNCATEADD
+          - UPDATEADD
+          description: Specifies how prediction results should be imported into the output table.
+        matchingColumns:
+          type: array
+          items:
+            type: string
+            description: Each value must be a valid column name.
+          description: List of column names used to match existing records in the output table when importType is UPDATEADD.
+      required:
+      - inputTableId
+      - outputTable
+      - scheduleDetails
+      - outputColumns
+      - predictionColumn
+      - serverOption
+      - importType
+      examples:
+      - inputTableId: 196355000003252000
+        outputTable: SalesDep
+        outputColumns:
+        - Sales
+        - Product
+        predictionColumn: precol
+        serverOption: 1
+        importType: append
+        scheduleDetails:
+          calendarFrequency: hourly
+          interval: 3
+    VariableFormat:
+      type: object
+      properties:
+        alignment:
+          type: string
+          enum:
+          - Left
+          - Center
+          - Right
+        decimalPlaces:
+          type: integer
+          minimum: -1
+          maximum: 10
+        currencySymbol:
+          type: string
+        showNegativeSign:
+          type: boolean
+        userLocale:
+          type: boolean
+        thousandSeparator:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+        decimalSeparator:
+          type: integer
+          enum:
+          - 0
+          - 1
+        showPercent:
+          type: boolean
+    DeleteFolderConfig:
       type: object
       properties:
         deleteDependentViews:
           type: boolean
-          description: If true, deletes the dependent views as well. Default is false.
+          description: Delete the views along with their dependents present in the folder. Default value - false.
       examples:
       - deleteDependentViews: true
+    ReorderColumnsConfig:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+          description: List of column IDs in the desired order. All available columns in the table should be provided.
+      required:
+      - columns
+      examples:
+      - columns:
+        - '2531676000011845005'
+        - '2531676000011845008'
+        - '2531676000011845009'
+    LookupColumnDesign:
+      type: object
+      properties:
+        TABLENAME:
+          type: string
+          description: The name of the lookup table.
+        COLUMNNAME:
+          type: string
+          description: The name of the column in the lookup table.
+      required:
+      - TABLENAME
+      - COLUMNNAME
+    ChangeEmailScheduleStatusConfig:
+      type: object
+      properties:
+        operation:
+          type: string
+          enum:
+          - activate
+          - deactivate
+          description: To specify the new status for the schedule
+      required:
+      - operation
+      examples:
+      - operation: deactivate
+    AddAggregateFormulaResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            formulaId:
+              type: string
+            formulaName:
+              type: string
+      examples:
+      - summary: Aggregate formula created successfully
+        value:
+          status: success
+          summary: Create aggregate formula
+          data:
+            formulaId: '1767024000009137000'
+            formulaName: AF1
+    RenameFolderConfig:
+      type: object
+      properties:
+        folderName:
+          type: string
+          description: New name for the folder.
+        folderDesc:
+          type: string
+          description: New description for the folder.
+      required:
+      - folderName
+      examples:
+      - folderName: Archived Reports
+        folderDesc: All old reporting dashboards
     ChangeFolderHierarchyConfig:
       type: object
       properties:
@@ -2165,6 +2681,110 @@ components:
       examples:
       - hierarchy: 1
         parentFolderId: '1767024000004578021'
+    UserSpecificVariableData:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        defaultValue:
+          type: string
+        minValue:
+          type: string
+        maxValue:
+          type: string
+        stepSize:
+          type: string
+        domainName:
+          type: string
+    UpdateReportConfig:
+      type: object
+      properties:
+        title:
+          type: string
+          description: New name for the report.
+        description:
+          type: string
+          description: New description for the report.
+        reportType:
+          type: string
+          enum:
+          - chart
+          - pivot
+          - summary
+          description: Updated type of the report.
+        axisColumns:
+          type: array
+          items:
+            $ref: '#/components/schemas/AxisColumn'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterColumn'
+        userFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterColumn'
+        isAxisMerge:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+        mergeAxisInfo:
+          type: string
+      required:
+      - axisColumns
+      examples:
+      - title: Updated Sales Report
+        reportType: chart
+        axisColumns:
+        - type: xAxis
+          columnName: Date
+          operation: month
+        - type: yAxis
+          columnName: Revenue
+          operation: sum
+    MoveViewsToFolderConfig:
+      type: object
+      properties:
+        folderId:
+          type: string
+          description: ID of the destination folder.
+        viewIds:
+          type: array
+          description: List of view IDs to be moved.
+          items:
+            type: string
+      required:
+      - folderId
+      - viewIds
+      examples:
+      - folderId: '176702200001018000'
+        viewIds:
+        - '1767020000010075002'
+        - '1767020000010075004'
+    AutoMLWhatIfAnalysisConfig:
+      type: object
+      properties:
+        features:
+          type: object
+          additionalProperties:
+            type: string
+            description: Hypothetical value to be used for What-If analysis for the specified feature.
+          description: Key-value pairs of feature inputs for What-If analysis. Each key is a feature/column name and each value is the test value used to generate predictions.
+      required:
+      - features
+      examples:
+      - features:
+          Product: Fruits and Vegetables
+          Region: East
+          Product Category: Stationery
     EditFormulaColumnConfig:
       type: object
       properties:
@@ -2450,158 +3070,176 @@ components:
             minimumSampleSplit: 2
             maximumDepth: 2
             numberOfTrees: 25
-    UserSpecificVariableData:
+    DeleteAggregateFormulaConfig:
       type: object
       properties:
-        values:
-          type: array
-          items:
-            type: string
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        defaultValue:
-          type: string
-        minValue:
-          type: string
-        maxValue:
-          type: string
-        stepSize:
-          type: string
-        domainName:
-          type: string
-    CreateReportConfig:
-      type: object
-      properties:
-        baseTableName:
-          type: string
-          description: Name of the base table used to create report.
-        title:
-          type: string
-          description: Name of the report.
-        description:
-          type: string
-          description: Description of the report.
-        reportType:
-          type: string
-          description: Specifies the type of report to be created.
-          enum:
-          - chart
-          - pivot
-          - summary
-        chartType:
-          type: string
-          description: Specifies the type of chart to be created.
-          enum:
-          - area
-          - area with points
-          - area without points
-          - smooth area
-          - smooth area with points
-          - smooth area without points
-          - stacked area
-          - stacked area with points
-          - stacked smooth area
-          - stacked smooth area with points
-          - stacked smooth area without points
-          - bar
-          - horizontal bar
-          - stacked bar
-          - horizontal stacked bar
-          - bubble
-          - packed bubble
-          - combo
-          - combo bar with smooth line
-          - funnel
-          - pyramid
-          - line
-          - line with points
-          - line without points
-          - smooth line
-          - smooth line with points
-          - smooth line without points
-          - step
-          - map area
-          - map bubble
-          - map filled
-          - map pie
-          - map pie bubble
-          - map bubble pie
-          - map scatter
-          - geo heat map
-          - pie
-          - ring
-          - semi pie
-          - semi ring
-          - scatter
-          - web
-          - web with fill
-          - web without fill
-          - heat map
-          - butterfly
-          - table chart
-        axisColumns:
-          type: array
-          description: Details of the columns like type, column name, and functions used.
-          items:
-            $ref: '#/components/schemas/AxisColumn'
-        filters:
-          type: array
-          description: Filter conditions to be applied to the report.
-          items:
-            $ref: '#/components/schemas/FilterColumn'
-        userFilters:
-          type: array
-          description: User-defined filters for report customization.
-          items:
-            $ref: '#/components/schemas/FilterColumn'
-        isAxisMerge:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-          description: Gives information about merge axis.
-        mergeAxisInfo:
-          type: string
-          description: 'Details about merged Y-axis. Example: {"axisIndex":[2,3],"labelName":"Merge_axis"}'
-      required:
-      - baseTableName
-      - title
-      - reportType
-      - axisColumns
+        deleteDependentViews:
+          type: boolean
+          description: To delete the column along with dependent views. Default is false
       examples:
-      - baseTableName: Sales
-        title: Sales By Region
-        reportType: chart
-        description: Shows regional sales performance
-        axisColumns:
-        - type: xAxis
-          columnName: Region
-          operation: year
-        - type: yAxis
-          columnName: Sales
-          operation: sum
-    MoveViewsToFolderConfig:
+      - summary: Delete aggregate formula
+        value:
+          deleteDependentViews: true
+    SaveAsViewResponse:
       type: object
       properties:
-        folderId:
+        status:
           type: string
-          description: ID of the destination folder.
-        viewIds:
-          type: array
-          description: List of view IDs to be moved.
-          items:
-            type: string
-      required:
-      - folderId
-      - viewIds
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            viewId:
+              type: string
       examples:
-      - folderId: '176702200001018000'
-        viewIds:
-        - '1767020000010075002'
-        - '1767020000010075004'
+      - status: success
+        summary: Saveas view
+        data:
+          viewId: '1767024000004723001'
+    CreateVariableResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            variableId:
+              type: string
+      examples:
+      - status: success
+        summary: Create variable
+        data:
+          variableId: '137687000006991651'
+    CopyViewsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            views:
+              type: array
+              items:
+                type: object
+                properties:
+                  sourceViewId:
+                    type: string
+                    description: ID of the source view.
+                  destViewId:
+                    type: string
+                    description: ID of the copied destination view.
+      examples:
+      - status: success
+        summary: Copy views
+        data:
+          views:
+          - sourceViewId: '1767024000004221089'
+            destViewId: '2102449000000625001'
+          - sourceViewId: '1767024000004221093'
+            destViewId: '2102449000000625005'
+    CreateTableConfig:
+      type: object
+      properties:
+        tableDesign:
+          $ref: '#/components/schemas/TableDesign'
+      required:
+      - tableDesign
+      examples:
+      - tableDesign:
+          TABLENAME: Sales
+          TABLEDESCRIPTION: Test
+          COLUMNS:
+          - COLUMNNAME: Column1
+            DATATYPE: PLAIN
+          - COLUMNNAME: Column2
+            DATATYPE: NUMBER
+    CreateReportResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            viewId:
+              type: string
+      examples:
+      - status: success
+        summary: Create report
+        data:
+          viewId: '35130000006450002'
+    ChangeFolderPositionConfig:
+      type: object
+      properties:
+        referenceFolderId:
+          type: string
+          description: Id of the folder that will be used as the reference for the new position.
+      required:
+      - referenceFolderId
+      examples:
+      - referenceFolderId: '1767024000004578032'
+    CopyWorkspaceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaceId:
+              type: string
+      examples:
+      - status: success
+        summary: Copy workspace
+        data:
+          workspaceId: '1767024000003145006'
+    AxisColumn:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Defines the role of the column in the report.
+          enum:
+          - xAxis
+          - yAxis
+          - textAxis
+          - colorAxis
+          - toolTip
+          - row
+          - column
+          - data
+          - groupBy
+          - summarize
+        columnName:
+          type: string
+          description: Name of the column used in the report.
+        operation:
+          type: string
+          description: Function applied to the column. Options vary by data type.
+      required:
+      - type
+      - columnName
+      - operation
+    AutoAnalyseViewConfig:
+      type: object
+      description: Configuration for auto-analysing a view.
+      properties:
+        analyseAgain:
+          type: boolean
+          description: Generate duplicate reports if already generated.
+      examples:
+      - analyseAgain: true
     AutoMLWhatIfAnalysisResponse:
       type: object
       properties:
@@ -2626,266 +3264,7 @@ components:
         data:
           predictions: '1000'
           targetColumn: Sales
-    UpdateEmailScheduleConfig:
-      type: object
-      properties:
-        scheduleName:
-          type: string
-          description: Name of the schedule
-        scheduleDetails:
-          type: object
-          description: Detailed scheduling configuration
-          properties:
-            calendarFrequency:
-              type: string
-              enum:
-              - daily
-              - weekly
-              - monthly
-              - yearly
-            hour:
-              type: integer
-              minimum: 0
-              maximum: 23
-            minute:
-              type: integer
-              enum:
-              - 0
-              - 5
-              - 10
-              - 15
-              - 20
-              - 25
-              - 30
-              - 35
-              - 40
-              - 45
-              - 50
-              - 55
-            weekDay:
-              type: integer
-              minimum: 1
-              maximum: 7
-            weekDays:
-              type: array
-              items:
-                type: integer
-                minimum: 1
-                maximum: 7
-            weekNumber:
-              type: integer
-              minimum: 1
-              maximum: 5
-            monthDay:
-              type: integer
-            monthDays:
-              type: array
-              items:
-                type: integer
-            months:
-              type: array
-              items:
-                type: integer
-                minimum: 1
-                maximum: 12
-          required:
-          - calendarFrequency
-          - hour
-          - minute
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        groupIds:
-          type: array
-          items:
-            type: string
-        cc:
-          type: object
-          properties:
-            emailIds:
-              type: array
-              items:
-                type: string
-                format: email
-            groupIds:
-              type: array
-              items:
-                type: string
-        subject:
-          type: string
-        message:
-          type: string
-      required:
-      - scheduleName
-      - scheduleDetails
-      examples:
-      - scheduleName: Updated Monthly Report
-        scheduleDetails:
-          calendarFrequency: daily
-          hour: 10
-          minute: 30
-        subject: Daily Sales Overview
-        emailIds:
-        - sales@example.com
-        groupIds:
-        - group789
-        cc:
-          emailIds:
-          - admin@example.com
-          groupIds:
-          - group999
-        message: Here's your updated schedule report.
-    CreateQueryTableConfig:
-      type: object
-      properties:
-        sqlQuery:
-          type: string
-          description: SQL query to construct the query table.
-        queryTableName:
-          type: string
-          description: Name of the query table to be created.
-        description:
-          type: string
-          description: Description of the query table.
-        folderId:
-          type: string
-          description: Id of the folder where the query table has to be created.
-      required:
-      - sqlQuery
-      - queryTableName
-      examples:
-      - sqlQuery: SELECT * FROM Sales
-        queryTableName: Sales Summary
-    GetVariableDetailsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            variableId:
-              type: string
-            variableName:
-              type: string
-            variableType:
-              type: integer
-            variableDataType:
-              type: integer
-            format:
-              $ref: '#/components/schemas/VariableFormat'
-            userSpecificData:
-              type: array
-              items:
-                $ref: '#/components/schemas/UserSpecificVariableData'
-            defaultData:
-              $ref: '#/components/schemas/DefaultVariableData'
-    ColumnDesign:
-      type: object
-      properties:
-        COLUMNNAME:
-          type: string
-          description: Name of the column.
-        DATATYPE:
-          type: string
-          enum:
-          - PLAIN
-          - MULTILINE
-          - EMAIL
-          - URL
-          - NUMBER
-          - POSITIVE_NUMBER
-          - DECIMAL_NUMBER
-          - CURRENCY
-          - PERCENTAGE
-          - AUTONUMBER
-          - CATEGORY
-          - DATE
-          - BOOLEAN
-          - GEOLOCATION
-          description: Datatype of the column.
-        MANDATORY:
-          type: boolean
-          description: Whether the column is mandatory.
-        DESCRIPTION:
-          type: string
-          description: Optional column description.
-        DEFAULT:
-          type: string
-          description: Default value for the column.
-        GEOROLE:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - 6
-          - 7
-          - 8
-          description: Geo role ID applicable for geolocation columns.
-        ISHIDE:
-          type: boolean
-          description: Whether the column is hidden.
-        PII:
-          type: boolean
-          description: Marks the column as containing Personally Identifiable Information.
-        LOOKUPCOLUMN:
-          $ref: '#/components/schemas/LookupColumnDesign'
-          description: Lookup configuration if column is a lookup.
-      required:
-      - COLUMNNAME
-      - DATATYPE
-    TableDesign:
-      type: object
-      properties:
-        TABLENAME:
-          type: string
-          description: The name of the table
-        TABLEDESCRIPTION:
-          type: string
-          description: The description of the table
-        FOLDERNAME:
-          type: string
-          description: The folder where the table is created
-        COLUMNS:
-          type: array
-          items:
-            $ref: '#/components/schemas/ColumnDesign'
-      required:
-      - TABLENAME
-      - COLUMNS
-    CreateSimilarViewsConfig:
-      type: object
-      description: Configuration for creating similar views based on a reference view.
-      properties:
-        referenceViewId:
-          type: string
-          description: The reference view ID.
-        folderId:
-          type: string
-          description: The folder ID where the views will be saved.
-        copyCustomFormula:
-          type: boolean
-          description: 'To copy the custom formulas present in the parent view. Default: false.'
-        copyAggFormula:
-          type: boolean
-          description: 'To copy the aggregate formulas present in the parent view. Default: false.'
-      required:
-      - referenceViewId
-      - folderId
-      examples:
-      - referenceViewId: '1234567890001'
-        folderId: '9876543210002'
-        copyCustomFormula: true
-        copyAggFormula: false
-    CreateEmailScheduleResponse:
+    UpdateEmailScheduleResponse:
       type: object
       properties:
         status:
@@ -2899,9 +3278,105 @@ components:
               type: string
       examples:
       - status: success
-        summary: Create Email Schedule
+        summary: Update email schedule
         data:
-          scheduleId: '1767024000010886001'
+          scheduleId: '1767024000010887001'
+    SaveAsViewConfig:
+      type: object
+      properties:
+        viewName:
+          type: string
+          description: The name of the new view.
+        viewDesc:
+          type: string
+          description: The description of the new view.
+        copyWithData:
+          type: boolean
+          description: To copy table with data.
+        copyWithLookup:
+          type: boolean
+          description: To copy table with lookup details.
+        folderId:
+          type: string
+          description: The folder ID where the created view should be placed.
+      required:
+      - viewName
+      examples:
+      - viewName: Cloned Sales Table
+        copyWithData: true
+        copyWithLookup: false
+        folderId: '176702200001018000'
+    CopyFormulasConfig:
+      type: object
+      properties:
+        formulaColumnNames:
+          type: array
+          items:
+            type: string
+          description: The names of the formula columns to be copied.
+        destWorkspaceId:
+          type: string
+          description: The destination workspace ID.
+        workspaceKey:
+          type: string
+          description: Secret key to allow copying formulas across orgs.
+      required:
+      - formulaColumnNames
+      - destWorkspaceId
+      examples:
+      - formulaColumnNames:
+        - Avg_Cost
+        - Avg_Sales
+        destWorkspaceId: '1767024000003145002'
+    FilterColumn:
+      type: object
+      properties:
+        tableName:
+          type: string
+          description: Name of the table the filter column belongs to.
+        columnName:
+          type: string
+          description: Name of the column used for filtering.
+        operation:
+          type: string
+          description: Function applied to the column in the filter.
+      required:
+      - tableName
+      - columnName
+      - operation
+    RestoreTrashViewConfig:
+      type: object
+      properties:
+        withDependents:
+          type: boolean
+          description: 'To restore the view along with its dependent views. Default value: false.'
+      examples:
+      - withDependents: true
+    CreateTableResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            viewId:
+              type: string
+      examples:
+      - status: success
+        summary: Create table
+        data:
+          viewId: '1767024000003145011'
+    DeleteViewConfig:
+      type: object
+      properties:
+        deleteDependentViews:
+          type: boolean
+          description: To delete dependent views while deleting a table/querytable.
+      examples:
+      - deleteDependentViews: true
     GetVariablesResponse:
       type: object
       properties:
@@ -2938,324 +3413,6 @@ components:
             variableId: '137687000007146338'
             variableType: '3'
             variableDataType: '1'
-    CopyWorkspaceConfig:
-      type: object
-      properties:
-        newWorkspaceName:
-          type: string
-        newWorkspaceDesc:
-          type: string
-        workspaceKey:
-          type: string
-        copyWithData:
-          type: boolean
-        copyWithImportSource:
-          type: boolean
-      required:
-      - newWorkspaceName
-      examples:
-      - newWorkspaceName: Cloned Workspace
-        copyWithData: true
-    VariableFormat:
-      type: object
-      properties:
-        alignment:
-          type: string
-          enum:
-          - Left
-          - Center
-          - Right
-        decimalPlaces:
-          type: integer
-          minimum: -1
-          maximum: 10
-        currencySymbol:
-          type: string
-        showNegativeSign:
-          type: boolean
-        userLocale:
-          type: boolean
-        thousandSeparator:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-        decimalSeparator:
-          type: integer
-          enum:
-          - 0
-          - 1
-        showPercent:
-          type: boolean
-    CopyViewsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            views:
-              type: array
-              items:
-                type: object
-                properties:
-                  sourceViewId:
-                    type: string
-                    description: ID of the source view.
-                  destViewId:
-                    type: string
-                    description: ID of the copied destination view.
-      examples:
-      - status: success
-        summary: Copy views
-        data:
-          views:
-          - sourceViewId: '1767024000004221089'
-            destViewId: '2102449000000625001'
-          - sourceViewId: '1767024000004221093'
-            destViewId: '2102449000000625005'
-    SaveAsViewConfig:
-      type: object
-      properties:
-        viewName:
-          type: string
-          description: The name of the new view.
-        viewDesc:
-          type: string
-          description: The description of the new view.
-        copyWithData:
-          type: boolean
-          description: To copy table with data.
-        copyWithLookup:
-          type: boolean
-          description: To copy table with lookup details.
-        folderId:
-          type: string
-          description: The folder ID where the created view should be placed.
-      required:
-      - viewName
-      examples:
-      - viewName: Cloned Sales Table
-        copyWithData: true
-        copyWithLookup: false
-        folderId: '176702200001018000'
-    UpdateReportConfig:
-      type: object
-      properties:
-        title:
-          type: string
-          description: New name for the report.
-        description:
-          type: string
-          description: New description for the report.
-        reportType:
-          type: string
-          enum:
-          - chart
-          - pivot
-          - summary
-          description: Updated type of the report.
-        axisColumns:
-          type: array
-          items:
-            $ref: '#/components/schemas/AxisColumn'
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterColumn'
-        userFilters:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilterColumn'
-        isAxisMerge:
-          type: string
-          enum:
-          - 'true'
-          - 'false'
-        mergeAxisInfo:
-          type: string
-      required:
-      - axisColumns
-      examples:
-      - title: Updated Sales Report
-        reportType: chart
-        axisColumns:
-        - type: xAxis
-          columnName: Date
-          operation: month
-        - type: yAxis
-          columnName: Revenue
-          operation: sum
-    SortDataByColumnsConfig:
-      type: object
-      properties:
-        columns:
-          type: array
-          items:
-            type: string
-          description: List of column IDs to sort by.
-        sortOrder:
-          type: integer
-          enum:
-          - 1
-          - 2
-          description: Sorting order (1 → Ascending, 2 → Descending).
-        resetSort:
-          type: boolean
-          description: If true, resets existing sort configuration. Default - false.
-          default: false
-      required:
-      - columns
-      - sortOrder
-      examples:
-      - columns:
-        - '2531676000011845005'
-        - '2531676000011845007'
-        sortOrder: 2
-        resetSort: false
-    AddFormulaColumnConfig:
-      type: object
-      properties:
-        formulaName:
-          type: string
-          description: Name of the formula column to be created
-        expression:
-          type: string
-          description: Formula expression
-        description:
-          type: string
-          description: Description of the formula column
-      required:
-      - formulaName
-      - expression
-      examples:
-      - summary: Add formula column
-        value:
-          formulaName: F1
-          expression: '"Sales" - "Cost"'
-          description: Gross Profit
-    ReorderColumnsConfig:
-      type: object
-      properties:
-        columns:
-          type: array
-          items:
-            type: string
-          description: List of column IDs in the desired order. All available columns in the table should be provided.
-      required:
-      - columns
-      examples:
-      - columns:
-        - '2531676000011845005'
-        - '2531676000011845008'
-        - '2531676000011845009'
-    RenameColumnConfig:
-      type: object
-      properties:
-        columnName:
-          type: string
-          description: The new name of the column.
-      required:
-      - columnName
-      examples:
-      - columnName: New Column Name
-    VariableConfig:
-      type: object
-      properties:
-        variableName:
-          type: string
-        variableType:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 3
-        variableDataType:
-          type: integer
-          enum:
-          - 1
-          - 4
-          - 5
-          - 6
-          - 7
-          - 8
-        format:
-          $ref: '#/components/schemas/VariableFormat'
-        userSpecificData:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserSpecificVariableData'
-        defaultData:
-          $ref: '#/components/schemas/DefaultVariableData'
-      required:
-      - variableName
-      - variableType
-      - variableDataType
-    DefaultVariableData:
-      type: object
-      properties:
-        values:
-          type: array
-          items:
-            type: string
-        defaultValue:
-          type: string
-        minValue:
-          type: string
-        maxValue:
-          type: string
-        stepSize:
-          type: string
-    CreateWorkspaceResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            workspaceId:
-              type: string
-      examples:
-      - status: success
-        summary: Create workspace
-        data:
-          workspaceId: '1767024000003145002'
-    AxisColumn:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Defines the role of the column in the report.
-          enum:
-          - xAxis
-          - yAxis
-          - textAxis
-          - colorAxis
-          - toolTip
-          - row
-          - column
-          - data
-          - groupBy
-          - summarize
-        columnName:
-          type: string
-          description: Name of the column used in the report.
-        operation:
-          type: string
-          description: Function applied to the column. Options vary by data type.
-      required:
-      - type
-      - columnName
-      - operation
     CreateAutoMLAnalysisResponse:
       type: object
       properties:
@@ -3274,30 +3431,7 @@ components:
         summary: Create autoML analysis
         data:
           id: '466206000000178110'
-    RemoveLookupConfig:
-      type: object
-      properties:
-        deleteDependentViews:
-          type: boolean
-          description: Delete the dependent views created based on the lookup relation. Default is false.
-      examples:
-      - deleteDependentViews: true
-    AddLookupConfig:
-      type: object
-      properties:
-        referenceViewId:
-          type: string
-          description: The reference view ID.
-        referenceColumnId:
-          type: string
-          description: The reference column ID.
-      required:
-      - referenceViewId
-      - referenceColumnId
-      examples:
-      - referenceViewId: '1767024000003145012'
-        referenceColumnId: '1767024000003145013'
-    CreateFolderResponse:
+    GetVariableDetailsResponse:
       type: object
       properties:
         status:
@@ -3307,156 +3441,32 @@ components:
         data:
           type: object
           properties:
-            folderId:
+            variableId:
               type: string
-      examples:
-      - status: success
-        summary: Create folder
-        data:
-          folderId: '1767024000004578011'
-    HideShowColumnConfig:
-      type: object
-      properties:
-        columnIds:
-          type: array
-          description: List of column IDs to hide or show.
-          items:
-            type: string
-      required:
-      - columnIds
-      examples:
-      - columnIds:
-        - '1767024000003145015'
-        - '1767024000003145016'
-    AddAggregateFormulaResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            formulaId:
+            variableName:
               type: string
-            formulaName:
-              type: string
-      examples:
-      - summary: Aggregate formula created successfully
-        value:
-          status: success
-          summary: Create aggregate formula
-          data:
-            formulaId: '1767024000009137000'
-            formulaName: AF1
-    ChangeEmailScheduleStatusConfig:
-      type: object
-      properties:
-        operation:
-          type: string
-          enum:
-          - activate
-          - deactivate
-          description: To specify the new status for the schedule
-      required:
-      - operation
-      examples:
-      - operation: deactivate
-    CreateQueryTableResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            viewId:
-              type: string
-      examples:
-      - status: success
-        summary: Create QueryTable
-        data:
-          viewId: '176702400000912004'
-    UpdateEmailScheduleResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            scheduleId:
-              type: string
-      examples:
-      - status: success
-        summary: Update email schedule
-        data:
-          scheduleId: '1767024000010887001'
-    AddColumnConfig:
+            variableType:
+              type: integer
+            variableDataType:
+              type: integer
+            format:
+              $ref: '#/components/schemas/VariableFormat'
+            userSpecificData:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserSpecificVariableData'
+            defaultData:
+              $ref: '#/components/schemas/DefaultVariableData'
+    RenameColumnConfig:
       type: object
       properties:
         columnName:
           type: string
-          description: The name of the column.
-        dataType:
-          type: string
-          description: The data type of the column.
-          enum:
-          - PLAIN
-          - MULTI_LINE
-          - EMAIL
-          - NUMBER
-          - POSITIVE_NUMBER
-          - DECIMAL_NUMBER
-          - CURRENCY
-          - PERCENT
-          - DATE
-          - BOOLEAN
-          - URL
-          - AUTO_NUMBER
-          - GEO
-          - DURATION
-        isPIIColumn:
-          type: boolean
-          description: To mark as personal data column. Default is false.
-        geoRole:
-          type: integer
-          description: To specify the geo location type. Required if dataType is GEO.
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - 6
-          - 7
-          - 8
+          description: The new name of the column.
       required:
       - columnName
-      - dataType
       examples:
-      - columnName: Region
-        dataType: GEO
-        isPIIColumn: false
-        geoRole: 2
-    LookupColumnDesign:
-      type: object
-      properties:
-        TABLENAME:
-          type: string
-          description: The name of the lookup table.
-        COLUMNNAME:
-          type: string
-          description: The name of the column in the lookup table.
-      required:
-      - TABLENAME
-      - COLUMNNAME
+      - columnName: New Column Name
     AddFormulaColumnResponse:
       type: object
       properties:
@@ -3479,43 +3489,27 @@ components:
           data:
             formulaId: '1767024000009120246'
             formulaName: F1
-    RenameFolderConfig:
+    AddAggregateFormulaConfig:
       type: object
       properties:
-        folderName:
+        formulaName:
           type: string
-          description: New name for the folder.
-        folderDesc:
+          description: Name of the aggregate formula column to be created
+        expression:
           type: string
-          description: New description for the folder.
+          description: Aggregate formula expression
+        description:
+          type: string
+          description: Description of the aggregate formula column
       required:
-      - folderName
+      - formulaName
+      - expression
       examples:
-      - folderName: Archived Reports
-        folderDesc: All old reporting dashboards
-    RenameWorkspaceConfig:
-      type: object
-      properties:
-        workspaceName:
-          type: string
-          description: New name of the workspace
-      required:
-      - workspaceName
-      examples:
-      - workspaceName: Q4 Sales Workspace
-    EditQueryTableConfig:
-      type: object
-      properties:
-        sqlQuery:
-          type: string
-          description: New SQL query to be updated.
-        folderId:
-          type: string
-          description: Id of the folder where the query table has to be moved.
-      required:
-      - sqlQuery
-      examples:
-      - sqlQuery: SELECT Region, SUM(Amount) FROM Sales GROUP BY Region
+      - summary: Add aggregate formula column
+        value:
+          formulaName: AF1
+          expression: sum("Sales")
+          description: Total Sales
     CreateAutoMLAnalysisDeploymentResponse:
       type: object
       properties:
@@ -3544,85 +3538,6 @@ components:
           deployments:
             outputTableId: '466206000000198129'
             deploymentId: '466206000000198176'
-    EditAggregateFormulaConfig:
-      type: object
-      properties:
-        expression:
-          type: string
-          description: Updated aggregate formula expression
-        description:
-          type: string
-          description: Updated description of the aggregate formula column
-      required:
-      - expression
-      examples:
-      - summary: Edit aggregate formula column
-        value:
-          expression: avg("Sales")
-          description: Average Sales
-    CreateReportResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            viewId:
-              type: string
-      examples:
-      - status: success
-        summary: Create report
-        data:
-          viewId: '35130000006450002'
-    DeleteTrashViewConfig:
-      type: object
-      properties:
-        withDependents:
-          type: boolean
-          description: 'To remove the view along with its dependents from trash. Default value: false.'
-      examples:
-      - withDependents: false
-    AddAggregateFormulaConfig:
-      type: object
-      properties:
-        formulaName:
-          type: string
-          description: Name of the aggregate formula column to be created
-        expression:
-          type: string
-          description: Aggregate formula expression
-        description:
-          type: string
-          description: Description of the aggregate formula column
-      required:
-      - formulaName
-      - expression
-      examples:
-      - summary: Add aggregate formula column
-        value:
-          formulaName: AF1
-          expression: sum("Sales")
-          description: Total Sales
-    CreateVariableResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            variableId:
-              type: string
-      examples:
-      - status: success
-        summary: Create variable
-        data:
-          variableId: '137687000006991651'
     CreateEmailScheduleConfig:
       type: object
       properties:
@@ -3768,294 +3683,95 @@ components:
         applyDefaultUf: false
         subject: Monthly Financial Summary
         message: Please find the attached monthly report.
-    CreateAutoMLAnalysisDeploymentConfig:
+    CreateWorkspaceConfig:
       type: object
       properties:
-        inputTableId:
-          type: integer
-          description: Unique ID of the input table from which data will be read for AutoML analysis deployment.
-          maxLength: 60
-        outputTable:
+        workspaceName:
           type: string
-          description: Name of the output table where the prediction results will be stored.
-        scheduleDetails:
+          description: The name of the workspace
+        workspaceDesc:
+          type: string
+          description: Optional description for the workspace
+      required:
+      - workspaceName
+      examples:
+      - workspaceName: Sales Analytics
+        workspaceDesc: Workspace for quarterly sales
+    CreateWorkspaceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
           type: object
           properties:
-            calendarFrequency:
+            workspaceId:
               type: string
-              enum:
-              - none
-              - hourly
-              - daily
-              - weekly
-              - monthly
-              description: Defines the frequency at which the deployment job should run.
-            interval:
-              type: integer
-              description: Specifies the interval for the schedule based on calendarFrequency.
-            hour:
-              type: integer
-              description: Specifies the hour of the day (0-23) when the deployment job should be triggered.
-            hourInterval:
-              type: integer
-              description: Specifies the hour interval between executions when applicable.
-            minute:
-              type: integer
-              description: Specifies the minute within the hour (0-59) when the deployment job should be triggered.
-            weekDay:
-              type: integer
-              description: Specifies the day of the week when the deployment job should be triggered.
-              enum:
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-            monthDay:
-              type: integer
-              description: Specifies a particular day of the month when the deployment job should be triggered.
-              enum:
-              - 1
-              - 2
-              - 3
-              - 4
-              - 5
-              - 6
-              - 7
-              - 8
-              - 9
-              - 10
-              - 11
-              - 12
-              - 13
-              - 14
-              - 15
-              - 16
-              - 17
-              - 18
-              - 19
-              - 20
-              - 21
-              - 22
-              - 23
-              - 24
-              - 25
-              - 26
-              - 27
-              - 28
-              - 29
-              - 30
-              - 31
-              - 99
-          required:
-          - calendarFrequency
-        outputColumns:
-          type: array
-          items:
-            type: string
-            description: Each value must be a valid column name.
-          minItems: 1
-          maxItems: 100
-          description: List of column names that will be written to the output table as part of the prediction results.
-        predictionColumn:
+      examples:
+      - status: success
+        summary: Create workspace
+        data:
+          workspaceId: '1767024000003145002'
+    ColumnDesign:
+      type: object
+      properties:
+        COLUMNNAME:
           type: string
-          description: Name of the column for which predictions will be generated.
-        serverOption:
+          description: Name of the column.
+        DATATYPE:
+          type: string
+          enum:
+          - PLAIN
+          - MULTILINE
+          - EMAIL
+          - URL
+          - NUMBER
+          - POSITIVE_NUMBER
+          - DECIMAL_NUMBER
+          - CURRENCY
+          - PERCENTAGE
+          - AUTONUMBER
+          - CATEGORY
+          - DATE
+          - BOOLEAN
+          - GEOLOCATION
+          description: Datatype of the column.
+        MANDATORY:
+          type: boolean
+          description: Whether the column is mandatory.
+        DESCRIPTION:
+          type: string
+          description: Optional column description.
+        DEFAULT:
+          type: string
+          description: Default value for the column.
+        GEOROLE:
           type: integer
           enum:
+          - 0
           - 1
           - 2
           - 3
-          description: Specifies the server memory configuration for executing the AutoML deployment job.
-        timezone:
-          type: string
-          description: Timezone to be used for scheduling the deployment job.
-        importType:
-          type: string
-          enum:
-          - APPEND
-          - TRUNCATEADD
-          - UPDATEADD
-          description: Specifies how prediction results should be imported into the output table.
-        matchingColumns:
-          type: array
-          items:
-            type: string
-            description: Each value must be a valid column name.
-          description: List of column names used to match existing records in the output table when importType is UPDATEADD.
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          description: Geo role ID applicable for geolocation columns.
+        ISHIDE:
+          type: boolean
+          description: Whether the column is hidden.
+        PII:
+          type: boolean
+          description: Marks the column as containing Personally Identifiable Information.
+        LOOKUPCOLUMN:
+          $ref: '#/components/schemas/LookupColumnDesign'
+          description: Lookup configuration if column is a lookup.
       required:
-      - inputTableId
-      - outputTable
-      - scheduleDetails
-      - outputColumns
-      - predictionColumn
-      - serverOption
-      - importType
-      examples:
-      - inputTableId: 196355000003252000
-        outputTable: SalesDep
-        outputColumns:
-        - Sales
-        - Product
-        predictionColumn: precol
-        serverOption: 1
-        importType: append
-        scheduleDetails:
-          calendarFrequency: hourly
-          interval: 3
-    DeleteAggregateFormulaConfig:
-      type: object
-      properties:
-        deleteDependentViews:
-          type: boolean
-          description: To delete the column along with dependent views. Default is false
-      examples:
-      - summary: Delete aggregate formula
-        value:
-          deleteDependentViews: true
-    SaveAsViewResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            viewId:
-              type: string
-      examples:
-      - status: success
-        summary: Saveas view
-        data:
-          viewId: '1767024000004723001'
-    CopyFormulasConfig:
-      type: object
-      properties:
-        formulaColumnNames:
-          type: array
-          items:
-            type: string
-          description: The names of the formula columns to be copied.
-        destWorkspaceId:
-          type: string
-          description: The destination workspace ID.
-        workspaceKey:
-          type: string
-          description: Secret key to allow copying formulas across orgs.
-      required:
-      - formulaColumnNames
-      - destWorkspaceId
-      examples:
-      - formulaColumnNames:
-        - Avg_Cost
-        - Avg_Sales
-        destWorkspaceId: '1767024000003145002'
-    DeleteFolderConfig:
-      type: object
-      properties:
-        deleteDependentViews:
-          type: boolean
-          description: Delete the views along with their dependents present in the folder. Default value - false.
-      examples:
-      - deleteDependentViews: true
-    DeleteFormulaColumnConfig:
-      type: object
-      properties:
-        deleteDependentViews:
-          type: boolean
-          description: To delete the column along with dependent views. Default is false
-      examples:
-      - summary: Delete formula with dependent views false
-        value:
-          deleteDependentViews: false
-    RestoreTrashViewConfig:
-      type: object
-      properties:
-        withDependents:
-          type: boolean
-          description: 'To restore the view along with its dependent views. Default value: false.'
-      examples:
-      - withDependents: true
-    ChangeFolderPositionConfig:
-      type: object
-      properties:
-        referenceFolderId:
-          type: string
-          description: Id of the folder that will be used as the reference for the new position.
-      required:
-      - referenceFolderId
-      examples:
-      - referenceFolderId: '1767024000004578032'
-    AutoAnalyseViewConfig:
-      type: object
-      description: Configuration for auto-analysing a view.
-      properties:
-        analyseAgain:
-          type: boolean
-          description: Generate duplicate reports if already generated.
-      examples:
-      - analyseAgain: true
-    CreateTableConfig:
-      type: object
-      properties:
-        tableDesign:
-          $ref: '#/components/schemas/TableDesign'
-      required:
-      - tableDesign
-      examples:
-      - tableDesign:
-          TABLENAME: Sales
-          TABLEDESCRIPTION: Test
-          COLUMNS:
-          - COLUMNNAME: Column1
-            DATATYPE: PLAIN
-          - COLUMNNAME: Column2
-            DATATYPE: NUMBER
-    DeleteViewConfig:
-      type: object
-      properties:
-        deleteDependentViews:
-          type: boolean
-          description: To delete dependent views while deleting a table/querytable.
-      examples:
-      - deleteDependentViews: true
-    AddColumnResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            columnId:
-              type: string
-      examples:
-      - status: success
-        summary: Add column
-        data:
-          columnId: '1767024000003145017'
-    AutoMLWhatIfAnalysisConfig:
-      type: object
-      properties:
-        features:
-          type: object
-          additionalProperties:
-            type: string
-            description: Hypothetical value to be used for What-If analysis for the specified feature.
-          description: Key-value pairs of feature inputs for What-If analysis. Each key is a feature/column name and each value is the test value used to generate predictions.
-      required:
-      - features
-      examples:
-      - features:
-          Product: Fruits and Vegetables
-          Region: East
-          Product Category: Stationery
+      - COLUMNNAME
+      - DATATYPE
     CopyViewsConfig:
       type: object
       properties:
@@ -4084,7 +3800,167 @@ components:
         - '2102449000000678001'
         - '2102449000000679001'
         destWorkspaceId: '1767024000003145002'
-    CreateTableResponse:
+    VariableConfig:
+      type: object
+      properties:
+        variableName:
+          type: string
+        variableType:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 3
+        variableDataType:
+          type: integer
+          enum:
+          - 1
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+        format:
+          $ref: '#/components/schemas/VariableFormat'
+        userSpecificData:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSpecificVariableData'
+        defaultData:
+          $ref: '#/components/schemas/DefaultVariableData'
+      required:
+      - variableName
+      - variableType
+      - variableDataType
+    HideShowColumnConfig:
+      type: object
+      properties:
+        columnIds:
+          type: array
+          description: List of column IDs to hide or show.
+          items:
+            type: string
+      required:
+      - columnIds
+      examples:
+      - columnIds:
+        - '1767024000003145015'
+        - '1767024000003145016'
+    AddColumnResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            columnId:
+              type: string
+      examples:
+      - status: success
+        summary: Add column
+        data:
+          columnId: '1767024000003145017'
+    AddFormulaColumnConfig:
+      type: object
+      properties:
+        formulaName:
+          type: string
+          description: Name of the formula column to be created
+        expression:
+          type: string
+          description: Formula expression
+        description:
+          type: string
+          description: Description of the formula column
+      required:
+      - formulaName
+      - expression
+      examples:
+      - summary: Add formula column
+        value:
+          formulaName: F1
+          expression: '"Sales" - "Cost"'
+          description: Gross Profit
+    RemoveLookupConfig:
+      type: object
+      properties:
+        deleteDependentViews:
+          type: boolean
+          description: Delete the dependent views created based on the lookup relation. Default is false.
+      examples:
+      - deleteDependentViews: true
+    SortDataByColumnsConfig:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+          description: List of column IDs to sort by.
+        sortOrder:
+          type: integer
+          enum:
+          - 1
+          - 2
+          description: Sorting order (1 → Ascending, 2 → Descending).
+        resetSort:
+          type: boolean
+          description: If true, resets existing sort configuration. Default - false.
+          default: false
+      required:
+      - columns
+      - sortOrder
+      examples:
+      - columns:
+        - '2531676000011845005'
+        - '2531676000011845007'
+        sortOrder: 2
+        resetSort: false
+    TableDesign:
+      type: object
+      properties:
+        TABLENAME:
+          type: string
+          description: The name of the table
+        TABLEDESCRIPTION:
+          type: string
+          description: The description of the table
+        FOLDERNAME:
+          type: string
+          description: The folder where the table is created
+        COLUMNS:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColumnDesign'
+      required:
+      - TABLENAME
+      - COLUMNS
+    RenameViewConfig:
+      type: object
+      properties:
+        viewName:
+          type: string
+          description: The new name of the view.
+        viewDesc:
+          type: string
+          description: The new description of the view.
+      required:
+      - viewName
+      examples:
+      - viewName: Renamed Sales View
+        viewDesc: View renamed for clarity
+    DeleteColumnConfig:
+      type: object
+      properties:
+        deleteDependentViews:
+          type: boolean
+          description: If true, deletes the dependent views as well. Default is false.
+      examples:
+      - deleteDependentViews: true
+    CreateQueryTableResponse:
       type: object
       properties:
         status:
@@ -4098,31 +3974,155 @@ components:
               type: string
       examples:
       - status: success
-        summary: Create table
+        summary: Create QueryTable
         data:
-          viewId: '1767024000003145011'
-    CreateFolderConfig:
+          viewId: '176702400000912004'
+    CreateQueryTableConfig:
       type: object
       properties:
-        folderName:
+        sqlQuery:
           type: string
-          description: The name of the folder.
-        folderDesc:
+          description: SQL query to construct the query table.
+        queryTableName:
           type: string
-          description: The description of the folder.
-        parentFolderId:
+          description: Name of the query table to be created.
+        description:
           type: string
-          description: Id of the parent folder. Newly created folder will be placed under this folder.
-        makeDefaultFolder:
-          type: boolean
-          description: Make the created folder as default. Default value - false.
+          description: Description of the query table.
+        folderId:
+          type: string
+          description: Id of the folder where the query table has to be created.
       required:
-      - folderName
+      - sqlQuery
+      - queryTableName
       examples:
-      - folderName: My Tables
-        folderDesc: Folder for storing new tables
-        parentFolderId: '1767024000004536004'
-        makeDefaultFolder: true
+      - sqlQuery: SELECT * FROM Sales
+        queryTableName: Sales Summary
+    DefaultVariableData:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            type: string
+        defaultValue:
+          type: string
+        minValue:
+          type: string
+        maxValue:
+          type: string
+        stepSize:
+          type: string
+    DeleteTrashViewConfig:
+      type: object
+      properties:
+        withDependents:
+          type: boolean
+          description: 'To remove the view along with its dependents from trash. Default value: false.'
+      examples:
+      - withDependents: false
+    CreateSimilarViewsConfig:
+      type: object
+      description: Configuration for creating similar views based on a reference view.
+      properties:
+        referenceViewId:
+          type: string
+          description: The reference view ID.
+        folderId:
+          type: string
+          description: The folder ID where the views will be saved.
+        copyCustomFormula:
+          type: boolean
+          description: 'To copy the custom formulas present in the parent view. Default: false.'
+        copyAggFormula:
+          type: boolean
+          description: 'To copy the aggregate formulas present in the parent view. Default: false.'
+      required:
+      - referenceViewId
+      - folderId
+      examples:
+      - referenceViewId: '1234567890001'
+        folderId: '9876543210002'
+        copyCustomFormula: true
+        copyAggFormula: false
+  parameters:
+    variable-id:
+      name: variable-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the variable.
+    formula-id:
+      name: formula-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the formula.
+    schedule-id:
+      name: schedule-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the email schedule.
+    folder-id:
+      name: folder-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the folder.
+    analysis-id:
+      name: analysis-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the AutoML analysis.
+    column-id:
+      name: column-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the column.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    model-id:
+      name: model-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the AutoML analysis model.
+    deployment-id:
+      name: deployment-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the AutoML analysis deployment.
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

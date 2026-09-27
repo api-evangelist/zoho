@@ -231,58 +231,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    emailTemplateId:
-      name: emailTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: the corresponding department to be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: the corresponding department to be fetched
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: The name of the module
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: The name of the module
-        enum:
-        - tickets
-        - tasks
-        - contacts
-        - accounts
-        - products
-        - solutions
-        - calls
-        - events
-        maxLength: 100
-        minLength: 0
   responses:
     templateAttachmentResponse:
       description: templateAttachmentResponse template definitions
@@ -321,6 +269,43 @@ components:
                 templateName: new Template
                 category: CUSTOM_TEMPLATE
                 contentType: richtext
+    applyTemplateResponse:
+      description: applyTemplateResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              attachments:
+                $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
+              subject:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              body:
+                type:
+                - string
+                - 'null'
+                maxLength: 64000
+                minLength: 0
+            required:
+            - attachments
+            - body
+            - subject
+          examples:
+            Valid responses Definitions:
+              value:
+                attachments:
+                - size: '8842'
+                  name: ricktwo.jpeg
+                  id: '4000000132047'
+                subject: My support Template
+                body: lakshmansupport1lakshmanvignesh<a target="_blank" href="https://support.zoho.com/support/lakshmansupport1/ShowHomePage.do#Cases/dv/51123033fe97b2f8922ba57825f2f328">MEOW Ticket</a> newuser+1105/30/2016 09:57 AMI am containing a content
     cloneTemplateAttachmentsResponse:
       description: cloneTemplateAttachmentsResponse template definitions
       content:
@@ -487,146 +472,7 @@ components:
                     placeHolder: ${Organization.City}
                   i18nModule: Organization
                   module: Organization
-    applyTemplateResponse:
-      description: applyTemplateResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              attachments:
-                $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
-              subject:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              body:
-                type:
-                - string
-                - 'null'
-                maxLength: 64000
-                minLength: 0
-            required:
-            - attachments
-            - body
-            - subject
-          examples:
-            Valid responses Definitions:
-              value:
-                attachments:
-                - size: '8842'
-                  name: ricktwo.jpeg
-                  id: '4000000132047'
-                subject: My support Template
-                body: lakshmansupport1lakshmanvignesh<a target="_blank" href="https://support.zoho.com/support/lakshmansupport1/ShowHomePage.do#Cases/dv/51123033fe97b2f8922ba57825f2f328">MEOW Ticket</a> newuser+1105/30/2016 09:57 AMI am containing a content
   requestBodies:
-    templatejson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              templateName:
-                type:
-                - string
-                - 'null'
-                maxLength: 250
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              subject:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              recordType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - tickets
-                - tasks
-                - contacts
-                - accounts
-                - products
-                - calls
-                - events
-                maxLength: 100
-                minLength: 0
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              replyTo:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              attachmentIds:
-                $ref: ./EmailTemplates.json#/components/schemas/attachmentIds
-              body:
-                type:
-                - string
-                - 'null'
-                maxLength: 64000
-                minLength: 0
-              fromId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (^((.*?)((<)*?[a-zA-Z0-9]([\w\-.+]*)@([\w\-.]*)(\.[a-zA-Z]{2,22}(.[a-zA-Z]{2}){0,2})(>)*?(\s)*((,|;)\s*)?))+|^$)
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - plaintext
-                - richtext
-                maxLength: 100
-                minLength: 0
-              folderId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - contentType
-            - departmentId
-            - folderId
-            - fromId
-            - recordType
-            - subject
-            - templateName
-          examples:
-            Valid requestBody Definitions:
-              value:
-                templateName: new Template
-                subject: My Template Subject
-                recordType: tickets
-                departmentId: '4000000007039'
-                attachmentIds:
-                - 1892000000132047
-                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>Your ticket has been created with the ticket ID  ${Cases.Request Id} and subject  "${Cases.Subject}"<br> <br>Someone from our customer service team will review it and respond shortly.<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
-                fromId: support@@zylker.com
-                contentType: richtext
-                folderId: '4000000007021'
     templateRenderAPIPayload:
       content:
         application/json:
@@ -738,6 +584,160 @@ components:
                 templateName: new Template
                 subject: My New Template
                 recordType: tickets
+    templatejson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              templateName:
+                type:
+                - string
+                - 'null'
+                maxLength: 250
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              subject:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              recordType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - tickets
+                - tasks
+                - contacts
+                - accounts
+                - products
+                - calls
+                - events
+                maxLength: 100
+                minLength: 0
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              replyTo:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              attachmentIds:
+                $ref: ./EmailTemplates.json#/components/schemas/attachmentIds
+              body:
+                type:
+                - string
+                - 'null'
+                maxLength: 64000
+                minLength: 0
+              fromId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (^((.*?)((<)*?[a-zA-Z0-9]([\w\-.+]*)@([\w\-.]*)(\.[a-zA-Z]{2,22}(.[a-zA-Z]{2}){0,2})(>)*?(\s)*((,|;)\s*)?))+|^$)
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - plaintext
+                - richtext
+                maxLength: 100
+                minLength: 0
+              folderId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - contentType
+            - departmentId
+            - folderId
+            - fromId
+            - recordType
+            - subject
+            - templateName
+          examples:
+            Valid requestBody Definitions:
+              value:
+                templateName: new Template
+                subject: My Template Subject
+                recordType: tickets
+                departmentId: '4000000007039'
+                attachmentIds:
+                - 1892000000132047
+                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>Your ticket has been created with the ticket ID  ${Cases.Request Id} and subject  "${Cases.Subject}"<br> <br>Someone from our customer service team will review it and respond shortly.<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
+                fromId: support@@zylker.com
+                contentType: richtext
+                folderId: '4000000007021'
+  parameters:
+    departmentId:
+      name: departmentId
+      in: query
+      description: the corresponding department to be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: the corresponding department to be fetched
+        pattern: ([0-9]+)
+    emailTemplateId:
+      name: emailTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: The name of the module
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: The name of the module
+        enum:
+        - tickets
+        - tasks
+        - contacts
+        - accounts
+        - products
+        - solutions
+        - calls
+        - events
+        maxLength: 100
+        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

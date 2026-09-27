@@ -417,156 +417,6 @@ paths:
       - external-public
 components:
   responses:
-    skillSingleResponseJson:
-      description: skillSingleResponseJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              modifiedTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              agentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              skillType:
-                $ref: ./Skill.json#/components/schemas/skillTypeJson
-              orderId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                minimum: 1
-                pattern: ([0-9]+)
-              criteria:
-                $ref: ./Skill.json#/components/schemas/criteriaDetailsResponse
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
-              skillTypeId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              createdBy:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              createdTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              modifiedBy:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-            required:
-            - agentIds
-            - createdBy
-            - createdTime
-            - criteria
-            - departmentId
-            - description
-            - id
-            - modifiedBy
-            - modifiedTime
-            - name
-            - orderId
-            - skillType
-            - skillTypeId
-            - status
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1595509716093
-                agentIds:
-                - '1000000000059'
-                skillType:
-                  skillTypeId: '1000000173013'
-                  skillTypeName: Language
-                orderId: '5'
-                criteria:
-                  fieldConditions:
-                  - displayValue:
-                    - Malayalam
-                    condition: contains
-                    fieldName: Subject
-                    fieldModule: tickets
-                    value:
-                    - Malayalam
-                  pattern: '1'
-                departmentId: '1000000013248'
-                description: Language is Malayalam
-                skillTypeId: '1000000173013'
-                createdBy: '1000000000059'
-                name: Malayalam
-                createdTime: 1595509716093
-                modifiedBy: '1000000000059'
-                id: '1000000173145'
-                status: ACTIVE
     agentSkillMappingResponseMultiple:
       description: agentSkillMappingResponseMultiple template definitions
       content:
@@ -612,42 +462,6 @@ components:
                     skillId: '1000000003967'
                     skillTypeId: '100000001423'
                   departmentId: '10000000030294'
-    relatedRuleListArray:
-      description: relatedRuleListArray template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Skill.json#/components/schemas/relatedRulesData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ruleType: SUPERVISE
-                  ruleName: TBA1
-                  ruleId: '6000000019012'
-                - ruleType: SLA
-                  ruleName: Priority-based SLAs
-                  ruleId: '6000000013508'
-                - ruleType: SLA
-                  ruleName: Bronze SLAs
-                  ruleId: '6000000013514'
-                - ruleType: BLUEPRINT
-                  ruleName: Default Blueprint
-                  ruleId: '6000000016083'
-                - ruleType: BLUEPRINT
-                  ruleName: BH BP
-                  ruleId: '6000000018143'
-                - ruleType: BLUEPRINT
-                  ruleName: Third Bp
-                  ruleId: '6000000023018'
     skillsListViewResponse:
       description: skillsListViewResponse template definitions
       content:
@@ -809,47 +623,6 @@ components:
                   modifiedBy: '1000000000059'
                   id: '1000000173145'
                   status: ACTIVE
-    skillBasedAssignmentResponse:
-      description: skillBasedAssignmentResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isAssigned:
-                type:
-                - boolean
-                - 'null'
-              newAssignee:
-                $ref: ./Skill.json#/components/schemas/isAssignedResponse
-              team:
-                $ref: ./Skill.json#/components/schemas/executeSBATeaminfo
-            required:
-            - isAssigned
-            - newAssignee
-            - team
-          examples:
-            Valid responses Definitions:
-              value:
-                isAssigned: true
-                newAssignee:
-                  photoURL: https://desk.zoho.com/api/v1/agents/1000000000059/photo?orgId=111111
-                  firstName: Alex
-                  lastName: John
-                  name: Alex
-                  roleName: null
-                  externalId: null
-                  emailId: alex@zylker.com
-                  id: '1000000000059'
-                  type: AGENT
-                  email: alex@zylker.com
-                  zuid: '1231232'
-                team:
-                  name: Automation Team
-                  id: '1000000000089'
     recalculateAndStampSkillJSON:
       description: recalculateAndStampSkillJSON template definitions
       content:
@@ -907,6 +680,233 @@ components:
                   skillTypeName: Region
                 modifiedBy: '1000000032001'
                 id: '1000000170017'
+    skillBasedAssignmentResponse:
+      description: skillBasedAssignmentResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isAssigned:
+                type:
+                - boolean
+                - 'null'
+              newAssignee:
+                $ref: ./Skill.json#/components/schemas/isAssignedResponse
+              team:
+                $ref: ./Skill.json#/components/schemas/executeSBATeaminfo
+            required:
+            - isAssigned
+            - newAssignee
+            - team
+          examples:
+            Valid responses Definitions:
+              value:
+                isAssigned: true
+                newAssignee:
+                  photoURL: https://desk.zoho.com/api/v1/agents/1000000000059/photo?orgId=111111
+                  firstName: Alex
+                  lastName: John
+                  name: Alex
+                  roleName: null
+                  externalId: null
+                  emailId: alex@zylker.com
+                  id: '1000000000059'
+                  type: AGENT
+                  email: alex@zylker.com
+                  zuid: '1231232'
+                team:
+                  name: Automation Team
+                  id: '1000000000089'
+    relatedRuleListArray:
+      description: relatedRuleListArray template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Skill.json#/components/schemas/relatedRulesData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ruleType: SUPERVISE
+                  ruleName: TBA1
+                  ruleId: '6000000019012'
+                - ruleType: SLA
+                  ruleName: Priority-based SLAs
+                  ruleId: '6000000013508'
+                - ruleType: SLA
+                  ruleName: Bronze SLAs
+                  ruleId: '6000000013514'
+                - ruleType: BLUEPRINT
+                  ruleName: Default Blueprint
+                  ruleId: '6000000016083'
+                - ruleType: BLUEPRINT
+                  ruleName: BH BP
+                  ruleId: '6000000018143'
+                - ruleType: BLUEPRINT
+                  ruleName: Third Bp
+                  ruleId: '6000000023018'
+    skillSingleResponseJson:
+      description: skillSingleResponseJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              modifiedTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              agentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              skillType:
+                $ref: ./Skill.json#/components/schemas/skillTypeJson
+              orderId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                minimum: 1
+                pattern: ([0-9]+)
+              criteria:
+                $ref: ./Skill.json#/components/schemas/criteriaDetailsResponse
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
+              skillTypeId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              createdBy:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              createdTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              modifiedBy:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+            required:
+            - agentIds
+            - createdBy
+            - createdTime
+            - criteria
+            - departmentId
+            - description
+            - id
+            - modifiedBy
+            - modifiedTime
+            - name
+            - orderId
+            - skillType
+            - skillTypeId
+            - status
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1595509716093
+                agentIds:
+                - '1000000000059'
+                skillType:
+                  skillTypeId: '1000000173013'
+                  skillTypeName: Language
+                orderId: '5'
+                criteria:
+                  fieldConditions:
+                  - displayValue:
+                    - Malayalam
+                    condition: contains
+                    fieldName: Subject
+                    fieldModule: tickets
+                    value:
+                    - Malayalam
+                  pattern: '1'
+                departmentId: '1000000013248'
+                description: Language is Malayalam
+                skillTypeId: '1000000173013'
+                createdBy: '1000000000059'
+                name: Malayalam
+                createdTime: 1595509716093
+                modifiedBy: '1000000000059'
+                id: '1000000173145'
+                status: ACTIVE
   requestBodies:
     updateSkillJsonInputWithoutCriteria:
       content:
@@ -964,6 +964,90 @@ components:
               value:
                 name: Malayalam
                 description: Malayali
+    reorderskilljson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              skillIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                maxItems: 200
+                minItems: 2
+                uniqueItems: true
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+            - skillIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                skillIds:
+                - '1000000173121'
+                - '1000000173029'
+                - '1000000173047'
+                - '1000000173097'
+                - '1000000173145'
+                departmentId: '1000000013248'
+    entitySkillMappingJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              skillIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                maxItems: 30
+                minItems: 0
+                uniqueItems: true
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+            - skillIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                skillIds:
+                - '1000000173047'
+                - '1000000173121'
+                - '1000000173029'
+                departmentId: '1000000013248'
     addSkillJson:
       content:
         application/json:
@@ -1045,121 +1129,7 @@ components:
                 name: India
                 description: Country is India
                 status: ACTIVE
-    entitySkillMappingJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              skillIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                maxItems: 30
-                minItems: 0
-                uniqueItems: true
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - departmentId
-            - skillIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                skillIds:
-                - '1000000173047'
-                - '1000000173121'
-                - '1000000173029'
-                departmentId: '1000000013248'
-    reorderskilljson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              skillIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                maxItems: 200
-                minItems: 2
-                uniqueItems: true
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - departmentId
-            - skillIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                skillIds:
-                - '1000000173121'
-                - '1000000173029'
-                - '1000000173047'
-                - '1000000173097'
-                - '1000000173145'
-                departmentId: '1000000013248'
   parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the skills must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the skills must be listed
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: Department Id
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Department Id
-        pattern: ([0-9]+)
     agentId:
       name: agentId
       in: path
@@ -1189,6 +1159,21 @@ components:
         description: Number of skill to list, @allowed minimum value 1, maximum value 100,default is 100@
         minimum: 1
         pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: Department Id
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Department Id
+        pattern: ([0-9]+)
     ticketId:
       name: ticketId
       in: path
@@ -1201,6 +1186,21 @@ components:
         - 'null'
         - integer
         format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the skills must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the skills must be listed
         pattern: ([0-9]+)
     skillId:
       name: skillId

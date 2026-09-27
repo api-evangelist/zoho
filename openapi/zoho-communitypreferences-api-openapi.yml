@@ -75,32 +75,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    getCommunityPrefereneces:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              landingPage:
-                type:
-                - string
-                - 'null'
-                description: 'Key that determines the content to display on the home page of the user community. Values allowed are: @ALLCATEGORIES@ (all community categories are displayed), and @RECENTPOSTS@ (only the latest topics in the community are displayed).'
-                enum:
-                - ALLCATEGORY
-                - RECENTPOST
-                maxLength: 100
-                minLength: 0
-            required:
-            - landingPage
-          examples:
-            Valid requestBody Definitions:
-              value:
-                landingPage: ALL_CATEGORY
   responses:
     getCommunityPrefereneces:
       description: getCommunityPrefereneces template definitions
@@ -164,6 +138,32 @@ components:
                 trash:
                   comments: '35'
                   topic: '25'
+  requestBodies:
+    getCommunityPrefereneces:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              landingPage:
+                type:
+                - string
+                - 'null'
+                description: 'Key that determines the content to display on the home page of the user community. Values allowed are: @ALLCATEGORIES@ (all community categories are displayed), and @RECENTPOSTS@ (only the latest topics in the community are displayed).'
+                enum:
+                - ALLCATEGORY
+                - RECENTPOST
+                maxLength: 100
+                minLength: 0
+            required:
+            - landingPage
+          examples:
+            Valid requestBody Definitions:
+              value:
+                landingPage: ALL_CATEGORY
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

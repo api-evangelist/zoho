@@ -165,57 +165,34 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    from:
-      name: from
-      in: query
-      description: Index number starting from which the accounts must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number starting from which the accounts must be fetched
-        minimum: 0
-        pattern: ([0-9]+)
-    fieldName:
-      name: fieldName
-      in: query
-      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
-        enum:
-        - email
-        - phone
-        - accountName
-    limit:
-      name: limit
-      in: query
-      description: Number of accounts to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of accounts to fetch
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
   responses:
+    getDefaultFieldResponse:
+      description: getDefaultFieldResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              fieldName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - email
+                - phone
+                - accountName
+                - null
+                maxLength: 100
+                minLength: 0
+            required:
+            - fieldName
+          examples:
+            Valid responses Definitions:
+              value:
+                fieldName: email
     listDuplicateAccountsCountsResponse:
       description: listDuplicateAccountsCountsResponse template definitions
       content:
@@ -332,33 +309,56 @@ components:
                     id: '1892000000052077'
                     email: agent@zylker.com
                   fieldValue: Agent Account
-    getDefaultFieldResponse:
-      description: getDefaultFieldResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              fieldName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - email
-                - phone
-                - accountName
-                - null
-                maxLength: 100
-                minLength: 0
-            required:
-            - fieldName
-          examples:
-            Valid responses Definitions:
-              value:
-                fieldName: email
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of accounts to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of accounts to fetch
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    fieldName:
+      name: fieldName
+      in: query
+      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
+        enum:
+        - email
+        - phone
+        - accountName
+    from:
+      name: from
+      in: query
+      description: Index number starting from which the accounts must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number starting from which the accounts must be fetched
+        minimum: 0
+        pattern: ([0-9]+)
   requestBodies:
     setDefaultField:
       content:

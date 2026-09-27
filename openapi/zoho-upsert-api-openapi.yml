@@ -247,6 +247,38 @@ paths:
       - Upsert
 components:
   schemas:
+    RecordInternalErrorResponse:
+      description: Schema for internal server error responses related to record operations.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects describing internal server failures.
+          items:
+            type: object
+            description: Error object representing an unexpected internal server error.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an internal server failure.
+                enum:
+                - INTERNAL_ERROR
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable description of the internal server error.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
     RecordInvalidURLResponse:
       description: Response schema returned when the requested API endpoint URL pattern is invalid or unsupported.
       type: object
@@ -279,110 +311,29 @@ components:
             - code
             - message
             - status
-    RecordsErrorResponse:
-      description: Standard error response schema returned when one or more record operations fail.
+    RecordPermissionResponse:
+      description: Response schema returned when a user lacks the necessary permissions to perform a record operation.
       type: object
       additionalProperties: false
       properties:
         data:
           type: array
           maxItems: 100
-          description: List of error objects describing individual record-level failures.
+          description: List of error objects indicating insufficient user permissions.
           items:
             type: object
-            description: Error object representing a failure encountered while processing a record.
+            description: Error object representing a permission denial.
             additionalProperties: false
             properties:
               code:
                 type: string
-                description: Machine-readable error code identifying the reason for the failure.
+                description: Machine-readable error code indicating the user does not have permission.
                 enum:
-                - INVALID_DATA
-                - INVALID_MODULE
-                - MULTIPLE_OR_MULTI_ERRORS
-                - DEPENDENT_FIELD_MISSING
-                - DEPENDENT_SERVICE_ERROR
-                - MANDATORY_NOT_FOUND
-                - DEPENDENT_MISMATCH
-                - INVALID_REQUEST_METHOD
-                - AUTHORIZATION_FAILED
-                - DUPLICATE_DATA
-                - LIMIT_EXCEEDED
-                - RECORD_LOCKED
-                - EXPECTED_FIELD_MISSING
-              details:
-                type: object
-                additionalProperties: true
-                description: Additional details associated with the error.
-                properties:
-                  resource_path_index:
-                    type: integer
-                    format: int32
-                    description: Position of the record in the request payload where the error occurred.
-                  api_name:
-                    type: string
-                    maxLength: 1024
-                    description: The API name of the field associated with the error.
-                  json_path:
-                    type: string
-                    maxLength: 1024
-                    description: JSONPath pointer to the field that caused the error.
-                  expected_fields:
-                    type: array
-                    maxItems: 100
-                    description: Used specifically when the error code is EXPECTED_FIELD_MISSING.
-                    items:
-                      type: object
-                      additionalProperties: false
-                      description: Additional information on the missing fields
-                      required:
-                      - api_name
-                      - json_path
-                      properties:
-                        api_name:
-                          maxLength: 1024
-                          type: string
-                          description: Name of the missing expected field.
-                        json_path:
-                          maxLength: 1024
-                          type: string
-                          description: JSONPath location of the expected field.
+                - NO_PERMISSION
               message:
                 type: string
                 maxLength: 1024
-                description: Human-readable explanation of the error.
-              status:
-                type: string
-                description: Indicates the outcome of the operation for the record.
-                enum:
-                - error
-            required:
-            - code
-            - message
-            - status
-    RecordUnathorizedResponse:
-      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          maxItems: 100
-          description: List of error objects indicating that the request is not authorized.
-          items:
-            type: object
-            description: Error object representing an OAuth scope mismatch.
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Machine-readable error code indicating an OAuth scope mismatch.
-                enum:
-                - OAUTH_SCOPE_MISMATCH
-              message:
-                type: string
-                maxLength: 1024
-                description: Human-readable explanation describing why the OAuth token is unauthorized.
+                description: Human-readable explanation describing the permission denial.
               status:
                 type: string
                 description: Overall execution status of the request.
@@ -487,61 +438,110 @@ components:
             - details
       required:
       - data
-    RecordPermissionResponse:
-      description: Response schema returned when a user lacks the necessary permissions to perform a record operation.
+    RecordsErrorResponse:
+      description: Standard error response schema returned when one or more record operations fail.
       type: object
       additionalProperties: false
       properties:
         data:
           type: array
           maxItems: 100
-          description: List of error objects indicating insufficient user permissions.
+          description: List of error objects describing individual record-level failures.
           items:
             type: object
-            description: Error object representing a permission denial.
+            description: Error object representing a failure encountered while processing a record.
             additionalProperties: false
             properties:
               code:
                 type: string
-                description: Machine-readable error code indicating the user does not have permission.
+                description: Machine-readable error code identifying the reason for the failure.
                 enum:
-                - NO_PERMISSION
+                - INVALID_DATA
+                - INVALID_MODULE
+                - MULTIPLE_OR_MULTI_ERRORS
+                - DEPENDENT_FIELD_MISSING
+                - DEPENDENT_SERVICE_ERROR
+                - MANDATORY_NOT_FOUND
+                - DEPENDENT_MISMATCH
+                - INVALID_REQUEST_METHOD
+                - AUTHORIZATION_FAILED
+                - DUPLICATE_DATA
+                - LIMIT_EXCEEDED
+                - RECORD_LOCKED
+                - EXPECTED_FIELD_MISSING
+              details:
+                type: object
+                additionalProperties: true
+                description: Additional details associated with the error.
+                properties:
+                  resource_path_index:
+                    type: integer
+                    format: int32
+                    description: Position of the record in the request payload where the error occurred.
+                  api_name:
+                    type: string
+                    maxLength: 1024
+                    description: The API name of the field associated with the error.
+                  json_path:
+                    type: string
+                    maxLength: 1024
+                    description: JSONPath pointer to the field that caused the error.
+                  expected_fields:
+                    type: array
+                    maxItems: 100
+                    description: Used specifically when the error code is EXPECTED_FIELD_MISSING.
+                    items:
+                      type: object
+                      additionalProperties: false
+                      description: Additional information on the missing fields
+                      required:
+                      - api_name
+                      - json_path
+                      properties:
+                        api_name:
+                          maxLength: 1024
+                          type: string
+                          description: Name of the missing expected field.
+                        json_path:
+                          maxLength: 1024
+                          type: string
+                          description: JSONPath location of the expected field.
               message:
                 type: string
                 maxLength: 1024
-                description: Human-readable explanation describing the permission denial.
+                description: Human-readable explanation of the error.
               status:
                 type: string
-                description: Overall execution status of the request.
+                description: Indicates the outcome of the operation for the record.
                 enum:
                 - error
             required:
             - code
             - message
             - status
-    RecordInternalErrorResponse:
-      description: Schema for internal server error responses related to record operations.
+    RecordUnathorizedResponse:
+      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
       type: object
       additionalProperties: false
       properties:
         data:
           type: array
           maxItems: 100
-          description: List of error objects describing internal server failures.
+          description: List of error objects indicating that the request is not authorized.
           items:
             type: object
-            description: Error object representing an unexpected internal server error.
+            description: Error object representing an OAuth scope mismatch.
             additionalProperties: false
             properties:
               code:
                 type: string
-                description: Machine-readable error code indicating an internal server failure.
+                description: Machine-readable error code indicating an OAuth scope mismatch.
                 enum:
-                - INTERNAL_ERROR
+                - OAUTH_SCOPE_MISMATCH
               message:
                 type: string
                 maxLength: 1024
-                description: Human-readable description of the internal server error.
+                description: Human-readable explanation describing why the OAuth token is unauthorized.
               status:
                 type: string
                 description: Overall execution status of the request.

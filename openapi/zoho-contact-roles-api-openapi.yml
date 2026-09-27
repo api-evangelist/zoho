@@ -518,40 +518,83 @@ paths:
       tags:
       - Contact Roles
 components:
+  parameters:
+    Fields:
+      name: fields
+      in: query
+      required: true
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(?:,[A-Za-z_][A-Za-z0-9_]*)*$
+        minLength: 1
+        maxLength: 1000
+    Contact:
+      name: contactId
+      in: path
+      required: true
+      description: The unique identifier of the contact record
+      schema:
+        type: string
+        format: int64
+    Ids:
+      name: ids
+      in: query
+      required: false
+      description: Comma-separated list of contact role relation IDs to delete
+      schema:
+        type: string
+        format: int64
+    DealId:
+      name: dealId
+      in: path
+      required: true
+      description: The unique identifier of the deal record
+      schema:
+        type: string
+        format: int64
+    Module:
+      name: module
+      in: path
+      required: true
+      description: The module name for the deal record
+      schema:
+        type: string
+        enum:
+        - Deals
+  responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Internal server error response object containing code, message, details, and status.
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error.
+                maxLength: 50
+              message:
+                type: string
+                description: Human-readable error message.
+                maxLength: 255
+              details:
+                type: object
+                description: Additional details about the error.
+                additionalProperties: true
+              status:
+                type: string
+                description: Status of the error response.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - details
+            - status
+            additionalProperties: false
   schemas:
-    RequiredParamMissingError:
-      type: object
-      description: Required parameter missing error
-      properties:
-        code:
-          type: string
-          description: Error code indicating a required parameter is missing
-          const: REQUIRED_PARAM_MISSING
-        details:
-          type: object
-          description: Error details containing the missing parameter name
-          properties:
-            param_name:
-              type: string
-              description: Name of the missing required parameter
-              const: fields
-          required:
-          - param_name
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating a parameter is missing
-          const: One of the expected parameter is missing
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
     UpsertRelationsSuccessResponse:
       type: object
       description: Response returned after adding or updating contact role relations
@@ -623,74 +666,6 @@ components:
           type: string
           description: Error message indicating the deal ID is invalid
           const: the related id given seems to be invalid
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-    InvalidModuleError:
-      type: object
-      description: Invalid module name error
-      properties:
-        code:
-          type: string
-          description: Error code indicating invalid module name
-          const: INVALID_MODULE
-        details:
-          type: object
-          description: Error details containing the path index
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that is invalid (0 for module)
-              const: 0
-          required:
-          - resource_path_index
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating the module name is invalid
-          const: the module name given seems to be invalid
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-    InvalidRelationNameError:
-      type: object
-      description: Invalid relation name error
-      properties:
-        code:
-          type: string
-          description: Error code indicating invalid relation name
-          const: INVALID_DATA
-        details:
-          type: object
-          description: Error details containing the path index
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that is invalid (2 for relation name)
-              const: 2
-          required:
-          - resource_path_index
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating the relation name is invalid
-          const: the relation name given seems to be invalid
         status:
           type: string
           description: Response status
@@ -783,6 +758,144 @@ components:
       - message
       - status
       additionalProperties: false
+    RequiredParamMissingError:
+      type: object
+      description: Required parameter missing error
+      properties:
+        code:
+          type: string
+          description: Error code indicating a required parameter is missing
+          const: REQUIRED_PARAM_MISSING
+        details:
+          type: object
+          description: Error details containing the missing parameter name
+          properties:
+            param_name:
+              type: string
+              description: Name of the missing required parameter
+              const: fields
+          required:
+          - param_name
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating a parameter is missing
+          const: One of the expected parameter is missing
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    InvalidRelationNameError:
+      type: object
+      description: Invalid relation name error
+      properties:
+        code:
+          type: string
+          description: Error code indicating invalid relation name
+          const: INVALID_DATA
+        details:
+          type: object
+          description: Error details containing the path index
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that is invalid (2 for relation name)
+              const: 2
+          required:
+          - resource_path_index
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating the relation name is invalid
+          const: the relation name given seems to be invalid
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Invalid module name error
+      properties:
+        code:
+          type: string
+          description: Error code indicating invalid module name
+          const: INVALID_MODULE
+        details:
+          type: object
+          description: Error details containing the path index
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that is invalid (0 for module)
+              const: 0
+          required:
+          - resource_path_index
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating the module name is invalid
+          const: the module name given seems to be invalid
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionDealsError:
+      type: object
+      description: No permission to view deals
+      properties:
+        code:
+          type: string
+          description: Error code indicating lack of permission
+          const: NO_PERMISSION
+        details:
+          type: object
+          description: Details about the missing permissions
+          properties:
+            permissions:
+              type: array
+              description: List of required permissions that are missing
+              items:
+                type: string
+                description: Permission identifier for viewing deals
+                const: Crm_Implied_View_Potentials
+              maxItems: 1
+          required:
+          - permissions
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating permission denial
+          const: permission denied
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
     UpsertRelationsRequest:
       type: object
       description: Payload for adding or updating contact role relations on a deal
@@ -822,119 +935,6 @@ components:
       required:
       - data
       additionalProperties: false
-    NoPermissionDealsError:
-      type: object
-      description: No permission to view deals
-      properties:
-        code:
-          type: string
-          description: Error code indicating lack of permission
-          const: NO_PERMISSION
-        details:
-          type: object
-          description: Details about the missing permissions
-          properties:
-            permissions:
-              type: array
-              description: List of required permissions that are missing
-              items:
-                type: string
-                description: Permission identifier for viewing deals
-                const: Crm_Implied_View_Potentials
-              maxItems: 1
-          required:
-          - permissions
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating permission denial
-          const: permission denied
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-  parameters:
-    Contact:
-      name: contactId
-      in: path
-      required: true
-      description: The unique identifier of the contact record
-      schema:
-        type: string
-        format: int64
-    Ids:
-      name: ids
-      in: query
-      required: false
-      description: Comma-separated list of contact role relation IDs to delete
-      schema:
-        type: string
-        format: int64
-    Fields:
-      name: fields
-      in: query
-      required: true
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(?:,[A-Za-z_][A-Za-z0-9_]*)*$
-        minLength: 1
-        maxLength: 1000
-    DealId:
-      name: dealId
-      in: path
-      required: true
-      description: The unique identifier of the deal record
-      schema:
-        type: string
-        format: int64
-    Module:
-      name: module
-      in: path
-      required: true
-      description: The module name for the deal record
-      schema:
-        type: string
-        enum:
-        - Deals
-  responses:
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            description: Internal server error response object containing code, message, details, and status.
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error.
-                maxLength: 50
-              message:
-                type: string
-                description: Human-readable error message.
-                maxLength: 255
-              details:
-                type: object
-                description: Additional details about the error.
-                additionalProperties: true
-              status:
-                type: string
-                description: Status of the error response.
-                enum:
-                - error
-            required:
-            - code
-            - message
-            - details
-            - status
-            additionalProperties: false
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

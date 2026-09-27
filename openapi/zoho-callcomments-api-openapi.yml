@@ -184,6 +184,93 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    callId:
+      name: callId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  requestBodies:
+    createComment_addCallCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contentType: html
+                content: First Call comment.
+    addCallCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: Edit Call comment
   schemas:
     mention:
       type:
@@ -474,93 +561,6 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-  parameters:
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    callId:
-      name: callId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  requestBodies:
-    addCallCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: Edit Call comment
-    createComment_addCallCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contentType: html
-                content: First Call comment.
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

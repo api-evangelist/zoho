@@ -260,57 +260,6 @@ components:
         minLength: 0
         pattern: ([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)
   requestBodies:
-    updateCommentInput:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-                description: 'Visibility of the comment, which can be set only at the time of commenting. '
-              attachmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              contentType:
-                type:
-                - string
-                - 'null'
-                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
-                enum:
-                - plainText
-                - html
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isPublic: true
-                attachmentIds:
-                - '4658200041001'
-                contentType: html
-                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
     addCommentInput:
       content:
         application/json:
@@ -366,6 +315,57 @@ components:
                 - '4658200041001'
                 contentType: html
                 content: <div>Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
+    updateCommentInput:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
+                type:
+                - boolean
+                - 'null'
+                description: 'Visibility of the comment, which can be set only at the time of commenting. '
+              attachmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              contentType:
+                type:
+                - string
+                - 'null'
+                description: Used to denote the content-type which maybe @html@ or @plainText@. The default type is @html@.
+                enum:
+                - plainText
+                - html
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                description: 'Content of the comment. To retrieve or set user mentions, use this code format:      AGENT : _zsu[@user:{zuid}]zsu_, Enduser : _zsu[@enduser:{zuid}]zsu_, Group : _zsu[@group:{groupid}]zsu_, HashTag : _zsh[#{HEADER_DATA}]zsh_.'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isPublic: true
+                attachmentIds:
+                - '4658200041001'
+                contentType: html
+                content: <div>Changed Sample content zsu[@user:695624]zsu&nbsp; zsh[#sample_header:Introduction]zsh&nbsp;</div>
   responses:
     commentResponse:
       description: commentResponse template definitions

@@ -370,118 +370,6 @@ paths:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
   schemas:
-    ChangeWorkspaceUsersStatusConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain to update user status in
-        operation:
-          type: string
-          enum:
-          - activate
-          - deactivate
-          description: The status operation to perform
-      required:
-      - emailIds
-      - operation
-    DeleteWorkspaceUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain name to remove users from
-      required:
-      - emailIds
-    DeactivateUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - emailId1
-        - emailId2
-    AddWorkspaceUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Name of the domain to which users are added
-        role:
-          type: string
-          description: Role to assign (USER, WORKSPACEADMIN or custom role)
-      required:
-      - emailIds
-    ChangeWorkspaceUsersRoleConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain of users whose role is being changed
-        role:
-          type: string
-          description: New role to assign (USER, WORKSPACEADMIN, or custom)
-      required:
-      - emailIds
-      - role
-    GetSubscriptionDetailsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            subscription:
-              type: object
-              properties:
-                planName:
-                  type: string
-                addOns:
-                  type: string
-                billingDate:
-                  type: string
-                trialStatus:
-                  type: boolean
-      examples:
-      - status: success
-        summary: Get subscription details
-        data:
-          subscription:
-            planName: Premium
-            addOns: Zoho Recruit Connector,Zoho Books Connector
-            billingDate: ' - '
-            trialStatus: false
     ActivateUsersConfig:
       type: object
       properties:
@@ -498,6 +386,35 @@ components:
       - emailIds:
         - emailId1
         - emailId2
+    DeleteWorkspaceUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain name to remove users from
+      required:
+      - emailIds
+    AddWorkspaceUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Name of the domain to which users are added
+        role:
+          type: string
+          description: Role to assign (USER, WORKSPACEADMIN or custom role)
+      required:
+      - emailIds
     ChangeUserRoleConfig:
       type: object
       properties:
@@ -522,83 +439,38 @@ components:
         - emailId1
         - emailId2
         role: USER
-    GetResourceDetailsResponse:
+    RemoveUsersConfig:
       type: object
       properties:
-        status:
+        emailIds:
+          type: array
+          items:
+            type: string
+        domainName:
           type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            resourceDetails:
-              type: array
-              items:
-                type: object
-                properties:
-                  resourceName:
-                    type: string
-                  resourceUsage:
-                    type: object
-                    properties:
-                      allocated:
-                        type: string
-                      used:
-                        type: string
-                      remaining:
-                        type: string
-                      remarks:
-                        type: string
+      required:
+      - emailIds
       examples:
-      - status: success
-        summary: Get resource details
-        data:
-          resourceDetails:
-          - resourceName: users
-            resourceUsage:
-              allocated: '15'
-              used: '15'
-              remaining: '0'
-              remarks: ''
-          - resourceName: roUsers
-            resourceUsage:
-              allocated: '25'
-              used: '1'
-              remaining: '24'
-              remarks: ''
-    GetUsersResponse:
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+    ChangeWorkspaceUsersRoleConfig:
       type: object
       properties:
-        status:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
           type: string
-        summary:
+          description: Domain of users whose role is being changed
+        role:
           type: string
-        data:
-          type: object
-          properties:
-            users:
-              type: array
-              items:
-                type: object
-                properties:
-                  emailId:
-                    type: string
-                  status:
-                    type: boolean
-                  role:
-                    type: string
-      examples:
-      - status: success
-        summary: Get users
-        data:
-          users:
-          - emailId: user1@gmail.com
-            status: true
-            role: Organization Admin
-          - emailId: user2@gmail.com
-            status: true
-            role: User
+          description: New role to assign (USER, WORKSPACEADMIN, or custom)
+      required:
+      - emailIds
+      - role
     GetWorkspaceUsersResponse:
       type: object
       properties:
@@ -644,6 +516,87 @@ components:
           - emailId: user2@zoho.com
             status: true
             role: Workspace Admin
+    ChangeWorkspaceUsersStatusConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain to update user status in
+        operation:
+          type: string
+          enum:
+          - activate
+          - deactivate
+          description: The status operation to perform
+      required:
+      - emailIds
+      - operation
+    DeactivateUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+      required:
+      - emailIds
+      examples:
+      - emailIds:
+        - emailId1
+        - emailId2
+    GetResourceDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            resourceDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  resourceName:
+                    type: string
+                  resourceUsage:
+                    type: object
+                    properties:
+                      allocated:
+                        type: string
+                      used:
+                        type: string
+                      remaining:
+                        type: string
+                      remarks:
+                        type: string
+      examples:
+      - status: success
+        summary: Get resource details
+        data:
+          resourceDetails:
+          - resourceName: users
+            resourceUsage:
+              allocated: '15'
+              used: '15'
+              remaining: '0'
+              remarks: ''
+          - resourceName: roUsers
+            resourceUsage:
+              allocated: '25'
+              used: '1'
+              remaining: '24'
+              remarks: ''
     AddUsersConfig:
       type: object
       properties:
@@ -663,21 +616,68 @@ components:
         - <email-id1>
         - <email-id2>
         role: USER
-    RemoveUsersConfig:
+    GetUsersResponse:
       type: object
       properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        domainName:
+        status:
           type: string
-      required:
-      - emailIds
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                type: object
+                properties:
+                  emailId:
+                    type: string
+                  status:
+                    type: boolean
+                  role:
+                    type: string
       examples:
-      - emailIds:
-        - <email-id1>
-        - <email-id2>
+      - status: success
+        summary: Get users
+        data:
+          users:
+          - emailId: user1@gmail.com
+            status: true
+            role: Organization Admin
+          - emailId: user2@gmail.com
+            status: true
+            role: User
+    GetSubscriptionDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            subscription:
+              type: object
+              properties:
+                planName:
+                  type: string
+                addOns:
+                  type: string
+                billingDate:
+                  type: string
+                trialStatus:
+                  type: boolean
+      examples:
+      - status: success
+        summary: Get subscription details
+        data:
+          subscription:
+            planName: Premium
+            addOns: Zoho Recruit Connector,Zoho Books Connector
+            billingDate: ' - '
+            trialStatus: false
   parameters:
     workspace-id:
       name: workspace-id

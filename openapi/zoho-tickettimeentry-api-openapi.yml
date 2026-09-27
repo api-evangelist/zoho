@@ -303,112 +303,7 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-        maxLength: 100
-        minLength: 0
-    timeEntryId:
-      name: timeEntryId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-        enum:
-        - tickets
-        - tasks
-        maxLength: 100
-        minLength: 0
-    ticketId:
-      name: ticketId
-      in: path
-      description: ID of the ticket
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the ticket
-        pattern: ([0-9]+)
   schemas:
-    owner:
-      type: object
-      properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-      required:
-      - firstName
-      - id
-      - lastName
-      - name
-      - photoURL
     ticketTimeEntryResponse:
       type:
       - 'null'
@@ -688,6 +583,111 @@ components:
       - secondsSpent
       - taskId
       - totalCost
+    owner:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+      required:
+      - firstName
+      - id
+      - lastName
+      - name
+      - photoURL
+  parameters:
+    timeEntryId:
+      name: timeEntryId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    ticketId:
+      name: ticketId
+      in: path
+      description: ID of the ticket
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the ticket
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+        enum:
+        - tickets
+        - tasks
+        maxLength: 100
+        minLength: 0
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+        maxLength: 100
+        minLength: 0
   requestBodies:
     addTicketTimeEntry_timeEntryJson:
       content:
@@ -1017,42 +1017,6 @@ components:
                 totalHours: 12
                 totalCosts: 1000
                 totalSeconds: 24
-    ticketTimeEntryResponse:
-      description: ticketTimeEntryResponse template definitions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ticketTimeEntryResponse'
-          examples:
-            Valid responses Definitions:
-              value:
-                secondsSpent: '21'
-                parent:
-                  ticketNumber: '1004'
-                  subject: Ticket subject
-                  id: '4000000031007'
-                  type: TICKETS
-                cf:
-                  cf_timeentryname: time2
-                executedTime: 1466627400000
-                fixedCost: null
-                departmentId: '4000000008694'
-                minutesSpent: '23'
-                creatorId: '4000000008692'
-                agentCostPerHour: '3.0'
-                description: Time Entry description
-                hoursSpent: '3'
-                ownerId: '4000000008692'
-                isBillable: true
-                mode: MANUAL
-                isTrashed: 'false'
-                billingType: FIXED_COST_FOR_TICKETS
-                createdTime: 1466488320828
-                invoiceId: '4000000008688123'
-                id: '4000000045001'
-                requestChargeType: Customer Service
-                additionalCost: '10.0'
-                totalCost: '20.17'
     listTicketTimeEntries:
       description: listTicketTimeEntries template definitions
       content:
@@ -1135,6 +1099,42 @@ components:
                   requestChargeType: Upgrade Request
                   additionalCost: null
                   totalCost: '0.0'
+    ticketTimeEntryResponse:
+      description: ticketTimeEntryResponse template definitions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ticketTimeEntryResponse'
+          examples:
+            Valid responses Definitions:
+              value:
+                secondsSpent: '21'
+                parent:
+                  ticketNumber: '1004'
+                  subject: Ticket subject
+                  id: '4000000031007'
+                  type: TICKETS
+                cf:
+                  cf_timeentryname: time2
+                executedTime: 1466627400000
+                fixedCost: null
+                departmentId: '4000000008694'
+                minutesSpent: '23'
+                creatorId: '4000000008692'
+                agentCostPerHour: '3.0'
+                description: Time Entry description
+                hoursSpent: '3'
+                ownerId: '4000000008692'
+                isBillable: true
+                mode: MANUAL
+                isTrashed: 'false'
+                billingType: FIXED_COST_FOR_TICKETS
+                createdTime: 1466488320828
+                invoiceId: '4000000008688123'
+                id: '4000000045001'
+                requestChargeType: Customer Service
+                additionalCost: '10.0'
+                totalCost: '20.17'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

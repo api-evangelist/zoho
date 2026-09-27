@@ -123,219 +123,7 @@ paths:
       x-audience:
       - external-public
 components:
-  schemas:
-    ModuleEventsResponse:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ModuleEvent'
-      required:
-      - data
-    actionObject:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        async:
-          type:
-          - boolean
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-        reusable:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - async
-      - name
-      - reusable
-    modules:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/modulesObject'
-    EngineModule:
-      type: object
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-        apiName:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-        isCustomModule:
-          type:
-          - boolean
-          - 'null'
-        isDeptSpecific:
-          type:
-          - boolean
-          - 'null'
-        i18NLabel:
-          type:
-          - string
-          - 'null'
-      required:
-      - apiName
-      - displayLabel
-      - i18NLabel
-      - id
-      - isCustomModule
-      - isDeptSpecific
-    Module:
-      type: object
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-        apiName:
-          type:
-          - string
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-      required:
-      - apiName
-      - displayLabel
-      - id
-    actions:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/actionObject'
-    ModuleEvent:
-      type: object
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-        module:
-          $ref: '#/components/schemas/Module'
-        baseEvent:
-          type:
-          - string
-          - 'null'
-        sysName:
-          type:
-          - string
-          - 'null'
-      required:
-      - baseEvent
-      - displayLabel
-      - module
-      - sysName
-    EngineModulesResponse:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/EngineModule'
-      required:
-      - data
-    modulesObject:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        actions:
-          $ref: '#/components/schemas/actions'
-        events:
-          $ref: '#/components/schemas/events'
-      required:
-      - actions
-      - events
-      - name
-    events:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/eventsObject'
-    eventsObject:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        submodule:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        actions:
-          $ref: '#/components/schemas/actions'
-      required:
-      - actions
-      - name
-      - submodule
   responses:
-    engineModulesJson:
-      description: Supported modules of the engine
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EngineModulesResponse'
-          examples:
-            default:
-              value:
-                data:
-                - displayLabel: Tickets
-                  apiName: tickets
-                  id: '1000000000585'
-                  isCustomModule: false
-                  isDeptSpecific: true
-                  i18NLabel: Tickets
-                - displayLabel: Contacts
-                  apiName: contacts
-                  id: '1000000000587'
-                  isCustomModule: false
-                  isDeptSpecific: false
-                  i18NLabel: Contacts
-                - displayLabel: Accounts
-                  apiName: accounts
-                  id: '1000000000589'
-                  isCustomModule: false
-                  isDeptSpecific: true
-                  i18NLabel: Accounts
     moduleEventsJson:
       description: Supported events in a module of a specific engine
       content:
@@ -457,6 +245,218 @@ components:
                     - async: true
                       name: NotifyUpdate
                       reusable: true
+    engineModulesJson:
+      description: Supported modules of the engine
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EngineModulesResponse'
+          examples:
+            default:
+              value:
+                data:
+                - displayLabel: Tickets
+                  apiName: tickets
+                  id: '1000000000585'
+                  isCustomModule: false
+                  isDeptSpecific: true
+                  i18NLabel: Tickets
+                - displayLabel: Contacts
+                  apiName: contacts
+                  id: '1000000000587'
+                  isCustomModule: false
+                  isDeptSpecific: false
+                  i18NLabel: Contacts
+                - displayLabel: Accounts
+                  apiName: accounts
+                  id: '1000000000589'
+                  isCustomModule: false
+                  isDeptSpecific: true
+                  i18NLabel: Accounts
+  schemas:
+    ModuleEventsResponse:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ModuleEvent'
+      required:
+      - data
+    eventsObject:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        submodule:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        actions:
+          $ref: '#/components/schemas/actions'
+      required:
+      - actions
+      - name
+      - submodule
+    modules:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/modulesObject'
+    EngineModule:
+      type: object
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+        apiName:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+        isCustomModule:
+          type:
+          - boolean
+          - 'null'
+        isDeptSpecific:
+          type:
+          - boolean
+          - 'null'
+        i18NLabel:
+          type:
+          - string
+          - 'null'
+      required:
+      - apiName
+      - displayLabel
+      - i18NLabel
+      - id
+      - isCustomModule
+      - isDeptSpecific
+    events:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/eventsObject'
+    Module:
+      type: object
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+        apiName:
+          type:
+          - string
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+      required:
+      - apiName
+      - displayLabel
+      - id
+    actionObject:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        async:
+          type:
+          - boolean
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+        reusable:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - async
+      - name
+      - reusable
+    actions:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/actionObject'
+    EngineModulesResponse:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/EngineModule'
+      required:
+      - data
+    ModuleEvent:
+      type: object
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+        module:
+          $ref: '#/components/schemas/Module'
+        baseEvent:
+          type:
+          - string
+          - 'null'
+        sysName:
+          type:
+          - string
+          - 'null'
+      required:
+      - baseEvent
+      - displayLabel
+      - module
+      - sysName
+    modulesObject:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        actions:
+          $ref: '#/components/schemas/actions'
+        events:
+          $ref: '#/components/schemas/events'
+      required:
+      - actions
+      - events
+      - name
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

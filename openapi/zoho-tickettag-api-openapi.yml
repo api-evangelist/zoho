@@ -272,36 +272,6 @@ paths:
       - external-public
 components:
   parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the tags must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the tags must be fetched
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department from which the tags must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the tags must be fetched
-        pattern: ([0-9]+)
     tagId:
       name: tagId
       in: path
@@ -330,6 +300,21 @@ components:
         format: int32
         description: Number of tags to fetch
         pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the tags must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the tags must be fetched
+        pattern: ([0-9]+)
     ticketId:
       name: ticketId
       in: path
@@ -342,6 +327,21 @@ components:
         - 'null'
         - integer
         format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the tags must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the tags must be fetched
         pattern: ([0-9]+)
   requestBodies:
     replaceTag:
@@ -367,36 +367,6 @@ components:
             Valid requestBody Definitions:
               value:
                 id: '12312312312'
-    associateTags_tagArray:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              tags:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-                uniqueItems: false
-            required:
-            - tags
-          examples:
-            Valid requestBody Definitions:
-              value:
-                tags:
-                - sample
-                - ticket
-                - tag
     tagArray:
       content:
         application/json:
@@ -427,9 +397,7 @@ components:
                 - sample
                 - ticket
                 - tag
-  responses:
-    getTagsByTicketResponse:
-      description: getTagsByTicketResponse template definitions
+    associateTags_tagArray:
       content:
         application/json:
           schema:
@@ -439,69 +407,121 @@ components:
             additionalProperties: false
             properties:
               tags:
-                $ref: '#/components/schemas/data'
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+                uniqueItems: false
             required:
             - tags
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
                 tags:
-                - name: sample
-                  tagType: MANUAL
-                  id: 123234324
-                - name: sample
-                  tagType: MANUAL
-                  id: 123234324
-    commonTagResponse:
-      description: commonTagResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/data'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - name: sample
-                  tagType: MANUAL
-                  id: 123234324
-                - name: sample
-                  tagType: SYSTEM
-                  id: 123234324
-    getTicketTagResponse:
-      description: getTicketTagResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/getTicketTagData'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ticketCount: '10'
-                  name: sample
-                  tagType: MANUAL
-                  id: '12312312312'
-                - ticketCount: '0'
-                  name: sample
-                  tagType: MANUAL
-                  id: '12312312312'
+                - sample
+                - ticket
+                - tag
+  schemas:
+    getTicketTagJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        ticketCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+        tagType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SYSTEM
+          - MANUAL
+          - null
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - tagType
+      - ticketCount
+    getTicketTagData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/getTicketTagJson'
+    ticketData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./Ticket.json#/components/schemas/ticketTags
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/tagJson'
+    tagJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+        tagType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SYSTEM
+          - MANUAL
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - tagType
+  responses:
     ticketListViewArray:
       description: ticketListViewArray template definitions
       content:
@@ -854,100 +874,80 @@ components:
                     email: jack@zylker.com
                   isSpam: false
                   status: Open
-  schemas:
-    ticketData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./Ticket.json#/components/schemas/ticketTags
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/tagJson'
-    tagJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-        tagType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SYSTEM
-          - MANUAL
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - tagType
-    getTicketTagData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/getTicketTagJson'
-    getTicketTagJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        ticketCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-        tagType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SYSTEM
-          - MANUAL
-          - null
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - tagType
-      - ticketCount
+    commonTagResponse:
+      description: commonTagResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/data'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - name: sample
+                  tagType: MANUAL
+                  id: 123234324
+                - name: sample
+                  tagType: SYSTEM
+                  id: 123234324
+    getTagsByTicketResponse:
+      description: getTagsByTicketResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              tags:
+                $ref: '#/components/schemas/data'
+            required:
+            - tags
+          examples:
+            Valid responses Definitions:
+              value:
+                tags:
+                - name: sample
+                  tagType: MANUAL
+                  id: 123234324
+                - name: sample
+                  tagType: MANUAL
+                  id: 123234324
+    getTicketTagResponse:
+      description: getTicketTagResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/getTicketTagData'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ticketCount: '10'
+                  name: sample
+                  tagType: MANUAL
+                  id: '12312312312'
+                - ticketCount: '0'
+                  name: sample
+                  tagType: MANUAL
+                  id: '12312312312'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

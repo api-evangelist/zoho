@@ -176,6 +176,20 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    ticketTemplateId:
+      name: ticketTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   requestBodies:
     addTicketTemplateRequest:
       content:
@@ -225,6 +239,35 @@ components:
                   departmentId: '4000000007073'
                   email: jacks@zylker.com
                 layoutId: '4000000020012'
+    deleteTicketTemplates:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '4000000083313'
+                - '4000000082105'
     updateTicketTemplate_addTicketTemplateRequest:
       content:
         application/json:
@@ -269,35 +312,6 @@ components:
                   subject: UrgentProblem
                   departmentId: '4000000007073'
                   email: jacks@zylker.com
-    deleteTicketTemplates:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '4000000083313'
-                - '4000000082105'
   responses:
     addUpdateGetTicketTemplateResponse:
       description: addUpdateGetTicketTemplateResponse template definitions
@@ -397,20 +411,6 @@ components:
                   ticketTemplateName: Template2
                   id: '4000000020063'
                   layoutId: '4000000020431'
-  parameters:
-    ticketTemplateId:
-      name: ticketTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

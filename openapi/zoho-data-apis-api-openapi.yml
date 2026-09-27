@@ -198,35 +198,22 @@ paths:
         default:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
+  parameters:
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
   schemas:
-    AddRowConfig:
-      type: object
-      description: JSONObject with configuration for adding a row.
-      properties:
-        columns:
-          type: object
-          description: JSONObject with column name as key and data as value.
-          examples:
-          - columnName1: value1
-            columnName2: value2
-        dateFormat:
-          type: string
-          description: Specify this in-case any date field is being added and its format cannot be auto recognized.
-          examples:
-          - dd-MMM-YYYY
-        columnDateFormat:
-          type: object
-          description: Specify this in case multiple date fields are being imported having different format each. Column name as key and date format as value.
-          examples:
-          - columnName1: dd-MMM-YYYY
-            columnName2: MM/dd/yyyy
-      required:
-      - columns
-      examples:
-      - columns:
-          Region: East
-          Sales: '1000'
-        dateFormat: dd-MMM-YYYY
     DeleteRowsConfig:
       type: object
       description: 'JSONObject with configuration for deleting rows. Must contain exactly one of the following properties: `criteria` (for selective deletion based on a string expression) or `deleteAllRows` (a boolean to indicate deletion of all rows).'
@@ -287,21 +274,34 @@ components:
           columnName1: value1
           columnName2: value2
         criteria: '"Sales Table"."Region"=''East'''
-  parameters:
-    view-id:
-      name: view-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the view.
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
+    AddRowConfig:
+      type: object
+      description: JSONObject with configuration for adding a row.
+      properties:
+        columns:
+          type: object
+          description: JSONObject with column name as key and data as value.
+          examples:
+          - columnName1: value1
+            columnName2: value2
+        dateFormat:
+          type: string
+          description: Specify this in-case any date field is being added and its format cannot be auto recognized.
+          examples:
+          - dd-MMM-YYYY
+        columnDateFormat:
+          type: object
+          description: Specify this in case multiple date fields are being imported having different format each. Column name as key and date format as value.
+          examples:
+          - columnName1: dd-MMM-YYYY
+            columnName2: MM/dd/yyyy
+      required:
+      - columns
+      examples:
+      - columns:
+          Region: East
+          Sales: '1000'
+        dateFormat: dd-MMM-YYYY
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

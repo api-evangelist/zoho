@@ -183,10 +183,10 @@ paths:
       - external-public
 components:
   parameters:
-    from:
-      name: from
+    limit:
+      name: limit
       in: query
-      description: Index number starting from which the contacts must be fetched
+      description: Number of contacts to fetch
       required: false
       style: form
       explode: true
@@ -196,8 +196,9 @@ components:
         - 'null'
         - integer
         format: int32
-        description: Index number starting from which the contacts must be fetched
-        minimum: 0
+        description: Number of contacts to fetch
+        maximum: 100
+        minimum: 1
         pattern: ([0-9]+)
     fieldName:
       name: fieldName
@@ -221,10 +222,10 @@ components:
         - bothEmail
         maxLength: 100
         minLength: 0
-    limit:
-      name: limit
+    from:
+      name: from
       in: query
-      description: Number of contacts to fetch
+      description: Index number starting from which the contacts must be fetched
       required: false
       style: form
       explode: true
@@ -234,62 +235,10 @@ components:
         - 'null'
         - integer
         format: int32
-        description: Number of contacts to fetch
-        maximum: 100
-        minimum: 1
+        description: Index number starting from which the contacts must be fetched
+        minimum: 0
         pattern: ([0-9]+)
   responses:
-    getDefaultField:
-      description: getDefaultField template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              fieldName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - firstName
-                - lastName
-                - email
-                - secondaryEmail
-                - phone
-                - fullName
-                - bothEmail
-                - null
-            required:
-            - fieldName
-          examples:
-            Valid responses Definitions:
-              value:
-                fieldName: email
-    listDuplicateContactCountResponse:
-      description: listDuplicateContactCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./ContactDeduplication.json#/components/schemas/counts
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - count: 16
-                  fieldValue: Jade
-                - count: 2
-                  fieldValue: saran
     listDuplicateContactResponse:
       description: listDuplicateContactResponse template definitions
       content:
@@ -427,6 +376,57 @@ components:
                       okPercentage: '31'
                       goodPercentage: '47'
                     email: jade@zylker.com
+    getDefaultField:
+      description: getDefaultField template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              fieldName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - firstName
+                - lastName
+                - email
+                - secondaryEmail
+                - phone
+                - fullName
+                - bothEmail
+                - null
+            required:
+            - fieldName
+          examples:
+            Valid responses Definitions:
+              value:
+                fieldName: email
+    listDuplicateContactCountResponse:
+      description: listDuplicateContactCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./ContactDeduplication.json#/components/schemas/counts
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - count: 16
+                  fieldValue: Jade
+                - count: 2
+                  fieldValue: saran
   requestBodies:
     setDefaultField:
       content:

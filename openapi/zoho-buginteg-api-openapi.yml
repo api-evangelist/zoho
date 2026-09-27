@@ -41,13 +41,39 @@ paths:
       x-audience:
       - external-public
 components:
+  responses:
+    ticketJsonResponse:
+      description: ticketJsonResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/ticketJsonResponseArr'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ticketNumber: '123'
+                  subject: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
+                  dueDate: 1529597776000
+                  id: '104202000003153007'
+                  status: Open
+                  commentCount: '5'
+                - ticketNumber: '456'
+                  subject: Problem while reset password.
+                  dueDate: 1532189776000
+                  id: '104202000003153015'
+                  priority: High
+                  status: Closed
+                  commentCount: '3'
   schemas:
-    ticketJsonResponseArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/ticketJson'
     ticketJson:
       type:
       - 'null'
@@ -100,38 +126,12 @@ components:
       - status
       - subject
       - ticketNumber
-  responses:
-    ticketJsonResponse:
-      description: ticketJsonResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/ticketJsonResponseArr'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ticketNumber: '123'
-                  subject: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
-                  dueDate: 1529597776000
-                  id: '104202000003153007'
-                  status: Open
-                  commentCount: '5'
-                - ticketNumber: '456'
-                  subject: Problem while reset password.
-                  dueDate: 1532189776000
-                  id: '104202000003153015'
-                  priority: High
-                  status: Closed
-                  commentCount: '3'
+    ticketJsonResponseArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/ticketJson'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

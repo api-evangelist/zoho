@@ -99,6 +99,53 @@ paths:
       x-audience:
       - external-public
 components:
+  responses:
+    permalinkAvailability:
+      description: permalinkAvailability template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              available:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - available
+          examples:
+            Valid responses Definitions:
+              value:
+                available: 'true'
+    topicPermalinkList:
+      description: topicPermalinkList template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Permalink.json#/components/schemas/topicPermalinkJsonArray
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - isPrimary: 'true'
+                  permalink: community-topic-permalink-primary
+                - isPrimary: 'false'
+                  permalink: community-topic-permalink-secondary-1
+                - isPrimary: 'false'
+                  permalink: community-topic-permalink-secondary-2
+                - isPrimary: 'false'
+                  permalink: community-topic-permalink-secondary-3
   requestBodies:
     updatePermalink:
       content:
@@ -153,53 +200,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  responses:
-    topicPermalinkList:
-      description: topicPermalinkList template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Permalink.json#/components/schemas/topicPermalinkJsonArray
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - isPrimary: 'true'
-                  permalink: community-topic-permalink-primary
-                - isPrimary: 'false'
-                  permalink: community-topic-permalink-secondary-1
-                - isPrimary: 'false'
-                  permalink: community-topic-permalink-secondary-2
-                - isPrimary: 'false'
-                  permalink: community-topic-permalink-secondary-3
-    permalinkAvailability:
-      description: permalinkAvailability template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              available:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - available
-          examples:
-            Valid responses Definitions:
-              value:
-                available: 'true'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

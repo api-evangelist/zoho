@@ -148,6 +148,91 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    layoutId:
+      name: layoutId
+      in: path
+      description: Get the rules of the layout
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Get the rules of the layout
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of rules to be fetched. Default is 50
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of rules to be fetched. Default is 50
+        pattern: ([0-9]+)
+    searchString:
+      name: searchString
+      in: query
+      description: Get the rules that have this search term
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Get the rules that have this search term
+        maxLength: 100
+        minLength: 0
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the rules must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the rules must be fetched
+        pattern: ([0-9]+)
+    executeInHelpCentre:
+      name: executeInHelpCentre
+      in: query
+      description: Get the rules that can be executed in help centre
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Get the rules that can be executed in help centre
+    validationRuleId:
+      name: validationRuleId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
     validationRuleListArray:
       description: validationRuleListArray template definitions
@@ -277,91 +362,6 @@ components:
                 modifiedBy: '4000000015963'
                 id: '4000000021001'
                 status: active
-  parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the rules must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the rules must be fetched
-        pattern: ([0-9]+)
-    validationRuleId:
-      name: validationRuleId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    layoutId:
-      name: layoutId
-      in: path
-      description: Get the rules of the layout
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Get the rules of the layout
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of rules to be fetched. Default is 50
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of rules to be fetched. Default is 50
-        pattern: ([0-9]+)
-    executeInHelpCentre:
-      name: executeInHelpCentre
-      in: query
-      description: Get the rules that can be executed in help centre
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Get the rules that can be executed in help centre
-    searchString:
-      name: searchString
-      in: query
-      description: Get the rules that have this search term
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Get the rules that have this search term
-        maxLength: 100
-        minLength: 0
   requestBodies:
     validationrulejsonPayload:
       content:

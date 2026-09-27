@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Available APIS API
+  title: Available APIs API
   description: API to list all available REST APIs in Zoho CRM v8 for the current user and org.
   version: '8.0'
 servers:
@@ -115,8 +115,8 @@ paths:
       - APIs
 components:
   responses:
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: Unexpected server error.
       content:
         application/json:
           schema:
@@ -127,20 +127,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     NotFound:
       description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Unexpected server error.
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
@@ -151,15 +151,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    Filters:
-      name: filters
-      in: query
-      required: false
-      description: Filter APIs by OAuth scope.
-      schema:
-        type: string
-        maxLength: 2048
   schemas:
     ErrorResponse:
       type: object
@@ -181,6 +172,15 @@ components:
       required:
       - code
       - message
+  parameters:
+    Filters:
+      name: filters
+      in: query
+      required: false
+      description: Filter APIs by OAuth scope.
+      schema:
+        type: string
+        maxLength: 2048
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

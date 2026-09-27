@@ -3042,6 +3042,16 @@ paths:
           description: API Version
 components:
   parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Page number to retrieve
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
     PerPage:
       name: per_page
       in: query
@@ -3063,16 +3073,27 @@ components:
         enum:
         - sources_count
         - sources
-    Page:
-      name: page
+    Type:
+      name: type
       in: query
+      description: type of users
       required: false
-      description: Page number to retrieve
       schema:
-        type: integer
-        format: int32
-        default: 1
-        minimum: 1
+        type: string
+        enum:
+        - CurrentUser
+        - DeletedUsers
+        - DeactiveUsers
+        - NotConfirmedUsers
+        - ConfirmedUsers
+        - ActiveUsers
+        - AdminUsers
+        - ActiveConfirmedAdmins
+        - ActiveConfirmedUsers
+        - DeveloperUsers
+        - AllUsers
+        - AllActiveUsers
+        - ActiveLiteUser
     User:
       name: user
       in: path
@@ -3097,38 +3118,17 @@ components:
       schema:
         type: integer
         format: int32
-    Type:
-      name: type
-      in: query
-      description: type of users
-      required: false
-      schema:
-        type: string
-        enum:
-        - CurrentUser
-        - DeletedUsers
-        - DeactiveUsers
-        - NotConfirmedUsers
-        - ConfirmedUsers
-        - ActiveUsers
-        - AdminUsers
-        - ActiveConfirmedAdmins
-        - ActiveConfirmedUsers
-        - DeveloperUsers
-        - AllUsers
-        - AllActiveUsers
-        - ActiveLiteUser
-    User_2:
-      description: The ID of the user
-      name: user
+    Territory:
+      description: The ID of the territory
+      name: territory
       in: path
       required: true
       schema:
         format: int64
         type: string
-    Territory:
-      description: The ID of the territory
-      name: territory
+    User_2:
+      description: The ID of the user
+      name: user
       in: path
       required: true
       schema:
@@ -3161,31 +3161,6 @@ components:
         type: string
         format: int64
   schemas:
-    Info:
-      type: object
-      description: Pagination information
-      properties:
-        per_page:
-          type: integer
-          description: Number of records per page
-          format: int32
-        count:
-          type: integer
-          description: Total number of records
-          format: int32
-        page:
-          type: integer
-          description: Current page number
-          format: int32
-        more_records:
-          type: boolean
-          description: Indicates if more records are available
-      additionalProperties: false
-      required:
-      - per_page
-      - count
-      - page
-      - more_records
     UserDetails:
       type: object
       description: User details
@@ -4230,6 +4205,31 @@ components:
               - custom
           additionalProperties: false
       additionalProperties: true
+    Info:
+      type: object
+      description: Pagination information
+      properties:
+        per_page:
+          type: integer
+          description: Number of records per page
+          format: int32
+        count:
+          type: integer
+          description: Total number of records
+          format: int32
+        page:
+          type: integer
+          description: Current page number
+          format: int32
+        more_records:
+          type: boolean
+          description: Indicates if more records are available
+      additionalProperties: false
+      required:
+      - per_page
+      - count
+      - page
+      - more_records
     CommonErrorResponse:
       type: object
       additionalProperties: false
@@ -4329,39 +4329,6 @@ components:
             - status
       required:
       - territories
-    CommonUrlErrorResponse:
-      type: object
-      additionalProperties: false
-      description: Error response for INVALID_DATA that includes a resource_path_index in details
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-          - NOT_ALLOWED
-        details:
-          type: object
-          description: Error details containing resource path index
-          additionalProperties: false
-          properties:
-            resource_path_index:
-              type: integer
-              description: Index of the resource path
-              format: int32
-        message:
-          type: string
-          description: Human readable error message
-          maxLength: 1000
-        status:
-          type: string
-          description: Status of the error
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - status
     TerritoryGetResponse:
       additionalProperties: false
       description: Response schema for getting territories of a user
@@ -4448,6 +4415,39 @@ components:
       required:
       - territories
       - info
+    CommonUrlErrorResponse:
+      type: object
+      additionalProperties: false
+      description: Error response for INVALID_DATA that includes a resource_path_index in details
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+          - NOT_ALLOWED
+        details:
+          type: object
+          description: Error details containing resource path index
+          additionalProperties: false
+          properties:
+            resource_path_index:
+              type: integer
+              description: Index of the resource path
+              format: int32
+        message:
+          type: string
+          description: Human readable error message
+          maxLength: 1000
+        status:
+          type: string
+          description: Status of the error
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - status
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

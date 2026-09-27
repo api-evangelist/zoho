@@ -1131,14 +1131,14 @@ paths:
       - Timeline
 components:
   parameters:
-    Page:
-      name: page
-      description: Page number for pagination
+    IncludeTimelineType:
+      name: include_timeline_type
+      description: Type of timeline to include
       in: query
       required: false
       schema:
-        type: integer
-        format: int32
+        type: string
+        maxLength: 255
     SortBy:
       name: sort_by
       description: Field to sort the timelines by
@@ -1158,11 +1158,11 @@ components:
         format: int32
         enum:
         - 3
-    Module:
-      description: The API module name (e.g., Leads, Contacts, etc.)
-      name: module
-      in: path
-      required: true
+    IncludeInnerDetails:
+      name: include_inner_details
+      description: Flag to include inner details
+      in: query
+      required: false
       schema:
         type: string
         maxLength: 255
@@ -1174,24 +1174,6 @@ components:
       schema:
         type: string
         maxLength: 255
-    IncludeInnerDetails:
-      name: include_inner_details
-      description: Flag to include inner details
-      in: query
-      required: false
-      schema:
-        type: string
-        maxLength: 255
-    SortOrder:
-      name: sort_order
-      description: Sort order for the timelines
-      in: query
-      required: false
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
     PageToken:
       name: page_token
       description: Token for pagination
@@ -1200,14 +1182,14 @@ components:
       schema:
         type: string
         maxLength: 255
-    IncludeTimelineType:
-      name: include_timeline_type
-      description: Type of timeline to include
+    Page:
+      name: page
+      description: Page number for pagination
       in: query
       required: false
       schema:
-        type: string
-        maxLength: 255
+        type: integer
+        format: int32
     Include:
       name: include
       description: Additional data to include
@@ -1224,6 +1206,24 @@ components:
       schema:
         type: string
         maxLength: 255
+    Module:
+      description: The API module name (e.g., Leads, Contacts, etc.)
+      name: module
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 255
+    SortOrder:
+      name: sort_order
+      description: Sort order for the timelines
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

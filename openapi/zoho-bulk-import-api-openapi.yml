@@ -27,6 +27,29 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    bulkImportId:
+      name: bulkImportId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    modules:
+      name: modules
+      in: query
+      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/module'
   responses:
     bulkImportSampleDataResponse:
       description: bulkImportSampleDataResponse template definitions
@@ -85,29 +108,6 @@ components:
                     col5: ''
                     col6: Software
                   module: products
-  parameters:
-    bulkImportId:
-      name: bulkImportId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    modules:
-      name: modules
-      in: query
-      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
-      required: true
-      style: form
-      explode: true
-      schema:
-        $ref: '#/components/schemas/module'
   schemas:
     module:
       type:

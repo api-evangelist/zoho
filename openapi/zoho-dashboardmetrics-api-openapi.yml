@@ -232,105 +232,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID(s) of the department(s) from which the stats must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID(s) of the department(s) from which the stats must be fetched
-        pattern: ([0-9]+)
-    duration:
-      name: duration
-      in: query
-      description: Predefined time range from which the stats must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Predefined time range from which the stats must be fetched
-        enum:
-        - LAST_30_DAYS
-        - LAST_7_DAYS
-        - THIS_WEEK
-        - LAST_WEEK
-        - THIS_MONTH
-        - LAST_MONTH
-        maxLength: 100
-        minLength: 0
-    channel:
-      name: channel
-      in: query
-      description: Channel through which the tickets were received
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Channel through which the tickets were received
-        x-dynamic-enum: true
-    agentId:
-      name: agentId
-      in: query
-      description: ID(s) of the agent(s) whose stats must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID(s) of the agent(s) whose stats must be fetched
-        pattern: ([0-9]+)
-    teamId:
-      name: teamId
-      in: query
-      description: ID(s) of the team(s) from which the stats must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID(s) of the team(s) from which the stats must be fetched
-        pattern: ([0-9]+)
-    groupBy:
-      name: groupBy
-      in: query
-      description: To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@
-        enum:
-        - date
-        - channel
-        - agent
-        - hour
-        maxLength: 100
-        minLength: 0
   responses:
     responseTime:
       description: responseTime template definitions
@@ -500,6 +401,69 @@ components:
                   value: '2018-04-07'
                   referenceValue: null
                 groupedBy: date
+    resolutionTime:
+      description: resolutionTime template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - object
+            - 'null'
+            additionalProperties: false
+            properties:
+              totalAvgAgentTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)
+              timeData:
+                $ref: ./DashboardMetrics.json#/components/schemas/resolutionTimeArray
+              totalTicketCount:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              totalAvgSystemTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)
+              groupedBy:
+                type:
+                - string
+                - 'null'
+                enum:
+                - date
+                - channel
+                - agent
+                - hour
+                maxLength: 100
+                minLength: 0
+            required:
+            - groupedBy
+            - timeData
+            - totalAvgAgentTime
+            - totalAvgSystemTime
+            - totalTicketCount
+          examples:
+            Valid responses Definitions:
+              value:
+                totalAvgAgentTime: 41:50 hrs
+                timeData:
+                - avgSystemTime: 41:50 hrs
+                  ticketCount: '1'
+                  avgAgentTime: 41:50 hrs
+                  value: Priyanka
+                  referenceValue: '4000000012629'
+                totalTicketCount: '1'
+                totalAvgSystemTime: 41:50 hrs
+                groupedBy: agent
     responseCount:
       description: responseCount template definitions
       content:
@@ -564,69 +528,105 @@ components:
                 - count: '0'
                   value: '2018-04-10'
                   referenceValue: null
-    resolutionTime:
-      description: resolutionTime template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - object
-            - 'null'
-            additionalProperties: false
-            properties:
-              totalAvgAgentTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)
-              timeData:
-                $ref: ./DashboardMetrics.json#/components/schemas/resolutionTimeArray
-              totalTicketCount:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              totalAvgSystemTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)
-              groupedBy:
-                type:
-                - string
-                - 'null'
-                enum:
-                - date
-                - channel
-                - agent
-                - hour
-                maxLength: 100
-                minLength: 0
-            required:
-            - groupedBy
-            - timeData
-            - totalAvgAgentTime
-            - totalAvgSystemTime
-            - totalTicketCount
-          examples:
-            Valid responses Definitions:
-              value:
-                totalAvgAgentTime: 41:50 hrs
-                timeData:
-                - avgSystemTime: 41:50 hrs
-                  ticketCount: '1'
-                  avgAgentTime: 41:50 hrs
-                  value: Priyanka
-                  referenceValue: '4000000012629'
-                totalTicketCount: '1'
-                totalAvgSystemTime: 41:50 hrs
-                groupedBy: agent
+  parameters:
+    duration:
+      name: duration
+      in: query
+      description: Predefined time range from which the stats must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Predefined time range from which the stats must be fetched
+        enum:
+        - LAST_30_DAYS
+        - LAST_7_DAYS
+        - THIS_WEEK
+        - LAST_WEEK
+        - THIS_MONTH
+        - LAST_MONTH
+        maxLength: 100
+        minLength: 0
+    agentId:
+      name: agentId
+      in: query
+      description: ID(s) of the agent(s) whose stats must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID(s) of the agent(s) whose stats must be fetched
+        pattern: ([0-9]+)
+    channel:
+      name: channel
+      in: query
+      description: Channel through which the tickets were received
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Channel through which the tickets were received
+        x-dynamic-enum: true
+    groupBy:
+      name: groupBy
+      in: query
+      description: To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@
+        enum:
+        - date
+        - channel
+        - agent
+        - hour
+        maxLength: 100
+        minLength: 0
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID(s) of the department(s) from which the stats must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID(s) of the department(s) from which the stats must be fetched
+        pattern: ([0-9]+)
+    teamId:
+      name: teamId
+      in: query
+      description: ID(s) of the team(s) from which the stats must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID(s) of the team(s) from which the stats must be fetched
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

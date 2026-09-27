@@ -588,49 +588,7 @@ paths:
       - iam-oauth2-schema:
         - ZohoCRM.settings.global_picklist.READ
 components:
-  parameters:
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Numeric id of the resource.
-      schema:
-        type: string
-        format: int64
-    Page:
-      name: page
-      in: query
-      required: false
-      description: 'Page number (positive integer). Default: 1.'
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        default: 1
-    PerPage:
-      name: per_page
-      in: query
-      required: false
-      description: 'Number of records per page. Default and maximum: 200.'
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 200
-        default: 200
-        format: int64
   schemas:
-    ModulepluralLabel:
-      type: string
-      description: Plural label of the module.
-      maxLength: 25
-    FieldLabel:
-      type: string
-      description: Name of the field label.
-      maxLength: 100
-    ModuleName:
-      type: string
-      description: Name of the module
-      maxLength: 100
     ApiName:
       type: string
       description: API name of the resource. It will start with alphabets and can contain alphanumeric characters and underscores.
@@ -640,19 +598,62 @@ components:
       type: string
       maxLength: 120
       description: The picklist display value(translated value if translation enabled).
+    ModuleName:
+      type: string
+      description: Name of the module
+      maxLength: 100
     PickListReferenceValue:
       type: string
       maxLength: 120
       description: Reference value of the picklist field.
-    Id:
-      type: string
-      description: Id of the resource.
-      format: int64
     LayoutName:
       type: string
       description: Name of the layout
       maxLength: 50
+    Id:
+      type: string
+      description: Id of the resource.
+      format: int64
+    ModulepluralLabel:
+      type: string
+      description: Plural label of the module.
+      maxLength: 25
+    FieldLabel:
+      type: string
+      description: Name of the field label.
+      maxLength: 100
   responses:
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Internal server error response object containing code, message, details, and status.
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error.
+                maxLength: 50
+              message:
+                type: string
+                description: Human-readable error message.
+                maxLength: 255
+              details:
+                type: object
+                description: Additional details about the error.
+                additionalProperties: true
+              status:
+                type: string
+                description: Status of the error response.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - details
+            - status
+            additionalProperties: false
     Forbidden:
       description: Forbidden
       content:
@@ -695,37 +696,36 @@ components:
             - details
             - status
             additionalProperties: false
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            type: object
-            description: Internal server error response object containing code, message, details, and status.
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error.
-                maxLength: 50
-              message:
-                type: string
-                description: Human-readable error message.
-                maxLength: 255
-              details:
-                type: object
-                description: Additional details about the error.
-                additionalProperties: true
-              status:
-                type: string
-                description: Status of the error response.
-                enum:
-                - error
-            required:
-            - code
-            - message
-            - details
-            - status
-            additionalProperties: false
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      description: 'Page number (positive integer). Default: 1.'
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: 'Number of records per page. Default and maximum: 200.'
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 200
+        format: int64
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Numeric id of the resource.
+      schema:
+        type: string
+        format: int64
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

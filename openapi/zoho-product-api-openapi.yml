@@ -316,29 +316,205 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    viewId:
+      name: viewId
+      in: query
+      description: Custom view Id
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Custom view Id
+        pattern: ([0-9]+)
+    ownerId:
+      name: ownerId
+      in: query
+      description: Displays the number of products of only a particular owner
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Displays the number of products of only a particular owner
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: No. of products to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: No. of products to fetch
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the products count must be computed. If you want to count of the products configured in all accessible departments, pass the value 0.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the products count must be computed. If you want to count of the products configured in all accessible departments, pass the value 0.
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the products must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the products must be fetched
+        pattern: ([0-9]+)
+    productId:
+      name: productId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    productName:
+      name: productName
+      in: query
+      description: Name of the product, used as the keyword for the search
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Name of the product, used as the keyword for the search
+        maxLength: 200
+        minLength: 0
   responses:
-    productWithOutDeptDataJson:
-      description: productWithOutDeptDataJson template definitions
+    productListViewArray:
+      description: productListViewArray template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Product.json#/components/schemas/productWithOutDeptArray
-            required:
-            - data
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      owner:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 5
+                        minProperties: 5
+                        properties:
+                          firstName:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 0
+                          photoURL:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 200
+                            minLength: 0
+                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                          lastName:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 50
+                            minLength: 0
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                            maxLength: 100
+                            minLength: 0
+                          id:
+                            type:
+                            - string
+                            - 'null'
+                            - integer
+                            format: int64
+                            pattern: ([0-9]+)
+                        required:
+                        - firstName
+                        - id
+                        - lastName
+                        - name
+                        - photoURL
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Product.json#/components/schemas/data
+              required:
+              - data
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - unitPrice: '0.0'
+                - unitPrice: '100.0'
                   productCode: null
-                  id: '4000000012009'
+                  id: '6000000121033'
+                  departmentIds:
+                  - '6000000007239'
+                  - '6000000029263'
+                  productName: HTC
+                - unitPrice: '100.0'
+                  productCode: null
+                  id: '6000000121037'
+                  departmentIds:
+                  - '6000000007239'
+                  - '6000000029263'
                   productName: Dell
+                - unitPrice: '100.0'
+                  productCode: null
+                  id: '6000000145024'
+                  departmentIds:
+                  - '6000000007239'
+                  - '6000000029263'
+                  productName: Lenovo
     productResponse:
       description: productResponse template definitions
       content:
@@ -451,204 +627,28 @@ components:
                 createdTime: 1500374785667
                 modifiedBy: '6000000009050'
                 id: '6000000164001'
-    productListViewArray:
-      description: productListViewArray template definitions
+    productWithOutDeptDataJson:
+      description: productWithOutDeptDataJson template definitions
       content:
         application/json:
           schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      owner:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 5
-                        minProperties: 5
-                        properties:
-                          firstName:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 0
-                          photoURL:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 200
-                            minLength: 0
-                            pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                          lastName:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 50
-                            minLength: 0
-                          name:
-                            type:
-                            - string
-                            - 'null'
-                            maxLength: 100
-                            minLength: 0
-                          id:
-                            type:
-                            - string
-                            - 'null'
-                            - integer
-                            format: int64
-                            pattern: ([0-9]+)
-                        required:
-                        - firstName
-                        - id
-                        - lastName
-                        - name
-                        - photoURL
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./Product.json#/components/schemas/data
-              required:
-              - data
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Product.json#/components/schemas/productWithOutDeptArray
+            required:
+            - data
           examples:
             Valid responses Definitions:
               value:
                 data:
-                - unitPrice: '100.0'
+                - unitPrice: '0.0'
                   productCode: null
-                  id: '6000000121033'
-                  departmentIds:
-                  - '6000000007239'
-                  - '6000000029263'
-                  productName: HTC
-                - unitPrice: '100.0'
-                  productCode: null
-                  id: '6000000121037'
-                  departmentIds:
-                  - '6000000007239'
-                  - '6000000029263'
+                  id: '4000000012009'
                   productName: Dell
-                - unitPrice: '100.0'
-                  productCode: null
-                  id: '6000000145024'
-                  departmentIds:
-                  - '6000000007239'
-                  - '6000000029263'
-                  productName: Lenovo
-  parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the products must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the products must be fetched
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department from which the products count must be computed. If you want to count of the products configured in all accessible departments, pass the value 0.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the products count must be computed. If you want to count of the products configured in all accessible departments, pass the value 0.
-        pattern: ([0-9]+)
-    viewId:
-      name: viewId
-      in: query
-      description: Custom view Id
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Custom view Id
-        pattern: ([0-9]+)
-    productId:
-      name: productId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: No. of products to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: No. of products to fetch
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
-    ownerId:
-      name: ownerId
-      in: query
-      description: Displays the number of products of only a particular owner
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Displays the number of products of only a particular owner
-        pattern: ([0-9]+)
-    productName:
-      name: productName
-      in: query
-      description: Name of the product, used as the keyword for the search
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Name of the product, used as the keyword for the search
-        maxLength: 200
-        minLength: 0
   requestBodies:
     associateAccountsWithProduct:
       content:
@@ -685,6 +685,42 @@ components:
                 - '2000000029035'
                 - '2000000029001'
                 associate: true
+    productsRecyclebinJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              productIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - productIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                productIds:
+                - '2000032003232'
+                departmentId: '2000032006800'
     associateContactsWithProduct:
       content:
         application/json:
@@ -720,71 +756,6 @@ components:
                 - '2000000034031'
                 - '2000000034029'
                 associate: true
-    productjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Product.json#/components/schemas/curdCommonJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 65535
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                ownerId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                productCategory:
-                  type:
-                  - string
-                  - 'null'
-                  x-dynamic-enum: true
-                manufacturer:
-                  type:
-                  - string
-                  - 'null'
-                  x-dynamic-enum: true
-            - type: object
-          examples:
-            Valid requestBody Definitions:
-              value: null
     createProduct_productjson:
       content:
         application/json:
@@ -859,42 +830,71 @@ components:
                 - '6000000007239'
                 - '6000000029263'
                 productName: Dell
-    productsRecyclebinJson:
+    productjson:
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
             additionalProperties: false
-            properties:
-              productIds:
-                type:
-                - 'null'
-                - array
-                items:
+            allOf:
+            - $ref: ./Product.json#/components/schemas/curdCommonJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 65535
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                ownerId:
                   type:
                   - string
                   - 'null'
                   - integer
                   format: int64
                   pattern: ([0-9]+)
-                uniqueItems: false
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - productIds
+                productCategory:
+                  type:
+                  - string
+                  - 'null'
+                  x-dynamic-enum: true
+                manufacturer:
+                  type:
+                  - string
+                  - 'null'
+                  x-dynamic-enum: true
+            - type: object
           examples:
             Valid requestBody Definitions:
-              value:
-                productIds:
-                - '2000032003232'
-                departmentId: '2000032006800'
+              value: null
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

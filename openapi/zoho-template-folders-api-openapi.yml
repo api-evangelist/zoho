@@ -141,225 +141,20 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    templateFolderjson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              folderDesc:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-              folderAccessDetails:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                maxProperties: 5
-                minProperties: 5
-                properties:
-                  teams:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  roles:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  type:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - onlyMe
-                    - allAgents
-                    - restrictedAccess
-                    maxLength: 100
-                    minLength: 0
-                  rolesAndSubordinates:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  agents:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                required:
-                - agents
-                - roles
-                - rolesAndSubordinates
-                - teams
-                - type
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              folderName:
-                type:
-                - string
-                - 'null'
-                maxLength: 250
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          examples:
-            Valid requestBody Definitions:
-              value:
-                folderName: NEw Folder
-    addTemplateFolder_templateFolderjson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              folderDesc:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-              folderAccessDetails:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                maxProperties: 5
-                minProperties: 5
-                properties:
-                  teams:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  roles:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  type:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - onlyMe
-                    - allAgents
-                    - restrictedAccess
-                    maxLength: 100
-                    minLength: 0
-                  rolesAndSubordinates:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                  agents:
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    uniqueItems: false
-                required:
-                - agents
-                - roles
-                - rolesAndSubordinates
-                - teams
-                - type
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              folderName:
-                type:
-                - string
-                - 'null'
-                maxLength: 250
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - departmentId
-            - folderAccessDetails
-            - folderName
-          examples:
-            Valid requestBody Definitions:
-              value:
-                folderDesc: contains details
-                folderAccessDetails:
-                  type: allAgents
-                departmentId: '4000000007039'
-                folderName: New my Folder
+  parameters:
+    folderId:
+      name: folderId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
     folderListResponse:
       description: folderListResponse template definitions
@@ -760,20 +555,225 @@ components:
                 category: DEFAULT_FOLDER
                 createdOn: null
                 folderId: '1892000000082079'
-  parameters:
-    folderId:
-      name: folderId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+  requestBodies:
+    templateFolderjson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              folderDesc:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+              folderAccessDetails:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                maxProperties: 5
+                minProperties: 5
+                properties:
+                  teams:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  roles:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  type:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - onlyMe
+                    - allAgents
+                    - restrictedAccess
+                    maxLength: 100
+                    minLength: 0
+                  rolesAndSubordinates:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  agents:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                required:
+                - agents
+                - roles
+                - rolesAndSubordinates
+                - teams
+                - type
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              folderName:
+                type:
+                - string
+                - 'null'
+                maxLength: 250
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          examples:
+            Valid requestBody Definitions:
+              value:
+                folderName: NEw Folder
+    addTemplateFolder_templateFolderjson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              folderDesc:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+              folderAccessDetails:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                maxProperties: 5
+                minProperties: 5
+                properties:
+                  teams:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  roles:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  type:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - onlyMe
+                    - allAgents
+                    - restrictedAccess
+                    maxLength: 100
+                    minLength: 0
+                  rolesAndSubordinates:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                  agents:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    uniqueItems: false
+                required:
+                - agents
+                - roles
+                - rolesAndSubordinates
+                - teams
+                - type
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              folderName:
+                type:
+                - string
+                - 'null'
+                maxLength: 250
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - departmentId
+            - folderAccessDetails
+            - folderName
+          examples:
+            Valid requestBody Definitions:
+              value:
+                folderDesc: contains details
+                folderAccessDetails:
+                  type: allAgents
+                departmentId: '4000000007039'
+                folderName: New my Folder
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

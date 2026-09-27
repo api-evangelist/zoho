@@ -153,22 +153,6 @@ paths:
           $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
 components:
   schemas:
-    SimpleLicenseUnit:
-      type: object
-      description: Simple license unit with only max value
-      properties:
-        unitCode:
-          type: string
-          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
-          example: ORG
-        maxValue:
-          type: integer
-          description: Maximum allowed value for this unit
-          example: 33
-      required:
-      - unitCode
-      - maxValue
-      additionalProperties: false
     PlanInfoResponse:
       type: object
       description: Detailed information about the current license plan.
@@ -208,15 +192,52 @@ components:
           - 'null'
           description: The code of the previous plan, if applicable.
           example: PRO01
-    IsAllowedResponse:
+    LicenseUnitValue:
+      type: object
+      description: Detailed license unit value information
+      properties:
+        unitCode:
+          type: string
+          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
+          example: ORG
+        maxValue:
+          type: integer
+          description: Maximum allowed value for this unit
+          example: 33
+        freeValue:
+          type: integer
+          description: Free value included in the base plan
+          example: 5
+        addOnValue:
+          type: integer
+          description: Additional value from add-ons
+          example: 3
+      required:
+      - unitCode
+      - maxValue
+    LicenseFeatureListResponse:
       type: object
       properties:
-        isAllowed:
-          type: boolean
-          description: Indicates whether the requested license feature is available/allowed.
-          example: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAllowed'
+    SimpleLicenseUnit:
+      type: object
+      description: Simple license unit with only max value
+      properties:
+        unitCode:
+          type: string
+          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
+          example: ORG
+        maxValue:
+          type: integer
+          description: Maximum allowed value for this unit
+          example: 33
       required:
-      - isAllowed
+      - unitCode
+      - maxValue
+      additionalProperties: false
     FeatureAllowed:
       type: object
       description: Details of an allowed feature with flexible limit information.
@@ -249,36 +270,15 @@ components:
       - featureCode
       - featureName
       - isAllowed
-    LicenseUnitValue:
+    IsAllowedResponse:
       type: object
-      description: Detailed license unit value information
       properties:
-        unitCode:
-          type: string
-          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
-          example: ORG
-        maxValue:
-          type: integer
-          description: Maximum allowed value for this unit
-          example: 33
-        freeValue:
-          type: integer
-          description: Free value included in the base plan
-          example: 5
-        addOnValue:
-          type: integer
-          description: Additional value from add-ons
-          example: 3
+        isAllowed:
+          type: boolean
+          description: Indicates whether the requested license feature is available/allowed.
+          example: true
       required:
-      - unitCode
-      - maxValue
-    LicenseFeatureListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeatureAllowed'
+      - isAllowed
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -139,36 +139,108 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    contactId:
-      name: contactId
-      in: query
-      description: Contact id for which the canned message has to be applied
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Contact id for which the canned message has to be applied
-        pattern: ([0-9]+)
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
+    getCannedMessage:
+      description: getCannedMessage template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              actor:
+                $ref: ./IMCannedMessage.json#/components/schemas/cannedMessageActor
+              modifiedTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              displayMessage:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+              translations:
+                $ref: ./IMCannedMessage.json#/components/schemas/listOfCannedMessageTranslations
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              title:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+              message:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - TEMPLATE
+                - CANNED
+                - WELCOMEMSG
+                - AWAY
+                maxLength: 100
+                minLength: 0
+              isActive:
+                type:
+                - boolean
+                - 'null'
+              tags:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - SUBMITTED
+                - FAILED
+                - APPROVED
+                - REJECTED
+                - PENDING
+                maxLength: 100
+                minLength: 0
+            required:
+            - actor
+            - departmentId
+            - displayMessage
+            - id
+            - isActive
+            - message
+            - modifiedTime
+            - status
+            - tags
+            - title
+            - translations
+            - type
+          examples:
+            Valid responses Definitions:
+              value: null
     getCannedMessages:
       description: getCannedMessages template definitions
       content:
@@ -309,107 +381,35 @@ components:
                   id: '3942000001262605'
                   status: APPROVED
                 hasMore: false
-    getCannedMessage:
-      description: getCannedMessage template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              actor:
-                $ref: ./IMCannedMessage.json#/components/schemas/cannedMessageActor
-              modifiedTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              displayMessage:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-              translations:
-                $ref: ./IMCannedMessage.json#/components/schemas/listOfCannedMessageTranslations
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              title:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-              message:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - TEMPLATE
-                - CANNED
-                - WELCOMEMSG
-                - AWAY
-                maxLength: 100
-                minLength: 0
-              isActive:
-                type:
-                - boolean
-                - 'null'
-              tags:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - SUBMITTED
-                - FAILED
-                - APPROVED
-                - REJECTED
-                - PENDING
-                maxLength: 100
-                minLength: 0
-            required:
-            - actor
-            - departmentId
-            - displayMessage
-            - id
-            - isActive
-            - message
-            - modifiedTime
-            - status
-            - tags
-            - title
-            - translations
-            - type
-          examples:
-            Valid responses Definitions:
-              value: null
+  parameters:
+    contactId:
+      name: contactId
+      in: query
+      description: Contact id for which the canned message has to be applied
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Contact id for which the canned message has to be applied
+        pattern: ([0-9]+)
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

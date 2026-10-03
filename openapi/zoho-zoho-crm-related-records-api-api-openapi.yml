@@ -601,36 +601,18 @@ paths:
       - Zoho CRM Related Records API
 components:
   parameters:
-    Fields:
-      name: fields
-      in: query
-      required: true
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
-        maxLength: 1000
-    SortBy:
-      name: sort_by
+    Converted:
+      name: converted
       in: query
       required: false
-      description: 'Field to sort records by. Allowed: id, Created_Time, Modified_Time.'
+      description: Filter for converted records.
       schema:
         type: string
         enum:
-        - id
-        - Created_Time
-        - Modified_Time
-        default: id
-    ParentRecordModule:
-      name: parentRecordModule
-      in: path
-      required: true
-      description: The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-        maxLength: 100
+        - 'true'
+        - 'false'
+        - both
+        default: 'false'
     ParentRecord:
       name: parentRecord
       in: path
@@ -651,25 +633,6 @@ components:
         minimum: 1
         maximum: 10000
         default: 1
-    IfModifiedSince:
-      name: If-Modified-Since
-      in: header
-      required: false
-      description: Only return records modified after this timestamp (RFC 2822 format)
-      schema:
-        type: string
-        format: date-time
-    SortOrder:
-      name: sort_order
-      in: query
-      required: false
-      description: Sort order for records.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
     RelatedList:
       name: relatedList
       in: path
@@ -679,23 +642,15 @@ components:
         type: string
         pattern: ^[A-Za-z_][A-Za-z0-9_]*$
         maxLength: 100
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: Token for fetching the next set of records after 2000. Use the value from 'next_page_token' in the previous response.
-      schema:
-        type: string
-        maxLength: 500
-    Ids:
-      name: ids
+    Fields:
+      name: fields
       in: query
       required: true
-      description: Comma-separated list of record IDs to delink from the parent record. Each ID must be numeric.
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
       schema:
         type: string
-        pattern: ^[0-9]+(,[0-9]+)*$
-        maxLength: 2000
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
+        maxLength: 1000
     PerPage:
       name: perPage
       in: query
@@ -707,15 +662,14 @@ components:
         minimum: 1
         maximum: 200
         default: 200
-    Record:
-      name: record
-      in: path
-      required: true
-      description: The unique identifier of the specific related record. Must be a valid numeric record ID.
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Token for fetching the next set of records after 2000. Use the value from 'next_page_token' in the previous response.
       schema:
         type: string
-        pattern: ^[0-9]+$
-        maxLength: 20
+        maxLength: 500
     IdsOptional:
       name: ids
       in: query
@@ -725,393 +679,65 @@ components:
         type: string
         pattern: ^[0-9]+(,[0-9]+)*$
         maxLength: 2000
-    Converted:
-      name: converted
+    ParentRecordModule:
+      name: parentRecordModule
+      in: path
+      required: true
+      description: The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
+    SortOrder:
+      name: sort_order
       in: query
       required: false
-      description: Filter for converted records.
+      description: Sort order for records.
       schema:
         type: string
         enum:
-        - 'true'
-        - 'false'
-        - both
-        default: 'false'
+        - asc
+        - desc
+        default: desc
+    SortBy:
+      name: sort_by
+      in: query
+      required: false
+      description: 'Field to sort records by. Allowed: id, Created_Time, Modified_Time.'
+      schema:
+        type: string
+        enum:
+        - id
+        - Created_Time
+        - Modified_Time
+        default: id
+    Ids:
+      name: ids
+      in: query
+      required: true
+      description: Comma-separated list of record IDs to delink from the parent record. Each ID must be numeric.
+      schema:
+        type: string
+        pattern: ^[0-9]+(,[0-9]+)*$
+        maxLength: 2000
+    IfModifiedSince:
+      name: If-Modified-Since
+      in: header
+      required: false
+      description: Only return records modified after this timestamp (RFC 2822 format)
+      schema:
+        type: string
+        format: date-time
+    Record:
+      name: record
+      in: path
+      required: true
+      description: The unique identifier of the specific related record. Must be a valid numeric record ID.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        maxLength: 20
   schemas:
-    AuthorizationFailedError:
-      type: object
-      description: Error response for insufficient privilege.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - AUTHORIZATION_FAILED
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    RelationNotFoundBulkError:
-      type: object
-      description: Error response for relation not found in bulk operations with data array wrapper.
-      properties:
-        data:
-          type: array
-          description: Array of error results
-          minItems: 1
-          maxItems: 100
-          items:
-            type: object
-            description: Individual error result
-            additionalProperties: false
-            required:
-            - code
-            - status
-            - message
-            - details
-            properties:
-              code:
-                type: string
-                description: Error code.
-                enum:
-                - INVALID_DATA
-              details:
-                type: object
-                description: Error details with field information.
-                additionalProperties: true
-                properties:
-                  id:
-                    type: string
-                    description: ID of the record for which relation was not found
-                    pattern: ^[0-9]+$
-                    maxLength: 20
-                  api_name:
-                    type: string
-                    description: API name of the field that caused the error
-                    maxLength: 100
-                  json_path:
-                    type: string
-                    description: JSONPath to the field in request payload
-                    maxLength: 500
-              message:
-                type: string
-                description: Error message.
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the error.
-                enum:
-                - error
-      required:
-      - data
-      additionalProperties: false
-    NotSupportedError:
-      type: object
-      description: Error response for modules not supported in the API.
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error.
-          enum:
-          - NOT_SUPPORTED
-        message:
-          type: string
-          description: Detailed error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that caused the error (0-based).
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidRequestMethodError:
-      type: object
-      description: Error response for invalid HTTP request method.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_REQUEST_METHOD
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InternalError:
-      type: object
-      description: Error response for internal server error.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INTERNAL_ERROR
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    LimitExceededError:
-      type: object
-      description: Error response when the number of items exceeds the allowed limit.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - LIMIT_EXCEEDED
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details including limit information.
-          properties:
-            limit:
-              type: string
-              description: Maximum allowed limit value
-              maxLength: 10
-            param_name:
-              type: string
-              description: Name of the parameter that exceeded the limit
-              maxLength: 100
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    NoPermissionError:
-      type: object
-      description: Error response for permission denied.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - NO_PERMISSION
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            permissions:
-              type: array
-              description: Missing/required permissions for the requested operation
-              maxItems: 100
-              items:
-                type: string
-                description: Permission identifier string.
-                maxLength: 200
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidTokenError:
-      type: object
-      description: Error response for invalid authentication token.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_TOKEN
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidModuleError:
-      type: object
-      description: Error response for invalid module name.
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error.
-          enum:
-          - INVALID_MODULE
-        message:
-          type: string
-          description: Detailed error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that caused the error (0-based).
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    MandatoryNotFoundBulkError:
-      type: object
-      description: Error response for mandatory field not found in bulk operations with data array wrapper.
-      properties:
-        data:
-          type: array
-          description: Array of error results
-          minItems: 1
-          maxItems: 100
-          items:
-            type: object
-            description: Individual error result
-            additionalProperties: false
-            required:
-            - code
-            - status
-            - message
-            - details
-            properties:
-              code:
-                type: string
-                description: Error code.
-                enum:
-                - MANDATORY_NOT_FOUND
-              details:
-                type: object
-                description: Error details with field information.
-                additionalProperties: true
-                properties:
-                  api_name:
-                    type: string
-                    description: API name of the mandatory field that is missing
-                    maxLength: 100
-                  json_path:
-                    type: string
-                    description: JSONPath to the missing field in request payload
-                    maxLength: 500
-              message:
-                type: string
-                description: Error message.
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the error.
-                enum:
-                - error
-      required:
-      - data
-      additionalProperties: false
-    InvalidUrlPatternError:
-      type: object
-      description: Error response when the request URL pattern is incorrect.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_URL_PATTERN
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
     InvalidDataError:
       type: object
       description: Error response for INVALID_DATA (invalid IDs, invalid related list/relation name, hidden related list in layout, invalid input, etc.).
@@ -1194,6 +820,348 @@ components:
       - message
       - status
       additionalProperties: false
+    InternalError:
+      type: object
+      description: Error response for internal server error.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INTERNAL_ERROR
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RelationNotFoundBulkError:
+      type: object
+      description: Error response for relation not found in bulk operations with data array wrapper.
+      properties:
+        data:
+          type: array
+          description: Array of error results
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            description: Individual error result
+            additionalProperties: false
+            required:
+            - code
+            - status
+            - message
+            - details
+            properties:
+              code:
+                type: string
+                description: Error code.
+                enum:
+                - INVALID_DATA
+              details:
+                type: object
+                description: Error details with field information.
+                additionalProperties: true
+                properties:
+                  id:
+                    type: string
+                    description: ID of the record for which relation was not found
+                    pattern: ^[0-9]+$
+                    maxLength: 20
+                  api_name:
+                    type: string
+                    description: API name of the field that caused the error
+                    maxLength: 100
+                  json_path:
+                    type: string
+                    description: JSONPath to the field in request payload
+                    maxLength: 500
+              message:
+                type: string
+                description: Error message.
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the error.
+                enum:
+                - error
+      required:
+      - data
+      additionalProperties: false
+    LimitExceededError:
+      type: object
+      description: Error response when the number of items exceeds the allowed limit.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - LIMIT_EXCEEDED
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details including limit information.
+          properties:
+            limit:
+              type: string
+              description: Maximum allowed limit value
+              maxLength: 10
+            param_name:
+              type: string
+              description: Name of the parameter that exceeded the limit
+              maxLength: 100
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidTokenError:
+      type: object
+      description: Error response for invalid authentication token.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_TOKEN
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    MandatoryNotFoundBulkError:
+      type: object
+      description: Error response for mandatory field not found in bulk operations with data array wrapper.
+      properties:
+        data:
+          type: array
+          description: Array of error results
+          minItems: 1
+          maxItems: 100
+          items:
+            type: object
+            description: Individual error result
+            additionalProperties: false
+            required:
+            - code
+            - status
+            - message
+            - details
+            properties:
+              code:
+                type: string
+                description: Error code.
+                enum:
+                - MANDATORY_NOT_FOUND
+              details:
+                type: object
+                description: Error details with field information.
+                additionalProperties: true
+                properties:
+                  api_name:
+                    type: string
+                    description: API name of the mandatory field that is missing
+                    maxLength: 100
+                  json_path:
+                    type: string
+                    description: JSONPath to the missing field in request payload
+                    maxLength: 500
+              message:
+                type: string
+                description: Error message.
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the error.
+                enum:
+                - error
+      required:
+      - data
+      additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Error response for invalid module name.
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error.
+          enum:
+          - INVALID_MODULE
+        message:
+          type: string
+          description: Detailed error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    UnableToParseDataTypeError:
+      type: object
+      description: Error response for wrong format in request body or parameters.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - UNABLE_TO_PARSE_DATA_TYPE
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionError:
+      type: object
+      description: Error response for permission denied.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - NO_PERMISSION
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            permissions:
+              type: array
+              description: Missing/required permissions for the requested operation
+              maxItems: 100
+              items:
+                type: string
+                description: Permission identifier string.
+                maxLength: 200
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    AuthorizationFailedError:
+      type: object
+      description: Error response for insufficient privilege.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - AUTHORIZATION_FAILED
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidRequestMethodError:
+      type: object
+      description: Error response for invalid HTTP request method.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_REQUEST_METHOD
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
     OAuthScopeMismatchError:
       type: object
       description: Error response when the access token does not have the required OAuth scope for this API call.
@@ -1203,6 +1171,92 @@ components:
           description: Error code.
           enum:
           - OAUTH_SCOPE_MISMATCH
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RequiredParamMissingError:
+      type: object
+      description: Error response for missing required parameter.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - REQUIRED_PARAM_MISSING
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            param_name:
+              type: string
+              description: Name of the missing required parameter.
+              maxLength: 100
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidUrlPatternError:
+      type: object
+      description: Error response when the request URL pattern is incorrect.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_URL_PATTERN
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RecordNotFoundError:
+      type: object
+      description: Error response for record not found.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_DATA
         message:
           type: string
           description: Error message.
@@ -1280,18 +1334,18 @@ components:
                 enum:
                 - success
                 - error
-    RequiredParamMissingError:
+    NotSupportedError:
       type: object
-      description: Error response for missing required parameter.
+      description: Error response for modules not supported in the API.
       properties:
         code:
           type: string
-          description: Error code.
+          description: Error code indicating the type of error.
           enum:
-          - REQUIRED_PARAM_MISSING
+          - NOT_SUPPORTED
         message:
           type: string
-          description: Error message.
+          description: Detailed error message.
           maxLength: 500
         status:
           type: string
@@ -1302,64 +1356,10 @@ components:
           type: object
           description: Additional error details.
           properties:
-            param_name:
-              type: string
-              description: Name of the missing required parameter.
-              maxLength: 100
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    RecordNotFoundError:
-      type: object
-      description: Error response for record not found.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_DATA
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    UnableToParseDataTypeError:
-      type: object
-      description: Error response for wrong format in request body or parameters.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - UNABLE_TO_PARSE_DATA_TYPE
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
           additionalProperties: true
       required:
       - code

@@ -275,194 +275,7 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    updateUserJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              email:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 2
-                  minProperties: 2
-                  properties:
-                    emailAddress:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-                    isPrimary:
-                      type:
-                      - boolean
-                      - 'null'
-                  required:
-                  - emailAddress
-                  - isPrimary
-                maxItems: 1
-                minItems: 1
-                uniqueItems: false
-              status:
-                type:
-                - string
-                - 'null'
-                description: Activation status of the user. Values supported are @ACTIVE@ and @DISABLED@.
-                enum:
-                - ACTIVE
-                - DISABLED
-                - DELETED
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                email:
-                - emailAddress: zylcare@zylker.com
-                  isPrimary: 'true'
-                status: ACTIVE
-    anonymizeInpJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              anonymizedName:
-                type:
-                - string
-                - 'null'
-                description: Display name of the user in tickets and community topics after anonymization
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                anonymizedName: Guest User 001
-    userLabelInputJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              labels:
-                $ref: ./User.json#/components/schemas/userLabelInputJsonArr
-            required:
-            - labels
-          examples:
-            Valid requestBody Definitions:
-              value:
-                labels:
-                - isPrimary: 'false'
-                  id: '24073000002958013'
-                - isPrimary: 'true'
-                  id: '24073000002152013'
-                - isPrimary: 'false'
-                  id: '24073000002958023'
-    userGroupInputJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              groups:
-                $ref: ./User.json#/components/schemas/userGroupInputJsonArr
-            required:
-            - groups
-          examples:
-            Valid requestBody Definitions:
-              value:
-                groups:
-                - id: '24073000002723212'
-                - id: '24073000002732252'
-                - id: '24073000002957051'
-                - id: '24073000002793019'
   responses:
-    getUsersResponse:
-      description: getUsersResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      count:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int32
-                        pattern: ([0-9]+)
-            - oneOf:
-              - type:
-                - 'null'
-                - object
-                additionalProperties: false
-                properties:
-                  data:
-                    $ref: ./User.json#/components/schemas/data
-                required:
-                - data
-              - additionalProperties: false
-                allOf:
-                - $ref: ./User.json#/components/schemas/userListViewJson
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    count:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                  required:
-                  - count
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - lastAccessedTime: '2021-06-11T06:21:32.000Z'
-                  photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
-                  emailAddress: carol@zylker.com
-                  name: Developer
-                  id: '310975130121'
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#39B54A'
-                      textColor: '#FFFFFF'
-                    name: Lock Label
-                    id: '24073000002823026'
-                    logoUrl: null
-                  type: ENDUSER
-                  status: ACTIVE
-                count: '1'
     userGroupJson:
       description: userGroupJson template definitions
       content:
@@ -547,36 +360,6 @@ components:
                   helpCenterId: '24073000002886005'
                   logoUrl: null
                   assignedTime: '2020-04-06T05:55:13.000Z'
-    massActionListViewResponse:
-      description: massActionListViewResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              results:
-                $ref: ./User.json#/components/schemas/massActionJsonArray
-            required:
-            - results
-          examples:
-            Valid responses Definitions:
-              value:
-                results:
-                - success: true
-                  id: '24073000002958013'
-                  errors: null
-                - success: true
-                  id: '24073000002958023'
-                  errors: null
-                - success: false
-                  id: '24073000002152013'
-                  errors:
-                    errorCode: FORBIDDEN
-                    httpCode: 403
-                    error: Restricted
     userDetailViewJson:
       description: userDetailViewJson template definitions
       content:
@@ -653,6 +436,223 @@ components:
                 email:
                 - emailAddress: zylcare@zylker.com
                   isVerified: 'false'
+                  isPrimary: 'true'
+                status: ACTIVE
+    getUsersResponse:
+      description: getUsersResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      count:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int32
+                        pattern: ([0-9]+)
+            - oneOf:
+              - type:
+                - 'null'
+                - object
+                additionalProperties: false
+                properties:
+                  data:
+                    $ref: ./User.json#/components/schemas/data
+                required:
+                - data
+              - additionalProperties: false
+                allOf:
+                - $ref: ./User.json#/components/schemas/userListViewJson
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    count:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                  required:
+                  - count
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - lastAccessedTime: '2021-06-11T06:21:32.000Z'
+                  photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
+                  emailAddress: carol@zylker.com
+                  name: Developer
+                  id: '310975130121'
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#39B54A'
+                      textColor: '#FFFFFF'
+                    name: Lock Label
+                    id: '24073000002823026'
+                    logoUrl: null
+                  type: ENDUSER
+                  status: ACTIVE
+                count: '1'
+    massActionListViewResponse:
+      description: massActionListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              results:
+                $ref: ./User.json#/components/schemas/massActionJsonArray
+            required:
+            - results
+          examples:
+            Valid responses Definitions:
+              value:
+                results:
+                - success: true
+                  id: '24073000002958013'
+                  errors: null
+                - success: true
+                  id: '24073000002958023'
+                  errors: null
+                - success: false
+                  id: '24073000002152013'
+                  errors:
+                    errorCode: FORBIDDEN
+                    httpCode: 403
+                    error: Restricted
+  requestBodies:
+    userGroupInputJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              groups:
+                $ref: ./User.json#/components/schemas/userGroupInputJsonArr
+            required:
+            - groups
+          examples:
+            Valid requestBody Definitions:
+              value:
+                groups:
+                - id: '24073000002723212'
+                - id: '24073000002732252'
+                - id: '24073000002957051'
+                - id: '24073000002793019'
+    anonymizeInpJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              anonymizedName:
+                type:
+                - string
+                - 'null'
+                description: Display name of the user in tickets and community topics after anonymization
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                anonymizedName: Guest User 001
+    userLabelInputJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              labels:
+                $ref: ./User.json#/components/schemas/userLabelInputJsonArr
+            required:
+            - labels
+          examples:
+            Valid requestBody Definitions:
+              value:
+                labels:
+                - isPrimary: 'false'
+                  id: '24073000002958013'
+                - isPrimary: 'true'
+                  id: '24073000002152013'
+                - isPrimary: 'false'
+                  id: '24073000002958023'
+    updateUserJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              email:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 2
+                  minProperties: 2
+                  properties:
+                    emailAddress:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+                    isPrimary:
+                      type:
+                      - boolean
+                      - 'null'
+                  required:
+                  - emailAddress
+                  - isPrimary
+                maxItems: 1
+                minItems: 1
+                uniqueItems: false
+              status:
+                type:
+                - string
+                - 'null'
+                description: Activation status of the user. Values supported are @ACTIVE@ and @DISABLED@.
+                enum:
+                - ACTIVE
+                - DISABLED
+                - DELETED
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                email:
+                - emailAddress: zylcare@zylker.com
                   isPrimary: 'true'
                 status: ACTIVE
   parameters:

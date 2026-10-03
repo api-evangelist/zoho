@@ -139,6 +139,35 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    contactId:
+      name: contactId
+      in: query
+      description: Contact id for which the canned message has to be applied
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Contact id for which the canned message has to be applied
+        pattern: ([0-9]+)
   responses:
     getCannedMessage:
       description: getCannedMessage template definitions
@@ -381,35 +410,6 @@ components:
                   id: '3942000001262605'
                   status: APPROVED
                 hasMore: false
-  parameters:
-    contactId:
-      name: contactId
-      in: query
-      description: Contact id for which the canned message has to be applied
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Contact id for which the canned message has to be applied
-        pattern: ([0-9]+)
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

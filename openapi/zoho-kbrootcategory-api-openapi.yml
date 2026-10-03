@@ -332,12 +332,6 @@ paths:
       - external-public
 components:
   schemas:
-    addRootTranslationJsonArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./KBRootCategoryTranslation.json#/components/schemas/addRootTranslationJson
     childTreeResponse:
       type:
       - 'null'
@@ -524,6 +518,170 @@ components:
       - status
       - translations
       - visibility
+    feedbackPreferenceResponseObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        departmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        assignee:
+          $ref: '#/components/schemas/assigneeObj'
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ENABLED
+          - DISABLED
+          maxLength: 100
+          minLength: 0
+      required:
+      - assignee
+      - departmentId
+      - status
+    addReviewOwnerArray:
+      type:
+      - 'null'
+      - array
+      items:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    assigneeObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ACTIVE
+          - DISABLED
+          - LICENSE_DOWNGRADED
+          - DELETED
+          - ANONYMIZED
+          - CLOSED
+          maxLength: 100
+          minLength: 0
+        zuid:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - photoURL
+      - status
+      - zuid
+    childTranslationResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/rootTreeTranslationResponse'
+      - type:
+        - 'null'
+        - object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
+        required:
+        - description
+    reviewOwners:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        emailId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - emailId
+      - id
+      - name
+      - photoURL
+    rootTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
+    reviewOwnersArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/reviewOwners'
+    childTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTranslationResponse'
     commonCategoryResponse:
       type:
       - 'null'
@@ -750,99 +908,12 @@ components:
       - translations
       - visibility
       - workspaceId
-    childTranslationResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/rootTreeTranslationResponse'
-      - type:
-        - 'null'
-        - object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
-        required:
-        - description
-    assigneeObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ACTIVE
-          - DISABLED
-          - LICENSE_DOWNGRADED
-          - DELETED
-          - ANONYMIZED
-          - CLOSED
-          maxLength: 100
-          minLength: 0
-        zuid:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - photoURL
-      - status
-      - zuid
-    data:
+    addRootTranslationJsonArray:
       type:
       - 'null'
       - array
       items:
-        $ref: '#/components/schemas/commonCategoryResponse'
-    childTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTranslationResponse'
-    childArrayOfTree:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTreeResponse'
-    rootTreeTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/rootTreeTranslationResponse'
+        $ref: ./KBRootCategoryTranslation.json#/components/schemas/addRootTranslationJson
     feedbackPreferenceObj:
       type:
       - 'null'
@@ -879,18 +950,6 @@ components:
       - assigneeId
       - departmentId
       - status
-    rootTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
-    reviewOwnersArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/reviewOwners'
     rootTreeTranslationResponse:
       type:
       - 'null'
@@ -991,84 +1050,43 @@ components:
       - locale
       - name
       - permalink
-    reviewOwners:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        emailId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - emailId
-      - id
-      - name
-      - photoURL
-    feedbackPreferenceResponseObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        assignee:
-          $ref: '#/components/schemas/assigneeObj'
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ENABLED
-          - DISABLED
-          maxLength: 100
-          minLength: 0
-      required:
-      - assignee
-      - departmentId
-      - status
-    addReviewOwnerArray:
+    rootTreeTranslationResponseJsonArr:
       type:
       - 'null'
       - array
       items:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+        $ref: '#/components/schemas/rootTreeTranslationResponse'
+    childArrayOfTree:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTreeResponse'
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commonCategoryResponse'
   requestBodies:
+    removeModerators_addModeratorJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              moderatorIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - moderatorIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                moderatorIds:
+                - '5000000015867'
     addModeratorJson:
       content:
         application/json:
@@ -1117,42 +1135,6 @@ components:
               value:
                 isOldPermalinkNeeded: true
                 permalink: new-permalink
-    removeModerators_addModeratorJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              moderatorIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - moderatorIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                moderatorIds:
-                - '5000000015867'
-    addReviewOwnerJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reviewOwnerIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - reviewOwnerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reviewOwnerIds:
-                - '5000000015867'
     removePermalink_removePermalinkJson:
       content:
         application/json:
@@ -1357,7 +1339,139 @@ components:
                 status: SHOW_IN_HELPCENTER
                 associatedDepartmentIds:
                 - '5000000063895'
+    addReviewOwnerJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              reviewOwnerIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - reviewOwnerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                reviewOwnerIds:
+                - '5000000015867'
   responses:
+    rootCategoryResponse:
+      description: rootCategoryResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonCategoryResponse'
+            - type:
+              - 'null'
+              - object
+              properties:
+                ipAddresses:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                  uniqueItems: false
+              required:
+              - ipAddresses
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1577978811000
+                helpcenterId: '5000000015871'
+                isReviewEnabled: true
+                isTrashed: false
+                translations:
+                - modifiedTime: 1577978682000
+                  createdBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  name: Root category name
+                  description: description of root
+                  createdTime: 1577978682000
+                  modifiedBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  id: '5000000336004'
+                  permalink: root-category-name
+                  locale: en
+                  categoryId: '5000000319037'
+                moderationType: ALL_ACTION
+                createdTime: 1577707830000
+                modifiedBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
+                primaryDepartmentId: '5000000063894'
+                id: '5000000319037'
+                order: '3'
+                workspaceId: asadasda
+                isFollowing: true
+                visibility: ALL_USERS
+                articleViewType: LISTVIEW
+                canCurrentUserModerate: true
+                groups: []
+                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
+                feedbackTicketConversionPreference:
+                  departmentId: '5000000063895'
+                  assignee:
+                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
+                    name: Charlie Marlie
+                    id: '5000000000059'
+                    status: ACTIVE
+                    zuid: '15224545'
+                  status: ENABLED
+                associatedDepartmentIds:
+                - '5000000063895'
+                encryptedWorkspaceId: uhahsdhada
+                createdBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
+                name: Root category name
+                ipAddresses: []
+                status: SHOW_IN_HELPCENTER
+    reviewOwnersDataJson:
+      description: reviewOwnersDataJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/reviewOwnersArray'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
     listAllCategoryResponse:
       description: listAllCategoryResponse template definitions
       content:
@@ -1709,120 +1823,6 @@ components:
                 id: '5000000066427'
                 status: SHOW_IN_HELPCENTER
                 order: '1'
-    rootCategoryResponse:
-      description: rootCategoryResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonCategoryResponse'
-            - type:
-              - 'null'
-              - object
-              properties:
-                ipAddresses:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                  uniqueItems: false
-              required:
-              - ipAddresses
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1577978811000
-                helpcenterId: '5000000015871'
-                isReviewEnabled: true
-                isTrashed: false
-                translations:
-                - modifiedTime: 1577978682000
-                  createdBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  name: Root category name
-                  description: description of root
-                  createdTime: 1577978682000
-                  modifiedBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  id: '5000000336004'
-                  permalink: root-category-name
-                  locale: en
-                  categoryId: '5000000319037'
-                moderationType: ALL_ACTION
-                createdTime: 1577707830000
-                modifiedBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                primaryDepartmentId: '5000000063894'
-                id: '5000000319037'
-                order: '3'
-                workspaceId: asadasda
-                isFollowing: true
-                visibility: ALL_USERS
-                articleViewType: LISTVIEW
-                canCurrentUserModerate: true
-                groups: []
-                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
-                feedbackTicketConversionPreference:
-                  departmentId: '5000000063895'
-                  assignee:
-                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
-                    name: Charlie Marlie
-                    id: '5000000000059'
-                    status: ACTIVE
-                    zuid: '15224545'
-                  status: ENABLED
-                associatedDepartmentIds:
-                - '5000000063895'
-                encryptedWorkspaceId: uhahsdhada
-                createdBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                name: Root category name
-                ipAddresses: []
-                status: SHOW_IN_HELPCENTER
-    reviewOwnersDataJson:
-      description: reviewOwnersDataJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/reviewOwnersArray'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
   parameters:
     locale:
       name: locale

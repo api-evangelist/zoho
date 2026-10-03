@@ -651,36 +651,73 @@ paths:
       tags:
       - Zia Org Enrichment
 components:
+  parameters:
+    Sortorder:
+      name: sort_order
+      in: query
+      required: false
+      description: Sort order (ascending or descending).
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        description: 'String indicating sort order: ''asc'' or ''desc''.'
+    Status:
+      name: status
+      in: query
+      required: false
+      description: Filter records by enrichment status.
+      schema:
+        type: string
+        enum:
+        - COMPLETED
+        - FAILED
+        - DATA_NOT_FOUND
+        - SCHEDULED
+        description: String to filter records by their enrichment status.
+    Perpage:
+      name: per_page
+      in: query
+      required: false
+      description: Number of records per page.
+      schema:
+        type: integer
+        format: int32
+        enum:
+        - 100
+        description: Integer specifying the number of records per page.
+    ZiaOrgEnrichmentId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the Zia Org Enrichment record
+      schema:
+        type: string
+        maxLength: 255
+    Page:
+      name: page
+      in: query
+      required: false
+      description: The page number for pagination.
+      schema:
+        type: integer
+        format: int32
+        enum:
+        - 1
+        - 2
+        description: Integer specifying the page number for paginated results.
+    Sortby:
+      name: sort_by
+      in: query
+      required: false
+      description: Field to sort by.
+      schema:
+        type: string
+        enum:
+        - created_time
+        description: String specifying the field used for sorting.
   schemas:
-    NoPermission:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code indicating that the user lacks the required permissions to perform the operation.
-          enum:
-          - NO_PERMISSION
-        details:
-          type: object
-          properties: {}
-          description: Contains additional information about missing permissions. This object may be empty
-          additionalProperties: false
-        message:
-          type: string
-          description: Human-readable message explaining that the user does not have permission to access this feature
-          maxLength: 255
-        status:
-          type: string
-          description: Indicates that the response represents an error
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      description: Error response returned when the user does not have permission to access this feature.
-      additionalProperties: false
     FeatureNotEnableOrNotSupported:
       type: object
       properties:
@@ -710,6 +747,35 @@ components:
       - message
       - status
       description: Error Response when Feature not enabled or not supported.
+      additionalProperties: false
+    NoPermission:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code indicating that the user lacks the required permissions to perform the operation.
+          enum:
+          - NO_PERMISSION
+        details:
+          type: object
+          properties: {}
+          description: Contains additional information about missing permissions. This object may be empty
+          additionalProperties: false
+        message:
+          type: string
+          description: Human-readable message explaining that the user does not have permission to access this feature
+          maxLength: 255
+        status:
+          type: string
+          description: Indicates that the response represents an error
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      description: Error response returned when the user does not have permission to access this feature.
       additionalProperties: false
     ZiaOrgEnrichmentInvalidParam:
       type: object
@@ -781,72 +847,6 @@ components:
       - details
       - message
       - status
-  parameters:
-    Status:
-      name: status
-      in: query
-      required: false
-      description: Filter records by enrichment status.
-      schema:
-        type: string
-        enum:
-        - COMPLETED
-        - FAILED
-        - DATA_NOT_FOUND
-        - SCHEDULED
-        description: String to filter records by their enrichment status.
-    Sortorder:
-      name: sort_order
-      in: query
-      required: false
-      description: Sort order (ascending or descending).
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        description: 'String indicating sort order: ''asc'' or ''desc''.'
-    Perpage:
-      name: per_page
-      in: query
-      required: false
-      description: Number of records per page.
-      schema:
-        type: integer
-        format: int32
-        enum:
-        - 100
-        description: Integer specifying the number of records per page.
-    ZiaOrgEnrichmentId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the Zia Org Enrichment record
-      schema:
-        type: string
-        maxLength: 255
-    Page:
-      name: page
-      in: query
-      required: false
-      description: The page number for pagination.
-      schema:
-        type: integer
-        format: int32
-        enum:
-        - 1
-        - 2
-        description: Integer specifying the page number for paginated results.
-    Sortby:
-      name: sort_by
-      in: query
-      required: false
-      description: Field to sort by.
-      schema:
-        type: string
-        enum:
-        - created_time
-        description: String specifying the field used for sorting.
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

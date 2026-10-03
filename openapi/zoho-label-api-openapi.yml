@@ -285,6 +285,20 @@ components:
         maximum: 50
         minimum: 1
         pattern: ([0-9]+)
+    searchBy:
+      name: searchBy
+      in: query
+      description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
+        maxLength: 100
+        minLength: 0
     from:
       name: from
       in: query
@@ -301,54 +315,7 @@ components:
         description: 'Index number, starting from which the users must be fetched. The default value is 1. '
         minimum: 1
         pattern: ([0-9]+)
-    searchBy:
-      name: searchBy
-      in: query
-      description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
-        maxLength: 100
-        minLength: 0
   requestBodies:
-    createLabelPayloadJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Label.json#/components/schemas/updateLabelPayloadJSON
-            - type:
-              - 'null'
-              - object
-              properties:
-                helpCenterId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of the help center in which the label must be created
-                  pattern: ([0-9]+)
-            - type: object
-              required:
-              - helpCenterId
-              - name
-          examples:
-            Valid requestBody Definitions:
-              value:
-                preferences:
-                  shape: ROUNDED
-                  bgColor: '#FFEE'
-                  textColor: '#FFEE'
-                name: Pro Customer
-                helpCenterId: '310975130119'
-                logoId: '310975130121'
     updateLabelPayloadJSON:
       content:
         application/json:
@@ -416,6 +383,39 @@ components:
                 - '310975131231'
                 - '310975133141'
                 - '310975101849'
+    createLabelPayloadJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Label.json#/components/schemas/updateLabelPayloadJSON
+            - type:
+              - 'null'
+              - object
+              properties:
+                helpCenterId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of the help center in which the label must be created
+                  pattern: ([0-9]+)
+            - type: object
+              required:
+              - helpCenterId
+              - name
+          examples:
+            Valid requestBody Definitions:
+              value:
+                preferences:
+                  shape: ROUNDED
+                  bgColor: '#FFEE'
+                  textColor: '#FFEE'
+                name: Pro Customer
+                helpCenterId: '310975130119'
+                logoId: '310975130121'
     userIdsPayLoad:
       content:
         application/json:
@@ -448,72 +448,6 @@ components:
                 - '310975133141'
                 - '310975101849'
   responses:
-    labelListViewResponse:
-      description: labelListViewResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Label.json#/components/schemas/labelData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1505797130000
-                  preferences:
-                    shape: ROUNDED
-                    bgColor: '#FFEE'
-                    textColor: '#FFEE'
-                  creator:
-                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  modifier:
-                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  name: Pro Customer
-                  count: '892'
-                  createdTime: 1505797130000
-                  id: '310975130110'
-                  helpCenterId: '310975130119'
-                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
-    userLabelListResponse:
-      description: userLabelListResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Label.json#/components/schemas/userLabelData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - photoUrl: null
-                  emailAddress: carol@zylker.com
-                  name: svega RM
-                  userType: ENDUSER
-                  assignee:
-                    photoUrl: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: Chris
-                    id: '6000000015895'
-                  id: '6000000032907'
-                  assignedTime: 1565336864000
-                  status: ACTIVE
     labelDetailViewResponse:
       description: labelDetailViewResponse template definitions
       content:
@@ -587,6 +521,72 @@ components:
                 id: '310975130110'
                 helpCenterId: '310975130119'
                 logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
+    userLabelListResponse:
+      description: userLabelListResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Label.json#/components/schemas/userLabelData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - photoUrl: null
+                  emailAddress: carol@zylker.com
+                  name: svega RM
+                  userType: ENDUSER
+                  assignee:
+                    photoUrl: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: Chris
+                    id: '6000000015895'
+                  id: '6000000032907'
+                  assignedTime: 1565336864000
+                  status: ACTIVE
+    labelListViewResponse:
+      description: labelListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Label.json#/components/schemas/labelData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1505797130000
+                  preferences:
+                    shape: ROUNDED
+                    bgColor: '#FFEE'
+                    textColor: '#FFEE'
+                  creator:
+                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  modifier:
+                    photoURL: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  name: Pro Customer
+                  count: '892'
+                  createdTime: 1505797130000
+                  id: '310975130110'
+                  helpCenterId: '310975130119'
+                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

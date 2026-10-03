@@ -56,13 +56,29 @@ paths:
       - Workflow Configurations
 components:
   schemas:
-    GetworkflowconfigurationsResponse200:
+    WorkflowConfigurationsNested:
       type: object
       additionalProperties: false
-      description: Indicates that the workflow configuration was retrieved successfully for the specified module.
+      description: Nested schema for workflow_configurations
       properties:
-        workflow_configurations:
-          $ref: '#/components/schemas/WorkflowConfigurationsNested'
+        related_triggers_details:
+          type: array
+          description: 'Field: related_triggers_details'
+          items:
+            $ref: '#/components/schemas/RelatedTriggersDetailsNested'
+          maxItems: 4
+        triggers:
+          type: array
+          description: 'Field: triggers'
+          items:
+            $ref: '#/components/schemas/TriggersNested'
+          maxItems: 10
+        actions:
+          type: array
+          description: 'Field: actions'
+          items:
+            $ref: '#/components/schemas/ActionsNested'
+          maxItems: 12
     ActionsNested:
       type: object
       additionalProperties: false
@@ -95,29 +111,73 @@ components:
           type: integer
           format: int32
           description: 'Field: limit'
-    WorkflowConfigurationsNested:
+    RequiredParamMissingError:
       type: object
       additionalProperties: false
-      description: Nested schema for workflow_configurations
+      description: 'Missing required parameter: module'
       properties:
-        related_triggers_details:
-          type: array
-          description: 'Field: related_triggers_details'
-          items:
-            $ref: '#/components/schemas/RelatedTriggersDetailsNested'
-          maxItems: 4
-        triggers:
-          type: array
-          description: 'Field: triggers'
-          items:
-            $ref: '#/components/schemas/TriggersNested'
-          maxItems: 10
-        actions:
-          type: array
-          description: 'Field: actions'
-          items:
-            $ref: '#/components/schemas/ActionsNested'
-          maxItems: 12
+        code:
+          type: string
+          description: Error code
+          enum:
+          - REQUIRED_PARAM_MISSING
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            param_name:
+              type: string
+              description: 'Detail field: param_name'
+              maxLength: 255
+        message:
+          type: string
+          description: Error message
+          enum:
+          - required param not found
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    ModuleNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for module
+      properties:
+        singular_label:
+          type: string
+          description: 'Field: singular_label'
+          maxLength: 255
+        plural_label:
+          type: string
+          description: 'Field: plural_label'
+          maxLength: 255
+        api_name:
+          type: string
+          description: 'Field: api_name'
+          maxLength: 255
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+    GetworkflowconfigurationsResponse200:
+      type: object
+      additionalProperties: false
+      description: Indicates that the workflow configuration was retrieved successfully for the specified module.
+      properties:
+        workflow_configurations:
+          $ref: '#/components/schemas/WorkflowConfigurationsNested'
     InvalidModuleResponse:
       type: object
       additionalProperties: false
@@ -174,31 +234,6 @@ components:
           items:
             $ref: '#/components/schemas/TriggersNested'
           maxItems: 4
-    ModuleNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for module
-      properties:
-        singular_label:
-          type: string
-          description: 'Field: singular_label'
-          maxLength: 255
-        plural_label:
-          type: string
-          description: 'Field: plural_label'
-          maxLength: 255
-        api_name:
-          type: string
-          description: 'Field: api_name'
-          maxLength: 255
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
     TriggersNested:
       type: object
       additionalProperties: false
@@ -226,41 +261,6 @@ components:
             description: 'Field: actions'
             maxLength: 255
           maxItems: 12
-    RequiredParamMissingError:
-      type: object
-      additionalProperties: false
-      description: 'Missing required parameter: module'
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - REQUIRED_PARAM_MISSING
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            param_name:
-              type: string
-              description: 'Detail field: param_name'
-              maxLength: 255
-        message:
-          type: string
-          description: Error message
-          enum:
-          - required param not found
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
   parameters:
     ParamQueryModule:
       name: module

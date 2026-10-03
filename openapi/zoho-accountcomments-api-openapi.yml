@@ -187,18 +187,241 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    get_accountComment_Response:
-      description: get AccountComment  template definitions
+  requestBodies:
+    addAccountCommentRequestBody:
       content:
         application/json:
           schema:
-            allOf:
-            - $ref: '#/components/schemas/accountCommentCommonResponse'
-            - type: object
-              properties:
-                mention:
-                  $ref: '#/components/schemas/mentions'
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - plainText
+                - html
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contentType: html
+                content: First account comment
+    editAccountCommentRequestBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: second account comment edit
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  schemas:
+    accountCommentCommonResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        modifiedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        encodedContent:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        commentedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        contentType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - plainText
+          - html
+          maxLength: 100
+          minLength: 0
+        commenterId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        content:
+          type:
+          - string
+          - 'null'
+          maxLength: 32000
+          minLength: 0
+        commenter:
+          $ref: ./AccountComments.json#/components/schemas/commenter
+        impersonatedUser:
+          $ref: ./TicketComment.json#/components/schemas/impersonatedUser
+      required:
+      - commentedTime
+      - commenter
+      - commenterId
+      - content
+      - contentType
+      - encodedContent
+      - id
+      - impersonatedUser
+      - modifiedTime
+    mentions:
+      type:
+      - 'null'
+      - array
+      items:
+        type:
+        - 'null'
+        - object
+        additionalProperties: false
+        maxProperties: 9
+        minProperties: 9
+        properties:
+          firstName:
+            type:
+            - string
+            - 'null'
+            maxLength: 50
+            minLength: 0
+          lastName:
+            type:
+            - string
+            - 'null'
+            maxLength: 50
+            minLength: 0
+          photoURL:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          offset:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            pattern: ([0-9]+)
+          length:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            pattern: ([0-9]+)
+          id:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          type:
+            type:
+            - string
+            - 'null'
+            enum:
+            - AGENT
+            - TEAM
+            maxLength: 100
+            minLength: 0
+          email:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+          zuid:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            pattern: ([0-9]+)
+        required:
+        - email
+        - firstName
+        - id
+        - lastName
+        - length
+        - offset
+        - photoURL
+        - type
+        - zuid
+      uniqueItems: false
+  responses:
     getAccountComments:
       description: getAccountComments template definitions
       content:
@@ -320,240 +543,17 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-  parameters:
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  schemas:
-    mentions:
-      type:
-      - 'null'
-      - array
-      items:
-        type:
-        - 'null'
-        - object
-        additionalProperties: false
-        maxProperties: 9
-        minProperties: 9
-        properties:
-          firstName:
-            type:
-            - string
-            - 'null'
-            maxLength: 50
-            minLength: 0
-          lastName:
-            type:
-            - string
-            - 'null'
-            maxLength: 50
-            minLength: 0
-          photoURL:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          offset:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            pattern: ([0-9]+)
-          length:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            pattern: ([0-9]+)
-          id:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          type:
-            type:
-            - string
-            - 'null'
-            enum:
-            - AGENT
-            - TEAM
-            maxLength: 100
-            minLength: 0
-          email:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-          zuid:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            pattern: ([0-9]+)
-        required:
-        - email
-        - firstName
-        - id
-        - lastName
-        - length
-        - offset
-        - photoURL
-        - type
-        - zuid
-      uniqueItems: false
-    accountCommentCommonResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        modifiedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        encodedContent:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        commentedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        contentType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - plainText
-          - html
-          maxLength: 100
-          minLength: 0
-        commenterId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        content:
-          type:
-          - string
-          - 'null'
-          maxLength: 32000
-          minLength: 0
-        commenter:
-          $ref: ./AccountComments.json#/components/schemas/commenter
-        impersonatedUser:
-          $ref: ./TicketComment.json#/components/schemas/impersonatedUser
-      required:
-      - commentedTime
-      - commenter
-      - commenterId
-      - content
-      - contentType
-      - encodedContent
-      - id
-      - impersonatedUser
-      - modifiedTime
-  requestBodies:
-    addAccountCommentRequestBody:
+    get_accountComment_Response:
+      description: get AccountComment  template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - plainText
-                - html
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contentType: html
-                content: First account comment
-    editAccountCommentRequestBody:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: second account comment edit
+            allOf:
+            - $ref: '#/components/schemas/accountCommentCommonResponse'
+            - type: object
+              properties:
+                mention:
+                  $ref: '#/components/schemas/mentions'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

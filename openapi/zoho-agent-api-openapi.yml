@@ -604,597 +604,225 @@ paths:
       x-audience:
       - external-public
 components:
-  schemas:
-    agentIdsResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        extn:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        roleId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        mobile:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        emailId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-        zuid:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        associatedDepartmentIds:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          uniqueItems: true
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        profileId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        channelExpert:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            x-dynamic-enum: true
-          uniqueItems: false
-        rolePermissionType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - AgentPublic
-          - AgentPersonal
-          - AgentTeamPersonal
-          - Admin
-          - Custom
-          - Light
-          maxLength: 100
-          minLength: 0
-        isConfirmed:
-          type:
-          - boolean
-          - 'null'
-        aboutInfo:
-          type:
-          - string
-          - 'null'
-          maxLength: 65535
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ACTIVE
-          - DISABLED
-          - DELETED
-          - IMPORTED
-          maxLength: 100
-          minLength: 0
-        isZiaAgent:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the agent is a Zia agent or a human agent
-      required:
-      - aboutInfo
-      - associatedDepartmentIds
-      - channelExpert
-      - emailId
-      - extn
-      - firstName
-      - id
-      - isConfirmed
-      - lastName
-      - mobile
-      - phone
-      - photoURL
-      - profileId
-      - roleId
-      - rolePermissionType
-      - status
-      - zuid
-    agentResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/agentInputStream'
-      - type:
+  parameters:
+    agentId:
+      name: agentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
         - 'null'
-        - object
-        properties:
-          photoURL:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          roleId:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          profileId:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          name:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-          timeZone:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: '[a-zA-Z_/\-\+0-9]*'
-          isConfirmed:
-            type:
-            - boolean
-            - 'null'
-          id:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          zuid:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            pattern: ([0-9]+)
-          isZiaAgent:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the agent is a Zia agent or a human agent
-        required:
-        - id
-        - isConfirmed
-        - isZiaAgent
-        - name
-        - photoURL
-        - profileId
-        - roleId
-        - timeZone
-        - zuid
-    agentInputStream:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/addAgentInputStream'
-      - type:
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the deleted agents must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
         - 'null'
-        - object
-        properties:
-          channelExpert:
-            type:
-            - 'null'
-            - array
-            items:
-              type:
-              - string
-              - 'null'
-              x-dynamic-enum: true
-            uniqueItems: false
-        required:
-        - channelExpert
-    agentResponseArray:
-      type:
-      - 'null'
-      - array
-      items:
-        anyOf:
-        - $ref: '#/components/schemas/agentResponse'
-        - $ref: '#/components/schemas/agentCFResponse'
-    agentCFInputStream:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/agentInputStream'
-      - type:
+        - integer
+        format: int32
+        description: Index number, starting from which the agents must be fetched
+        minimum: 0
+        pattern: ([0-9]+)
+    isConfirmed:
+      name: isConfirmed
+      in: query
+      description: Filters Confirmed & Unconfirmed agents
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: boolean
+        description: Key that denotes if the agents must be confirmed or unconfirmed.
+    limit:
+      name: limit
+      in: query
+      description: Number of agents to fetch; default value is 10 and maximum value is 200
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
         - 'null'
-        - object
-        properties:
-          cf:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            patternProperties:
-              ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        required:
-        - cf
-    agentIdsResponseArray:
-      type:
-      - 'null'
-      - array
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/agentIdsResponse'
-        - $ref: '#/components/schemas/agentIdsCFResponse'
-    agentIdsCFResponse:
-      allOf:
-      - type:
+        - integer
+        format: int32
+        description: Number of agents to fetch. The default value is 10 and the maximum value supported is 200.
+        maximum: 200
+        minimum: 10
+        pattern: ([0-9]+)
+    status:
+      name: status
+      in: query
+      description: 'Parameter that filters agents based on their activation status: @ACTIVE@ or @DISABLED@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
         - 'null'
-        - object
-        additionalProperties: false
-        properties:
-          cf:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            patternProperties:
-              ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        required:
-        - cf
-      - $ref: '#/components/schemas/agentIdsResponse'
-    agentCFResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/agentCFInputStream'
-      - type:
-        - 'null'
-        - object
-        properties:
-          photoURL:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          name:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-          timeZone:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: '[a-zA-Z_/\-\+0-9]*'
-          isConfirmed:
-            type:
-            - boolean
-            - 'null'
-          id:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          zuid:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int32
-            pattern: ([0-9]+)
-          isZiaAgent:
-            type:
-            - boolean
-            - 'null'
-            description: Indicates whether the agent is a Zia agent or a human agent
-        required:
-        - id
-        - isConfirmed
-        - isZiaAgent
-        - name
-        - photoURL
-        - timeZone
-        - zuid
-    newReassignOwner:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        taskNewOwner:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        ticketNewOwner:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - departmentId
-      - taskNewOwner
-      - ticketNewOwner
-    myPreferenceInputStrm:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        namePattern:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            enum:
-            - LAST_NAME
-            - FIRST_NAME
-            maxLength: 100
-            minLength: 0
-          maxItems: 2
-          minItems: 2
-          uniqueItems: true
-        currentDepartment:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - currentDepartment
-      - namePattern
-    addAgentInputStream:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        extn:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        roleId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        langCode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[a-zA-Z_]*'
-        mobile:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        emailId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-        associatedChatDepartmentIds:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          uniqueItems: true
-        associatedDepartmentIds:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            - integer
-            format: int64
-            pattern: ([0-9]+)
-          uniqueItems: true
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        phone:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        countryCode:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: '[a-zA-Z_]*'
-        profileId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        rolePermissionType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - AgentPublic
-          - AgentPersonal
-          - AgentTeamPersonal
-          - Admin
-          - Custom
-          - Light
-          maxLength: 100
-          minLength: 0
-        aboutInfo:
-          type:
-          - string
-          - 'null'
-          maxLength: 65535
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ACTIVE
-          - DISABLED
-          maxLength: 100
-          minLength: 0
-      required:
-      - aboutInfo
-      - associatedChatDepartmentIds
-      - associatedDepartmentIds
-      - countryCode
-      - emailId
-      - extn
-      - firstName
-      - langCode
-      - lastName
-      - mobile
-      - phone
-      - profileId
-      - roleId
-      - rolePermissionType
-      - status
-    scheduleReassignmentArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/newReassignOwner'
+        description: 'Key that filters agents based on their activation status: @ACTIVE@, @DISABLED@, @DELETED@ or @IMPORTED@'
+        enum:
+        - ACTIVE
+        - DISABLED
   responses:
+    agentCFResponse:
+      description: agentCFResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/agentCFInputStream'
+            - type:
+              - 'null'
+              - object
+              properties:
+                photoURL:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                name:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                timeZone:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: '[a-zA-Z_/\-\+0-9]*'
+                isConfirmed:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                zuid:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int32
+                  pattern: ([0-9]+)
+              required:
+              - id
+              - isConfirmed
+              - name
+              - photoURL
+              - timeZone
+              - zuid
+          examples:
+            Valid responses Definitions:
+              value:
+                lastName: Walsh
+                extn: ''
+                roleId: '1892000000056099'
+                langCode: fr_FR
+                mobile: ''
+                timeZone: Pacific/Majuro
+                emailId: marisol51@zylker.com
+                associatedChatDepartmentIds: []
+                zuid: ''
+                associatedDepartmentIds:
+                - '1892000000006907'
+                - '1892000000082069'
+                firstName: Marisol
+                photoURL: null
+                phone: ''
+                profileId: '1892000000056091'
+                countryCode: en_US
+                channelExpert: []
+                name: Walsh Marisol
+                rolePermissionType: Admin
+                isConfirmed: true
+                aboutInfo: ''
+                id: '1892000000056007'
+                status: ACTIVE
+                isZiaAgent: false
+    getAgentsByIdsResponse:
+      description: getAgentsByIdsResponse template definitions
+      content:
+        application/json:
+          schema:
+            anyOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Department.json#/components/schemas/agentData
+              required:
+              - data
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Department.json#/components/schemas/agentData
+              required:
+              - data
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: '#/components/schemas/agentIdsResponseArray'
+              required:
+              - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - firstName: ''
+                  lastName: case
+                  photoURL: null
+                  roleId: '7000000012324'
+                  profileId: '7000000012339'
+                  emailId: case@zylker.com
+                  id: '1892000000056007'
+                  zuid: '437793'
+                - firstName: ''
+                  lastName: jade
+                  photoURL: https://desk.zoho.com/api/v1/agents/1892000000042001/photo?orgId=3981311
+                  roleId: '7000000012324'
+                  profileId: '7000000012339'
+                  emailId: jade@zylker.com
+                  id: '1892000000042001'
+                  zuid: '279392'
+                - firstName: Steve
+                  lastName: Waugh
+                  photoURL: https://desk.zoho.com/api/v1/agents/1892000000888059/photo?orgId=3981311
+                  roleId: '70000000127346'
+                  profileId: '70000000120834'
+                  emailId: stephen@zylker.com
+                  id: '1892000000888059'
+                  zuid: '91723912'
     updateAgentResponse:
       description: updateAgentResponse template definitions
       content:
@@ -1349,175 +977,6 @@ components:
                 rolePermissionType: Admin
                 isConfirmed: true
                 aboutInfo: Expert in handling Reports
-                id: '1892000000056007'
-                status: ACTIVE
-                isZiaAgent: false
-    myPhotoResponse:
-      description: myPhotoResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              photoURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - photoURL
-          examples:
-            Valid responses Definitions:
-              value:
-                photoURL: https://desk.zoho.com/api/v1/agents/1892000000056007/photo?orgId=3981311
-    getAgentsByIdsResponse:
-      description: getAgentsByIdsResponse template definitions
-      content:
-        application/json:
-          schema:
-            anyOf:
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./Department.json#/components/schemas/agentData
-              required:
-              - data
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./Department.json#/components/schemas/agentData
-              required:
-              - data
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: '#/components/schemas/agentIdsResponseArray'
-              required:
-              - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - firstName: ''
-                  lastName: case
-                  photoURL: null
-                  roleId: '7000000012324'
-                  profileId: '7000000012339'
-                  emailId: case@zylker.com
-                  id: '1892000000056007'
-                  zuid: '437793'
-                - firstName: ''
-                  lastName: jade
-                  photoURL: https://desk.zoho.com/api/v1/agents/1892000000042001/photo?orgId=3981311
-                  roleId: '7000000012324'
-                  profileId: '7000000012339'
-                  emailId: jade@zylker.com
-                  id: '1892000000042001'
-                  zuid: '279392'
-                - firstName: Steve
-                  lastName: Waugh
-                  photoURL: https://desk.zoho.com/api/v1/agents/1892000000888059/photo?orgId=3981311
-                  roleId: '70000000127346'
-                  profileId: '70000000120834'
-                  emailId: stephen@zylker.com
-                  id: '1892000000888059'
-                  zuid: '91723912'
-    agentCFResponse:
-      description: agentCFResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/agentCFInputStream'
-            - type:
-              - 'null'
-              - object
-              properties:
-                photoURL:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                name:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                timeZone:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: '[a-zA-Z_/\-\+0-9]*'
-                isConfirmed:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                zuid:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int32
-                  pattern: ([0-9]+)
-              required:
-              - id
-              - isConfirmed
-              - name
-              - photoURL
-              - timeZone
-              - zuid
-          examples:
-            Valid responses Definitions:
-              value:
-                lastName: Walsh
-                extn: ''
-                roleId: '1892000000056099'
-                langCode: fr_FR
-                mobile: ''
-                timeZone: Pacific/Majuro
-                emailId: marisol51@zylker.com
-                associatedChatDepartmentIds: []
-                zuid: ''
-                associatedDepartmentIds:
-                - '1892000000006907'
-                - '1892000000082069'
-                firstName: Marisol
-                photoURL: null
-                phone: ''
-                profileId: '1892000000056091'
-                countryCode: en_US
-                channelExpert: []
-                name: Walsh Marisol
-                rolePermissionType: Admin
-                isConfirmed: true
-                aboutInfo: ''
                 id: '1892000000056007'
                 status: ACTIVE
                 isZiaAgent: false
@@ -2171,8 +1630,8 @@ components:
                 aboutInfo: Expert in handling tickets and Automations
                 status: ACTIVE
                 isZiaAgent: false
-    agentListArray:
-      description: agentListArray template definitions
+    myPhotoResponse:
+      description: myPhotoResponse template definitions
       content:
         application/json:
           schema:
@@ -2181,668 +1640,19 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: '#/components/schemas/agentResponseArray'
+              photoURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
             required:
-            - data
+            - photoURL
           examples:
             Valid responses Definitions:
               value:
-                data:
-                - lastName: case
-                  extn: '3298'
-                  roleId: '1892000000056099'
-                  langCode: en_US
-                  mobile: ''
-                  emailId: case@zylker.com
-                  associatedChatDepartmentIds: []
-                  zuid: '10687231'
-                  associatedDepartmentIds:
-                  - '1892000000006907'
-                  - '1892000000082069'
-                  - '1892000000639717'
-                  firstName: ''
-                  photoURL: null
-                  phone: '12121'
-                  profileId: '1892000000056091'
-                  countryCode: en_US
-                  channelExpert:
-                  - Facebook
-                  - Chat
-                  - Phone
-                  - Twitter
-                  - Web
-                  - Email
-                  - Forums
-                  name: case
-                  isConfirmed: true
-                  aboutInfo: Expert in handling tickets and Automations
-                  id: '1892000000056007'
-                  status: ACTIVE
-                  isZiaAgent: false
-                - lastName: jade
-                  extn: '3203'
-                  roleId: '1892000000056899'
-                  langCode: en_US
-                  mobile: ''
-                  emailId: jade@zylker.com
-                  associatedChatDepartmentIds: []
-                  zuid: '10657727'
-                  associatedDepartmentIds:
-                  - '1892000000006907'
-                  - '1892000000082069'
-                  - '1892000000639717'
-                  - '1892000001019041'
-                  - '1892000001106673'
-                  - '1892000001109673'
-                  firstName: ''
-                  photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
-                  phone: ''
-                  profileId: '1892000000056091'
-                  countryCode: en_US
-                  channelExpert:
-                  - Facebook
-                  - Email
-                  - Forums
-                  name: jade
-                  isConfirmed: true
-                  aboutInfo: Expert in handling tickets
-                  id: '1892000000042001'
-                  status: ACTIVE
-                  isZiaAgent: false
-                - lastName: john
-                  extn: '3228'
-                  roleId: '1892000000056004'
-                  langCode: en_US
-                  mobile: ''
-                  emailId: john@zylker.com
-                  associatedChatDepartmentIds: []
-                  zuid: '10713988'
-                  associatedDepartmentIds:
-                  - '1892000000006907'
-                  - '1892000001019041'
-                  firstName: ''
-                  photoURL: null
-                  phone: '68779989'
-                  profileId: '18920000000232043'
-                  countryCode: en_US
-                  channelExpert:
-                  - Facebook
-                  - Chat
-                  - Phone
-                  - Twitter
-                  - Web
-                  - Email
-                  - Forums
-                  name: john
-                  isConfirmed: true
-                  aboutInfo: Expert in handling tickets and Automations
-                  id: '1892000000070001'
-                  status: DISABLED
-                - lastName: Waugh
-                  extn: '4020'
-                  roleId: '1892000000056004'
-                  langCode: ja_JP
-                  mobile: ''
-                  emailId: stephen@zylker.com
-                  associatedChatDepartmentIds: []
-                  zuid: null
-                  associatedDepartmentIds:
-                  - '1892000000006907'
-                  - '1892000000082069'
-                  - '1892000000639717'
-                  firstName: Steve
-                  photoURL: null
-                  phone: ''
-                  profileId: '18920000000232043'
-                  countryCode: en_US
-                  channelExpert:
-                  - Facebook
-                  - Chat
-                  name: Steve Waugh
-                  isConfirmed: false
-                  aboutInfo: Expert in handling Departments
-                  id: '1892000000888059'
-                  status: ACTIVE
-                  isZiaAgent: false
-    getMyInfoResponse:
-      description: getMyInfoResponse template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                associatedChatDepartments:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - 'null'
-                    - object
-                    additionalProperties: false
-                    maxProperties: 3
-                    minProperties: 3
-                    properties:
-                      sanitizedName:
-                        type:
-                        - string
-                        - 'null'
-                        maxLength: 100
-                        minLength: 0
-                      name:
-                        type:
-                        - string
-                        - 'null'
-                        maxLength: 200
-                        minLength: 0
-                        pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                      id:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                    required:
-                    - id
-                    - name
-                    - sanitizedName
-                  uniqueItems: false
-                role:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 10
-                  minProperties: 10
-                  properties:
-                    isDefault:
-                      type:
-                      - boolean
-                      - 'null'
-                    shareDataWithPeers:
-                      type:
-                      - boolean
-                      - 'null'
-                    immediateSubRoles:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    encId:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    name:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    description:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    adminRole:
-                      type:
-                      - boolean
-                      - 'null'
-                    reportsTo:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    isVisible:
-                      type:
-                      - boolean
-                      - 'null'
-                  required:
-                  - adminRole
-                  - description
-                  - encId
-                  - id
-                  - immediateSubRoles
-                  - isDefault
-                  - isVisible
-                  - name
-                  - reportsTo
-                  - shareDataWithPeers
-                profile:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 21
-                  minProperties: 21
-                  properties:
-                    modifiedTime:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                    visible:
-                      type:
-                      - boolean
-                      - 'null'
-                    allowedTabs:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    defaultProfile:
-                      type:
-                      - boolean
-                      - 'null'
-                    allowedPermissionNames:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                      uniqueItems: false
-                    type:
-                      type:
-                      - string
-                      - 'null'
-                      enum:
-                      - ADMIN
-                      - STANDARD
-                      - LIGHT
-                      - CUSTOM
-                      - PORTAL
-                      maxLength: 100
-                      minLength: 0
-                    invisibleTabs:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    portalProfile:
-                      type:
-                      - boolean
-                      - 'null'
-                    prohibitedPermissionNames:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                      uniqueItems: false
-                    allowedPermissions:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    profileDesc:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 32000
-                      minLength: 0
-                    createdBy:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    lightAgentProfile:
-                      type:
-                      - boolean
-                      - 'null'
-                    name:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 50
-                      minLength: 0
-                    visibleTabs:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    createdTime:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                    modifiedBy:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    category:
-                      type:
-                      - boolean
-                      - 'null'
-                    prohibitedPermisisons:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                      uniqueItems: false
-                    adminProfile:
-                      type:
-                      - boolean
-                      - 'null'
-                  required:
-                  - adminProfile
-                  - allowedPermissionNames
-                  - allowedPermissions
-                  - allowedTabs
-                  - category
-                  - createdBy
-                  - createdTime
-                  - defaultProfile
-                  - id
-                  - invisibleTabs
-                  - lightAgentProfile
-                  - modifiedBy
-                  - modifiedTime
-                  - name
-                  - portalProfile
-                  - profileDesc
-                  - prohibitedPermisisons
-                  - prohibitedPermissionNames
-                  - type
-                  - visible
-                  - visibleTabs
-                associatedDepartments:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - 'null'
-                    - object
-                    additionalProperties: false
-                    maxProperties: 3
-                    minProperties: 3
-                    properties:
-                      sanitizedName:
-                        type:
-                        - string
-                        - 'null'
-                        maxLength: 100
-                        minLength: 0
-                      name:
-                        type:
-                        - string
-                        - 'null'
-                        maxLength: 200
-                        minLength: 0
-                        pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                      id:
-                        type:
-                        - string
-                        - 'null'
-                        - integer
-                        format: int64
-                        pattern: ([0-9]+)
-                    required:
-                    - id
-                    - name
-                    - sanitizedName
-                  uniqueItems: false
-            - oneOf:
-              - additionalProperties: false
-                allOf:
-                - $ref: '#/components/schemas/agentInputStream'
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    photoURL:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                    roleId:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    profileId:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    name:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    timeZone:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: '[a-zA-Z_/\-\+0-9]*'
-                    isConfirmed:
-                      type:
-                      - boolean
-                      - 'null'
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    zuid:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                    isZiaAgent:
-                      type:
-                      - boolean
-                      - 'null'
-                      description: Indicates whether the agent is a Zia agent or a human agent
-                  required:
-                  - id
-                  - isConfirmed
-                  - isZiaAgent
-                  - name
-                  - photoURL
-                  - profileId
-                  - roleId
-                  - timeZone
-                  - zuid
-              - additionalProperties: false
-                allOf:
-                - $ref: '#/components/schemas/agentCFInputStream'
-                - type:
-                  - 'null'
-                  - object
-                  properties:
-                    photoURL:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                    name:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    timeZone:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: '[a-zA-Z_/\-\+0-9]*'
-                    isConfirmed:
-                      type:
-                      - boolean
-                      - 'null'
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    zuid:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                    isZiaAgent:
-                      type:
-                      - boolean
-                      - 'null'
-                      description: Indicates whether the agent is a Zia agent or a human agent
-                  required:
-                  - id
-                  - isConfirmed
-                  - isZiaAgent
-                  - name
-                  - photoURL
-                  - timeZone
-                  - zuid
-          examples:
-            Valid responses Definitions:
-              value:
-                associatedChatDepartments:
-                - sanitizedName: Developement
-                  name: Developement
-                  id: '1892000000006907'
-                lastName: Emard
-                extn: ''
-                role:
-                  name: CEO
-                  id: '1892000000056099'
-                langCode: fr_FR
-                emailId: emardtorrey@zylker.com
-                photoURL: null
-                countryCode: en_US
-                isConfirmed: true
-                id: '1892000000056007'
-                roleId: '1892000000056099'
-                profile:
-                  name: Administrator
-                  id: '1892000000056091'
-                mobile: ''
-                timeZone: Pacific/Majuro
-                associatedChatDepartmentIds:
-                - '1892000000006907'
-                zuid: '10687231'
-                associatedDepartmentIds:
-                - '1892000000006907'
-                - '1892000000082069'
-                associatedDepartments:
-                - sanitizedName: Developement
-                  name: Developement
-                  id: '1892000000006907'
-                - sanitizedName: r-d
-                  name: R & D
-                  id: '1892000000082069'
-                firstName: Torrey
-                phone: ''
-                profileId: '1892000000056091'
-                channelExpert:
-                - Facebook
-                - Chat
-                - Phone
-                - Twitter
-                - Web
-                - Email
-                - Forums
-                name: Torrey Emard
-                rolePermissionType: Admin
-                aboutInfo: Expert in handling tickets and Automations
-                status: ACTIVE
-                isZiaAgent: false
+                photoURL: https://desk.zoho.com/api/v1/agents/1892000000056007/photo?orgId=3981311
     myPreference:
       description: myPreference template definitions
       content:
@@ -4085,8 +2895,8 @@ components:
                 loginLandingPage: LISTVIEW
                 loadGettingStartedPage: DISABLED
                 pinAllReports: ENABLED
-  requestBodies:
-    updateAgent_addAgentInputStream:
+    agentListArray:
+      description: agentListArray template definitions
       content:
         application/json:
           schema:
@@ -4095,137 +2905,1317 @@ components:
             - object
             additionalProperties: false
             properties:
-              lastName:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-              extn:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              roleId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              langCode:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z_]*'
-              mobile:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              emailId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              associatedChatDepartmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-              associatedDepartmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-              firstName:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 0
-              phone:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              countryCode:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z_]*'
-              profileId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              rolePermissionType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - AgentPublic
-                - AgentPersonal
-                - AgentTeamPersonal
-                - Admin
-                - Custom
-                - Light
-                maxLength: 100
-                minLength: 0
-              aboutInfo:
-                type:
-                - string
-                - 'null'
-                maxLength: 65535
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - DISABLED
-                maxLength: 100
-                minLength: 0
+              data:
+                $ref: '#/components/schemas/agentResponseArray'
+            required:
+            - data
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                lastName: Marisol Walsh
-                firstName: K
-                phone: 764-484-8068
-                rolePermissionType: Light
+                data:
+                - lastName: case
+                  extn: '3298'
+                  roleId: '1892000000056099'
+                  langCode: en_US
+                  mobile: ''
+                  emailId: case@zylker.com
+                  associatedChatDepartmentIds: []
+                  zuid: '10687231'
+                  associatedDepartmentIds:
+                  - '1892000000006907'
+                  - '1892000000082069'
+                  - '1892000000639717'
+                  firstName: ''
+                  photoURL: null
+                  phone: '12121'
+                  profileId: '1892000000056091'
+                  countryCode: en_US
+                  channelExpert:
+                  - Facebook
+                  - Chat
+                  - Phone
+                  - Twitter
+                  - Web
+                  - Email
+                  - Forums
+                  name: case
+                  isConfirmed: true
+                  aboutInfo: Expert in handling tickets and Automations
+                  id: '1892000000056007'
+                  status: ACTIVE
+                  isZiaAgent: false
+                - lastName: jade
+                  extn: '3203'
+                  roleId: '1892000000056899'
+                  langCode: en_US
+                  mobile: ''
+                  emailId: jade@zylker.com
+                  associatedChatDepartmentIds: []
+                  zuid: '10657727'
+                  associatedDepartmentIds:
+                  - '1892000000006907'
+                  - '1892000000082069'
+                  - '1892000000639717'
+                  - '1892000001019041'
+                  - '1892000001106673'
+                  - '1892000001109673'
+                  firstName: ''
+                  photoURL: https://contacts.zoho.com/file?t=user&ID=10657727
+                  phone: ''
+                  profileId: '1892000000056091'
+                  countryCode: en_US
+                  channelExpert:
+                  - Facebook
+                  - Email
+                  - Forums
+                  name: jade
+                  isConfirmed: true
+                  aboutInfo: Expert in handling tickets
+                  id: '1892000000042001'
+                  status: ACTIVE
+                  isZiaAgent: false
+                - lastName: john
+                  extn: '3228'
+                  roleId: '1892000000056004'
+                  langCode: en_US
+                  mobile: ''
+                  emailId: john@zylker.com
+                  associatedChatDepartmentIds: []
+                  zuid: '10713988'
+                  associatedDepartmentIds:
+                  - '1892000000006907'
+                  - '1892000001019041'
+                  firstName: ''
+                  photoURL: null
+                  phone: '68779989'
+                  profileId: '18920000000232043'
+                  countryCode: en_US
+                  channelExpert:
+                  - Facebook
+                  - Chat
+                  - Phone
+                  - Twitter
+                  - Web
+                  - Email
+                  - Forums
+                  name: john
+                  isConfirmed: true
+                  aboutInfo: Expert in handling tickets and Automations
+                  id: '1892000000070001'
+                  status: DISABLED
+                - lastName: Waugh
+                  extn: '4020'
+                  roleId: '1892000000056004'
+                  langCode: ja_JP
+                  mobile: ''
+                  emailId: stephen@zylker.com
+                  associatedChatDepartmentIds: []
+                  zuid: null
+                  associatedDepartmentIds:
+                  - '1892000000006907'
+                  - '1892000000082069'
+                  - '1892000000639717'
+                  firstName: Steve
+                  photoURL: null
+                  phone: ''
+                  profileId: '18920000000232043'
+                  countryCode: en_US
+                  channelExpert:
+                  - Facebook
+                  - Chat
+                  name: Steve Waugh
+                  isConfirmed: false
+                  aboutInfo: Expert in handling Departments
+                  id: '1892000000888059'
+                  status: ACTIVE
+                  isZiaAgent: false
+    getMyInfoResponse:
+      description: getMyInfoResponse template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                associatedChatDepartments:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - 'null'
+                    - object
+                    additionalProperties: false
+                    maxProperties: 3
+                    minProperties: 3
+                    properties:
+                      sanitizedName:
+                        type:
+                        - string
+                        - 'null'
+                        maxLength: 100
+                        minLength: 0
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                        maxLength: 200
+                        minLength: 0
+                        pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                    required:
+                    - id
+                    - name
+                    - sanitizedName
+                  uniqueItems: false
+                role:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 10
+                  minProperties: 10
+                  properties:
+                    isDefault:
+                      type:
+                      - boolean
+                      - 'null'
+                    shareDataWithPeers:
+                      type:
+                      - boolean
+                      - 'null'
+                    immediateSubRoles:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    encId:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    adminRole:
+                      type:
+                      - boolean
+                      - 'null'
+                    reportsTo:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    isVisible:
+                      type:
+                      - boolean
+                      - 'null'
+                  required:
+                  - adminRole
+                  - description
+                  - encId
+                  - id
+                  - immediateSubRoles
+                  - isDefault
+                  - isVisible
+                  - name
+                  - reportsTo
+                  - shareDataWithPeers
+                profile:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 21
+                  minProperties: 21
+                  properties:
+                    modifiedTime:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                    visible:
+                      type:
+                      - boolean
+                      - 'null'
+                    allowedTabs:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    defaultProfile:
+                      type:
+                      - boolean
+                      - 'null'
+                    allowedPermissionNames:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                      uniqueItems: false
+                    type:
+                      type:
+                      - string
+                      - 'null'
+                      enum:
+                      - ADMIN
+                      - STANDARD
+                      - LIGHT
+                      - CUSTOM
+                      - PORTAL
+                      maxLength: 100
+                      minLength: 0
+                    invisibleTabs:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    portalProfile:
+                      type:
+                      - boolean
+                      - 'null'
+                    prohibitedPermissionNames:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                      uniqueItems: false
+                    allowedPermissions:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    profileDesc:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 32000
+                      minLength: 0
+                    createdBy:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    lightAgentProfile:
+                      type:
+                      - boolean
+                      - 'null'
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 50
+                      minLength: 0
+                    visibleTabs:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    createdTime:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                    modifiedBy:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    category:
+                      type:
+                      - boolean
+                      - 'null'
+                    prohibitedPermisisons:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                      uniqueItems: false
+                    adminProfile:
+                      type:
+                      - boolean
+                      - 'null'
+                  required:
+                  - adminProfile
+                  - allowedPermissionNames
+                  - allowedPermissions
+                  - allowedTabs
+                  - category
+                  - createdBy
+                  - createdTime
+                  - defaultProfile
+                  - id
+                  - invisibleTabs
+                  - lightAgentProfile
+                  - modifiedBy
+                  - modifiedTime
+                  - name
+                  - portalProfile
+                  - profileDesc
+                  - prohibitedPermisisons
+                  - prohibitedPermissionNames
+                  - type
+                  - visible
+                  - visibleTabs
+                associatedDepartments:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - 'null'
+                    - object
+                    additionalProperties: false
+                    maxProperties: 3
+                    minProperties: 3
+                    properties:
+                      sanitizedName:
+                        type:
+                        - string
+                        - 'null'
+                        maxLength: 100
+                        minLength: 0
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                        maxLength: 200
+                        minLength: 0
+                        pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                      id:
+                        type:
+                        - string
+                        - 'null'
+                        - integer
+                        format: int64
+                        pattern: ([0-9]+)
+                    required:
+                    - id
+                    - name
+                    - sanitizedName
+                  uniqueItems: false
+            - oneOf:
+              - additionalProperties: false
+                allOf:
+                - $ref: '#/components/schemas/agentInputStream'
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    photoURL:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                    roleId:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    profileId:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    timeZone:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: '[a-zA-Z_/\-\+0-9]*'
+                    isConfirmed:
+                      type:
+                      - boolean
+                      - 'null'
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    zuid:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                    isZiaAgent:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Indicates whether the agent is a Zia agent or a human agent
+                  required:
+                  - id
+                  - isConfirmed
+                  - isZiaAgent
+                  - name
+                  - photoURL
+                  - profileId
+                  - roleId
+                  - timeZone
+                  - zuid
+              - additionalProperties: false
+                allOf:
+                - $ref: '#/components/schemas/agentCFInputStream'
+                - type:
+                  - 'null'
+                  - object
+                  properties:
+                    photoURL:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    timeZone:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: '[a-zA-Z_/\-\+0-9]*'
+                    isConfirmed:
+                      type:
+                      - boolean
+                      - 'null'
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    zuid:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                    isZiaAgent:
+                      type:
+                      - boolean
+                      - 'null'
+                      description: Indicates whether the agent is a Zia agent or a human agent
+                  required:
+                  - id
+                  - isConfirmed
+                  - isZiaAgent
+                  - name
+                  - photoURL
+                  - timeZone
+                  - zuid
+          examples:
+            Valid responses Definitions:
+              value:
+                associatedChatDepartments:
+                - sanitizedName: Developement
+                  name: Developement
+                  id: '1892000000006907'
+                lastName: Emard
+                extn: ''
+                role:
+                  name: CEO
+                  id: '1892000000056099'
+                langCode: fr_FR
+                emailId: emardtorrey@zylker.com
+                photoURL: null
+                countryCode: en_US
+                isConfirmed: true
+                id: '1892000000056007'
+                roleId: '1892000000056099'
+                profile:
+                  name: Administrator
+                  id: '1892000000056091'
+                mobile: ''
+                timeZone: Pacific/Majuro
+                associatedChatDepartmentIds:
+                - '1892000000006907'
+                zuid: '10687231'
                 associatedDepartmentIds:
                 - '1892000000006907'
                 - '1892000000082069'
+                associatedDepartments:
+                - sanitizedName: Developement
+                  name: Developement
+                  id: '1892000000006907'
+                - sanitizedName: r-d
+                  name: R & D
+                  id: '1892000000082069'
+                firstName: Torrey
+                phone: ''
+                profileId: '1892000000056091'
+                channelExpert:
+                - Facebook
+                - Chat
+                - Phone
+                - Twitter
+                - Web
+                - Email
+                - Forums
+                name: Torrey Emard
+                rolePermissionType: Admin
+                aboutInfo: Expert in handling tickets and Automations
+                status: ACTIVE
+                isZiaAgent: false
+  schemas:
+    agentIdsResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        extn:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        roleId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        mobile:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        emailId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+        zuid:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        associatedDepartmentIds:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          uniqueItems: true
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        profileId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        channelExpert:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            x-dynamic-enum: true
+          uniqueItems: false
+        rolePermissionType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - AgentPublic
+          - AgentPersonal
+          - AgentTeamPersonal
+          - Admin
+          - Custom
+          - Light
+          maxLength: 100
+          minLength: 0
+        isConfirmed:
+          type:
+          - boolean
+          - 'null'
+        aboutInfo:
+          type:
+          - string
+          - 'null'
+          maxLength: 65535
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ACTIVE
+          - DISABLED
+          - DELETED
+          - IMPORTED
+          maxLength: 100
+          minLength: 0
+        isZiaAgent:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the agent is a Zia agent or a human agent
+      required:
+      - aboutInfo
+      - associatedDepartmentIds
+      - channelExpert
+      - emailId
+      - extn
+      - firstName
+      - id
+      - isConfirmed
+      - lastName
+      - mobile
+      - phone
+      - photoURL
+      - profileId
+      - roleId
+      - rolePermissionType
+      - status
+      - zuid
+    scheduleReassignmentArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/newReassignOwner'
+    agentResponseArray:
+      type:
+      - 'null'
+      - array
+      items:
+        anyOf:
+        - $ref: '#/components/schemas/agentResponse'
+        - $ref: '#/components/schemas/agentCFResponse'
+    agentInputStream:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/addAgentInputStream'
+      - type:
+        - 'null'
+        - object
+        properties:
+          channelExpert:
+            type:
+            - 'null'
+            - array
+            items:
+              type:
+              - string
+              - 'null'
+              x-dynamic-enum: true
+            uniqueItems: false
+        required:
+        - channelExpert
+    addAgentInputStream:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        extn:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        roleId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        langCode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[a-zA-Z_]*'
+        mobile:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        emailId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+        associatedChatDepartmentIds:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          uniqueItems: true
+        associatedDepartmentIds:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          uniqueItems: true
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        phone:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        countryCode:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: '[a-zA-Z_]*'
+        profileId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        rolePermissionType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - AgentPublic
+          - AgentPersonal
+          - AgentTeamPersonal
+          - Admin
+          - Custom
+          - Light
+          maxLength: 100
+          minLength: 0
+        aboutInfo:
+          type:
+          - string
+          - 'null'
+          maxLength: 65535
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ACTIVE
+          - DISABLED
+          maxLength: 100
+          minLength: 0
+      required:
+      - aboutInfo
+      - associatedChatDepartmentIds
+      - associatedDepartmentIds
+      - countryCode
+      - emailId
+      - extn
+      - firstName
+      - langCode
+      - lastName
+      - mobile
+      - phone
+      - profileId
+      - roleId
+      - rolePermissionType
+      - status
+    agentIdsCFResponse:
+      allOf:
+      - type:
+        - 'null'
+        - object
+        additionalProperties: false
+        properties:
+          cf:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            patternProperties:
+              ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        required:
+        - cf
+      - $ref: '#/components/schemas/agentIdsResponse'
+    agentIdsResponseArray:
+      type:
+      - 'null'
+      - array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/agentIdsResponse'
+        - $ref: '#/components/schemas/agentIdsCFResponse'
+    agentCFResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/agentCFInputStream'
+      - type:
+        - 'null'
+        - object
+        properties:
+          photoURL:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          name:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+          timeZone:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: '[a-zA-Z_/\-\+0-9]*'
+          isConfirmed:
+            type:
+            - boolean
+            - 'null'
+          id:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          zuid:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            pattern: ([0-9]+)
+          isZiaAgent:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the agent is a Zia agent or a human agent
+        required:
+        - id
+        - isConfirmed
+        - isZiaAgent
+        - name
+        - photoURL
+        - timeZone
+        - zuid
+    agentResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/agentInputStream'
+      - type:
+        - 'null'
+        - object
+        properties:
+          photoURL:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          roleId:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          profileId:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          name:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+          timeZone:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: '[a-zA-Z_/\-\+0-9]*'
+          isConfirmed:
+            type:
+            - boolean
+            - 'null'
+          id:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int64
+            pattern: ([0-9]+)
+          zuid:
+            type:
+            - string
+            - 'null'
+            - integer
+            format: int32
+            pattern: ([0-9]+)
+          isZiaAgent:
+            type:
+            - boolean
+            - 'null'
+            description: Indicates whether the agent is a Zia agent or a human agent
+        required:
+        - id
+        - isConfirmed
+        - isZiaAgent
+        - name
+        - photoURL
+        - profileId
+        - roleId
+        - timeZone
+        - zuid
+    newReassignOwner:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        departmentId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        taskNewOwner:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        ticketNewOwner:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - departmentId
+      - taskNewOwner
+      - ticketNewOwner
+    myPreferenceInputStrm:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        namePattern:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            enum:
+            - LAST_NAME
+            - FIRST_NAME
+            maxLength: 100
+            minLength: 0
+          maxItems: 2
+          minItems: 2
+          uniqueItems: true
+        currentDepartment:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - currentDepartment
+      - namePattern
+    agentCFInputStream:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/agentInputStream'
+      - type:
+        - 'null'
+        - object
+        properties:
+          cf:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            patternProperties:
+              ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        required:
+        - cf
+  requestBodies:
+    myPreferenceInputStrm:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              namePattern:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - LAST_NAME
+                  - FIRST_NAME
+                  maxLength: 100
+                  minLength: 0
+                maxItems: 2
+                minItems: 2
+                uniqueItems: true
+              currentDepartment:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                namePattern:
+                - LAST_NAME
+                - FIRST_NAME
+                articleAutoSuggestion: ENABLED
+                keyBoardShortcuts: ENABLED
+                pinAllAccounts: ENABLED
+                outBoxDelayTime: 60S
+                collapseSidePanel: DISABLED
+                pinAllTickets: ENABLED
+                ticketConversationView: ENABLED
+                contactsView: LIST
+                accountsView: LIST
+                pinAllContacts: ENABLED
+                ticketsView: STATUS_QUEUE
+                defaultSendBehavior: Send
+                datePattern: dd/MM/yyyy
+                currentDepartment: '1892000000082069'
+                timeFormat: 12-hour
+                outBoxDelay: DISABLED
+                pinAllDashboards: DISABLED
+                loginLandingPage: LISTVIEW
+                loadGettingStartedPage: DISABLED
+                pinAllReports: ENABLED
     deleteUnConfAgentRequest:
       content:
         application/json:
@@ -4404,6 +4394,146 @@ components:
                 associatedDepartmentIds:
                 - '1892000000006907'
                 - '1892000000082069'
+    updateAgent_addAgentInputStream:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              lastName:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+              extn:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              roleId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              langCode:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z_]*'
+              mobile:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              emailId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              associatedChatDepartmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+              associatedDepartmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+              firstName:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 0
+              phone:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              countryCode:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z_]*'
+              profileId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              rolePermissionType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - AgentPublic
+                - AgentPersonal
+                - AgentTeamPersonal
+                - Admin
+                - Custom
+                - Light
+                maxLength: 100
+                minLength: 0
+              aboutInfo:
+                type:
+                - string
+                - 'null'
+                maxLength: 65535
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - DISABLED
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                lastName: Marisol Walsh
+                firstName: K
+                phone: 764-484-8068
+                rolePermissionType: Light
+                associatedDepartmentIds:
+                - '1892000000006907'
+                - '1892000000082069'
     scheduleReassignment:
       content:
         application/json:
@@ -4430,64 +4560,6 @@ components:
                 - departmentId: 19000000007073
                   taskNewOwner: '19000000008872'
                   ticketNewOwner: '19000000182001'
-    myPreferenceInputStrm:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              namePattern:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - LAST_NAME
-                  - FIRST_NAME
-                  maxLength: 100
-                  minLength: 0
-                maxItems: 2
-                minItems: 2
-                uniqueItems: true
-              currentDepartment:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                namePattern:
-                - LAST_NAME
-                - FIRST_NAME
-                articleAutoSuggestion: ENABLED
-                keyBoardShortcuts: ENABLED
-                pinAllAccounts: ENABLED
-                outBoxDelayTime: 60S
-                collapseSidePanel: DISABLED
-                pinAllTickets: ENABLED
-                ticketConversationView: ENABLED
-                contactsView: LIST
-                accountsView: LIST
-                pinAllContacts: ENABLED
-                ticketsView: STATUS_QUEUE
-                defaultSendBehavior: Send
-                datePattern: dd/MM/yyyy
-                currentDepartment: '1892000000082069'
-                timeFormat: 12-hour
-                outBoxDelay: DISABLED
-                pinAllDashboards: DISABLED
-                loginLandingPage: LISTVIEW
-                loadGettingStartedPage: DISABLED
-                pinAllReports: ENABLED
     anonymizeAgentsRequest:
       content:
         application/json:
@@ -4507,78 +4579,6 @@ components:
             Valid requestBody Definitions:
               value:
                 anonymizedName: Anonyme
-  parameters:
-    agentId:
-      name: agentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    status:
-      name: status
-      in: query
-      description: 'Parameter that filters agents based on their activation status: @ACTIVE@ or @DISABLED@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters agents based on their activation status: @ACTIVE@, @DISABLED@, @DELETED@ or @IMPORTED@'
-        enum:
-        - ACTIVE
-        - DISABLED
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the deleted agents must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the agents must be fetched
-        minimum: 0
-        pattern: ([0-9]+)
-    isConfirmed:
-      name: isConfirmed
-      in: query
-      description: Filters Confirmed & Unconfirmed agents
-      required: false
-      style: form
-      explode: true
-      schema:
-        type: boolean
-        description: Key that denotes if the agents must be confirmed or unconfirmed.
-    limit:
-      name: limit
-      in: query
-      description: Number of agents to fetch; default value is 10 and maximum value is 200
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of agents to fetch. The default value is 10 and the maximum value supported is 200.
-        maximum: 200
-        minimum: 10
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

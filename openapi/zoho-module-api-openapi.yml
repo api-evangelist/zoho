@@ -195,73 +195,6 @@ paths:
       - external-public
 components:
   responses:
-    moduleJsonIncludingCustomModule:
-      description: moduleJsonIncludingCustomModule template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/moduleJsonIncludingCustomModuleforList'
-            - type:
-              - 'null'
-              - object
-              properties:
-                profileIds:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-                departmentIds:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-              required:
-              - departmentIds
-              - profileIds
-          examples:
-            Valid responses Definitions:
-              value:
-                displayLabel: Doctors
-                modifiedTime: 1713519302000
-                apiName: cm_doctors
-                modifier:
-                  firstName: ''
-                  lastName: Kyle
-                  photoURL: https://desk.zoho.com/api/v1/agents/4000000000329/photo?orgId=3981311
-                  id: '4000000000329'
-                  email: kyle@zylker.com
-                nameField: name
-                profileIds:
-                - '1000000029530'
-                description: Doctor informations
-                departmentIds:
-                - '1000000774623'
-                - '1000000025632'
-                pluralLabel: Doctors
-                singularLabel: Doctor
-                hasRecycleBin: true
-                createdBy: '1000000000375'
-                isCustomModule: true
-                createdTime: 1713517457000
-                modifiedBy: '1000000000375'
-                isDeptSpecific: true
-                id: '1000003000001'
     getOrganizationModulesResponse:
       description: getOrganizationModulesResponse template definitions
       content:
@@ -460,6 +393,73 @@ components:
                   modifiedBy: '1000000000375'
                   isDeptSpecific: true
                   id: '1000003000001'
+    moduleJsonIncludingCustomModule:
+      description: moduleJsonIncludingCustomModule template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/moduleJsonIncludingCustomModuleforList'
+            - type:
+              - 'null'
+              - object
+              properties:
+                profileIds:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+                departmentIds:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+              required:
+              - departmentIds
+              - profileIds
+          examples:
+            Valid responses Definitions:
+              value:
+                displayLabel: Doctors
+                modifiedTime: 1713519302000
+                apiName: cm_doctors
+                modifier:
+                  firstName: ''
+                  lastName: Kyle
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000000329/photo?orgId=3981311
+                  id: '4000000000329'
+                  email: kyle@zylker.com
+                nameField: name
+                profileIds:
+                - '1000000029530'
+                description: Doctor informations
+                departmentIds:
+                - '1000000774623'
+                - '1000000025632'
+                pluralLabel: Doctors
+                singularLabel: Doctor
+                hasRecycleBin: true
+                createdBy: '1000000000375'
+                isCustomModule: true
+                createdTime: 1713517457000
+                modifiedBy: '1000000000375'
+                isDeptSpecific: true
+                id: '1000003000001'
     getModulesResponse:
       description: getModulesResponse template definitions
       content:
@@ -775,41 +775,7 @@ components:
                   id: '1000000000475'
                   pluralLabel: IM
                   singularLabel: IM
-  parameters:
-    featureFlags:
-      name: featureFlags
-      in: header
-      required: false
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        enum:
-        - customModule
-        maxLength: 100
-        minLength: 0
-    moduleId:
-      name: moduleId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   schemas:
-    listOfModules:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/moduleJson'
     modulesWithNameFieldResponse:
       type:
       - 'null'
@@ -874,241 +840,6 @@ components:
       - nameField
       - pluralLabel
       - singularLabel
-    moduleJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        apiKey:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        isEnabled:
-          type:
-          - boolean
-          - 'null'
-        nameField:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        pluralLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        singularLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-      required:
-      - apiKey
-      - displayLabel
-      - id
-      - isEnabled
-      - nameField
-      - pluralLabel
-      - singularLabel
-    organizationModuleArrayOfResponses:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/custommoduleResponseWithNameField'
-    listOfModulesWithCustomModuleData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/modulesWithCustomModuleJson'
-    modulesWithCustomModuleJson:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/moduleJson'
-      - type:
-        - 'null'
-        - object
-        properties:
-          sanitizedName:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          isCustomModule:
-            type:
-            - boolean
-            - 'null'
-          singularI18NLabel:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          i18NLabel:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          isDeptSpecific:
-            type:
-            - boolean
-            - 'null'
-          isMigratedModule:
-            type:
-            - boolean
-            - 'null'
-        required:
-        - i18NLabel
-        - isCustomModule
-        - isDeptSpecific
-        - isMigratedModule
-        - sanitizedName
-        - singularI18NLabel
-    moduleJsonIncludingCustomModuleforList:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        displayLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        modifiedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        apiName:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        modifier:
-          $ref: '#/components/schemas/modifierJson'
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        nameField:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        pluralLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        singularLabel:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        hasRecycleBin:
-          type:
-          - boolean
-          - 'null'
-        createdBy:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        isCustomModule:
-          type:
-          - boolean
-          - 'null'
-        createdTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        isDeptSpecific:
-          type:
-          - boolean
-          - 'null'
-        modifiedBy:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - apiName
-      - createdBy
-      - createdTime
-      - description
-      - displayLabel
-      - hasRecycleBin
-      - id
-      - isCustomModule
-      - isDeptSpecific
-      - modifiedBy
-      - modifiedTime
-      - modifier
-      - nameField
-      - pluralLabel
-      - singularLabel
-    listOfModulesIncludingCustomModule:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/moduleJsonIncludingCustomModuleforList'
     custommoduleResponseWithNameField:
       type:
       - 'null'
@@ -1219,6 +950,125 @@ components:
       - nameField
       - pluralLabel
       - singularLabel
+    modulesWithNameField:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/modulesWithNameFieldResponse'
+    moduleJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        apiKey:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        isEnabled:
+          type:
+          - boolean
+          - 'null'
+        nameField:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        pluralLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        singularLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+      required:
+      - apiKey
+      - displayLabel
+      - id
+      - isEnabled
+      - nameField
+      - pluralLabel
+      - singularLabel
+    organizationModuleArrayOfResponses:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/custommoduleResponseWithNameField'
+    modulesWithCustomModuleJson:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/moduleJson'
+      - type:
+        - 'null'
+        - object
+        properties:
+          sanitizedName:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          isCustomModule:
+            type:
+            - boolean
+            - 'null'
+          singularI18NLabel:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          i18NLabel:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          isDeptSpecific:
+            type:
+            - boolean
+            - 'null'
+          isMigratedModule:
+            type:
+            - boolean
+            - 'null'
+        required:
+        - i18NLabel
+        - isCustomModule
+        - isDeptSpecific
+        - isMigratedModule
+        - sanitizedName
+        - singularI18NLabel
     modifierJson:
       type:
       - 'null'
@@ -1264,12 +1114,134 @@ components:
       - id
       - lastName
       - photoURL
-    modulesWithNameField:
+    listOfModulesWithCustomModuleData:
       type:
       - 'null'
       - array
       items:
-        $ref: '#/components/schemas/modulesWithNameFieldResponse'
+        $ref: '#/components/schemas/modulesWithCustomModuleJson'
+    listOfModules:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/moduleJson'
+    listOfModulesIncludingCustomModule:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/moduleJsonIncludingCustomModuleforList'
+    moduleJsonIncludingCustomModuleforList:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        displayLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        modifiedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        apiName:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        modifier:
+          $ref: '#/components/schemas/modifierJson'
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        nameField:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        pluralLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        singularLabel:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        hasRecycleBin:
+          type:
+          - boolean
+          - 'null'
+        createdBy:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        isCustomModule:
+          type:
+          - boolean
+          - 'null'
+        createdTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        isDeptSpecific:
+          type:
+          - boolean
+          - 'null'
+        modifiedBy:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - apiName
+      - createdBy
+      - createdTime
+      - description
+      - displayLabel
+      - hasRecycleBin
+      - id
+      - isCustomModule
+      - isDeptSpecific
+      - modifiedBy
+      - modifiedTime
+      - modifier
+      - nameField
+      - pluralLabel
+      - singularLabel
   requestBodies:
     editRequestJson:
       content:
@@ -1416,6 +1388,34 @@ components:
                 - 1000000774623
                 - 1000000025632
                 singularLabel: Doctor
+  parameters:
+    featureFlags:
+      name: featureFlags
+      in: header
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        enum:
+        - customModule
+        maxLength: 100
+        minLength: 0
+    moduleId:
+      name: moduleId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -2518,14 +2518,6 @@ paths:
           description: API Server URL TLD
 components:
   parameters:
-    Ids:
-      name: ids
-      in: query
-      description: Comma-separated list of contact role IDs to operate on.
-      required: true
-      schema:
-        type: string
-        maxLength: 255
     Role:
       name: role
       in: path
@@ -2534,20 +2526,37 @@ components:
       schema:
         type: string
         maxLength: 255
-    MessageIds:
-      description: The IDs of the email messages to be linked
-      name: message_ids
+    Ids:
+      name: ids
       in: query
+      description: Comma-separated list of contact role IDs to operate on.
+      required: true
+      schema:
+        type: string
+        maxLength: 255
+    OwnerId:
+      description: The ID of the owner of the contact
+      name: owner_id
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+        - '1238016000000362001'
+    MessageId:
+      description: The ID of the email message to be linked or unlinked
+      name: messageId
+      in: path
       required: true
       schema:
         type: string
         enum:
         - fa3efd2e3d21c63dfb3a1ead81cfbcacef42ff6e3779f724ad799f911f6b8cc6ba45cad7c0856e06f2f6ea8b0f41798b
         - fa3efd2e3d21c63dfb3a1ead81cfbcac3428b9eb290577709d7f12289b5aa1bf5b2bd0f6744144c7a9aae67068ccdc7f
-    MessageId:
-      description: The ID of the email message to be linked or unlinked
-      name: messageId
-      in: path
+    MessageIds:
+      description: The IDs of the email messages to be linked
+      name: message_ids
+      in: query
       required: true
       schema:
         type: string
@@ -2564,15 +2573,6 @@ components:
         enum:
         - '1238016000000476011'
         - '1238016000000674013'
-    OwnerId:
-      description: The ID of the owner of the contact
-      name: owner_id
-      in: query
-      required: true
-      schema:
-        type: string
-        enum:
-        - '1238016000000362001'
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

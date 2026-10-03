@@ -211,55 +211,52 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    cvId:
+      name: cvId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department in which the view(s) is (are) configured.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department in which the view(s) is (are) configured.
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: 'Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.'
+        enum:
+        - tickets
+        maxLength: 100
+        minLength: 0
   responses:
-    getViewsResponse:
-      description: getViewsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/viewsData'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - isCustomView: false
-                  name: All Tasks
-                  id: '4000000007834'
-                - isCustomView: false
-                  name: My Tasks
-                  id: '4000000007836'
-                - isCustomView: false
-                  name: My Open Tasks
-                  id: '4000000007838'
-                - isCustomView: false
-                  name: Completed Tasks
-                  id: '4000000007840'
-                - isCustomView: false
-                  name: Open Tasks
-                  id: '4000000007842'
-                - isCustomView: false
-                  name: Overdue Tasks
-                  id: '4000000007844'
-                - isCustomView: false
-                  name: Todays Tasks
-                  id: '4000000007846'
-                - isCustomView: false
-                  name: Tomorrows Tasks
-                  id: '4000000007848'
-                - isCustomView: false
-                  name: Today+Overdue Tasks
-                  id: '4000000007850'
-                - isCustomView: false
-                  name: Next7days+Overdue Tasks
-                  id: '4000000007852'
     getRecentViewJson:
       description: getRecentViewJson template definitions
       content:
@@ -312,6 +309,54 @@ components:
                 data:
                   name: My Records
                   id: '4000000008143'
+    getViewsResponse:
+      description: getViewsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/viewsData'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - isCustomView: false
+                  name: All Tasks
+                  id: '4000000007834'
+                - isCustomView: false
+                  name: My Tasks
+                  id: '4000000007836'
+                - isCustomView: false
+                  name: My Open Tasks
+                  id: '4000000007838'
+                - isCustomView: false
+                  name: Completed Tasks
+                  id: '4000000007840'
+                - isCustomView: false
+                  name: Open Tasks
+                  id: '4000000007842'
+                - isCustomView: false
+                  name: Overdue Tasks
+                  id: '4000000007844'
+                - isCustomView: false
+                  name: Todays Tasks
+                  id: '4000000007846'
+                - isCustomView: false
+                  name: Tomorrows Tasks
+                  id: '4000000007848'
+                - isCustomView: false
+                  name: Today+Overdue Tasks
+                  id: '4000000007850'
+                - isCustomView: false
+                  name: Next7days+Overdue Tasks
+                  id: '4000000007852'
     getStarredViewsResponse:
       description: getStarredViewsResponse template definitions
       content:
@@ -355,52 +400,94 @@ components:
                   count: '22'
                   id: '4000000007844'
                 module: tickets
-  parameters:
-    cvId:
-      name: cvId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department in which the view(s) is (are) configured.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department in which the view(s) is (are) configured.
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: 'Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.'
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.'
-        enum:
-        - tickets
-        maxLength: 100
-        minLength: 0
+  requestBodies:
+    starredViewJsonOrder:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              starredViewIds:
+                $ref: '#/components/schemas/customView_array'
+            required:
+            - starredViewIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                starredViewIds:
+                - '4000000007808'
+                - '4000000007810'
+                - '4000000007818'
+                - '4000000007820'
+                - '4000000007828'
+                - '4000000007830'
+                - '4000000007848'
+                - '4000000007850'
   schemas:
+    starredViewResponseArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/starredViewsJson'
+    viewsData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/viewsJson'
+    viewsJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        isCustomView:
+          type:
+          - boolean
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        createdBy:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        deprecatedViewId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        viewName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+      required:
+      - isCustomView
+      - name
+      - id
+      - viewName
     customView_array:
       type:
       - 'null'
@@ -470,93 +557,6 @@ components:
       - isCustomView
       - name
       - viewName
-    viewsData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/viewsJson'
-    viewsJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        isCustomView:
-          type:
-          - boolean
-          - 'null'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-          pattern: '[0-9a-zA-Z_\-\.\$@%\?\,\:\''\P{InBasicLatin}\s&amp;&lt;&gt;\+=]+'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        createdBy:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        deprecatedViewId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        viewName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-      required:
-      - isCustomView
-      - name
-      - id
-      - viewName
-    starredViewResponseArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/starredViewsJson'
-  requestBodies:
-    starredViewJsonOrder:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              starredViewIds:
-                $ref: '#/components/schemas/customView_array'
-            required:
-            - starredViewIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                starredViewIds:
-                - '4000000007808'
-                - '4000000007810'
-                - '4000000007818'
-                - '4000000007820'
-                - '4000000007828'
-                - '4000000007830'
-                - '4000000007848'
-                - '4000000007850'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

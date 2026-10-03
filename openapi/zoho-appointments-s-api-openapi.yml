@@ -409,38 +409,35 @@ paths:
       tags:
       - Appointments S
 components:
+  parameters:
+    ParamQueryIds:
+      name: ids
+      in: query
+      description: contains appointment record ids , which are going to be deleted
+      required: false
+      schema:
+        type: number
+        enum:
+        - 111115000000147280
+        - 111115000000147230
+    ParamPathAppointmentid:
+      name: appointmentId
+      in: path
+      description: 'Path parameter: appointmentId'
+      required: true
+      schema:
+        type: string
+        maxLength: 100
+    ParamQueryId:
+      name: id
+      in: query
+      description: holds the appointment id , which is going to be deleted
+      required: false
+      schema:
+        type: number
+        enum:
+        - 111115000000147180
   schemas:
-    ErrorResponseCore1875045219:
-      type: object
-      additionalProperties: false
-      description: invalid method request
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_REQUEST_METHOD
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties: {}
-        message:
-          type: string
-          description: Error message
-          enum:
-          - The http request method type is not a valid one
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
     ErrorResponseCore496791912:
       type: object
       additionalProperties: false
@@ -500,10 +497,10 @@ components:
       - message
       - status
       title: Error Response Core
-    GETModifiedByNested:
+    GETCreatedByNested:
       type: object
       additionalProperties: false
-      description: Nested schema for Modified_By
+      description: Nested schema for Created_By
       properties:
         name:
           type: string
@@ -521,79 +518,109 @@ components:
       - email
       - id
       - name
-    AppointmentForNested:
+    GETModuleNested:
       type: object
       additionalProperties: false
-      description: Contains the name, ID and the module's API name of the customer for whom you are creating the appointment.
+      description: Nested schema for module
       properties:
-        name:
+        api_name:
+          type: string
+          description: 'Field: api_name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+      required:
+      - api_name
+      - id
+    PutappointmentssResponse200:
+      type: object
+      additionalProperties: false
+      description: appointment update success response
+      properties:
+        data:
+          type: array
+          description: 'Field: data'
+          items:
+            $ref: '#/components/schemas/DataNested1'
+          maxItems: 2
+    ModuleNested:
+      type: object
+      additionalProperties: false
+      description: module name
+      properties:
+        api_name:
           type:
           - string
           - 'null'
-          description: name
-          maxLength: 2
+          description: api name
+          maxLength: 8
         id:
           type:
           - string
           - 'null'
           description: id
           maxLength: 18
-        module:
-          $ref: '#/components/schemas/ModuleNested'
-          description: module name
-    DetailsNested:
+    GETServiceNameNested:
       type: object
       additionalProperties: false
-      description: Nested schema for details
+      description: Nested schema for Service_Name
       properties:
-        Modified_Time:
+        name:
           type: string
-          description: 'Field: Modified_Time'
-          maxLength: 120
-        Modified_By:
-          $ref: '#/components/schemas/ModifiedByNested'
-        Created_Time:
-          type: string
-          description: 'Field: Created_Time'
-          maxLength: 120
+          description: 'Field: name'
+          maxLength: 255
         id:
           type: string
           description: 'Field: id'
           maxLength: 255
-        Created_By:
-          $ref: '#/components/schemas/CreatedByNested'
-    ServiceNameNested:
+      required:
+      - id
+      - name
+    CreatedByNested:
       type: object
       additionalProperties: false
-      description: Contains the name and distinctive ID of the service for which you are creating the appointment.
+      description: appointment created by
       properties:
         name:
           type:
           - string
           - 'null'
-          description: name of the service , on which the appointment is created using
-          maxLength: 100
+          description: name
+          maxLength: 255
         id:
           type:
           - string
           - 'null'
-          description: unique id of the service
-          maxLength: 100
-    ErrorResponseCore1818284114:
+          description: id
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: email
+          maxLength: 33
+    ErrorResponseCore1009543207:
       type: object
       additionalProperties: false
-      description: Appointment time does not falls under business hours
+      description: 'Invalid data type for field: data'
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - NOT_ALLOWED
+          - INVALID_DATA
         details:
           type: object
           additionalProperties: false
           description: Error details with validation information
           properties:
+            maximum_length:
+              type: integer
+              format: int32
+              description: 'Detail field: maximum_length'
             api_name:
               type: string
               description: 'Detail field: api_name'
@@ -605,11 +632,12 @@ components:
           required:
           - api_name
           - json_path
+          - maximum_length
         message:
           type: string
           description: Error message
           enum:
-          - Appointment time does not falls under business hours
+          - invalid data
         status:
           type: string
           description: Error status
@@ -621,16 +649,16 @@ components:
       - message
       - status
       title: Error Response Core
-    ErrorResponseCore1090893661:
+    ErrorResponseCore1544688711:
       type: object
       additionalProperties: false
-      description: Appointment cannot be marked as completed without creating the jobsheet
+      description: Auto-generated from 207 Multi-Status error item
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - NOT_ALLOWED
+          - INVALID_DATA
         details:
           type: object
           additionalProperties: false
@@ -651,7 +679,160 @@ components:
           type: string
           description: Error message
           enum:
-          - Appointment cannot be marked as completed without creating the jobsheet
+          - the id given seems to be invalid
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    ErrorResponseCore1944579470:
+      type: object
+      additionalProperties: false
+      description: the id given seems to be invalid
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: 'Detail field: resource_path_index'
+          required:
+          - resource_path_index
+        message:
+          type: string
+          description: Error message
+          enum:
+          - the id given seems to be invalid
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    PostappointmentssRequest:
+      type: object
+      additionalProperties: false
+      description: Request body schema
+      properties:
+        data:
+          type: array
+          description: data array contains post request body (Required)
+          items:
+            $ref: '#/components/schemas/DataNested'
+          maxItems: 4
+      required:
+      - data
+    DeleteappointmentssResponse200:
+      type: object
+      additionalProperties: false
+      description: appointment delete success response
+      properties:
+        data:
+          type: array
+          description: 'Field: data'
+          items:
+            $ref: '#/components/schemas/DataNested1'
+          maxItems: 3
+    Delete207SuccessResponse:
+      type: object
+      additionalProperties: false
+      description: Success response schema for DELETE 207 multi-status
+      properties:
+        code:
+          type: string
+          description: Response code
+          maxLength: 255
+        details:
+          type: object
+          additionalProperties: false
+          description: Details containing only the deleted record ID
+          properties:
+            id:
+              type: string
+              description: Deleted record ID
+              maxLength: 255
+          required:
+          - id
+        message:
+          type: string
+          description: Response message
+          maxLength: 255
+        status:
+          type: string
+          description: Response status
+          maxLength: 255
+      required:
+      - code
+      - details
+      - message
+      - status
+    ErrorResponseCore1332683101:
+      type: object
+      additionalProperties: false
+      description: To Update the fields of Cancellation Information Section, value of Status should be Cancelled
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - DEPENDENT_FIELD_MISSING
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            dependee:
+              type: object
+              additionalProperties: false
+              description: 'Detail field: dependee'
+              properties:
+                api_name:
+                  type: string
+                  description: 'Nested detail field: api_name'
+                  maxLength: 255
+                json_path:
+                  type: string
+                  description: 'Nested detail field: json_path'
+                  maxLength: 1000
+              required:
+              - api_name
+              - json_path
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - dependee
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - To Update the fields of Cancellation Information Section, value of Status should be Cancelled
         status:
           type: string
           description: Error status
@@ -908,82 +1089,32 @@ components:
       - Status
       - Tag
       - id
-    DeleteidResponse200:
+    ErrorResponseCore2137699283:
       type: object
       additionalProperties: false
-      description: appointment delete success response
-      properties:
-        data:
-          type: array
-          description: 'Field: data'
-          items:
-            $ref: '#/components/schemas/DataNested1'
-          maxItems: 1
-    ModuleNested:
-      type: object
-      additionalProperties: false
-      description: module name
-      properties:
-        api_name:
-          type:
-          - string
-          - 'null'
-          description: api name
-          maxLength: 8
-        id:
-          type:
-          - string
-          - 'null'
-          description: id
-          maxLength: 18
-    ErrorResponseCore1332683101:
-      type: object
-      additionalProperties: false
-      description: To Update the fields of Cancellation Information Section, value of Status should be Cancelled
+      description: Auto-generated from 207 Multi-Status error item
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - DEPENDENT_FIELD_MISSING
+          - INVALID_DATA
         details:
           type: object
           additionalProperties: false
           description: Error details with validation information
           properties:
-            dependee:
-              type: object
-              additionalProperties: false
-              description: 'Detail field: dependee'
-              properties:
-                api_name:
-                  type: string
-                  description: 'Nested detail field: api_name'
-                  maxLength: 255
-                json_path:
-                  type: string
-                  description: 'Nested detail field: json_path'
-                  maxLength: 1000
-              required:
-              - api_name
-              - json_path
-            api_name:
+            id:
               type: string
-              description: 'Detail field: api_name'
+              description: 'Detail field: id'
               maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
           required:
-          - api_name
-          - dependee
-          - json_path
+          - id
         message:
           type: string
           description: Error message
           enum:
-          - To Update the fields of Cancellation Information Section, value of Status should be Cancelled
+          - record not deleted
         status:
           type: string
           description: Error status
@@ -995,26 +1126,10 @@ components:
       - message
       - status
       title: Error Response Core
-    GETServiceNameNested:
+    ErrorResponseCore899638570:
       type: object
       additionalProperties: false
-      description: Nested schema for Service_Name
-      properties:
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
-      required:
-      - id
-      - name
-    ErrorResponseCore201487910:
-      type: object
-      additionalProperties: false
-      description: Appointment cannot be scheduled for past dates
+      description: Job Sheet can be created only for completed appointment
       properties:
         code:
           type: string
@@ -1058,7 +1173,7 @@ components:
           type: string
           description: Error message
           enum:
-          - Appointment cannot be scheduled for past dates
+          - Job Sheet can be created only for completed appointment
         status:
           type: string
           description: Error status
@@ -1070,6 +1185,54 @@ components:
       - message
       - status
       title: Error Response Core
+    ErrorResponseCore1604218709:
+      type: object
+      additionalProperties: false
+      description: invalid module
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_MODULE
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: 'Detail field: resource_path_index'
+          required:
+          - resource_path_index
+        message:
+          type: string
+          description: Error message
+          enum:
+          - the module name given seems to be invalid
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    DeleteidResponse200:
+      type: object
+      additionalProperties: false
+      description: appointment delete success response
+      properties:
+        data:
+          type: array
+          description: 'Field: data'
+          items:
+            $ref: '#/components/schemas/DataNested1'
+          maxItems: 1
     ErrorResponseCore653152835:
       type: object
       additionalProperties: false
@@ -1129,37 +1292,21 @@ components:
       - message
       - status
       title: Error Response Core
-    ErrorResponseCore261228299:
+    ErrorResponseCore1720623915:
       type: object
       additionalProperties: false
-      description: Rescheduled_From cannot be empty
+      description: '"appointment for " mandatory not found '
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - DEPENDENT_FIELD_MISSING
+          - MANDATORY_NOT_FOUND
         details:
           type: object
           additionalProperties: false
           description: Error details with validation information
           properties:
-            dependee:
-              type: object
-              additionalProperties: false
-              description: 'Detail field: dependee'
-              properties:
-                api_name:
-                  type: string
-                  description: 'Nested detail field: api_name'
-                  maxLength: 255
-                json_path:
-                  type: string
-                  description: 'Nested detail field: json_path'
-                  maxLength: 1000
-              required:
-              - api_name
-              - json_path
             api_name:
               type: string
               description: 'Detail field: api_name'
@@ -1170,13 +1317,220 @@ components:
               maxLength: 1000
           required:
           - api_name
-          - dependee
           - json_path
         message:
           type: string
           description: Error message
           enum:
-          - Rescheduled_From cannot be empty
+          - required field not found
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    AppointmentForNested:
+      type: object
+      additionalProperties: false
+      description: Contains the name, ID and the module's API name of the customer for whom you are creating the appointment.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: name
+          maxLength: 2
+        id:
+          type:
+          - string
+          - 'null'
+          description: id
+          maxLength: 18
+        module:
+          $ref: '#/components/schemas/ModuleNested'
+          description: module name
+    ModifiedByNested:
+      type: object
+      additionalProperties: false
+      description: modified by
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: name
+          maxLength: 255
+        id:
+          type:
+          - string
+          - 'null'
+          description: id
+          maxLength: 255
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: email
+          maxLength: 33
+    ErrorResponseCore1207168962:
+      type: object
+      additionalProperties: false
+      description: Service is not available on the given time
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - NOT_ALLOWED
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - Service is not available on the given time
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    Post207multistatusResponse207:
+      type: object
+      additionalProperties: false
+      description: Generated schema for dataSuccess
+      properties:
+        details:
+          $ref: '#/components/schemas/DetailsNested'
+        code:
+          type: string
+          description: 'Field: code'
+          maxLength: 255
+        message:
+          type: string
+          description: 'Field: message'
+          maxLength: 255
+        status:
+          type: string
+          description: 'Field: status'
+          maxLength: 255
+    ErrorResponseCore2114620743:
+      type: object
+      additionalProperties: false
+      description: the given module name is not exist in multimodulelookup for Appointment_For.module.api_name
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - the given module name is not exist in multimodulelookup
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    DataNested1:
+      type: object
+      additionalProperties: false
+      description: Nested schema for data
+      properties:
+        code:
+          type: string
+          description: 'Field: code'
+          maxLength: 255
+        details:
+          $ref: '#/components/schemas/DetailsNested'
+        message:
+          type: string
+          description: 'Field: message'
+          maxLength: 255
+        status:
+          type: string
+          description: 'Field: status'
+          maxLength: 255
+    ErrorResponseCore1168955151:
+      type: object
+      additionalProperties: false
+      description: Auto-generated from 207 Multi-Status error item
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - MANDATORY_NOT_FOUND
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - Mandatory field data not found
         status:
           type: string
           description: Error status
@@ -1247,36 +1601,21 @@ components:
       - message
       - status
       title: Error Response Core
-    DeleteappointmentssResponse200:
+    ErrorResponseCore1818284114:
       type: object
       additionalProperties: false
-      description: appointment delete success response
-      properties:
-        data:
-          type: array
-          description: 'Field: data'
-          items:
-            $ref: '#/components/schemas/DataNested1'
-          maxItems: 3
-    ErrorResponseCore1593946428:
-      type: object
-      additionalProperties: false
-      description: invalid data expected "jsonobject" for Appointment_For.module
+      description: Appointment time does not falls under business hours
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - INVALID_DATA
+          - NOT_ALLOWED
         details:
           type: object
           additionalProperties: false
           description: Error details with validation information
           properties:
-            expected_data_type:
-              type: string
-              description: 'Detail field: expected_data_type'
-              maxLength: 255
             api_name:
               type: string
               description: 'Detail field: api_name'
@@ -1287,13 +1626,12 @@ components:
               maxLength: 1000
           required:
           - api_name
-          - expected_data_type
           - json_path
         message:
           type: string
           description: Error message
           enum:
-          - invalid data
+          - Appointment time does not falls under business hours
         status:
           type: string
           description: Error status
@@ -1305,6 +1643,48 @@ components:
       - message
       - status
       title: Error Response Core
+    GETOwnerNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for Owner
+      properties:
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+        email:
+          type: string
+          description: 'Field: email'
+          maxLength: 255
+      required:
+      - email
+      - id
+      - name
+    DetailsNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for details
+      properties:
+        Modified_Time:
+          type: string
+          description: 'Field: Modified_Time'
+          maxLength: 120
+        Modified_By:
+          $ref: '#/components/schemas/ModifiedByNested'
+        Created_Time:
+          type: string
+          description: 'Field: Created_Time'
+          maxLength: 120
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+        Created_By:
+          $ref: '#/components/schemas/CreatedByNested'
     DataNested:
       type: object
       additionalProperties: false
@@ -1593,21 +1973,58 @@ components:
       - Appointment_Start_Time
       - Owner
       - Service_Name
-    ErrorResponseCore2114620743:
+    GETModifiedByNested:
       type: object
       additionalProperties: false
-      description: the given module name is not exist in multimodulelookup for Appointment_For.module.api_name
+      description: Nested schema for Modified_By
+      properties:
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+        email:
+          type: string
+          description: 'Field: email'
+          maxLength: 255
+      required:
+      - email
+      - id
+      - name
+    ErrorResponseCore201487910:
+      type: object
+      additionalProperties: false
+      description: Appointment cannot be scheduled for past dates
       properties:
         code:
           type: string
           description: Error code
           enum:
-          - INVALID_DATA
+          - DEPENDENT_MISMATCH
         details:
           type: object
           additionalProperties: false
           description: Error details with validation information
           properties:
+            dependee:
+              type: object
+              additionalProperties: false
+              description: 'Detail field: dependee'
+              properties:
+                api_name:
+                  type: string
+                  description: 'Nested detail field: api_name'
+                  maxLength: 255
+                json_path:
+                  type: string
+                  description: 'Nested detail field: json_path'
+                  maxLength: 1000
+              required:
+              - api_name
+              - json_path
             api_name:
               type: string
               description: 'Detail field: api_name'
@@ -1618,12 +2035,13 @@ components:
               maxLength: 1000
           required:
           - api_name
+          - dependee
           - json_path
         message:
           type: string
           description: Error message
           enum:
-          - the given module name is not exist in multimodulelookup
+          - Appointment cannot be scheduled for past dates
         status:
           type: string
           description: Error status
@@ -1635,21 +2053,135 @@ components:
       - message
       - status
       title: Error Response Core
-    PostappointmentssResponse200:
+    ErrorResponseCore1593946428:
       type: object
       additionalProperties: false
-      description: appointment creation success response
+      description: invalid data expected "jsonobject" for Appointment_For.module
       properties:
-        data:
-          type: array
-          description: 'Field: data'
-          items:
-            $ref: '#/components/schemas/DataNested1'
-          maxItems: 4
-    ErrorResponseCore1720623915:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            expected_data_type:
+              type: string
+              description: 'Detail field: expected_data_type'
+              maxLength: 255
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - expected_data_type
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - invalid data
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    ErrorResponseCore261228299:
       type: object
       additionalProperties: false
-      description: '"appointment for " mandatory not found '
+      description: Rescheduled_From cannot be empty
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - DEPENDENT_FIELD_MISSING
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            dependee:
+              type: object
+              additionalProperties: false
+              description: 'Detail field: dependee'
+              properties:
+                api_name:
+                  type: string
+                  description: 'Nested detail field: api_name'
+                  maxLength: 255
+                json_path:
+                  type: string
+                  description: 'Nested detail field: json_path'
+                  maxLength: 1000
+              required:
+              - api_name
+              - json_path
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - dependee
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - Rescheduled_From cannot be empty
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    GETAppointmentForNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for Appointment_For
+      properties:
+        module:
+          $ref: '#/components/schemas/GETModuleNested'
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
+      required:
+      - id
+      - module
+      - name
+    ErrorResponseCore55175210:
+      type: object
+      additionalProperties: false
+      description: mandatory key missing unit.
       properties:
         code:
           type: string
@@ -1676,7 +2208,7 @@ components:
           type: string
           description: Error message
           enum:
-          - required field not found
+          - mandatory key missing
         status:
           type: string
           description: Error status
@@ -1688,35 +2220,120 @@ components:
       - message
       - status
       title: Error Response Core
-    PutappointmentssRequest:
+    ErrorResponseCore1875045219:
       type: object
       additionalProperties: false
-      description: Request body schema
+      description: invalid method request
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_REQUEST_METHOD
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties: {}
+        message:
+          type: string
+          description: Error message
+          enum:
+          - The http request method type is not a valid one
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    ErrorResponseCore1090893661:
+      type: object
+      additionalProperties: false
+      description: Appointment cannot be marked as completed without creating the jobsheet
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - NOT_ALLOWED
+        details:
+          type: object
+          additionalProperties: false
+          description: Error details with validation information
+          properties:
+            api_name:
+              type: string
+              description: 'Detail field: api_name'
+              maxLength: 255
+            json_path:
+              type: string
+              description: 'Detail field: json_path'
+              maxLength: 1000
+          required:
+          - api_name
+          - json_path
+        message:
+          type: string
+          description: Error message
+          enum:
+          - Appointment cannot be marked as completed without creating the jobsheet
+        status:
+          type: string
+          description: Error status
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+      title: Error Response Core
+    ServiceNameNested:
+      type: object
+      additionalProperties: false
+      description: Contains the name and distinctive ID of the service for which you are creating the appointment.
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: name of the service , on which the appointment is created using
+          maxLength: 100
+        id:
+          type:
+          - string
+          - 'null'
+          description: unique id of the service
+          maxLength: 100
+    PostappointmentssResponse200:
+      type: object
+      additionalProperties: false
+      description: appointment creation success response
       properties:
         data:
           type: array
-          description: data array contains post request body (Required)
+          description: 'Field: data'
           items:
-            $ref: '#/components/schemas/DataNested'
+            $ref: '#/components/schemas/DataNested1'
           maxItems: 4
-      required:
-      - data
-    GETModuleNested:
+    GetappointmentssResponse200:
       type: object
       additionalProperties: false
-      description: Nested schema for module
+      description: appointment records get , success response
       properties:
-        api_name:
-          type: string
-          description: 'Field: api_name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
+        data:
+          type: array
+          description: 'Field: data'
+          items:
+            $ref: '#/components/schemas/GETDataNested'
+          maxItems: 2
       required:
-      - api_name
-      - id
+      - data
     ErrorResponseCore1277582131:
       type: object
       additionalProperties: false
@@ -1776,608 +2393,6 @@ components:
       - message
       - status
       title: Error Response Core
-    GETAppointmentForNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for Appointment_For
-      properties:
-        module:
-          $ref: '#/components/schemas/GETModuleNested'
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
-      required:
-      - id
-      - module
-      - name
-    ErrorResponseCore1009543207:
-      type: object
-      additionalProperties: false
-      description: 'Invalid data type for field: data'
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            maximum_length:
-              type: integer
-              format: int32
-              description: 'Detail field: maximum_length'
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - json_path
-          - maximum_length
-        message:
-          type: string
-          description: Error message
-          enum:
-          - invalid data
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    GetappointmentssResponse200:
-      type: object
-      additionalProperties: false
-      description: appointment records get , success response
-      properties:
-        data:
-          type: array
-          description: 'Field: data'
-          items:
-            $ref: '#/components/schemas/GETDataNested'
-          maxItems: 2
-      required:
-      - data
-    GETOwnerNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for Owner
-      properties:
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
-        email:
-          type: string
-          description: 'Field: email'
-          maxLength: 255
-      required:
-      - email
-      - id
-      - name
-    ErrorResponseCore1544688711:
-      type: object
-      additionalProperties: false
-      description: Auto-generated from 207 Multi-Status error item
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - json_path
-        message:
-          type: string
-          description: Error message
-          enum:
-          - the id given seems to be invalid
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    ErrorResponseCore899638570:
-      type: object
-      additionalProperties: false
-      description: Job Sheet can be created only for completed appointment
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - DEPENDENT_MISMATCH
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            dependee:
-              type: object
-              additionalProperties: false
-              description: 'Detail field: dependee'
-              properties:
-                api_name:
-                  type: string
-                  description: 'Nested detail field: api_name'
-                  maxLength: 255
-                json_path:
-                  type: string
-                  description: 'Nested detail field: json_path'
-                  maxLength: 1000
-              required:
-              - api_name
-              - json_path
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - dependee
-          - json_path
-        message:
-          type: string
-          description: Error message
-          enum:
-          - Job Sheet can be created only for completed appointment
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    Delete207SuccessResponse:
-      type: object
-      additionalProperties: false
-      description: Success response schema for DELETE 207 multi-status
-      properties:
-        code:
-          type: string
-          description: Response code
-          maxLength: 255
-        details:
-          type: object
-          additionalProperties: false
-          description: Details containing only the deleted record ID
-          properties:
-            id:
-              type: string
-              description: Deleted record ID
-              maxLength: 255
-          required:
-          - id
-        message:
-          type: string
-          description: Response message
-          maxLength: 255
-        status:
-          type: string
-          description: Response status
-          maxLength: 255
-      required:
-      - code
-      - details
-      - message
-      - status
-    ErrorResponseCore1604218709:
-      type: object
-      additionalProperties: false
-      description: invalid module
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_MODULE
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: 'Detail field: resource_path_index'
-          required:
-          - resource_path_index
-        message:
-          type: string
-          description: Error message
-          enum:
-          - the module name given seems to be invalid
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    ModifiedByNested:
-      type: object
-      additionalProperties: false
-      description: modified by
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: name
-          maxLength: 255
-        id:
-          type:
-          - string
-          - 'null'
-          description: id
-          maxLength: 255
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: email
-          maxLength: 33
-    ErrorResponseCore1944579470:
-      type: object
-      additionalProperties: false
-      description: the id given seems to be invalid
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: 'Detail field: resource_path_index'
-          required:
-          - resource_path_index
-        message:
-          type: string
-          description: Error message
-          enum:
-          - the id given seems to be invalid
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    Post207multistatusResponse207:
-      type: object
-      additionalProperties: false
-      description: Generated schema for dataSuccess
-      properties:
-        details:
-          $ref: '#/components/schemas/DetailsNested'
-        code:
-          type: string
-          description: 'Field: code'
-          maxLength: 255
-        message:
-          type: string
-          description: 'Field: message'
-          maxLength: 255
-        status:
-          type: string
-          description: 'Field: status'
-          maxLength: 255
-    CreatedByNested:
-      type: object
-      additionalProperties: false
-      description: appointment created by
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: name
-          maxLength: 255
-        id:
-          type:
-          - string
-          - 'null'
-          description: id
-          maxLength: 255
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: email
-          maxLength: 33
-    ErrorResponseCore1168955151:
-      type: object
-      additionalProperties: false
-      description: Auto-generated from 207 Multi-Status error item
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - MANDATORY_NOT_FOUND
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - json_path
-        message:
-          type: string
-          description: Error message
-          enum:
-          - Mandatory field data not found
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    ErrorResponseCore1207168962:
-      type: object
-      additionalProperties: false
-      description: Service is not available on the given time
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - NOT_ALLOWED
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - json_path
-        message:
-          type: string
-          description: Error message
-          enum:
-          - Service is not available on the given time
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    DataNested1:
-      type: object
-      additionalProperties: false
-      description: Nested schema for data
-      properties:
-        code:
-          type: string
-          description: 'Field: code'
-          maxLength: 255
-        details:
-          $ref: '#/components/schemas/DetailsNested'
-        message:
-          type: string
-          description: 'Field: message'
-          maxLength: 255
-        status:
-          type: string
-          description: 'Field: status'
-          maxLength: 255
-    PutappointmentssResponse200:
-      type: object
-      additionalProperties: false
-      description: appointment update success response
-      properties:
-        data:
-          type: array
-          description: 'Field: data'
-          items:
-            $ref: '#/components/schemas/DataNested1'
-          maxItems: 2
-    PostappointmentssRequest:
-      type: object
-      additionalProperties: false
-      description: Request body schema
-      properties:
-        data:
-          type: array
-          description: data array contains post request body (Required)
-          items:
-            $ref: '#/components/schemas/DataNested'
-          maxItems: 4
-      required:
-      - data
-    ErrorResponseCore2137699283:
-      type: object
-      additionalProperties: false
-      description: Auto-generated from 207 Multi-Status error item
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            id:
-              type: string
-              description: 'Detail field: id'
-              maxLength: 255
-          required:
-          - id
-        message:
-          type: string
-          description: Error message
-          enum:
-          - record not deleted
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
-    GETCreatedByNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for Created_By
-      properties:
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
-        email:
-          type: string
-          description: 'Field: email'
-          maxLength: 255
-      required:
-      - email
-      - id
-      - name
-    ErrorResponseCore55175210:
-      type: object
-      additionalProperties: false
-      description: mandatory key missing unit.
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - MANDATORY_NOT_FOUND
-        details:
-          type: object
-          additionalProperties: false
-          description: Error details with validation information
-          properties:
-            api_name:
-              type: string
-              description: 'Detail field: api_name'
-              maxLength: 255
-            json_path:
-              type: string
-              description: 'Detail field: json_path'
-              maxLength: 1000
-          required:
-          - api_name
-          - json_path
-        message:
-          type: string
-          description: Error message
-          enum:
-          - mandatory key missing
-        status:
-          type: string
-          description: Error status
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-      title: Error Response Core
     OwnerNested:
       type: object
       additionalProperties: false
@@ -2402,34 +2417,19 @@ components:
           format: email
           description: email
           maxLength: 100
-  parameters:
-    ParamQueryId:
-      name: id
-      in: query
-      description: holds the appointment id , which is going to be deleted
-      required: false
-      schema:
-        type: number
-        enum:
-        - 111115000000147180
-    ParamPathAppointmentid:
-      name: appointmentId
-      in: path
-      description: 'Path parameter: appointmentId'
-      required: true
-      schema:
-        type: string
-        maxLength: 100
-    ParamQueryIds:
-      name: ids
-      in: query
-      description: contains appointment record ids , which are going to be deleted
-      required: false
-      schema:
-        type: number
-        enum:
-        - 111115000000147280
-        - 111115000000147230
+    PutappointmentssRequest:
+      type: object
+      additionalProperties: false
+      description: Request body schema
+      properties:
+        data:
+          type: array
+          description: data array contains post request body (Required)
+          items:
+            $ref: '#/components/schemas/DataNested'
+          maxItems: 4
+      required:
+      - data
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

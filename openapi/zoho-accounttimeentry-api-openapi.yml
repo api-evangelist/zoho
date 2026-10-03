@@ -132,34 +132,6 @@ paths:
       - external-public
 components:
   parameters:
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type: string
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - integer
-        format: int64
-        description: ID of the department
-        pattern: ([0-9]+)
     accountId:
       name: accountId
       in: path
@@ -174,6 +146,34 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - integer
+        format: int64
+        description: ID of the department
+        pattern: ([0-9]+)
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
     module:
       name: module
       in: query
@@ -190,6 +190,56 @@ components:
         - calls
         - events
   responses:
+    getSummationOfTimeEntryForAccountResponse:
+      description: getSummationOfTimeEntryForAccountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              totalMins:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalHours:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalCosts:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalSeconds:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - totalCosts
+            - totalHours
+            - totalMins
+            - totalSeconds
+          examples:
+            Valid responses Definitions:
+              value:
+                totalMins: 5
+                totalHours: 12
+                totalCosts: 1000
+                totalSeconds: 24
     getTimeEntryByAccountIdResponse:
       description: getTimeEntryByAccountIdResponse template definitions
       content:
@@ -335,56 +385,6 @@ components:
                   requestChargeType: Customer Service
                   additionalCost: '10.0'
                   totalCost: '657.46'
-    getSummationOfTimeEntryForAccountResponse:
-      description: getSummationOfTimeEntryForAccountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              totalMins:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalHours:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalCosts:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalSeconds:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - totalCosts
-            - totalHours
-            - totalMins
-            - totalSeconds
-          examples:
-            Valid responses Definitions:
-              value:
-                totalMins: 5
-                totalHours: 12
-                totalCosts: 1000
-                totalSeconds: 24
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

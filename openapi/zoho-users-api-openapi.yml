@@ -3042,16 +3042,16 @@ paths:
           description: API Version
 components:
   parameters:
-    Page:
-      name: page
+    Include:
+      name: include
       in: query
       required: false
-      description: Page number to retrieve
+      description: Additional data to include in the response
       schema:
-        type: integer
-        format: int32
-        default: 1
-        minimum: 1
+        type: string
+        enum:
+        - sources_count
+        - sources
     PerPage:
       name: per_page
       in: query
@@ -3063,16 +3063,16 @@ components:
         default: 200
         maximum: 200
         minimum: 1
-    Include:
-      name: include
+    Page:
+      name: page
       in: query
       required: false
-      description: Additional data to include in the response
+      description: Page number to retrieve
       schema:
-        type: string
-        enum:
-        - sources_count
-        - sources
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
     Type:
       name: type
       in: query
@@ -3094,14 +3094,6 @@ components:
         - AllUsers
         - AllActiveUsers
         - ActiveLiteUser
-    User:
-      name: user
-      in: path
-      description: user Id
-      required: true
-      schema:
-        type: string
-        maxLength: 20
     Page_2:
       name: page
       in: query
@@ -3118,6 +3110,24 @@ components:
       schema:
         type: integer
         format: int32
+    User:
+      name: user
+      in: path
+      description: user Id
+      required: true
+      schema:
+        type: string
+        maxLength: 20
+    Ids:
+      description: Comma-separated IDs (each ID is an int64)
+      name: ids
+      in: query
+      required: true
+      schema:
+        type: string
+        description: Comma-separated IDs (digits only, separated by commas)
+        pattern: ^[0-9]+(,[0-9]+)*$
+        maxLength: 2000
     Territory:
       description: The ID of the territory
       name: territory
@@ -3134,29 +3144,19 @@ components:
       schema:
         format: int64
         type: string
-    Ids:
-      description: Comma-separated IDs (each ID is an int64)
-      name: ids
-      in: query
-      required: true
-      schema:
-        type: string
-        description: Comma-separated IDs (digits only, separated by commas)
-        pattern: ^[0-9]+(,[0-9]+)*$
-        maxLength: 2000
-    JobId:
-      name: job_id
-      in: query
-      required: true
-      description: Unique identifier for the transfer job to check status
-      schema:
-        type: string
-        format: int64
     UserId:
       name: userId
       in: path
       required: true
       description: User ID to be transferred and deleted
+      schema:
+        type: string
+        format: int64
+    JobId:
+      name: job_id
+      in: query
+      required: true
+      description: Unique identifier for the transfer job to check status
       schema:
         type: string
         format: int64
@@ -4230,57 +4230,6 @@ components:
       - count
       - page
       - more_records
-    CommonErrorResponse:
-      type: object
-      additionalProperties: false
-      description: Response containing an array of per-territory error items
-      properties:
-        territories:
-          type: array
-          description: List of per-territory error items
-          minItems: 0
-          maxItems: 200
-          uniqueItems: true
-          items:
-            type: object
-            additionalProperties: false
-            description: Per-territory error object for territory-specific validation failures
-            properties:
-              code:
-                type: string
-                description: Error code
-                enum:
-                - INVALID_DATA
-                - DUPLICATE_DATA
-                - PERMISSION_DENIED
-              details:
-                type: object
-                description: Error details for the territory
-                additionalProperties: false
-                properties:
-                  api_name:
-                    type: string
-                    description: The API field name related to the error
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: JSON path that points to the invalid value
-                    maxLength: 1000
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 1000
-              status:
-                type: string
-                description: Status of the error
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - status
-      required:
-      - territories
     SuccessResponse:
       type: object
       additionalProperties: false
@@ -4329,6 +4278,39 @@ components:
             - status
       required:
       - territories
+    CommonUrlErrorResponse:
+      type: object
+      additionalProperties: false
+      description: Error response for INVALID_DATA that includes a resource_path_index in details
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+          - NOT_ALLOWED
+        details:
+          type: object
+          description: Error details containing resource path index
+          additionalProperties: false
+          properties:
+            resource_path_index:
+              type: integer
+              description: Index of the resource path
+              format: int32
+        message:
+          type: string
+          description: Human readable error message
+          maxLength: 1000
+        status:
+          type: string
+          description: Status of the error
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - status
     TerritoryGetResponse:
       additionalProperties: false
       description: Response schema for getting territories of a user
@@ -4415,39 +4397,57 @@ components:
       required:
       - territories
       - info
-    CommonUrlErrorResponse:
+    CommonErrorResponse:
       type: object
       additionalProperties: false
-      description: Error response for INVALID_DATA that includes a resource_path_index in details
+      description: Response containing an array of per-territory error items
       properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-          - NOT_ALLOWED
-        details:
-          type: object
-          description: Error details containing resource path index
-          additionalProperties: false
-          properties:
-            resource_path_index:
-              type: integer
-              description: Index of the resource path
-              format: int32
-        message:
-          type: string
-          description: Human readable error message
-          maxLength: 1000
-        status:
-          type: string
-          description: Status of the error
-          enum:
-          - error
+        territories:
+          type: array
+          description: List of per-territory error items
+          minItems: 0
+          maxItems: 200
+          uniqueItems: true
+          items:
+            type: object
+            additionalProperties: false
+            description: Per-territory error object for territory-specific validation failures
+            properties:
+              code:
+                type: string
+                description: Error code
+                enum:
+                - INVALID_DATA
+                - DUPLICATE_DATA
+                - PERMISSION_DENIED
+              details:
+                type: object
+                description: Error details for the territory
+                additionalProperties: false
+                properties:
+                  api_name:
+                    type: string
+                    description: The API field name related to the error
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: JSON path that points to the invalid value
+                    maxLength: 1000
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 1000
+              status:
+                type: string
+                description: Status of the error
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - status
       required:
-      - code
-      - details
-      - status
+      - territories
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

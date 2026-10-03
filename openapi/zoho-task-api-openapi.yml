@@ -393,87 +393,382 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    isSpam:
+      name: isSpam
+      in: query
+      description: Key that denotes whether to fetch spam tasks or not
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes whether to fetch spam tasks or not
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the tasks must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the tasks must be listed
+        pattern: ([0-9]+)
+    isCompleted:
+      name: isCompleted
+      in: query
+      description: Key that denotes if the task was completed or not
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes if the task was completed or not
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the task count must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the task count must be fetched
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of tasks to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of tasks to list
+        maximum: 99
+        minimum: 1
+        pattern: ([0-9]+)
+  requestBodies:
+    emptyTasksSpamResponse:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the department to which the activities belong
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                departmentId: '4000000025121'
+    taskjson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                alertType:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - EMAIL
+                    - POPUP
+                    - SMS
+                    maxLength: 100
+                    minLength: 0
+                  uniqueItems: true
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            - type: object
+          examples:
+            Valid requestBody Definitions:
+              value: null
+    trashJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              entityIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - entityIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                entityIds:
+                - '2000032003232'
+    task_massupdate:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isCustomField:
+                type:
+                - boolean
+                - 'null'
+              fieldName:
+                type:
+                - string
+                - 'null'
+                x-dynamic-enum: true
+              ids:
+                $ref: '#/components/schemas/long_array'
+              fieldValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - fieldName
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                fieldName: mobile
+                isCustomField: false
+                ids:
+                - '1892000000093303'
+                - '1892000000085009'
+                - '1892000000050003'
+                fieldValue: '8508569875'
+    addTask_taskjson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                alertType:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    enum:
+                    - EMAIL
+                    - POPUP
+                    - SMS
+                    maxLength: 100
+                    minLength: 0
+                  uniqueItems: true
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            - type: object
+              required:
+              - departmentId
+              - subject
+          examples:
+            Valid requestBody Definitions:
+              value:
+                subject: 'Bug Fix #120'
+                departmentId: '3000000007043'
+                dueDate: 1469117776000
+                priority: High
+                category: null
+                status: In Progress
+    spamDeleteJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              taskIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - taskIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                taskIds:
+                - '1892000000012307'
+                - '1892000000012308'
   schemas:
-    commonJson:
+    reminderArray:
+      type:
+      - 'null'
+      - array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/relativeReminder'
+        - $ref: '#/components/schemas/absoluteReminder'
+    relativeReminder:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        contactId:
+        relativeReminderInMin:
           type:
           - string
           - 'null'
           - integer
-          format: int64
-          description: ID of the contact associated with the task
+          format: int32
           pattern: ([0-9]+)
-        subject:
+        alertType:
+          type:
+          - 'null'
+          - array
+          items:
+            type:
+            - string
+            - 'null'
+            enum:
+            - EMAIL
+            - POPUP
+            - SMS
+            maxLength: 100
+            minLength: 0
+          uniqueItems: true
+        reminderType:
           type:
           - string
           - 'null'
-          description: Subject of the task
-          maxLength: 300
-          minLength: 0
-        departmentId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the department in which the task must be created
-          pattern: ([0-9]+)
-        dueDate:
-          type:
-          - string
-          - 'null'
-          description: Due date for completing the task
+          enum:
+          - RELATIVE
           maxLength: 100
           minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        ownerId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the user to whom the task is assigned
-          pattern: ([0-9]+)
-        priority:
-          type:
-          - string
-          - 'null'
-          description: Priority of the task
-          x-dynamic-enum: true
-        ticketId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the ticket with which the task must be associated
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          description: Status of task completion
-          x-dynamic-enum: true
       required:
-      - contactId
-      - departmentId
-      - dueDate
-      - ownerId
-      - priority
-      - status
-      - subject
-      - ticketId
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/taskListViewJson'
+      - alertType
+      - relativeReminderInMin
+      - reminderType
     long_array:
       type:
       - 'null'
@@ -485,14 +780,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-    reminderArray:
-      type:
-      - 'null'
-      - array
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/relativeReminder'
-        - $ref: '#/components/schemas/absoluteReminder'
     taskListViewJson:
       additionalProperties: false
       allOf:
@@ -601,64 +888,12 @@ components:
         - modifiedTime
         - statusType
         - webUrl
-    assignee:
+    absoluteReminder:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        emailId:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - emailId
-      - firstName
-      - id
-      - lastName
-      - photoURL
-    relativeReminder:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        relativeReminderInMin:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
         alertType:
           type:
           - 'null'
@@ -679,12 +914,19 @@ components:
           - string
           - 'null'
           enum:
-          - RELATIVE
+          - ABSOLUTE
           maxLength: 100
           minLength: 0
+        reminderTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
       required:
       - alertType
-      - relativeReminderInMin
+      - reminderTime
       - reminderType
     contactJson:
       type:
@@ -752,48 +994,134 @@ components:
       - lastName
       - mobile
       - phone
-    absoluteReminder:
+    commonJson:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        alertType:
-          type:
-          - 'null'
-          - array
-          items:
-            type:
-            - string
-            - 'null'
-            enum:
-            - EMAIL
-            - POPUP
-            - SMS
-            maxLength: 100
-            minLength: 0
-          uniqueItems: true
-        reminderType:
+        contactId:
           type:
           - string
           - 'null'
-          enum:
-          - ABSOLUTE
-          maxLength: 100
+          - integer
+          format: int64
+          description: ID of the contact associated with the task
+          pattern: ([0-9]+)
+        subject:
+          type:
+          - string
+          - 'null'
+          description: Subject of the task
+          maxLength: 300
           minLength: 0
-        reminderTime:
+        departmentId:
           type:
           - string
           - 'null'
+          - integer
+          format: int64
+          description: ID of the department in which the task must be created
+          pattern: ([0-9]+)
+        dueDate:
+          type:
+          - string
+          - 'null'
+          description: Due date for completing the task
           maxLength: 100
           minLength: 0
           pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        ownerId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the user to whom the task is assigned
+          pattern: ([0-9]+)
+        priority:
+          type:
+          - string
+          - 'null'
+          description: Priority of the task
+          x-dynamic-enum: true
+        ticketId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the ticket with which the task must be associated
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          description: Status of task completion
+          x-dynamic-enum: true
       required:
-      - alertType
-      - reminderTime
-      - reminderType
-  requestBodies:
-    spamDeleteJSON:
+      - contactId
+      - departmentId
+      - dueDate
+      - ownerId
+      - priority
+      - status
+      - subject
+      - ticketId
+    assignee:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        emailId:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - emailId
+      - firstName
+      - id
+      - lastName
+      - photoURL
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/taskListViewJson'
+  responses:
+    countResponse:
+      description: countResponse template definitions
       content:
         application/json:
           schema:
@@ -802,500 +1130,19 @@ components:
             - object
             additionalProperties: false
             properties:
-              taskIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - taskIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                taskIds:
-                - '1892000000012307'
-                - '1892000000012308'
-    taskjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                alertType:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - EMAIL
-                    - POPUP
-                    - SMS
-                    maxLength: 100
-                    minLength: 0
-                  uniqueItems: true
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            - type: object
-          examples:
-            Valid requestBody Definitions:
-              value: null
-    emptyTasksSpamResponse:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
+              count:
                 type:
                 - string
                 - 'null'
                 - integer
                 format: int64
-                description: ID of the department to which the activities belong
                 pattern: ([0-9]+)
             required:
-            - departmentId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '4000000025121'
-    task_massupdate:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isCustomField:
-                type:
-                - boolean
-                - 'null'
-              fieldName:
-                type:
-                - string
-                - 'null'
-                x-dynamic-enum: true
-              ids:
-                $ref: '#/components/schemas/long_array'
-              fieldValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - fieldName
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                fieldName: mobile
-                isCustomField: false
-                ids:
-                - '1892000000093303'
-                - '1892000000085009'
-                - '1892000000050003'
-                fieldValue: '8508569875'
-    trashJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              entityIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - entityIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                entityIds:
-                - '2000032003232'
-    addTask_taskjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                alertType:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    enum:
-                    - EMAIL
-                    - POPUP
-                    - SMS
-                    maxLength: 100
-                    minLength: 0
-                  uniqueItems: true
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            - type: object
-              required:
-              - departmentId
-              - subject
-          examples:
-            Valid requestBody Definitions:
-              value:
-                subject: 'Bug Fix #120'
-                departmentId: '3000000007043'
-                dueDate: 1469117776000
-                priority: High
-                category: null
-                status: In Progress
-  parameters:
-    isSpam:
-      name: isSpam
-      in: query
-      description: Key that denotes whether to fetch spam tasks or not
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes whether to fetch spam tasks or not
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department from which the task count must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the task count must be fetched
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the tasks must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the tasks must be listed
-        pattern: ([0-9]+)
-    isCompleted:
-      name: isCompleted
-      in: query
-      description: Key that denotes if the task was completed or not
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes if the task was completed or not
-    limit:
-      name: limit
-      in: query
-      description: Number of tasks to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of tasks to list
-        maximum: 99
-        minimum: 1
-        pattern: ([0-9]+)
-    taskId:
-      name: taskId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  responses:
-    taskResponse:
-      description: taskResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                modifiedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                reminder:
-                  $ref: '#/components/schemas/reminderArray'
-                statusType:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - Open
-                  - Closed
-                  maxLength: 100
-                  minLength: 0
-                contactId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                completedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                creatorId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 65535
-                  minLength: 0
-                activityTime:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                isTrashed:
-                  type:
-                  - boolean
-                  - 'null'
-                webUrl:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 500
-                  minLength: 0
-                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-                createdTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                modifiedBy:
-                  $ref: '#/components/schemas/assignee'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                isSpam:
-                  type:
-                  - boolean
-                  - 'null'
-                category:
-                  type:
-                  - string
-                  - 'null'
-                  x-dynamic-enum: true
-              required:
-              - activityTime
-              - category
-              - cf
-              - completedTime
-              - contactId
-              - createdTime
-              - creatorId
-              - customFields
-              - description
-              - id
-              - isSpam
-              - isTrashed
-              - layoutId
-              - modifiedBy
-              - modifiedTime
-              - reminder
-              - statusType
-              - webUrl
+            - count
           examples:
             Valid responses Definitions:
               value:
-                modifiedTime: 1468487681000
-                cf: {}
-                subject: 'Bug Fix #120'
-                departmentId: '3000000007043'
-                dueDate: 1469117776000
-                creatorId: '3000000008692'
-                description: null
-                ownerId: null
-                priority: High
-                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Tasks/dv/51123033fe97b2f886f750280ded9c40
-                createdTime: 1468484846000
-                modifiedBy:
-                  firstName: George
-                  lastName: McKinson
-                  photoURL: null
-                  id: '5000000015911'
-                id: '3000000054002'
-                isSpam: false
-                category: 'null'
-                ticketId: '3000000008753'
-                status: In Progress
+                count: '10'
     getTasksListResponse:
       description: getTasksListResponse template definitions
       content:
@@ -2025,29 +1872,182 @@ components:
                   activityType: Tasks
                   ticketId: '5000000016294'
                   status: Deferred12546
-    countResponse:
-      description: countResponse template definitions
+    taskResponse:
+      description: taskResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
             additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
+            allOf:
+            - $ref: '#/components/schemas/commonJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                modifiedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                reminder:
+                  $ref: '#/components/schemas/reminderArray'
+                statusType:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - Open
+                  - Closed
+                  maxLength: 100
+                  minLength: 0
+                contactId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                completedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                creatorId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 65535
+                  minLength: 0
+                activityTime:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                isTrashed:
+                  type:
+                  - boolean
+                  - 'null'
+                webUrl:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 500
+                  minLength: 0
+                  pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+                createdTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                modifiedBy:
+                  $ref: '#/components/schemas/assignee'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                isSpam:
+                  type:
+                  - boolean
+                  - 'null'
+                category:
+                  type:
+                  - string
+                  - 'null'
+                  x-dynamic-enum: true
+              required:
+              - activityTime
+              - category
+              - cf
+              - completedTime
+              - contactId
+              - createdTime
+              - creatorId
+              - customFields
+              - description
+              - id
+              - isSpam
+              - isTrashed
+              - layoutId
+              - modifiedBy
+              - modifiedTime
+              - reminder
+              - statusType
+              - webUrl
           examples:
             Valid responses Definitions:
               value:
-                count: '10'
+                modifiedTime: 1468487681000
+                cf: {}
+                subject: 'Bug Fix #120'
+                departmentId: '3000000007043'
+                dueDate: 1469117776000
+                creatorId: '3000000008692'
+                description: null
+                ownerId: null
+                priority: High
+                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Tasks/dv/51123033fe97b2f886f750280ded9c40
+                createdTime: 1468484846000
+                modifiedBy:
+                  firstName: George
+                  lastName: McKinson
+                  photoURL: null
+                  id: '5000000015911'
+                id: '3000000054002'
+                isSpam: false
+                category: 'null'
+                ticketId: '3000000008753'
+                status: In Progress
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

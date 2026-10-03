@@ -525,159 +525,553 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    updateManyResponse:
-      description: updateManyResponse template definitions
+  parameters:
+    contactId:
+      name: contactId
+      in: path
+      description: Unique ID of the contact
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Key that filters ticket activities related to a particular contact
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: Unique ID of the department
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the statistics must be fetched. If you do not pass this parameter in the API request, statistics from all permitted departments will be fetched.
+        pattern: ([0-9]+)
+    startsWith:
+      name: startsWith
+      in: query
+      description: Letter with which the names of the accounts must start
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Letter with which the names of the accounts must start
+        maxLength: 100
+        minLength: 0
+    accountId:
+      name: accountId
+      in: path
+      description: Unique ID of the account
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the accounts must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        description: Index number, starting from which the accounts must be fetched
+        minimum: 1
+    limit:
+      name: limit
+      in: query
+      description: Number of accounts to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of accounts to list
+        maximum: 99
+        minimum: 1
+        pattern: ([0-9]+)
+  requestBodies:
+    accountMergeRequest:
       content:
         application/json:
           schema:
-            oneOf:
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                results:
-                  $ref: ./MassActionResponse.json#/components/schemas/results
-              required:
-              - results
-            - additionalProperties: false
-              allOf:
-              - $ref: ./errors.json#/components/schemas/commonErrorResponse
-              - type:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                type:
                 - 'null'
-                - object
-                properties:
-                  errors:
-                    type:
-                    - 'null'
-                    - array
-                    items:
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+              source:
+                $ref: ./Account.json#/components/schemas/sourceValues
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '4000000018011'
+                - '4000000018033'
+                source:
+                  country: '4000000018011'
+                  website: '4000000018011'
+                  code: '4000000018011'
+                  cf:
+                    cf_contactcount: 1892220000042001
+                  city: '4000000018011'
+                  description: '4000000018011'
+                  industry: '4000000018011'
+                  phone: '4000000018011'
+                  annualrevenue: '4000000018011'
+                  street: '4000000018011'
+                  state: '4000000018011'
+                  fax: '4000000018011'
+                  email: '4000000018011'
+    account_massupdate:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isCustomField:
+                type:
+                - boolean
+                - 'null'
+              fieldName:
+                type:
+                - string
+                - 'null'
+                x-dynamic-enum: true
+              ids:
+                $ref: ./Account.json#/components/schemas/long_array
+              fieldValue:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - fieldName
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                fieldName: phone
+                isCustomField: false
+                ids:
+                - '1892000000093303'
+                - '1892000000085009'
+                - '1892000000050003'
+                fieldValue: '8508569875'
+    updateAccount_accountjson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Account.json#/components/schemas/commonObject
+            - type:
+              - 'null'
+              - object
+              properties:
+                country:
+                  type:
+                  - string
+                  - 'null'
+                  description: Country in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                code:
+                  type:
+                  - string
+                  - 'null'
+                  description: Zip code
+                  maxLength: 30
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
                       type:
+                      - string
                       - 'null'
-                      - object
-                      additionalProperties: false
-                      maxProperties: 3
-                      minProperties: 3
-                      properties:
-                        fieldName:
-                          type:
-                          - string
-                          - 'null'
-                          maxLength: 100
-                          minLength: 0
-                        errorType:
-                          type:
-                          - string
-                          - 'null'
-                          enum:
-                          - invalid
-                          - duplicate
-                          - missing
-                          maxLength: 100
-                          minLength: 0
-                        errorMessage:
-                          type:
-                          - string
-                          - 'null'
-                          maxLength: 100
-                          minLength: 0
-                      required:
-                      - errorMessage
-                      - errorType
-                      - fieldName
-                    uniqueItems: false
-                required:
-                - errors
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                city:
+                  type:
+                  - string
+                  - 'null'
+                  description: City in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                street:
+                  type:
+                  - string
+                  - 'null'
+                  description: Address of the account
+                  maxLength: 250
+                  minLength: 0
+                annualrevenue:
+                  type:
+                  - string
+                  - 'null'
+                  description: Annual revenue of the account
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ([0-9]{1,13}(\.[0-9]*)?)
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  description: A short description of the account
+                  maxLength: 65535
+                  minLength: 0
+                industry:
+                  type:
+                  - string
+                  - 'null'
+                  description: Industry in which the account operates
+                  maxLength: 120
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                state:
+                  type:
+                  - string
+                  - 'null'
+                  description: State in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                ownerId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of account owner
+                  pattern: ([0-9]+)
+                fax:
+                  type:
+                  - string
+                  - 'null'
+                  description: Fax number of the account
+                  maxLength: 30
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+            - type: object
+          examples:
+            Valid requestBody Definitions:
+              value: null
+    accountjson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Account.json#/components/schemas/commonObject
             - type:
               - 'null'
               - object
-              additionalProperties: false
               properties:
-                errorCode:
+                country:
                   type:
                   - string
                   - 'null'
-                  enum:
-                  - URL_NOT_FOUND
-                  - UNAUTHORIZED
-                  - INVALID_OAUTH
-                  - SCOPE_MISMATCH
-                  - FORBIDDEN
-                  - LICENSE_ACCESS_LIMITED
-                  - METHOD_NOT_ALLOWED
-                  - RESOURCE_SIZE_EXCEEDED
-                  - UNSUPPORTED_MEDIA_TYPE
-                  - INVALID_DATA
-                  - UNPROCESSABLE_ENTITY
-                  - ONLY_LIVECHAT_USER
-                  - INTEGRATION_ADMIN_ERROR
-                  - THRESHOLD_EXCEEDED
-                  - INTERNAL_SERVER_ERROR
-                  - EMPTY_PAYLOAD
+                  description: Country in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                code:
+                  type:
+                  - string
+                  - 'null'
+                  description: Zip code
+                  maxLength: 30
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                cf:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                city:
+                  type:
+                  - string
+                  - 'null'
+                  description: City in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                customFields:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                street:
+                  type:
+                  - string
+                  - 'null'
+                  description: Address of the account
+                  maxLength: 250
+                  minLength: 0
+                annualrevenue:
+                  type:
+                  - string
+                  - 'null'
+                  description: Annual revenue of the account
                   maxLength: 100
                   minLength: 0
-                message:
+                  pattern: ([0-9]{1,13}(\.[0-9]*)?)
+                description:
                   type:
                   - string
                   - 'null'
-                  maxLength: 255
+                  description: A short description of the account
+                  maxLength: 65535
                   minLength: 0
+                industry:
+                  type:
+                  - string
+                  - 'null'
+                  description: Industry in which the account operates
+                  maxLength: 120
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                state:
+                  type:
+                  - string
+                  - 'null'
+                  description: State in which the account is based
+                  maxLength: 30
+                  minLength: 0
+                ownerId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  description: ID of account owner
+                  pattern: ([0-9]+)
+                fax:
+                  type:
+                  - string
+                  - 'null'
+                  description: Fax number of the account
+                  maxLength: 30
+                  minLength: 0
+                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
+            - type: object
               required:
-              - errorCode
-              - message
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                errorCode:
+              - accountName
+          examples:
+            Valid requestBody Definitions:
+              value:
+                accountName: Zylker
+                phone: '98348229382'
+    associateProductsWithAccount:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              ids:
+                type:
+                - 'null'
+                - array
+                items:
                   type:
                   - string
                   - 'null'
-                  enum:
-                  - URL_NOT_FOUND
-                  - UNAUTHORIZED
-                  - INVALID_OAUTH
-                  - SCOPE_MISMATCH
-                  - FORBIDDEN
-                  - LICENSE_ACCESS_LIMITED
-                  - METHOD_NOT_ALLOWED
-                  - RESOURCE_SIZE_EXCEEDED
-                  - UNSUPPORTED_MEDIA_TYPE
-                  - INVALID_DATA
-                  - UNPROCESSABLE_ENTITY
-                  - ONLY_LIVECHAT_USER
-                  - INTEGRATION_ADMIN_ERROR
-                  - THRESHOLD_EXCEEDED
-                  - INTERNAL_SERVER_ERROR
-                  - EMPTY_PAYLOAD
-                  maxLength: 100
-                  minLength: 0
-                message:
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              associate:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - associate
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                departmentId: '7000000062800'
+                ids:
+                - '7000000027223'
+                - '7000000043968'
+                associate: true
+    accountsrecyclebinjson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              accountIds:
+                type:
+                - 'null'
+                - array
+                items:
                   type:
                   - string
                   - 'null'
-                  maxLength: 255
-                  minLength: 0
-              required:
-              - errorCode
-              - message
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - accountIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                accountIds:
+                - '2000032003232'
+  responses:
+    getContractsForAccountResponse:
+      description: getContractsForAccountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Account.json#/components/schemas/contractsForAccountData
+            required:
+            - data
           examples:
             Valid responses Definitions:
               value:
-                results:
-                - success: true
-                  id: '1892000000093303'
-                  errors: null
-                - success: true
-                  id: '1892000000085009'
-                  errors: null
-                - success: false
-                  id: '1892000000050003'
-                  errors:
-                    errorCode: UNPROCESSABLE_ENTITY
-                    httpCode: '422'
+                data:
+                - slaName: Priority-based SLAs
+                  endDate: 1468627200000
+                  slaGroupId: '4000000007069'
+                  departmentId: '4000000007043'
+                  contractId: '4000000032003'
+                  contractNumber: '1212'
+                  description: contract for all desk account
+                  contractName: Contract for desk account
+                  ownerId: '4000000008692'
+                  startDate: 1466035200000
+    accountListWithMappingInfoArray:
+      description: accountListWithMappingInfoArray template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Account.json#/components/schemas/dataWitMappingInfo
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - website: www.zoho.com
+                  accountName: ZOHO
+                  phone: '8822120911'
+                  mappingInfo:
+                    mappingId: 1892000000052072
+                    mappingType: PRIMARY
+                    isAccountTicketsViewable: true
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                  createdTime: 1424105864000
+                  zohoCRMAccount:
+                    id: '32754000000537001'
+                  customerHappiness:
+                    badPercentage: '30'
+                    okPercentage: '30'
+                    goodPercentage: '40'
+                  id: '1892000000052077'
+                  email: admin@zylker.com
     accountResponse:
       description: accountResponse template definitions
       content:
@@ -857,6 +1251,158 @@ components:
                 isFollowing: 'true'
                 phone: '6218129190'
                 webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+    updateManyResponse:
+      description: updateManyResponse template definitions
+      content:
+        application/json:
+          schema:
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                results:
+                  $ref: ./MassActionResponse.json#/components/schemas/results
+              required:
+              - results
+            - additionalProperties: false
+              allOf:
+              - $ref: ./errors.json#/components/schemas/commonErrorResponse
+              - type:
+                - 'null'
+                - object
+                properties:
+                  errors:
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type:
+                      - 'null'
+                      - object
+                      additionalProperties: false
+                      maxProperties: 3
+                      minProperties: 3
+                      properties:
+                        fieldName:
+                          type:
+                          - string
+                          - 'null'
+                          maxLength: 100
+                          minLength: 0
+                        errorType:
+                          type:
+                          - string
+                          - 'null'
+                          enum:
+                          - invalid
+                          - duplicate
+                          - missing
+                          maxLength: 100
+                          minLength: 0
+                        errorMessage:
+                          type:
+                          - string
+                          - 'null'
+                          maxLength: 100
+                          minLength: 0
+                      required:
+                      - errorMessage
+                      - errorType
+                      - fieldName
+                    uniqueItems: false
+                required:
+                - errors
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                errorCode:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - URL_NOT_FOUND
+                  - UNAUTHORIZED
+                  - INVALID_OAUTH
+                  - SCOPE_MISMATCH
+                  - FORBIDDEN
+                  - LICENSE_ACCESS_LIMITED
+                  - METHOD_NOT_ALLOWED
+                  - RESOURCE_SIZE_EXCEEDED
+                  - UNSUPPORTED_MEDIA_TYPE
+                  - INVALID_DATA
+                  - UNPROCESSABLE_ENTITY
+                  - ONLY_LIVECHAT_USER
+                  - INTEGRATION_ADMIN_ERROR
+                  - THRESHOLD_EXCEEDED
+                  - INTERNAL_SERVER_ERROR
+                  - EMPTY_PAYLOAD
+                  maxLength: 100
+                  minLength: 0
+                message:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 255
+                  minLength: 0
+              required:
+              - errorCode
+              - message
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                errorCode:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - URL_NOT_FOUND
+                  - UNAUTHORIZED
+                  - INVALID_OAUTH
+                  - SCOPE_MISMATCH
+                  - FORBIDDEN
+                  - LICENSE_ACCESS_LIMITED
+                  - METHOD_NOT_ALLOWED
+                  - RESOURCE_SIZE_EXCEEDED
+                  - UNSUPPORTED_MEDIA_TYPE
+                  - INVALID_DATA
+                  - UNPROCESSABLE_ENTITY
+                  - ONLY_LIVECHAT_USER
+                  - INTEGRATION_ADMIN_ERROR
+                  - THRESHOLD_EXCEEDED
+                  - INTERNAL_SERVER_ERROR
+                  - EMPTY_PAYLOAD
+                  maxLength: 100
+                  minLength: 0
+                message:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 255
+                  minLength: 0
+              required:
+              - errorCode
+              - message
+          examples:
+            Valid responses Definitions:
+              value:
+                results:
+                - success: true
+                  id: '1892000000093303'
+                  errors: null
+                - success: true
+                  id: '1892000000085009'
+                  errors: null
+                - success: false
+                  id: '1892000000050003'
+                  errors:
+                    errorCode: UNPROCESSABLE_ENTITY
+                    httpCode: '422'
     getTicketsByAccountResponse:
       description: getTicketsByAccountResponse template definitions
       content:
@@ -1161,34 +1707,6 @@ components:
                     id: '1892000000042001'
                     email: jack@zylker.com
                   status: Open
-    getContractsForAccountResponse:
-      description: getContractsForAccountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Account.json#/components/schemas/contractsForAccountData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - slaName: Priority-based SLAs
-                  endDate: 1468627200000
-                  slaGroupId: '4000000007069'
-                  departmentId: '4000000007043'
-                  contractId: '4000000032003'
-                  contractNumber: '1212'
-                  description: contract for all desk account
-                  contractName: Contract for desk account
-                  ownerId: '4000000008692'
-                  startDate: 1466035200000
     accountListArray:
       description: accountListArray template definitions
       content:
@@ -1233,524 +1751,6 @@ components:
                     goodPercentage: '40'
                   id: '1892000000052090'
                   email: agent@zylker.com
-    accountListWithMappingInfoArray:
-      description: accountListWithMappingInfoArray template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Account.json#/components/schemas/dataWitMappingInfo
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - website: www.zoho.com
-                  accountName: ZOHO
-                  phone: '8822120911'
-                  mappingInfo:
-                    mappingId: 1892000000052072
-                    mappingType: PRIMARY
-                    isAccountTicketsViewable: true
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                  createdTime: 1424105864000
-                  zohoCRMAccount:
-                    id: '32754000000537001'
-                  customerHappiness:
-                    badPercentage: '30'
-                    okPercentage: '30'
-                    goodPercentage: '40'
-                  id: '1892000000052077'
-                  email: admin@zylker.com
-  requestBodies:
-    accountjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Account.json#/components/schemas/commonObject
-            - type:
-              - 'null'
-              - object
-              properties:
-                country:
-                  type:
-                  - string
-                  - 'null'
-                  description: Country in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                code:
-                  type:
-                  - string
-                  - 'null'
-                  description: Zip code
-                  maxLength: 30
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                city:
-                  type:
-                  - string
-                  - 'null'
-                  description: City in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                street:
-                  type:
-                  - string
-                  - 'null'
-                  description: Address of the account
-                  maxLength: 250
-                  minLength: 0
-                annualrevenue:
-                  type:
-                  - string
-                  - 'null'
-                  description: Annual revenue of the account
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ([0-9]{1,13}(\.[0-9]*)?)
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  description: A short description of the account
-                  maxLength: 65535
-                  minLength: 0
-                industry:
-                  type:
-                  - string
-                  - 'null'
-                  description: Industry in which the account operates
-                  maxLength: 120
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                state:
-                  type:
-                  - string
-                  - 'null'
-                  description: State in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                ownerId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of account owner
-                  pattern: ([0-9]+)
-                fax:
-                  type:
-                  - string
-                  - 'null'
-                  description: Fax number of the account
-                  maxLength: 30
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-            - type: object
-              required:
-              - accountName
-          examples:
-            Valid requestBody Definitions:
-              value:
-                accountName: Zylker
-                phone: '98348229382'
-    associateProductsWithAccount:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              associate:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - associate
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '7000000062800'
-                ids:
-                - '7000000027223'
-                - '7000000043968'
-                associate: true
-    account_massupdate:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isCustomField:
-                type:
-                - boolean
-                - 'null'
-              fieldName:
-                type:
-                - string
-                - 'null'
-                x-dynamic-enum: true
-              ids:
-                $ref: ./Account.json#/components/schemas/long_array
-              fieldValue:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - fieldName
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                fieldName: phone
-                isCustomField: false
-                ids:
-                - '1892000000093303'
-                - '1892000000085009'
-                - '1892000000050003'
-                fieldValue: '8508569875'
-    accountsrecyclebinjson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              accountIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - accountIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                accountIds:
-                - '2000032003232'
-    accountMergeRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-              source:
-                $ref: ./Account.json#/components/schemas/sourceValues
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '4000000018011'
-                - '4000000018033'
-                source:
-                  country: '4000000018011'
-                  website: '4000000018011'
-                  code: '4000000018011'
-                  cf:
-                    cf_contactcount: 1892220000042001
-                  city: '4000000018011'
-                  description: '4000000018011'
-                  industry: '4000000018011'
-                  phone: '4000000018011'
-                  annualrevenue: '4000000018011'
-                  street: '4000000018011'
-                  state: '4000000018011'
-                  fax: '4000000018011'
-                  email: '4000000018011'
-    updateAccount_accountjson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Account.json#/components/schemas/commonObject
-            - type:
-              - 'null'
-              - object
-              properties:
-                country:
-                  type:
-                  - string
-                  - 'null'
-                  description: Country in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                code:
-                  type:
-                  - string
-                  - 'null'
-                  description: Zip code
-                  maxLength: 30
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                cf:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                city:
-                  type:
-                  - string
-                  - 'null'
-                  description: City in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                customFields:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                street:
-                  type:
-                  - string
-                  - 'null'
-                  description: Address of the account
-                  maxLength: 250
-                  minLength: 0
-                annualrevenue:
-                  type:
-                  - string
-                  - 'null'
-                  description: Annual revenue of the account
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ([0-9]{1,13}(\.[0-9]*)?)
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  description: A short description of the account
-                  maxLength: 65535
-                  minLength: 0
-                industry:
-                  type:
-                  - string
-                  - 'null'
-                  description: Industry in which the account operates
-                  maxLength: 120
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                state:
-                  type:
-                  - string
-                  - 'null'
-                  description: State in which the account is based
-                  maxLength: 30
-                  minLength: 0
-                ownerId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  description: ID of account owner
-                  pattern: ([0-9]+)
-                fax:
-                  type:
-                  - string
-                  - 'null'
-                  description: Fax number of the account
-                  maxLength: 30
-                  minLength: 0
-                  pattern: '[0-9a-zA-Z_\+\-\.\(\)\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+'
-            - type: object
-          examples:
-            Valid requestBody Definitions:
-              value: null
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: Number of accounts to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of accounts to list
-        maximum: 99
-        minimum: 1
-        pattern: ([0-9]+)
-    contactId:
-      name: contactId
-      in: path
-      description: Unique ID of the contact
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Key that filters ticket activities related to a particular contact
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: Unique ID of the department
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the statistics must be fetched. If you do not pass this parameter in the API request, statistics from all permitted departments will be fetched.
-        pattern: ([0-9]+)
-    accountId:
-      name: accountId
-      in: path
-      description: Unique ID of the account
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the accounts must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type: integer
-        format: int32
-        default: 1
-        description: Index number, starting from which the accounts must be fetched
-        minimum: 1
-    startsWith:
-      name: startsWith
-      in: query
-      description: Letter with which the names of the accounts must start
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Letter with which the names of the accounts must start
-        maxLength: 100
-        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

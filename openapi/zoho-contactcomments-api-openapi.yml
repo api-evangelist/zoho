@@ -187,7 +187,57 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    contactId:
+      name: contactId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
+    contactCommentCommonResponse:
+      description: contactCommentCommonResponse template definitions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/contactCommentCommonResponse'
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: null
+                commentedTime: 1485286523000
+                id: '4000000530045'
+                contentType: plainText
+                commenterId: '4000000008692'
+                content: second contact comment edit
+                commenter:
+                  firstName: Jade
+                  lastName: Tywin
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                  name: Jade Tywin
+                  roleName: LightAgent
+                  type: AGENT
+                  email: jade12tywin@zylker.com
     getContactComments:
       description: getContactComments template definitions
       content:
@@ -274,57 +324,76 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-    contactCommentCommonResponse:
-      description: contactCommentCommonResponse template definitions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/contactCommentCommonResponse'
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: null
-                commentedTime: 1485286523000
-                id: '4000000530045'
-                contentType: plainText
-                commenterId: '4000000008692'
-                content: second contact comment edit
-                commenter:
-                  firstName: Jade
-                  lastName: Tywin
-                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                  name: Jade Tywin
-                  roleName: LightAgent
-                  type: AGENT
-                  email: jade12tywin@zylker.com
-  parameters:
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    contactId:
-      name: contactId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   schemas:
+    contactCommentCommonResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        modifiedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        encodedContent:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        commentedTime:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        contentType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - plainText
+          - html
+          maxLength: 100
+          minLength: 0
+        commenterId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        content:
+          type:
+          - string
+          - 'null'
+          maxLength: 32000
+          minLength: 0
+        commenter:
+          $ref: ./ContactComments.json#/components/schemas/commenter
+        impersonatedUser:
+          $ref: ./TicketComment.json#/components/schemas/impersonatedUser
+      required:
+      - commentedTime
+      - commenter
+      - commenterId
+      - content
+      - contentType
+      - encodedContent
+      - id
+      - impersonatedUser
+      - modifiedTime
     mentions:
       type:
       - 'null'
@@ -411,95 +480,7 @@ components:
         - type
         - zuid
       uniqueItems: false
-    contactCommentCommonResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        modifiedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        encodedContent:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        commentedTime:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        contentType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - plainText
-          - html
-          maxLength: 100
-          minLength: 0
-        commenterId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        content:
-          type:
-          - string
-          - 'null'
-          maxLength: 32000
-          minLength: 0
-        commenter:
-          $ref: ./ContactComments.json#/components/schemas/commenter
-        impersonatedUser:
-          $ref: ./TicketComment.json#/components/schemas/impersonatedUser
-      required:
-      - commentedTime
-      - commenter
-      - commenterId
-      - content
-      - contentType
-      - encodedContent
-      - id
-      - impersonatedUser
-      - modifiedTime
   requestBodies:
-    editContactCommentRequestBody:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: second contact comment edit
     addContactCommentRequestBody:
       content:
         application/json:
@@ -531,6 +512,25 @@ components:
               value:
                 contentType: html
                 content: First contact comment
+    editContactCommentRequestBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: second contact comment edit
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

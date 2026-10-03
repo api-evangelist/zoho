@@ -244,23 +244,212 @@ paths:
       - external-public
 components:
   schemas:
-    mobileappPermissionJson:
+    commentsPermissionJson:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        radar:
+        edit:
           type:
           - boolean
           - 'null'
-        deskapp:
+        delete:
           type:
           - boolean
           - 'null'
       required:
-      - deskapp
-      - radar
+      - delete
+      - edit
+    chatPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - view
+    commonProfileResponse:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        default:
+          type: boolean
+        permissions:
+          $ref: '#/components/schemas/commonPermissionJson'
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 32000
+          minLength: 0
+        isVisible:
+          type:
+          - boolean
+          - 'null'
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Administrator
+          - Standard
+          - Light
+          - Portal
+          - Custom
+          maxLength: 100
+          minLength: 0
+      required:
+      - default
+      - description
+      - id
+      - isVisible
+      - name
+      - permissions
+      - type
+    productsPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        import:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
+        manageOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        shareOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        editSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        deleteSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        reshareSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - deleteSharedCustomViews
+      - edit
+      - editSharedCustomViews
+      - export
+      - import
+      - manageOwnCustomViews
+      - reshareSharedCustomViews
+      - shareOwnCustomViews
+      - view
+    financeIntegPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        sendSalesOrder:
+          type:
+          - boolean
+          - 'null'
+        createSalesOrder:
+          type:
+          - boolean
+          - 'null'
+        sendInvoice:
+          type:
+          - boolean
+          - 'null'
+        viewSubscription:
+          type:
+          - boolean
+          - 'null'
+        createEstimate:
+          type:
+          - boolean
+          - 'null'
+        createContact:
+          type:
+          - boolean
+          - 'null'
+        viewInvoice:
+          type:
+          - boolean
+          - 'null'
+        createInvoice:
+          type:
+          - boolean
+          - 'null'
+        sendEstimate:
+          type:
+          - boolean
+          - 'null'
+        viewSalesOrder:
+          type:
+          - boolean
+          - 'null'
+        viewEstimate:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - createContact
+      - createEstimate
+      - createInvoice
+      - createSalesOrder
+      - sendEstimate
+      - sendInvoice
+      - sendSalesOrder
+      - viewEstimate
+      - viewInvoice
+      - viewSalesOrder
+      - viewSubscription
     clientActionPermissionJson:
       type:
       - 'null'
@@ -318,718 +507,6 @@ components:
       - reshareSharedCustomViews
       - shareOwnCustomViews
       - view
-    imPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - edit
-      - view
-    crmIntegPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        crmContactsActivityEvents:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsActivityEvents:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsActivityTasks:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsInfo:
-          type:
-          - boolean
-          - 'null'
-        crmContactsActivityCalls:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsNotes:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsActivityCalls:
-          type:
-          - boolean
-          - 'null'
-        crmContactsInfo:
-          type:
-          - boolean
-          - 'null'
-        crmContactsNotes:
-          type:
-          - boolean
-          - 'null'
-        crmContactsActivityTasks:
-          type:
-          - boolean
-          - 'null'
-        crmAccountsPotentials:
-          type:
-          - boolean
-          - 'null'
-        crmContactsPotentials:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - crmAccountsActivityCalls
-      - crmAccountsActivityEvents
-      - crmAccountsActivityTasks
-      - crmAccountsInfo
-      - crmAccountsNotes
-      - crmAccountsPotentials
-      - crmContactsActivityCalls
-      - crmContactsActivityEvents
-      - crmContactsActivityTasks
-      - crmContactsInfo
-      - crmContactsNotes
-      - crmContactsPotentials
-    tasksPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-        manageOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        shareOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        editSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        deleteSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        reshareSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - deleteSharedCustomViews
-      - edit
-      - editSharedCustomViews
-      - export
-      - import
-      - manageOwnCustomViews
-      - reshareSharedCustomViews
-      - shareOwnCustomViews
-      - view
-    contractsPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-        manageOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        shareOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        editSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        deleteSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        reshareSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - deleteSharedCustomViews
-      - edit
-      - editSharedCustomViews
-      - export
-      - import
-      - manageOwnCustomViews
-      - reshareSharedCustomViews
-      - shareOwnCustomViews
-      - view
-    agentsPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        overview:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        viewAllFields:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - edit
-      - import
-      - overview
-      - viewAllFields
-    accountsPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-        manageOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        shareOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        editSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        deleteSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        reshareSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - deleteSharedCustomViews
-      - edit
-      - editSharedCustomViews
-      - export
-      - import
-      - manageOwnCustomViews
-      - reshareSharedCustomViews
-      - shareOwnCustomViews
-      - view
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/commonProfileResponse'
-    ziaPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - create
-      - delete
-      - edit
-      - view
-    ticketsPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        mergeTickets:
-          type:
-          - boolean
-          - 'null'
-        changeOwner:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        handleUnassigned:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        closeTicket:
-          type:
-          - boolean
-          - 'null'
-        deleteTags:
-          type:
-          - boolean
-          - 'null'
-        revokeBlueprint:
-          type:
-          - boolean
-          - 'null'
-        mailReview:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        view:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        addFollowers:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-        mailSend:
-          type:
-          - boolean
-          - 'null'
-        editTags:
-          type:
-          - boolean
-          - 'null'
-        unassignedChangeOwner:
-          type:
-          - boolean
-          - 'null'
-        shareTickets:
-          type:
-          - boolean
-          - 'null'
-        manageOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        shareOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        editSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        deleteSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        reshareSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - addFollowers
-      - changeOwner
-      - closeTicket
-      - create
-      - delete
-      - deleteSharedCustomViews
-      - deleteTags
-      - edit
-      - editSharedCustomViews
-      - editTags
-      - export
-      - handleUnassigned
-      - import
-      - mailReview
-      - mailSend
-      - manageOwnCustomViews
-      - mergeTickets
-      - reshareSharedCustomViews
-      - revokeBlueprint
-      - shareOwnCustomViews
-      - shareTickets
-      - unassignedChangeOwner
-      - view
-    kbCategoryPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        editAllArticles:
-          type:
-          - boolean
-          - 'null'
-        import:
-          type:
-          - boolean
-          - 'null'
-        manageKB:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        admin:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - admin
-      - create
-      - delete
-      - edit
-      - editAllArticles
-      - export
-      - import
-      - manageKB
-      - view
-    commonPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        crmInteg:
-          $ref: '#/components/schemas/crmIntegPermissionJson'
-        reports:
-          $ref: '#/components/schemas/reportsPermissionJson'
-        tickets:
-          $ref: '#/components/schemas/ticketsPermissionJson'
-        mobileapp:
-          $ref: '#/components/schemas/mobileappPermissionJson'
-        contracts:
-          $ref: '#/components/schemas/contractsPermissionJson'
-        products:
-          $ref: '#/components/schemas/productsPermissionJson'
-        zia:
-          $ref: '#/components/schemas/ziaPermissionJson'
-        timeEntry:
-          $ref: '#/components/schemas/timeEntryPermissionJson'
-        gc:
-          $ref: '#/components/schemas/gcPermissionJson'
-        tasks:
-          $ref: '#/components/schemas/tasksPermissionJson'
-        events:
-          $ref: '#/components/schemas/contactsPermissionJson'
-        courses:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        comments:
-          $ref: '#/components/schemas/commentsPermissionJson'
-        im:
-          $ref: '#/components/schemas/imPermissionJson'
-        social:
-          $ref: '#/components/schemas/socialPermissionJson'
-        community:
-          $ref: '#/components/schemas/communityPermissionJson'
-        agents:
-          $ref: '#/components/schemas/agentsPermissionJson'
-        CommunityTopic:
-          $ref: '#/components/schemas/CommunityTopicPermissionJson'
-        radar:
-          $ref: '#/components/schemas/radarPermissionJson'
-        kbCategory:
-          $ref: '#/components/schemas/kbCategoryPermissionJson'
-        calls:
-          $ref: '#/components/schemas/contactsPermissionJson'
-        setup:
-          $ref: '#/components/schemas/setupPermissionJson'
-        financeInteg:
-          $ref: '#/components/schemas/financeIntegPermissionJson'
-        CommunityComment:
-          $ref: '#/components/schemas/CommunityCommentPermissionJson'
-        accounts:
-          $ref: '#/components/schemas/accountsPermissionJson'
-        contacts:
-          $ref: '#/components/schemas/contactsPermissionJson'
-        activities:
-          $ref: '#/components/schemas/activitiesPermissionJson'
-        chat:
-          $ref: '#/components/schemas/chatPermissionJson'
-        ticketLifeCycleData:
-          $ref: '#/components/schemas/ticketLifeCycleDataJson'
-        modules:
-          type: object
-          properties:
-            view:
-              type: boolean
-            edit:
-              type: boolean
-            create:
-              type: boolean
-            delete:
-              type: boolean
-            export:
-              type: boolean
-            manageOwnCustomViews:
-              type:
-              - boolean
-              - 'null'
-            shareOwnCustomViews:
-              type:
-              - boolean
-              - 'null'
-            editSharedCustomViews:
-              type:
-              - boolean
-              - 'null'
-            deleteSharedCustomViews:
-              type:
-              - boolean
-              - 'null'
-            reshareSharedCustomViews:
-              type:
-              - boolean
-              - 'null'
-          required:
-          - create
-          - delete
-          - deleteSharedCustomViews
-          - edit
-          - editSharedCustomViews
-          - export
-          - manageOwnCustomViews
-          - reshareSharedCustomViews
-          - shareOwnCustomViews
-          - view
-        clientEvents:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        componentMapping:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        eventMapping:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        componentEventMappingAssociation:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        clientActionConditions:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        clientAction:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        clientActionModuleAssociation:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-        clientActionLocationAssociation:
-          $ref: '#/components/schemas/clientActionPermissionJson'
-      required:
-      - CommunityComment
-      - CommunityTopic
-      - accounts
-      - activities
-      - agents
-      - calls
-      - clientAction
-      - clientActionConditions
-      - clientActionLocationAssociation
-      - clientActionModuleAssociation
-      - clientEvents
-      - comments
-      - community
-      - componentEventMappingAssociation
-      - componentMapping
-      - contacts
-      - contracts
-      - crmInteg
-      - eventMapping
-      - events
-      - financeInteg
-      - gc
-      - im
-      - kbCategory
-      - mobileapp
-      - products
-      - radar
-      - reports
-      - setup
-      - social
-      - tasks
-      - tickets
-      - timeEntry
-      - zia
-    CommunityTopicPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - view
-    commentsPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        edit:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - delete
-      - edit
     setupPermissionJson:
       type:
       - 'null'
@@ -1252,108 +729,74 @@ components:
       - timeTracking
       - webForm
       - webhooks
-    financeIntegPermissionJson:
+    crmIntegPermissionJson:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
-        sendSalesOrder:
+        crmContactsActivityEvents:
           type:
           - boolean
           - 'null'
-        createSalesOrder:
+        crmAccountsActivityEvents:
           type:
           - boolean
           - 'null'
-        sendInvoice:
+        crmAccountsActivityTasks:
           type:
           - boolean
           - 'null'
-        viewSubscription:
+        crmAccountsInfo:
           type:
           - boolean
           - 'null'
-        createEstimate:
+        crmContactsActivityCalls:
           type:
           - boolean
           - 'null'
-        createContact:
+        crmAccountsNotes:
           type:
           - boolean
           - 'null'
-        viewInvoice:
+        crmAccountsActivityCalls:
           type:
           - boolean
           - 'null'
-        createInvoice:
+        crmContactsInfo:
           type:
           - boolean
           - 'null'
-        sendEstimate:
+        crmContactsNotes:
           type:
           - boolean
           - 'null'
-        viewSalesOrder:
+        crmContactsActivityTasks:
           type:
           - boolean
           - 'null'
-        viewEstimate:
+        crmAccountsPotentials:
           type:
           - boolean
           - 'null'
-      required:
-      - createContact
-      - createEstimate
-      - createInvoice
-      - createSalesOrder
-      - sendEstimate
-      - sendInvoice
-      - sendSalesOrder
-      - viewEstimate
-      - viewInvoice
-      - viewSalesOrder
-      - viewSubscription
-    socialPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        twitterPostDelete:
-          type:
-          - boolean
-          - 'null'
-        twitterConversationReply:
-          type:
-          - boolean
-          - 'null'
-        twitterPostCreate:
+        crmContactsPotentials:
           type:
           - boolean
           - 'null'
       required:
-      - twitterConversationReply
-      - twitterPostCreate
-      - twitterPostDelete
-      - view
-    chatPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - view
-    reportsPermissionJson:
+      - crmAccountsActivityCalls
+      - crmAccountsActivityEvents
+      - crmAccountsActivityTasks
+      - crmAccountsInfo
+      - crmAccountsNotes
+      - crmAccountsPotentials
+      - crmContactsActivityCalls
+      - crmContactsActivityEvents
+      - crmContactsActivityTasks
+      - crmContactsInfo
+      - crmContactsNotes
+      - crmContactsPotentials
+    timeEntryPermissionJson:
       type:
       - 'null'
       - object
@@ -1375,139 +818,12 @@ components:
           type:
           - boolean
           - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
       required:
       - create
       - delete
       - edit
-      - export
       - view
-    CommunityCommentPermissionJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - view
-    commonProfileResponse:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        default:
-          type: boolean
-        permissions:
-          $ref: '#/components/schemas/commonPermissionJson'
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        description:
-          type:
-          - string
-          - 'null'
-          maxLength: 32000
-          minLength: 0
-        isVisible:
-          type:
-          - boolean
-          - 'null'
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Administrator
-          - Standard
-          - Light
-          - Portal
-          - Custom
-          maxLength: 100
-          minLength: 0
-      required:
-      - default
-      - description
-      - id
-      - isVisible
-      - name
-      - permissions
-      - type
-    ticketLifeCycleDataJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        view:
-          type:
-          - boolean
-          - 'null'
-        edit:
-          type:
-          - boolean
-          - 'null'
-        create:
-          type:
-          - boolean
-          - 'null'
-        delete:
-          type:
-          - boolean
-          - 'null'
-        export:
-          type:
-          - boolean
-          - 'null'
-        manageOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        shareOwnCustomViews:
-          type:
-          - boolean
-          - 'null'
-        editSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        deleteSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-        reshareSharedCustomViews:
-          type:
-          - boolean
-          - 'null'
-      required:
-      - view
-      - edit
-      - create
-      - delete
-      - export
-      - manageOwnCustomViews
-      - shareOwnCustomViews
-      - editSharedCustomViews
-      - deleteSharedCustomViews
-      - reshareSharedCustomViews
-    productsPermissionJson:
+    contactsPermissionJson:
       type:
       - 'null'
       - object
@@ -1569,13 +885,17 @@ components:
       - reshareSharedCustomViews
       - shareOwnCustomViews
       - view
-    gcPermissionJson:
+    accountsPermissionJson:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
         view:
+          type:
+          - boolean
+          - 'null'
+        import:
           type:
           - boolean
           - 'null'
@@ -1591,12 +911,43 @@ components:
           type:
           - boolean
           - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
+        manageOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        shareOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        editSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        deleteSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        reshareSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
       required:
       - create
       - delete
+      - deleteSharedCustomViews
       - edit
+      - editSharedCustomViews
+      - export
+      - import
+      - manageOwnCustomViews
+      - reshareSharedCustomViews
+      - shareOwnCustomViews
       - view
-    communityPermissionJson:
+    kbCategoryPermissionJson:
       type:
       - 'null'
       - object
@@ -1606,7 +957,23 @@ components:
           type:
           - boolean
           - 'null'
+        editAllArticles:
+          type:
+          - boolean
+          - 'null'
+        import:
+          type:
+          - boolean
+          - 'null'
+        manageKB:
+          type:
+          - boolean
+          - 'null'
         edit:
+          type:
+          - boolean
+          - 'null'
+        admin:
           type:
           - boolean
           - 'null'
@@ -1618,17 +985,287 @@ components:
           type:
           - boolean
           - 'null'
-        moderate:
+        export:
           type:
           - boolean
           - 'null'
       required:
+      - admin
       - create
       - delete
       - edit
-      - moderate
+      - editAllArticles
+      - export
+      - import
+      - manageKB
       - view
-    timeEntryPermissionJson:
+    tasksPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        import:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
+        manageOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        shareOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        editSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        deleteSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        reshareSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - deleteSharedCustomViews
+      - edit
+      - editSharedCustomViews
+      - export
+      - import
+      - manageOwnCustomViews
+      - reshareSharedCustomViews
+      - shareOwnCustomViews
+      - view
+    socialPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        twitterPostDelete:
+          type:
+          - boolean
+          - 'null'
+        twitterConversationReply:
+          type:
+          - boolean
+          - 'null'
+        twitterPostCreate:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - twitterConversationReply
+      - twitterPostCreate
+      - twitterPostDelete
+      - view
+    commonPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        crmInteg:
+          $ref: '#/components/schemas/crmIntegPermissionJson'
+        reports:
+          $ref: '#/components/schemas/reportsPermissionJson'
+        tickets:
+          $ref: '#/components/schemas/ticketsPermissionJson'
+        mobileapp:
+          $ref: '#/components/schemas/mobileappPermissionJson'
+        contracts:
+          $ref: '#/components/schemas/contractsPermissionJson'
+        products:
+          $ref: '#/components/schemas/productsPermissionJson'
+        zia:
+          $ref: '#/components/schemas/ziaPermissionJson'
+        timeEntry:
+          $ref: '#/components/schemas/timeEntryPermissionJson'
+        gc:
+          $ref: '#/components/schemas/gcPermissionJson'
+        tasks:
+          $ref: '#/components/schemas/tasksPermissionJson'
+        events:
+          $ref: '#/components/schemas/contactsPermissionJson'
+        courses:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        comments:
+          $ref: '#/components/schemas/commentsPermissionJson'
+        im:
+          $ref: '#/components/schemas/imPermissionJson'
+        social:
+          $ref: '#/components/schemas/socialPermissionJson'
+        community:
+          $ref: '#/components/schemas/communityPermissionJson'
+        agents:
+          $ref: '#/components/schemas/agentsPermissionJson'
+        CommunityTopic:
+          $ref: '#/components/schemas/CommunityTopicPermissionJson'
+        radar:
+          $ref: '#/components/schemas/radarPermissionJson'
+        kbCategory:
+          $ref: '#/components/schemas/kbCategoryPermissionJson'
+        calls:
+          $ref: '#/components/schemas/contactsPermissionJson'
+        setup:
+          $ref: '#/components/schemas/setupPermissionJson'
+        financeInteg:
+          $ref: '#/components/schemas/financeIntegPermissionJson'
+        CommunityComment:
+          $ref: '#/components/schemas/CommunityCommentPermissionJson'
+        accounts:
+          $ref: '#/components/schemas/accountsPermissionJson'
+        contacts:
+          $ref: '#/components/schemas/contactsPermissionJson'
+        activities:
+          $ref: '#/components/schemas/activitiesPermissionJson'
+        chat:
+          $ref: '#/components/schemas/chatPermissionJson'
+        ticketLifeCycleData:
+          $ref: '#/components/schemas/ticketLifeCycleDataJson'
+        modules:
+          type: object
+          properties:
+            view:
+              type: boolean
+            edit:
+              type: boolean
+            create:
+              type: boolean
+            delete:
+              type: boolean
+            export:
+              type: boolean
+            manageOwnCustomViews:
+              type:
+              - boolean
+              - 'null'
+            shareOwnCustomViews:
+              type:
+              - boolean
+              - 'null'
+            editSharedCustomViews:
+              type:
+              - boolean
+              - 'null'
+            deleteSharedCustomViews:
+              type:
+              - boolean
+              - 'null'
+            reshareSharedCustomViews:
+              type:
+              - boolean
+              - 'null'
+          required:
+          - create
+          - delete
+          - deleteSharedCustomViews
+          - edit
+          - editSharedCustomViews
+          - export
+          - manageOwnCustomViews
+          - reshareSharedCustomViews
+          - shareOwnCustomViews
+          - view
+        clientEvents:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        componentMapping:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        eventMapping:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        componentEventMappingAssociation:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        clientActionConditions:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        clientAction:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        clientActionModuleAssociation:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+        clientActionLocationAssociation:
+          $ref: '#/components/schemas/clientActionPermissionJson'
+      required:
+      - CommunityComment
+      - CommunityTopic
+      - accounts
+      - activities
+      - agents
+      - calls
+      - clientAction
+      - clientActionConditions
+      - clientActionLocationAssociation
+      - clientActionModuleAssociation
+      - clientEvents
+      - comments
+      - community
+      - componentEventMappingAssociation
+      - componentMapping
+      - contacts
+      - contracts
+      - crmInteg
+      - eventMapping
+      - events
+      - financeInteg
+      - gc
+      - im
+      - kbCategory
+      - mobileapp
+      - products
+      - radar
+      - reports
+      - setup
+      - social
+      - tasks
+      - tickets
+      - timeEntry
+      - zia
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commonProfileResponse'
+    CommunityTopicPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - view
+    reportsPermissionJson:
       type:
       - 'null'
       - object
@@ -1650,10 +1287,15 @@ components:
           type:
           - boolean
           - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
       required:
       - create
       - delete
       - edit
+      - export
       - view
     radarPermissionJson:
       type:
@@ -1777,12 +1419,193 @@ components:
       - quickView
       - textContentProtection
       - visualContentProtection
-    activitiesPermissionJson:
+    agentsData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./Agent.json#/components/schemas/profileAgentResponse
+    ziaPermissionJson:
       type:
       - 'null'
       - object
       additionalProperties: false
       properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - edit
+      - view
+    gcPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - edit
+      - view
+    mobileappPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        radar:
+          type:
+          - boolean
+          - 'null'
+        deskapp:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - deskapp
+      - radar
+    communityPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        moderate:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - edit
+      - moderate
+      - view
+    ticketsPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        mergeTickets:
+          type:
+          - boolean
+          - 'null'
+        changeOwner:
+          type:
+          - boolean
+          - 'null'
+        import:
+          type:
+          - boolean
+          - 'null'
+        handleUnassigned:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        closeTicket:
+          type:
+          - boolean
+          - 'null'
+        deleteTags:
+          type:
+          - boolean
+          - 'null'
+        revokeBlueprint:
+          type:
+          - boolean
+          - 'null'
+        mailReview:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        view:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        addFollowers:
+          type:
+          - boolean
+          - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
+        mailSend:
+          type:
+          - boolean
+          - 'null'
+        editTags:
+          type:
+          - boolean
+          - 'null'
+        unassignedChangeOwner:
+          type:
+          - boolean
+          - 'null'
+        shareTickets:
+          type:
+          - boolean
+          - 'null'
         manageOwnCustomViews:
           type:
           - boolean
@@ -1804,18 +1627,136 @@ components:
           - boolean
           - 'null'
       required:
+      - addFollowers
+      - changeOwner
+      - closeTicket
+      - create
+      - delete
       - deleteSharedCustomViews
+      - deleteTags
+      - edit
       - editSharedCustomViews
+      - editTags
+      - export
+      - handleUnassigned
+      - import
+      - mailReview
+      - mailSend
       - manageOwnCustomViews
+      - mergeTickets
       - reshareSharedCustomViews
+      - revokeBlueprint
       - shareOwnCustomViews
-    agentsData:
+      - shareTickets
+      - unassignedChangeOwner
+      - view
+    ticketLifeCycleDataJson:
       type:
       - 'null'
-      - array
-      items:
-        $ref: ./Agent.json#/components/schemas/profileAgentResponse
-    contactsPermissionJson:
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        export:
+          type:
+          - boolean
+          - 'null'
+        manageOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        shareOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        editSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        deleteSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        reshareSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - view
+      - edit
+      - create
+      - delete
+      - export
+      - manageOwnCustomViews
+      - shareOwnCustomViews
+      - editSharedCustomViews
+      - deleteSharedCustomViews
+      - reshareSharedCustomViews
+    CommunityCommentPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - view
+    agentsPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        overview:
+          type:
+          - boolean
+          - 'null'
+        import:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+        viewAllFields:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - edit
+      - import
+      - overview
+      - viewAllFields
+    contractsPermissionJson:
       type:
       - 'null'
       - object
@@ -1877,30 +1818,104 @@ components:
       - reshareSharedCustomViews
       - shareOwnCustomViews
       - view
+    activitiesPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        manageOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        shareOwnCustomViews:
+          type:
+          - boolean
+          - 'null'
+        editSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        deleteSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+        reshareSharedCustomViews:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - deleteSharedCustomViews
+      - editSharedCustomViews
+      - manageOwnCustomViews
+      - reshareSharedCustomViews
+      - shareOwnCustomViews
+    imPermissionJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        view:
+          type:
+          - boolean
+          - 'null'
+        edit:
+          type:
+          - boolean
+          - 'null'
+        create:
+          type:
+          - boolean
+          - 'null'
+        delete:
+          type:
+          - boolean
+          - 'null'
+      required:
+      - create
+      - delete
+      - edit
+      - view
+  parameters:
+    default:
+      name: default
+      in: query
+      description: ' Key that denotes whether the profiles must be default profiles or custom profiles'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: ' Key that denotes whether the profiles must be default profiles or custom profiles'
+    visible:
+      name: visible
+      in: query
+      description: Key that filters profiles according to their visibility in the UI
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that filters profiles according to their visibility in the UI
+    profileId:
+      name: profileId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
-    getProfileCountResponse:
-      description: getProfileCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: 8
     commonProfileResponse:
       description: commonProfileResponse template definitions
       content:
@@ -2191,42 +2206,300 @@ components:
                 id: '4000000008464'
                 isVisible: true
                 type: Administrator
-    getAgentsResponse:
-      description: getAgentsResponse template definitions
+    getMyProfilePermissionsResponse:
+      description: getMyProfilePermissionsResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              agents:
-                $ref: '#/components/schemas/agentsData'
-            required:
-            - agents
+            oneOf:
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                default:
+                  type: boolean
+                permissions:
+                  $ref: '#/components/schemas/commonPermissionJson'
+                name:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 50
+                  minLength: 0
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 32000
+                  minLength: 0
+                isVisible:
+                  type:
+                  - boolean
+                  - 'null'
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                type:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - Administrator
+                  - Standard
+                  - Light
+                  - Portal
+                  - Custom
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - default
+              - description
+              - id
+              - isVisible
+              - name
+              - permissions
+              - type
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                permissions:
+                  $ref: '#/components/schemas/commonPermissionJson'
+              required:
+              - permissions
           examples:
             Valid responses Definitions:
               value:
-                agents:
-                - firstName: ''
-                  lastName: John
-                  photoURL: https://contacts.zoho.com/file?t=user&ID=437793
-                  roleId: '7000000012324'
-                  profileId: '6000000011303'
-                  emailId: john@zylker.com
-                  id: '7000000013328'
-                  zuid: '437793'
-                  isZiaAgent: false
-                - firstName: Steve
-                  lastName: Kyle
-                  photoURL: null
-                  roleId: '7000000012324'
-                  profileId: '6000000011303'
-                  emailId: kyle@zylker.com
-                  id: '7000000012958'
-                  zuid: '5625416'
-                  isZiaAgent: false
+                permissions:
+                  crmInteg:
+                    crmContactsActivityEvents: false
+                    crmAccountsActivityEvents: false
+                    crmAccountsActivityTasks: false
+                    crmAccountsInfo: false
+                    crmContactsActivityCalls: false
+                    crmAccountsNotes: false
+                    crmAccountsActivityCalls: false
+                    crmContactsInfo: false
+                    crmContactsNotes: false
+                    crmContactsActivityTasks: false
+                    crmAccountsPotentials: false
+                    crmContactsPotentials: false
+                  reports:
+                    view: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                  tickets:
+                    mergeTickets: true
+                    changeOwner: true
+                    import: true
+                    handleUnassigned: true
+                    edit: true
+                    closeTicket: true
+                    revokeBlueprint: true
+                    mailReview: true
+                    delete: true
+                    view: true
+                    create: true
+                    addFollowers: true
+                    export: true
+                    mailSend: true
+                    unassignedChangeOwner: false
+                    shareTickets: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  comments:
+                    edit: true
+                    delete: true
+                  social:
+                    view: true
+                    twitterPostDelete: true
+                    twitterPostCreate: true
+                    twitterConversationReply: true
+                  mobileapp:
+                    radar: true
+                    deskapp: true
+                  contracts:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  community:
+                    view: true
+                    edit: true
+                    create: true
+                    delete: true
+                    moderate: true
+                  products:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  ticketLifeCycleData:
+                    view: true
+                    reshareSharedCustomViews: false
+                    edit: true
+                    deleteSharedCustomViews: false
+                    shareOwnCustomViews: false
+                    create: true
+                    manageOwnCustomViews: false
+                    editSharedCustomViews: false
+                    delete: true
+                    export: true
+                  agents:
+                    overview: true
+                    edit: false
+                    create: true
+                    delete: true
+                    viewAllFields: true
+                  kbCategory:
+                    view: true
+                    editAllArticles: true
+                    import: true
+                    manageKB: true
+                    edit: true
+                    create: true
+                    admin: true
+                    delete: true
+                    export: true
+                  setup:
+                    localization: true
+                    timeTracking: true
+                    fetchAcrossDepartment: true
+                    globalReports: true
+                    exportPortalUsers: true
+                    layouts: true
+                    automation: true
+                    featureConfig: true
+                    customerHappiness: true
+                    department: true
+                    portal: true
+                    webForm: true
+                    rebranding: true
+                    email: true
+                    recycleBin: true
+                    tabsAndFields: true
+                    exportUsers: true
+                    teams: true
+                    social: true
+                    templates: true
+                    sandbox: true
+                    securitySettings: true
+                    moveRecords: true
+                    permission: true
+                    signUpApproval: true
+                    community: true
+                    importHistory: true
+                    manageAgents: true
+                    portalUsers: true
+                    managerDashboard: true
+                    googleAnalytics: true
+                    chat: true
+                    telephony: true
+                    manageMarketplace: false
+                  financeInteg:
+                    sendInvoice: false
+                    createEstimate: false
+                    createContact: false
+                    viewInvoice: false
+                    createInvoice: false
+                    sendEstimate: false
+                    viewEstimate: false
+                  accounts:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  timeEntry:
+                    view: true
+                    edit: true
+                    create: true
+                    delete: true
+                  contacts:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  tasks:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  events:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  calls:
+                    view: true
+                    import: true
+                    edit: true
+                    create: true
+                    delete: true
+                    export: true
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
+                  activities:
+                    manageOwnCustomViews: true
+                    shareOwnCustomViews: true
+                    editSharedCustomViews: true
+                    deleteSharedCustomViews: true
+                    reshareSharedCustomViews: true
     getProfileListResponse:
       description: getProfileListResponse template definitions
       content:
@@ -3712,301 +3985,88 @@ components:
                   id: '5000000015300'
                   isVisible: true
                   type: Custom
-    getMyProfilePermissionsResponse:
-      description: getMyProfilePermissionsResponse template definitions
+    getProfileCountResponse:
+      description: getProfileCountResponse template definitions
       content:
         application/json:
           schema:
-            oneOf:
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                default:
-                  type: boolean
-                permissions:
-                  $ref: '#/components/schemas/commonPermissionJson'
-                name:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 50
-                  minLength: 0
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 32000
-                  minLength: 0
-                isVisible:
-                  type:
-                  - boolean
-                  - 'null'
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
                 type:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - Administrator
-                  - Standard
-                  - Light
-                  - Portal
-                  - Custom
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - default
-              - description
-              - id
-              - isVisible
-              - name
-              - permissions
-              - type
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                permissions:
-                  $ref: '#/components/schemas/commonPermissionJson'
-              required:
-              - permissions
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
           examples:
             Valid responses Definitions:
               value:
-                permissions:
-                  crmInteg:
-                    crmContactsActivityEvents: false
-                    crmAccountsActivityEvents: false
-                    crmAccountsActivityTasks: false
-                    crmAccountsInfo: false
-                    crmContactsActivityCalls: false
-                    crmAccountsNotes: false
-                    crmAccountsActivityCalls: false
-                    crmContactsInfo: false
-                    crmContactsNotes: false
-                    crmContactsActivityTasks: false
-                    crmAccountsPotentials: false
-                    crmContactsPotentials: false
-                  reports:
-                    view: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                  tickets:
-                    mergeTickets: true
-                    changeOwner: true
-                    import: true
-                    handleUnassigned: true
-                    edit: true
-                    closeTicket: true
-                    revokeBlueprint: true
-                    mailReview: true
-                    delete: true
-                    view: true
-                    create: true
-                    addFollowers: true
-                    export: true
-                    mailSend: true
-                    unassignedChangeOwner: false
-                    shareTickets: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  comments:
-                    edit: true
-                    delete: true
-                  social:
-                    view: true
-                    twitterPostDelete: true
-                    twitterPostCreate: true
-                    twitterConversationReply: true
-                  mobileapp:
-                    radar: true
-                    deskapp: true
-                  contracts:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  community:
-                    view: true
-                    edit: true
-                    create: true
-                    delete: true
-                    moderate: true
-                  products:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  ticketLifeCycleData:
-                    view: true
-                    reshareSharedCustomViews: false
-                    edit: true
-                    deleteSharedCustomViews: false
-                    shareOwnCustomViews: false
-                    create: true
-                    manageOwnCustomViews: false
-                    editSharedCustomViews: false
-                    delete: true
-                    export: true
-                  agents:
-                    overview: true
-                    edit: false
-                    create: true
-                    delete: true
-                    viewAllFields: true
-                  kbCategory:
-                    view: true
-                    editAllArticles: true
-                    import: true
-                    manageKB: true
-                    edit: true
-                    create: true
-                    admin: true
-                    delete: true
-                    export: true
-                  setup:
-                    localization: true
-                    timeTracking: true
-                    fetchAcrossDepartment: true
-                    globalReports: true
-                    exportPortalUsers: true
-                    layouts: true
-                    automation: true
-                    featureConfig: true
-                    customerHappiness: true
-                    department: true
-                    portal: true
-                    webForm: true
-                    rebranding: true
-                    email: true
-                    recycleBin: true
-                    tabsAndFields: true
-                    exportUsers: true
-                    teams: true
-                    social: true
-                    templates: true
-                    sandbox: true
-                    securitySettings: true
-                    moveRecords: true
-                    permission: true
-                    signUpApproval: true
-                    community: true
-                    importHistory: true
-                    manageAgents: true
-                    portalUsers: true
-                    managerDashboard: true
-                    googleAnalytics: true
-                    chat: true
-                    telephony: true
-                    manageMarketplace: false
-                  financeInteg:
-                    sendInvoice: false
-                    createEstimate: false
-                    createContact: false
-                    viewInvoice: false
-                    createInvoice: false
-                    sendEstimate: false
-                    viewEstimate: false
-                  accounts:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  timeEntry:
-                    view: true
-                    edit: true
-                    create: true
-                    delete: true
-                  contacts:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  tasks:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  events:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  calls:
-                    view: true
-                    import: true
-                    edit: true
-                    create: true
-                    delete: true
-                    export: true
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
-                  activities:
-                    manageOwnCustomViews: true
-                    shareOwnCustomViews: true
-                    editSharedCustomViews: true
-                    deleteSharedCustomViews: true
-                    reshareSharedCustomViews: true
+                count: 8
+    getAgentsResponse:
+      description: getAgentsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              agents:
+                $ref: '#/components/schemas/agentsData'
+            required:
+            - agents
+          examples:
+            Valid responses Definitions:
+              value:
+                agents:
+                - firstName: ''
+                  lastName: John
+                  photoURL: https://contacts.zoho.com/file?t=user&ID=437793
+                  roleId: '7000000012324'
+                  profileId: '6000000011303'
+                  emailId: john@zylker.com
+                  id: '7000000013328'
+                  zuid: '437793'
+                  isZiaAgent: false
+                - firstName: Steve
+                  lastName: Kyle
+                  photoURL: null
+                  roleId: '7000000012324'
+                  profileId: '6000000011303'
+                  emailId: kyle@zylker.com
+                  id: '7000000012958'
+                  zuid: '5625416'
+                  isZiaAgent: false
   requestBodies:
+    disableTransfer:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              transferToProfileId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - transferToProfileId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                transferToProfileId: '4000000008454'
     cloneProfileJson:
       content:
         application/json:
@@ -4073,66 +4133,6 @@ components:
                     export: false
                 name: Agent Advisors
                 description: Advisors from CRM to assist the Support Agents.
-    disableTransfer:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              transferToProfileId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - transferToProfileId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                transferToProfileId: '4000000008454'
-  parameters:
-    profileId:
-      name: profileId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    default:
-      name: default
-      in: query
-      description: ' Key that denotes whether the profiles must be default profiles or custom profiles'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: ' Key that denotes whether the profiles must be default profiles or custom profiles'
-    visible:
-      name: visible
-      in: query
-      description: Key that filters profiles according to their visibility in the UI
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that filters profiles according to their visibility in the UI
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

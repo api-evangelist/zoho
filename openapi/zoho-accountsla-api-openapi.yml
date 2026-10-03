@@ -121,6 +121,26 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    updateSla:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              associate:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - associate
+          examples:
+            Valid requestBody Definitions:
+              value:
+                associate: true
   responses:
     slaMetaInfoResponse:
       description: slaMetaInfoResponse template definitions
@@ -172,26 +192,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  requestBodies:
-    updateSla:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              associate:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - associate
-          examples:
-            Valid requestBody Definitions:
-              value:
-                associate: true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -128,29 +128,6 @@ paths:
       - external-public
 components:
   responses:
-    followersCountJSON:
-      description: followersCountJSON template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: 289
     followersListJson:
       description: followersListJson template definitions
       content:
@@ -185,20 +162,30 @@ components:
                     logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
                   userType: AGENT
                   email: deskagent@zylker.com
+    followersCountJSON:
+      description: followersCountJSON template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: 289
   parameters:
-    entityId:
-      name: entityId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
     userType:
       name: userType
       in: query
@@ -233,6 +220,19 @@ components:
         maxLength: 100
         minLength: 0
         pattern: (articleTranslations|kbRootCategories|kbSections)
+    entityId:
+      name: entityId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

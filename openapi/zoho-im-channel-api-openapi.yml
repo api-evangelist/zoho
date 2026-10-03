@@ -112,6 +112,42 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    integrationServiceId:
+      name: integrationServiceId
+      in: query
+      description: Channel ID to filter
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Channel ID to filter
+        enum:
+        - TELEGRAM
+        - TWILIO
+        - IM_TALK
+        - LINE
+        - WECHAT
+        - WHATSAPP
+        - FACEBOOKMESSENGER
+        maxLength: 100
+        minLength: 0
   responses:
     getIMChannel:
       description: getIMChannel template definitions
@@ -653,42 +689,6 @@ components:
                   id: '3942000000735961'
                   authenticationURL: null
                   isSandBox: false
-  parameters:
-    integrationServiceId:
-      name: integrationServiceId
-      in: query
-      description: Channel ID to filter
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Channel ID to filter
-        enum:
-        - TELEGRAM
-        - TWILIO
-        - IM_TALK
-        - LINE
-        - WECHAT
-        - WHATSAPP
-        - FACEBOOKMESSENGER
-        maxLength: 100
-        minLength: 0
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

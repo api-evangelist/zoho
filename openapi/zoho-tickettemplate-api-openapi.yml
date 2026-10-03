@@ -176,21 +176,51 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    ticketTemplateId:
-      name: ticketTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
+    updateTicketTemplate_addTicketTemplateRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              showInCustomerPortal:
+                type:
+                - boolean
+                - 'null'
+                description: Key that specifies if the template must be displayed in the help center or not
+              ticketTemplateName:
+                type:
+                - string
+                - 'null'
+                description: Name of the ticket template
+                maxLength: 200
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              ticketTemplateValues:
+                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
+              layoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the ticket layout from which the template is derived
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                showInCustomerPortal: false
+                ticketTemplateName: temptest
+                ticketTemplateValues:
+                  cf:
+                    cf_severity_percentage: '60'
+                  productId: '4000000009012'
+                  subject: UrgentProblem
+                  departmentId: '4000000007073'
+                  email: jacks@zylker.com
     addTicketTemplateRequest:
       content:
         application/json:
@@ -268,7 +298,23 @@ components:
                 ids:
                 - '4000000083313'
                 - '4000000082105'
-    updateTicketTemplate_addTicketTemplateRequest:
+  parameters:
+    ticketTemplateId:
+      name: ticketTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  responses:
+    listTicketTemplateResponse:
+      description: listTicketTemplateResponse template definitions
       content:
         application/json:
           schema:
@@ -277,42 +323,22 @@ components:
             - object
             additionalProperties: false
             properties:
-              showInCustomerPortal:
-                type:
-                - boolean
-                - 'null'
-                description: Key that specifies if the template must be displayed in the help center or not
-              ticketTemplateName:
-                type:
-                - string
-                - 'null'
-                description: Name of the ticket template
-                maxLength: 200
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              ticketTemplateValues:
-                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValues
-              layoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the ticket layout from which the template is derived
-                pattern: ([0-9]+)
+              data:
+                $ref: ./TicketTemplate.json#/components/schemas/data
+            required:
+            - data
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                showInCustomerPortal: false
-                ticketTemplateName: temptest
-                ticketTemplateValues:
-                  cf:
-                    cf_severity_percentage: '60'
-                  productId: '4000000009012'
-                  subject: UrgentProblem
-                  departmentId: '4000000007073'
-                  email: jacks@zylker.com
-  responses:
+                data:
+                - showInCustomerPortal: true
+                  ticketTemplateName: Template1
+                  id: '4000000020001'
+                  layoutId: '4000000020121'
+                - showInCustomerPortal: false
+                  ticketTemplateName: Template2
+                  id: '4000000020063'
+                  layoutId: '4000000020431'
     addUpdateGetTicketTemplateResponse:
       description: addUpdateGetTicketTemplateResponse template definitions
       content:
@@ -385,32 +411,6 @@ components:
                   category: null
                   email: jacks@zylker.com
                   status: null
-    listTicketTemplateResponse:
-      description: listTicketTemplateResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./TicketTemplate.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - showInCustomerPortal: true
-                  ticketTemplateName: Template1
-                  id: '4000000020001'
-                  layoutId: '4000000020121'
-                - showInCustomerPortal: false
-                  ticketTemplateName: Template2
-                  id: '4000000020063'
-                  layoutId: '4000000020431'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

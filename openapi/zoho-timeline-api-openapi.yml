@@ -1131,14 +1131,6 @@ paths:
       - Timeline
 components:
   parameters:
-    IncludeTimelineType:
-      name: include_timeline_type
-      description: Type of timeline to include
-      in: query
-      required: false
-      schema:
-        type: string
-        maxLength: 255
     SortBy:
       name: sort_by
       description: Field to sort the timelines by
@@ -1148,35 +1140,43 @@ components:
         type: string
         enum:
         - audited_time
-    PerPage:
-      name: per_page
-      description: Number of records per page
-      in: query
-      required: false
-      schema:
-        type: integer
-        format: int32
-        enum:
-        - 3
-    IncludeInnerDetails:
-      name: include_inner_details
-      description: Flag to include inner details
-      in: query
-      required: false
-      schema:
-        type: string
-        maxLength: 255
-    Filter:
-      name: filter
-      description: Filter criteria for timelines
-      in: query
-      required: false
-      schema:
-        type: string
-        maxLength: 255
     PageToken:
       name: page_token
       description: Token for pagination
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+    Include:
+      name: include
+      description: Additional data to include
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+    IncludeTimelineType:
+      name: include_timeline_type
+      description: Type of timeline to include
+      in: query
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+    SortOrder:
+      name: sort_order
+      description: Sort order for the timelines
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+    Filter:
+      name: filter
+      description: Filter criteria for timelines
       in: query
       required: false
       schema:
@@ -1190,9 +1190,9 @@ components:
       schema:
         type: integer
         format: int32
-    Include:
-      name: include
-      description: Additional data to include
+    IncludeInnerDetails:
+      name: include_inner_details
+      description: Flag to include inner details
       in: query
       required: false
       schema:
@@ -1214,16 +1214,16 @@ components:
       schema:
         type: string
         maxLength: 255
-    SortOrder:
-      name: sort_order
-      description: Sort order for the timelines
+    PerPage:
+      name: per_page
+      description: Number of records per page
       in: query
       required: false
       schema:
-        type: string
+        type: integer
+        format: int32
         enum:
-        - asc
-        - desc
+        - 3
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

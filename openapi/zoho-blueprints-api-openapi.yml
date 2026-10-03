@@ -234,7 +234,287 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    departmentId:
+      name: departmentId
+      in: query
+      description: Department for which the blueprints are listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Department for which the blueprints are listed
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: module of the blueprints to be listed
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: module of the blueprints to be listed
+        enum:
+        - tickets
+        maxLength: 100
+        minLength: 0
+        pattern: tickets
+    ticket_id:
+      name: ticket_id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    blueprint_id:
+      name: blueprint_id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        minimum: 1
+        pattern: ([0-9]+)
   responses:
+    revokeBlueprintObject:
+      description: revokeBlueprintObject template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              message:
+                type:
+                - string
+                - 'null'
+                maxLength: 200
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+            required:
+            - message
+          examples:
+            Valid responses Definitions:
+              value:
+                message: Blueprint has been revoked from this ticket
+    getAllResponseObject:
+      description: getAllResponseObject template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./blueprints.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1525421277000
+                  orderNumber: '3'
+                  createdUserZUID: '5263696'
+                  departmentId: '1000000010712'
+                  module: tickets
+                  isDraft: false
+                  description: ''
+                  modifiedUserZUID: '5263696'
+                  active: true
+                  type: NON_CONTINUOUS
+                  transitions:
+                  - name: Issue fixed
+                    id: '1000000309105'
+                  layoutId: '1000000011200'
+                  states:
+                  - name: Open
+                    id: 1000000309101
+                  - name: Closed
+                    id: 1000000309119
+                  i18nFieldLabel: Status
+                  fieldLabel: Status
+                  name: Automate QA process
+                  createdTime: 1525268370000
+                  id: '1000000309097'
+                  connections:
+                  - fromState:
+                      name: Open
+                      id: '1000000309101'
+                    toState:
+                      name: Closed
+                      id: '1000000309119'
+                    transitions:
+                    - name: Issue fixed
+                      id: '1000000309105'
+                  fieldId: '1000000000506'
+                - modifiedTime: 1524549208000
+                  orderNumber: '4'
+                  createdUserZUID: '5263696'
+                  departmentId: '1000000010712'
+                  module: tickets
+                  isDraft: true
+                  description: ''
+                  modifiedUserZUID: '5263696'
+                  active: true
+                  type: NON_CONTINUOUS
+                  transitions:
+                  - name: before
+                    id: '1000000232199'
+                  - name: after
+                    id: '1000000232197'
+                  - name: during
+                    id: '1000000232201'
+                  layoutId: '1000000011200'
+                  states:
+                  - name: Closed
+                    id: 1000000232189
+                  - name: On Hold
+                    id: 1000000232191
+                  - name: Open
+                    id: 1000000232193
+                  - name: Escalated
+                    id: 1000000232195
+                  i18nFieldLabel: Status
+                  fieldLabel: Status
+                  name: AUtomate HR process
+                  createdTime: 1523375034000
+                  id: '1000000232187'
+                  connections:
+                  - fromState:
+                      name: On Hold
+                      id: '1000000232191'
+                    toState:
+                      name: Escalated
+                      id: '1000000232195'
+                    transitions:
+                    - name: before
+                      id: '1000000232199'
+                  - fromState:
+                      name: Open
+                      id: '1000000232193'
+                    toState:
+                      name: On Hold
+                      id: '1000000232191'
+                    transitions:
+                    - name: after
+                      id: '1000000232197'
+                  - fromState:
+                      name: Escalated
+                      id: '1000000232195'
+                    toState:
+                      name: Closed
+                      id: '1000000232189'
+                    transitions:
+                    - name: during
+                      id: '1000000232201'
+                  fieldId: '1000000000506'
+                - modifiedTime: 1522762448000
+                  orderNumber: '5'
+                  createdUserZUID: '5263696'
+                  departmentId: '1000000010712'
+                  module: tickets
+                  isDraft: false
+                  description: ''
+                  modifiedUserZUID: '5263696'
+                  active: true
+                  type: NON_CONTINUOUS
+                  transitions:
+                  - name: to onhold
+                    id: '1000000173011'
+                  - name: To close
+                    id: '1000000173009'
+                  layoutId: '1000000011200'
+                  states:
+                  - name: Closed
+                    id: 1000000173003
+                  - name: Open
+                    id: 1000000173005
+                  - name: On Hold
+                    id: 1000000173007
+                  i18nFieldLabel: Status
+                  fieldLabel: Status
+                  name: Shipping process
+                  createdTime: 1522240151000
+                  id: '1000000173001'
+                  connections:
+                  - fromState:
+                      name: Open
+                      id: '1000000173005'
+                    toState:
+                      name: On Hold
+                      id: '1000000173007'
+                    transitions:
+                    - name: to onhold
+                      id: '1000000173011'
+                  - fromState:
+                      name: On Hold
+                      id: '1000000173007'
+                    toState:
+                      name: Closed
+                      id: '1000000173003'
+                    transitions:
+                    - name: To close
+                      id: '1000000173009'
+                  fieldId: '1000000000506'
+                - modifiedTime: 1525353504000
+                  orderNumber: '5'
+                  createdUserZUID: '5263696'
+                  departmentId: '1000000010712'
+                  module: tickets
+                  isDraft: false
+                  description: ''
+                  modifiedUserZUID: '5263696'
+                  active: true
+                  type: NON_CONTINUOUS
+                  transitions:
+                  - name: t1
+                    id: '1000000313281'
+                  layoutId: '1000000011200'
+                  states:
+                  - name: Approval 2
+                    id: 1000000313277
+                  - name: Approval 2 approved
+                    id: 1000000313279
+                  i18nFieldLabel: Status
+                  fieldLabel: Status
+                  name: Ticket Support process
+                  createdTime: 1525353504000
+                  id: '1000000313275'
+                  connections:
+                  - fromState:
+                      name: Approval 2 approved
+                      id: '1000000313279'
+                    toState:
+                      name: Approval 2
+                      id: '1000000313277'
+                    transitions:
+                    - name: t1
+                      id: '1000000313281'
+                  fieldId: '1000000000506'
     createBlueprintResponse:
       description: createBlueprintResponse template definitions
       content:
@@ -581,29 +861,6 @@ components:
                   - name: Feedbacks need to be monitored
                     id: 4000000324027
                 fieldId: 4000000000377
-    revokeBlueprintObject:
-      description: revokeBlueprintObject template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              message:
-                type:
-                - string
-                - 'null'
-                maxLength: 200
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - message
-          examples:
-            Valid responses Definitions:
-              value:
-                message: Blueprint has been revoked from this ticket
     getAppliedBlueprintDetailsResponse:
       description: getAppliedBlueprintDetailsResponse template definitions
       content:
@@ -699,203 +956,6 @@ components:
                       name: Sandeep Ghemire
                       id: '8000000000053'
                     draftAt: 1605283531000
-    getAllResponseObject:
-      description: getAllResponseObject template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./blueprints.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1525421277000
-                  orderNumber: '3'
-                  createdUserZUID: '5263696'
-                  departmentId: '1000000010712'
-                  module: tickets
-                  isDraft: false
-                  description: ''
-                  modifiedUserZUID: '5263696'
-                  active: true
-                  type: NON_CONTINUOUS
-                  transitions:
-                  - name: Issue fixed
-                    id: '1000000309105'
-                  layoutId: '1000000011200'
-                  states:
-                  - name: Open
-                    id: 1000000309101
-                  - name: Closed
-                    id: 1000000309119
-                  i18nFieldLabel: Status
-                  fieldLabel: Status
-                  name: Automate QA process
-                  createdTime: 1525268370000
-                  id: '1000000309097'
-                  connections:
-                  - fromState:
-                      name: Open
-                      id: '1000000309101'
-                    toState:
-                      name: Closed
-                      id: '1000000309119'
-                    transitions:
-                    - name: Issue fixed
-                      id: '1000000309105'
-                  fieldId: '1000000000506'
-                - modifiedTime: 1524549208000
-                  orderNumber: '4'
-                  createdUserZUID: '5263696'
-                  departmentId: '1000000010712'
-                  module: tickets
-                  isDraft: true
-                  description: ''
-                  modifiedUserZUID: '5263696'
-                  active: true
-                  type: NON_CONTINUOUS
-                  transitions:
-                  - name: before
-                    id: '1000000232199'
-                  - name: after
-                    id: '1000000232197'
-                  - name: during
-                    id: '1000000232201'
-                  layoutId: '1000000011200'
-                  states:
-                  - name: Closed
-                    id: 1000000232189
-                  - name: On Hold
-                    id: 1000000232191
-                  - name: Open
-                    id: 1000000232193
-                  - name: Escalated
-                    id: 1000000232195
-                  i18nFieldLabel: Status
-                  fieldLabel: Status
-                  name: AUtomate HR process
-                  createdTime: 1523375034000
-                  id: '1000000232187'
-                  connections:
-                  - fromState:
-                      name: On Hold
-                      id: '1000000232191'
-                    toState:
-                      name: Escalated
-                      id: '1000000232195'
-                    transitions:
-                    - name: before
-                      id: '1000000232199'
-                  - fromState:
-                      name: Open
-                      id: '1000000232193'
-                    toState:
-                      name: On Hold
-                      id: '1000000232191'
-                    transitions:
-                    - name: after
-                      id: '1000000232197'
-                  - fromState:
-                      name: Escalated
-                      id: '1000000232195'
-                    toState:
-                      name: Closed
-                      id: '1000000232189'
-                    transitions:
-                    - name: during
-                      id: '1000000232201'
-                  fieldId: '1000000000506'
-                - modifiedTime: 1522762448000
-                  orderNumber: '5'
-                  createdUserZUID: '5263696'
-                  departmentId: '1000000010712'
-                  module: tickets
-                  isDraft: false
-                  description: ''
-                  modifiedUserZUID: '5263696'
-                  active: true
-                  type: NON_CONTINUOUS
-                  transitions:
-                  - name: to onhold
-                    id: '1000000173011'
-                  - name: To close
-                    id: '1000000173009'
-                  layoutId: '1000000011200'
-                  states:
-                  - name: Closed
-                    id: 1000000173003
-                  - name: Open
-                    id: 1000000173005
-                  - name: On Hold
-                    id: 1000000173007
-                  i18nFieldLabel: Status
-                  fieldLabel: Status
-                  name: Shipping process
-                  createdTime: 1522240151000
-                  id: '1000000173001'
-                  connections:
-                  - fromState:
-                      name: Open
-                      id: '1000000173005'
-                    toState:
-                      name: On Hold
-                      id: '1000000173007'
-                    transitions:
-                    - name: to onhold
-                      id: '1000000173011'
-                  - fromState:
-                      name: On Hold
-                      id: '1000000173007'
-                    toState:
-                      name: Closed
-                      id: '1000000173003'
-                    transitions:
-                    - name: To close
-                      id: '1000000173009'
-                  fieldId: '1000000000506'
-                - modifiedTime: 1525353504000
-                  orderNumber: '5'
-                  createdUserZUID: '5263696'
-                  departmentId: '1000000010712'
-                  module: tickets
-                  isDraft: false
-                  description: ''
-                  modifiedUserZUID: '5263696'
-                  active: true
-                  type: NON_CONTINUOUS
-                  transitions:
-                  - name: t1
-                    id: '1000000313281'
-                  layoutId: '1000000011200'
-                  states:
-                  - name: Approval 2
-                    id: 1000000313277
-                  - name: Approval 2 approved
-                    id: 1000000313279
-                  i18nFieldLabel: Status
-                  fieldLabel: Status
-                  name: Ticket Support process
-                  createdTime: 1525353504000
-                  id: '1000000313275'
-                  connections:
-                  - fromState:
-                      name: Approval 2 approved
-                      id: '1000000313279'
-                    toState:
-                      name: Approval 2
-                      id: '1000000313277'
-                    transitions:
-                    - name: t1
-                      id: '1000000313281'
-                  fieldId: '1000000000506'
     getBlueprintDetailsResponse:
       description: getBlueprintDetailsResponse template definitions
       content:
@@ -1500,151 +1560,6 @@ components:
                     id: 4000000324027
                 fieldId: 4000000000377
   requestBodies:
-    updateBlueprint:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              orderNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                minimum: 1
-                pattern: ([0-9]+)
-              criteria:
-                $ref: ./blueprintCriteria.json#/components/schemas/criteriaObjectForResponse
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              module:
-                type:
-                - string
-                - 'null'
-                enum:
-                - tickets
-                maxLength: 100
-                minLength: 0
-                pattern: tickets
-              description:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
-              dynamicTransOwnerType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-                pattern: ACTIVE|INACTIVE
-              active:
-                type:
-                - boolean
-                - 'null'
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - NON_CONTINUOUS
-                - CONTINUOUS
-                maxLength: 100
-                minLength: 0
-                pattern: NON_CONTINUOUS|CONTINUOUS
-              transitions:
-                $ref: ./blueprintTransitions.json#/components/schemas/transitionsArrayForResponse
-              layoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              states:
-                $ref: ./blueprintStates.json#/components/schemas/statesArrayForResponse
-              layout:
-                $ref: ./blueprints.json#/components/schemas/layoutObject
-              chartData:
-                $ref: ./blueprintChartData.json#/components/schemas/chartDataObjectForResponse
-              strictModeConfig:
-                $ref: ./blueprintStrictModeConfig.json#/components/schemas/strictModeConfigObject
-              createdBy:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              draft:
-                type:
-                - boolean
-                - 'null'
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 60
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              modifiedBy:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                minimum: 1
-                pattern: ([0-9]+)
-              modifiedTimeInMillis:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                minimum: 1
-                pattern: ([0-9]+)
-              createdTimeInMillis:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                minimum: 1
-                pattern: ([0-9]+)
-              connections:
-                $ref: ./blueprintConnections.json#/components/schemas/connectionsArrayForResponse
-              fieldId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                type: NON_CONTINUOUS
     createBlueprint:
       content:
         application/json:
@@ -1978,66 +1893,151 @@ components:
               - '4000000019019'
               - '4000000019023'
               - '4000000019021'
-  parameters:
-    ticket_id:
-      name: ticket_id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    departmentId:
-      name: departmentId
-      in: query
-      description: Department for which the blueprints are listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Department for which the blueprints are listed
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: module of the blueprints to be listed
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: module of the blueprints to be listed
-        enum:
-        - tickets
-        maxLength: 100
-        minLength: 0
-        pattern: tickets
-    blueprint_id:
-      name: blueprint_id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        minimum: 1
-        pattern: ([0-9]+)
+    updateBlueprint:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              orderNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                minimum: 1
+                pattern: ([0-9]+)
+              criteria:
+                $ref: ./blueprintCriteria.json#/components/schemas/criteriaObjectForResponse
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              module:
+                type:
+                - string
+                - 'null'
+                enum:
+                - tickets
+                maxLength: 100
+                minLength: 0
+                pattern: tickets
+              description:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]+|^$'
+              dynamicTransOwnerType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+                pattern: ACTIVE|INACTIVE
+              active:
+                type:
+                - boolean
+                - 'null'
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - NON_CONTINUOUS
+                - CONTINUOUS
+                maxLength: 100
+                minLength: 0
+                pattern: NON_CONTINUOUS|CONTINUOUS
+              transitions:
+                $ref: ./blueprintTransitions.json#/components/schemas/transitionsArrayForResponse
+              layoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              states:
+                $ref: ./blueprintStates.json#/components/schemas/statesArrayForResponse
+              layout:
+                $ref: ./blueprints.json#/components/schemas/layoutObject
+              chartData:
+                $ref: ./blueprintChartData.json#/components/schemas/chartDataObjectForResponse
+              strictModeConfig:
+                $ref: ./blueprintStrictModeConfig.json#/components/schemas/strictModeConfigObject
+              createdBy:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              draft:
+                type:
+                - boolean
+                - 'null'
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 60
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              modifiedBy:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                minimum: 1
+                pattern: ([0-9]+)
+              modifiedTimeInMillis:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                minimum: 1
+                pattern: ([0-9]+)
+              createdTimeInMillis:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                minimum: 1
+                pattern: ([0-9]+)
+              connections:
+                $ref: ./blueprintConnections.json#/components/schemas/connectionsArrayForResponse
+              fieldId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                type: NON_CONTINUOUS
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

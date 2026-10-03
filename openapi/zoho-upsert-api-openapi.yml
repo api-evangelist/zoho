@@ -247,61 +247,29 @@ paths:
       - Upsert
 components:
   schemas:
-    RecordInternalErrorResponse:
-      description: Schema for internal server error responses related to record operations.
+    RecordUnathorizedResponse:
+      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
       type: object
       additionalProperties: false
       properties:
         data:
           type: array
           maxItems: 100
-          description: List of error objects describing internal server failures.
+          description: List of error objects indicating that the request is not authorized.
           items:
             type: object
-            description: Error object representing an unexpected internal server error.
+            description: Error object representing an OAuth scope mismatch.
             additionalProperties: false
             properties:
               code:
                 type: string
-                description: Machine-readable error code indicating an internal server failure.
+                description: Machine-readable error code indicating an OAuth scope mismatch.
                 enum:
-                - INTERNAL_ERROR
+                - OAUTH_SCOPE_MISMATCH
               message:
                 type: string
                 maxLength: 1024
-                description: Human-readable description of the internal server error.
-              status:
-                type: string
-                description: Overall execution status of the request.
-                enum:
-                - error
-            required:
-            - code
-            - message
-            - status
-    RecordInvalidURLResponse:
-      description: Response schema returned when the requested API endpoint URL pattern is invalid or unsupported.
-      type: object
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          maxItems: 100
-          description: List of error objects indicating an invalid or unsupported API endpoint URL.
-          items:
-            type: object
-            description: Error object representing an invalid API URL pattern.
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Machine-readable error code indicating an invalid endpoint URL pattern.
-                enum:
-                - INVALID_URL_PATTERN
-              message:
-                type: string
-                maxLength: 1024
-                description: Human-readable explanation describing why the requested URL is invalid.
+                description: Human-readable explanation describing why the OAuth token is unauthorized.
               status:
                 type: string
                 description: Overall execution status of the request.
@@ -334,6 +302,38 @@ components:
                 type: string
                 maxLength: 1024
                 description: Human-readable explanation describing the permission denial.
+              status:
+                type: string
+                description: Overall execution status of the request.
+                enum:
+                - error
+            required:
+            - code
+            - message
+            - status
+    RecordInvalidURLResponse:
+      description: Response schema returned when the requested API endpoint URL pattern is invalid or unsupported.
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          maxItems: 100
+          description: List of error objects indicating an invalid or unsupported API endpoint URL.
+          items:
+            type: object
+            description: Error object representing an invalid API URL pattern.
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Machine-readable error code indicating an invalid endpoint URL pattern.
+                enum:
+                - INVALID_URL_PATTERN
+              message:
+                type: string
+                maxLength: 1024
+                description: Human-readable explanation describing why the requested URL is invalid.
               status:
                 type: string
                 description: Overall execution status of the request.
@@ -519,29 +519,29 @@ components:
             - code
             - message
             - status
-    RecordUnathorizedResponse:
-      description: Response schema returned when a request is unauthorized due to OAuth scope mismatches.
+    RecordInternalErrorResponse:
+      description: Schema for internal server error responses related to record operations.
       type: object
       additionalProperties: false
       properties:
         data:
           type: array
           maxItems: 100
-          description: List of error objects indicating that the request is not authorized.
+          description: List of error objects describing internal server failures.
           items:
             type: object
-            description: Error object representing an OAuth scope mismatch.
+            description: Error object representing an unexpected internal server error.
             additionalProperties: false
             properties:
               code:
                 type: string
-                description: Machine-readable error code indicating an OAuth scope mismatch.
+                description: Machine-readable error code indicating an internal server failure.
                 enum:
-                - OAUTH_SCOPE_MISMATCH
+                - INTERNAL_ERROR
               message:
                 type: string
                 maxLength: 1024
-                description: Human-readable explanation describing why the OAuth token is unauthorized.
+                description: Human-readable description of the internal server error.
               status:
                 type: string
                 description: Overall execution status of the request.

@@ -132,147 +132,7 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    entityId:
-      name: entityId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  requestBodies:
-    addTaskCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: Edit Task comment
-    addTaskComment_addTaskCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contentType: html
-                content: First Task comment.
   responses:
-    listTaskComment:
-      description: listTaskComment template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./TaskComments.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: null
-                  commentedTime: 1485270287000
-                  id: '4000000530005'
-                  contentType: plainText
-                  commenterId: '4000000008692'
-                  content: Second Task Comment......
-                  mention: []
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: LightAgent
-                    type: AGENT
-                    email: jade12tywin@zylker.com
-                - modifiedTime: 1485269780000
-                  attachments:
-                  - size: '12734'
-                    name: Attachment_list.png
-                    id: '4000000008994'
-                    href: https://desk.zoho.com/api/v1/tasks/4000000528005/comments/4000000529001/attachments/4000000008994/content
-                  commentedTime: 1485269673000
-                  id: '4000000530003'
-                  contentType: html
-                  commenterId: '4000000008692'
-                  content: Edit Task comment
-                  mention: []
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: PortalUser
-                    type: END_USER
-                    email: jade12tywin@zylker.com
     addTaskComment:
       description: addTaskComment template definitions
       content:
@@ -379,6 +239,146 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
+    listTaskComment:
+      description: listTaskComment template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./TaskComments.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: null
+                  commentedTime: 1485270287000
+                  id: '4000000530005'
+                  contentType: plainText
+                  commenterId: '4000000008692'
+                  content: Second Task Comment......
+                  mention: []
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: LightAgent
+                    type: AGENT
+                    email: jade12tywin@zylker.com
+                - modifiedTime: 1485269780000
+                  attachments:
+                  - size: '12734'
+                    name: Attachment_list.png
+                    id: '4000000008994'
+                    href: https://desk.zoho.com/api/v1/tasks/4000000528005/comments/4000000529001/attachments/4000000008994/content
+                  commentedTime: 1485269673000
+                  id: '4000000530003'
+                  contentType: html
+                  commenterId: '4000000008692'
+                  content: Edit Task comment
+                  mention: []
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: PortalUser
+                    type: END_USER
+                    email: jade12tywin@zylker.com
+  parameters:
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    entityId:
+      name: entityId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  requestBodies:
+    addTaskComment_addTaskCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contentType: html
+                content: First Task comment.
+    addTaskCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: Edit Task comment
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

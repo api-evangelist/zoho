@@ -303,7 +303,559 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    timeEntryJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              secondsSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of seconds in the time entry.
+                pattern: ([0-9]+)
+              cf:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              executedTime:
+                type:
+                - string
+                - 'null'
+                description: Time when work related to the time entry was started.
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              customFields:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              minutesSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of minutes in the time entry.
+                pattern: ([0-9]+)
+              agentCostPerHour:
+                type:
+                - string
+                - 'null'
+                description: Per hour cost of an agent.
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              description:
+                type:
+                - string
+                - 'null'
+                description: Description of the time entry
+                maxLength: 100
+                minLength: 0
+              hoursSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of hours in the time entry.
+                pattern: ([0-9]+)
+              ownerId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the user associated with the time entry
+                pattern: ([0-9]+)
+              isBillable:
+                type:
+                - boolean
+                - 'null'
+                description: Billing Preference
+              billingType:
+                type:
+                - string
+                - 'null'
+                description: Billing type configured in the time tracking. Possible values are @FIXED_COST_FOR_TICKETS@ @FIXED_COST_FOR_AGENTS@ @SPECIFIC_COST_PER_AGENT@ and @SPECIFIC_COST_PER_PROFILE@
+                enum:
+                - FIXED_COST_FOR_TICKETS
+                - FIXED_COST_FOR_AGENTS
+                - SPECIFIC_COST_PER_PROFILE
+                - SPECIFIC_COST_PER_AGENT
+                maxLength: 100
+                minLength: 0
+              requestChargeType:
+                type:
+                - string
+                - 'null'
+                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
+                enum:
+                - Customer Service
+                - Upgrade Request
+                - Product Consultation
+                - Support and Maintenance
+                maxLength: 100
+                minLength: 0
+              additionalCost:
+                type:
+                - string
+                - 'null'
+                description: Additional cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                description: Time Entry description
+                requestChargeType: Customer Service
+    addTicketTimeEntry_timeEntryJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              secondsSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of seconds in the time entry.
+                pattern: ([0-9]+)
+              cf:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              executedTime:
+                type:
+                - string
+                - 'null'
+                description: Time when work related to the time entry was started.
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              customFields:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              minutesSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of minutes in the time entry.
+                pattern: ([0-9]+)
+              agentCostPerHour:
+                type:
+                - string
+                - 'null'
+                description: Per hour cost of an agent.
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              description:
+                type:
+                - string
+                - 'null'
+                description: Description of the time entry
+                maxLength: 100
+                minLength: 0
+              hoursSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of hours in the time entry.
+                pattern: ([0-9]+)
+              ownerId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the user associated with the time entry
+                pattern: ([0-9]+)
+              isBillable:
+                type:
+                - boolean
+                - 'null'
+                description: Billing Preference
+              billingType:
+                type:
+                - string
+                - 'null'
+                description: Billing type configured in the time tracking. Possible values are @FIXED_COST_FOR_TICKETS@ @FIXED_COST_FOR_AGENTS@ @SPECIFIC_COST_PER_AGENT@ and @SPECIFIC_COST_PER_PROFILE@
+                enum:
+                - FIXED_COST_FOR_TICKETS
+                - FIXED_COST_FOR_AGENTS
+                - SPECIFIC_COST_PER_PROFILE
+                - SPECIFIC_COST_PER_AGENT
+                maxLength: 100
+                minLength: 0
+              requestChargeType:
+                type:
+                - string
+                - 'null'
+                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
+                enum:
+                - Customer Service
+                - Upgrade Request
+                - Product Consultation
+                - Support and Maintenance
+                maxLength: 100
+                minLength: 0
+              additionalCost:
+                type:
+                - string
+                - 'null'
+                description: Additional cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+            required:
+            - executedTime
+          examples:
+            Valid requestBody Definitions:
+              value:
+                secondsSpent: '21'
+                cf:
+                  cf_timeentryname: time2
+                executedTime: 1466627400000
+                minutesSpent: '23'
+                agentCostPerHour: '3.0'
+                description: Time Entry description
+                hoursSpent: '3'
+                invoiceId: '4000000008688123'
+                ownerId: '4000000008692'
+                requestChargeType: Customer Service
+                additionalCost: '10.0'
+                totalCost: '20.17'
+  parameters:
+    timeEntryId:
+      name: timeEntryId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    ticketId:
+      name: ticketId
+      in: path
+      description: ID of the ticket
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the ticket
+        pattern: ([0-9]+)
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+        maxLength: 100
+        minLength: 0
+    module:
+      name: module
+      in: query
+      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
+        enum:
+        - tickets
+        - tasks
+        maxLength: 100
+        minLength: 0
+  responses:
+    getSummationOfTimeEntryForTicketResponse:
+      description: getSummationOfTimeEntryForTicketResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              totalMins:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalHours:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalCosts:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalSeconds:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - totalCosts
+            - totalHours
+            - totalMins
+            - totalSeconds
+          examples:
+            Valid responses Definitions:
+              value:
+                totalMins: 5
+                totalHours: 12
+                totalCosts: 1000
+                totalSeconds: 24
+    ticketTimeEntryResponse:
+      description: ticketTimeEntryResponse template definitions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ticketTimeEntryResponse'
+          examples:
+            Valid responses Definitions:
+              value:
+                secondsSpent: '21'
+                parent:
+                  ticketNumber: '1004'
+                  subject: Ticket subject
+                  id: '4000000031007'
+                  type: TICKETS
+                cf:
+                  cf_timeentryname: time2
+                executedTime: 1466627400000
+                fixedCost: null
+                departmentId: '4000000008694'
+                minutesSpent: '23'
+                creatorId: '4000000008692'
+                agentCostPerHour: '3.0'
+                description: Time Entry description
+                hoursSpent: '3'
+                ownerId: '4000000008692'
+                isBillable: true
+                mode: MANUAL
+                isTrashed: 'false'
+                billingType: FIXED_COST_FOR_TICKETS
+                createdTime: 1466488320828
+                invoiceId: '4000000008688123'
+                id: '4000000045001'
+                requestChargeType: Customer Service
+                additionalCost: '10.0'
+                totalCost: '20.17'
+    listTicketTimeEntries:
+      description: listTicketTimeEntries template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./TicketTimeEntry.json#/components/schemas/ticketTimeEntryData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - owner:
+                    firstName: Eswer
+                    lastName: KM
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
+                    name: Eswer KM
+                    id: '4000000008688129'
+                  secondsSpent: '0'
+                  parent:
+                    ticketNumber: '1004'
+                    subject: Ticket subject
+                    id: '4000000031007'
+                    type: TICKETS
+                  cf: {}
+                  executedTime: null
+                  fixedCost: null
+                  departmentId: '4000000008694'
+                  minutesSpent: '0'
+                  agentCostPerHour: null
+                  description: null
+                  hoursSpent: '0'
+                  ownerId: '15000000009148'
+                  isBillable: true
+                  mode: MANUAL
+                  isTrashed: 'false'
+                  createdBy: '15000000009148'
+                  billingType: FIXED_COST_FOR_TICKETS
+                  createdTime: 1515609917000
+                  invoiceId: '4000000008688123'
+                  id: '15000000031007'
+                  requestChargeType: Customer Service
+                  additionalCost: null
+                  totalCost: '0.0'
+                - owner:
+                    firstName: Eswer
+                    lastName: KM
+                    photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
+                    name: Eswer KM
+                    id: '4000000008688129'
+                  secondsSpent: '0'
+                  parent:
+                    ticketNumber: '1004'
+                    subject: Ticket subject
+                    id: '4000000031007'
+                    type: TICKETS
+                  cf: {}
+                  executedTime: 1513793360000
+                  departmentId: '4000000008694'
+                  fixedCost: null
+                  minutesSpent: '0'
+                  agentCostPerHour: null
+                  description: Dummy#2
+                  hoursSpent: '1'
+                  ownerId: '15000000009148'
+                  isBillable: true
+                  mode: MANUAL
+                  isTrashed: 'false'
+                  createdBy: '15000000009148'
+                  billingType: FIXED_COST_FOR_TICKETS
+                  createdTime: 1515597647000
+                  invoiceId: '4000000008688123'
+                  id: '15000000029314'
+                  requestChargeType: Upgrade Request
+                  additionalCost: null
+                  totalCost: '0.0'
   schemas:
+    owner:
+      type: object
+      properties:
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+      required:
+      - firstName
+      - id
+      - lastName
+      - name
+      - photoURL
     ticketTimeEntryResponse:
       type:
       - 'null'
@@ -583,558 +1135,6 @@ components:
       - secondsSpent
       - taskId
       - totalCost
-    owner:
-      type: object
-      properties:
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-      required:
-      - firstName
-      - id
-      - lastName
-      - name
-      - photoURL
-  parameters:
-    timeEntryId:
-      name: timeEntryId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    ticketId:
-      name: ticketId
-      in: path
-      description: ID of the ticket
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the ticket
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.
-        enum:
-        - tickets
-        - tasks
-        maxLength: 100
-        minLength: 0
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-        maxLength: 100
-        minLength: 0
-  requestBodies:
-    addTicketTimeEntry_timeEntryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              secondsSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of seconds in the time entry.
-                pattern: ([0-9]+)
-              cf:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              executedTime:
-                type:
-                - string
-                - 'null'
-                description: Time when work related to the time entry was started.
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              customFields:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              minutesSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of minutes in the time entry.
-                pattern: ([0-9]+)
-              agentCostPerHour:
-                type:
-                - string
-                - 'null'
-                description: Per hour cost of an agent.
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              description:
-                type:
-                - string
-                - 'null'
-                description: Description of the time entry
-                maxLength: 100
-                minLength: 0
-              hoursSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of hours in the time entry.
-                pattern: ([0-9]+)
-              ownerId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the user associated with the time entry
-                pattern: ([0-9]+)
-              isBillable:
-                type:
-                - boolean
-                - 'null'
-                description: Billing Preference
-              billingType:
-                type:
-                - string
-                - 'null'
-                description: Billing type configured in the time tracking. Possible values are @FIXED_COST_FOR_TICKETS@ @FIXED_COST_FOR_AGENTS@ @SPECIFIC_COST_PER_AGENT@ and @SPECIFIC_COST_PER_PROFILE@
-                enum:
-                - FIXED_COST_FOR_TICKETS
-                - FIXED_COST_FOR_AGENTS
-                - SPECIFIC_COST_PER_PROFILE
-                - SPECIFIC_COST_PER_AGENT
-                maxLength: 100
-                minLength: 0
-              requestChargeType:
-                type:
-                - string
-                - 'null'
-                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
-                enum:
-                - Customer Service
-                - Upgrade Request
-                - Product Consultation
-                - Support and Maintenance
-                maxLength: 100
-                minLength: 0
-              additionalCost:
-                type:
-                - string
-                - 'null'
-                description: Additional cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-            required:
-            - executedTime
-          examples:
-            Valid requestBody Definitions:
-              value:
-                secondsSpent: '21'
-                cf:
-                  cf_timeentryname: time2
-                executedTime: 1466627400000
-                minutesSpent: '23'
-                agentCostPerHour: '3.0'
-                description: Time Entry description
-                hoursSpent: '3'
-                invoiceId: '4000000008688123'
-                ownerId: '4000000008692'
-                requestChargeType: Customer Service
-                additionalCost: '10.0'
-                totalCost: '20.17'
-    timeEntryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              secondsSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of seconds in the time entry.
-                pattern: ([0-9]+)
-              cf:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              executedTime:
-                type:
-                - string
-                - 'null'
-                description: Time when work related to the time entry was started.
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              customFields:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              minutesSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of minutes in the time entry.
-                pattern: ([0-9]+)
-              agentCostPerHour:
-                type:
-                - string
-                - 'null'
-                description: Per hour cost of an agent.
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              description:
-                type:
-                - string
-                - 'null'
-                description: Description of the time entry
-                maxLength: 100
-                minLength: 0
-              hoursSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of hours in the time entry.
-                pattern: ([0-9]+)
-              ownerId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the user associated with the time entry
-                pattern: ([0-9]+)
-              isBillable:
-                type:
-                - boolean
-                - 'null'
-                description: Billing Preference
-              billingType:
-                type:
-                - string
-                - 'null'
-                description: Billing type configured in the time tracking. Possible values are @FIXED_COST_FOR_TICKETS@ @FIXED_COST_FOR_AGENTS@ @SPECIFIC_COST_PER_AGENT@ and @SPECIFIC_COST_PER_PROFILE@
-                enum:
-                - FIXED_COST_FOR_TICKETS
-                - FIXED_COST_FOR_AGENTS
-                - SPECIFIC_COST_PER_PROFILE
-                - SPECIFIC_COST_PER_AGENT
-                maxLength: 100
-                minLength: 0
-              requestChargeType:
-                type:
-                - string
-                - 'null'
-                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
-                enum:
-                - Customer Service
-                - Upgrade Request
-                - Product Consultation
-                - Support and Maintenance
-                maxLength: 100
-                minLength: 0
-              additionalCost:
-                type:
-                - string
-                - 'null'
-                description: Additional cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                description: Time Entry description
-                requestChargeType: Customer Service
-  responses:
-    getSummationOfTimeEntryForTicketResponse:
-      description: getSummationOfTimeEntryForTicketResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              totalMins:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalHours:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalCosts:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalSeconds:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - totalCosts
-            - totalHours
-            - totalMins
-            - totalSeconds
-          examples:
-            Valid responses Definitions:
-              value:
-                totalMins: 5
-                totalHours: 12
-                totalCosts: 1000
-                totalSeconds: 24
-    listTicketTimeEntries:
-      description: listTicketTimeEntries template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./TicketTimeEntry.json#/components/schemas/ticketTimeEntryData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - owner:
-                    firstName: Eswer
-                    lastName: KM
-                    photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
-                    name: Eswer KM
-                    id: '4000000008688129'
-                  secondsSpent: '0'
-                  parent:
-                    ticketNumber: '1004'
-                    subject: Ticket subject
-                    id: '4000000031007'
-                    type: TICKETS
-                  cf: {}
-                  executedTime: null
-                  fixedCost: null
-                  departmentId: '4000000008694'
-                  minutesSpent: '0'
-                  agentCostPerHour: null
-                  description: null
-                  hoursSpent: '0'
-                  ownerId: '15000000009148'
-                  isBillable: true
-                  mode: MANUAL
-                  isTrashed: 'false'
-                  createdBy: '15000000009148'
-                  billingType: FIXED_COST_FOR_TICKETS
-                  createdTime: 1515609917000
-                  invoiceId: '4000000008688123'
-                  id: '15000000031007'
-                  requestChargeType: Customer Service
-                  additionalCost: null
-                  totalCost: '0.0'
-                - owner:
-                    firstName: Eswer
-                    lastName: KM
-                    photoURL: https://contacts.zoho.com/file?t=user&ID=4851669
-                    name: Eswer KM
-                    id: '4000000008688129'
-                  secondsSpent: '0'
-                  parent:
-                    ticketNumber: '1004'
-                    subject: Ticket subject
-                    id: '4000000031007'
-                    type: TICKETS
-                  cf: {}
-                  executedTime: 1513793360000
-                  departmentId: '4000000008694'
-                  fixedCost: null
-                  minutesSpent: '0'
-                  agentCostPerHour: null
-                  description: Dummy#2
-                  hoursSpent: '1'
-                  ownerId: '15000000009148'
-                  isBillable: true
-                  mode: MANUAL
-                  isTrashed: 'false'
-                  createdBy: '15000000009148'
-                  billingType: FIXED_COST_FOR_TICKETS
-                  createdTime: 1515597647000
-                  invoiceId: '4000000008688123'
-                  id: '15000000029314'
-                  requestChargeType: Upgrade Request
-                  additionalCost: null
-                  totalCost: '0.0'
-    ticketTimeEntryResponse:
-      description: ticketTimeEntryResponse template definitions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ticketTimeEntryResponse'
-          examples:
-            Valid responses Definitions:
-              value:
-                secondsSpent: '21'
-                parent:
-                  ticketNumber: '1004'
-                  subject: Ticket subject
-                  id: '4000000031007'
-                  type: TICKETS
-                cf:
-                  cf_timeentryname: time2
-                executedTime: 1466627400000
-                fixedCost: null
-                departmentId: '4000000008694'
-                minutesSpent: '23'
-                creatorId: '4000000008692'
-                agentCostPerHour: '3.0'
-                description: Time Entry description
-                hoursSpent: '3'
-                ownerId: '4000000008692'
-                isBillable: true
-                mode: MANUAL
-                isTrashed: 'false'
-                billingType: FIXED_COST_FOR_TICKETS
-                createdTime: 1466488320828
-                invoiceId: '4000000008688123'
-                id: '4000000045001'
-                requestChargeType: Customer Service
-                additionalCost: '10.0'
-                totalCost: '20.17'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

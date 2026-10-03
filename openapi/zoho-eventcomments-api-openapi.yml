@@ -183,6 +183,66 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    addEventCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: Edit Event comment
+    createComment_addEventCommentRequest:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - html
+                - plainText
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contentType: html
+                content: First Event comment.
   schemas:
     addEventComment:
       type:
@@ -350,33 +410,6 @@ components:
         - type
         - zuid
       uniqueItems: false
-  parameters:
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    eventId:
-      name: eventId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
     listEventComment:
       description: listEventComment template definitions
@@ -455,6 +488,34 @@ components:
                     roleName: PortalUser
                     type: END_USER
                     email: jade12tywin@zylker.com
+    addEventComment:
+      description: addEventComment template definitions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/addEventComment'
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: null
+                attachments:
+                - size: '12734'
+                  name: Attachment.png
+                  id: '4000000008994'
+                  href: https://desk.zoho.com/api/v1/events/4000000528005/comments/4000000529001/attachments/4000000008994/content
+                commentedTime: 1485269673534
+                id: '4000000530003'
+                contentType: html
+                content: First Event comment.
+                commenterId: '4000000008692'
+                commenter:
+                  firstName: Jade
+                  lastName: Tywin
+                  photoURL: https://desk.zoho.com/api/v1/agent/4000000008692/photo
+                  name: Jade Tywin
+                  roleName: LightAgent
+                  type: AGENT
+                  email: jade12tywin@zylker.com
     getEventComment:
       description: getEventComment template definitions
       content:
@@ -488,94 +549,33 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-    addEventComment:
-      description: addEventComment template definitions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/addEventComment'
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: null
-                attachments:
-                - size: '12734'
-                  name: Attachment.png
-                  id: '4000000008994'
-                  href: https://desk.zoho.com/api/v1/events/4000000528005/comments/4000000529001/attachments/4000000008994/content
-                commentedTime: 1485269673534
-                id: '4000000530003'
-                contentType: html
-                content: First Event comment.
-                commenterId: '4000000008692'
-                commenter:
-                  firstName: Jade
-                  lastName: Tywin
-                  photoURL: https://desk.zoho.com/api/v1/agent/4000000008692/photo
-                  name: Jade Tywin
-                  roleName: LightAgent
-                  type: AGENT
-                  email: jade12tywin@zylker.com
-  requestBodies:
-    addEventCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: Edit Event comment
-    createComment_addEventCommentRequest:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - html
-                - plainText
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contentType: html
-                content: First Event comment.
+  parameters:
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    eventId:
+      name: eventId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -232,6 +232,34 @@ paths:
       - external-public
 components:
   responses:
+    cloneTemplateAttachmentsResponse:
+      description: cloneTemplateAttachmentsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./EmailTemplates.json#/components/schemas/cloneTemplateAttachmentsArr
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - size: '10247'
+                  name: mortytwo.jpeg
+                  parentAttachmentId: '1000000211013'
+                  href: https://support.zoho.com/api/v1/uploads/1000000212005/content
+                  clonedAttachmentId: '1000000212005'
+                - size: '11682'
+                  name: 12img.png
+                  parentAttachmentId: '1000000211015'
+                  href: https://support.zoho.com/api/v1/uploads/1000000212007/content
+                  clonedAttachmentId: '1000000212007'
     templateAttachmentResponse:
       description: templateAttachmentResponse template definitions
       content:
@@ -269,71 +297,6 @@ components:
                 templateName: new Template
                 category: CUSTOM_TEMPLATE
                 contentType: richtext
-    applyTemplateResponse:
-      description: applyTemplateResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              attachments:
-                $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
-              subject:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              body:
-                type:
-                - string
-                - 'null'
-                maxLength: 64000
-                minLength: 0
-            required:
-            - attachments
-            - body
-            - subject
-          examples:
-            Valid responses Definitions:
-              value:
-                attachments:
-                - size: '8842'
-                  name: ricktwo.jpeg
-                  id: '4000000132047'
-                subject: My support Template
-                body: lakshmansupport1lakshmanvignesh<a target="_blank" href="https://support.zoho.com/support/lakshmansupport1/ShowHomePage.do#Cases/dv/51123033fe97b2f8922ba57825f2f328">MEOW Ticket</a> newuser+1105/30/2016 09:57 AMI am containing a content
-    cloneTemplateAttachmentsResponse:
-      description: cloneTemplateAttachmentsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./EmailTemplates.json#/components/schemas/cloneTemplateAttachmentsArr
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - size: '10247'
-                  name: mortytwo.jpeg
-                  parentAttachmentId: '1000000211013'
-                  href: https://support.zoho.com/api/v1/uploads/1000000212005/content
-                  clonedAttachmentId: '1000000212005'
-                - size: '11682'
-                  name: 12img.png
-                  parentAttachmentId: '1000000211015'
-                  href: https://support.zoho.com/api/v1/uploads/1000000212007/content
-                  clonedAttachmentId: '1000000212007'
     templateListResponse:
       description: templateListResponse template definitions
       content:
@@ -403,6 +366,43 @@ components:
                 fromId: null
                 contentType: richtext
                 folderId: '4000000007021'
+    applyTemplateResponse:
+      description: applyTemplateResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              attachments:
+                $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
+              subject:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              body:
+                type:
+                - string
+                - 'null'
+                maxLength: 64000
+                minLength: 0
+            required:
+            - attachments
+            - body
+            - subject
+          examples:
+            Valid responses Definitions:
+              value:
+                attachments:
+                - size: '8842'
+                  name: ricktwo.jpeg
+                  id: '4000000132047'
+                subject: My support Template
+                body: lakshmansupport1lakshmanvignesh<a target="_blank" href="https://support.zoho.com/support/lakshmansupport1/ShowHomePage.do#Cases/dv/51123033fe97b2f8922ba57825f2f328">MEOW Ticket</a> newuser+1105/30/2016 09:57 AMI am containing a content
     placeHolderListResponse:
       description: placeHolderListResponse template definitions
       content:
@@ -472,118 +472,59 @@ components:
                     placeHolder: ${Organization.City}
                   i18nModule: Organization
                   module: Organization
+  parameters:
+    departmentId:
+      name: departmentId
+      in: query
+      description: the corresponding department to be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: the corresponding department to be fetched
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: The name of the module
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: The name of the module
+        enum:
+        - tickets
+        - tasks
+        - contacts
+        - accounts
+        - products
+        - solutions
+        - calls
+        - events
+        maxLength: 100
+        minLength: 0
+    emailTemplateId:
+      name: emailTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   requestBodies:
-    templateRenderAPIPayload:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              source:
-                type:
-                - string
-                - 'null'
-                enum:
-                - TICKET_REPLY
-                - SLA
-                - AUTOMATION_ALERTS
-                - NOTIFICATIONS
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                source: TICKET_REPLY
-    updateTemplate_templatejson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              templateName:
-                type:
-                - string
-                - 'null'
-                maxLength: 250
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              subject:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              recordType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - tickets
-                - tasks
-                - contacts
-                - accounts
-                - products
-                - calls
-                - events
-                maxLength: 100
-                minLength: 0
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              replyTo:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              attachmentIds:
-                $ref: ./EmailTemplates.json#/components/schemas/attachmentIds
-              body:
-                type:
-                - string
-                - 'null'
-                maxLength: 64000
-                minLength: 0
-              fromId:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: (^((.*?)((<)*?[a-zA-Z0-9]([\w\-.+]*)@([\w\-.]*)(\.[a-zA-Z]{2,22}(.[a-zA-Z]{2}){0,2})(>)*?(\s)*((,|;)\s*)?))+|^$)
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - plaintext
-                - richtext
-                maxLength: 100
-                minLength: 0
-              folderId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-          examples:
-            Valid requestBody Definitions:
-              value:
-                templateName: new Template
-                subject: My New Template
-                recordType: tickets
     templatejson:
       content:
         application/json:
@@ -686,58 +627,117 @@ components:
                 fromId: support@@zylker.com
                 contentType: richtext
                 folderId: '4000000007021'
-  parameters:
-    departmentId:
-      name: departmentId
-      in: query
-      description: the corresponding department to be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: the corresponding department to be fetched
-        pattern: ([0-9]+)
-    emailTemplateId:
-      name: emailTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: The name of the module
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: The name of the module
-        enum:
-        - tickets
-        - tasks
-        - contacts
-        - accounts
-        - products
-        - solutions
-        - calls
-        - events
-        maxLength: 100
-        minLength: 0
+    updateTemplate_templatejson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              templateName:
+                type:
+                - string
+                - 'null'
+                maxLength: 250
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              subject:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              recordType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - tickets
+                - tasks
+                - contacts
+                - accounts
+                - products
+                - calls
+                - events
+                maxLength: 100
+                minLength: 0
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              replyTo:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              attachmentIds:
+                $ref: ./EmailTemplates.json#/components/schemas/attachmentIds
+              body:
+                type:
+                - string
+                - 'null'
+                maxLength: 64000
+                minLength: 0
+              fromId:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: (^((.*?)((<)*?[a-zA-Z0-9]([\w\-.+]*)@([\w\-.]*)(\.[a-zA-Z]{2,22}(.[a-zA-Z]{2}){0,2})(>)*?(\s)*((,|;)\s*)?))+|^$)
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - plaintext
+                - richtext
+                maxLength: 100
+                minLength: 0
+              folderId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+          examples:
+            Valid requestBody Definitions:
+              value:
+                templateName: new Template
+                subject: My New Template
+                recordType: tickets
+    templateRenderAPIPayload:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              source:
+                type:
+                - string
+                - 'null'
+                enum:
+                - TICKET_REPLY
+                - SLA
+                - AUTOMATION_ALERTS
+                - NOTIFICATIONS
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                source: TICKET_REPLY
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -158,172 +158,7 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    layoutId:
-      name: layoutId
-      in: path
-      description: Get the rules of the layout
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: Get the rules of the layout
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of rules to be fetched. Default is 50
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of rules to be fetched. Default is 50
-        pattern: ([0-9]+)
-    searchString:
-      name: searchString
-      in: query
-      description: Get the rules that have this search term
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Get the rules that have this search term
-        maxLength: 100
-        minLength: 0
-    layoutRuleId:
-      name: layoutRuleId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the rules must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the rules must be fetched
-        pattern: ([0-9]+)
-    executeInHelpCentre:
-      name: executeInHelpCentre
-      in: query
-      description: Get the rules that can be executed in help centre
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Get the rules that can be executed in help centre
   responses:
-    layoutrulejson:
-      description: layoutrulejson template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./LayoutRules.json#/components/schemas/layoutrulejsonPayload
-            - type:
-              - 'null'
-              - object
-              properties:
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-              required:
-              - id
-          examples:
-            Valid responses Definitions:
-              value:
-                fieldConditions:
-                - name: condition 1
-                  pattern: (1and2)or3
-                  conditions:
-                  - condition: is
-                    fieldName: email
-                    value:
-                    - carol@zylker.com
-                  - condition: is
-                    fieldName: accountId
-                    value:
-                    - Ramkumar
-                  - condition: is
-                    fieldName: productId
-                    value:
-                    - Honda
-                  actions:
-                    showSections:
-                    - Additional Information
-                    showFields:
-                    - subject
-                    setMandatoryFields:
-                    - priority
-                - name: condition 2
-                  pattern: 1 and (2 or 3)
-                  conditions:
-                  - condition: is
-                    fieldName: email
-                    value:
-                    - carol@zylker.com
-                  - condition: is
-                    fieldName: accountId
-                    value:
-                    - Sundar
-                  - condition: is
-                    fieldName: productId
-                    value:
-                    - Maruthi
-                  actions:
-                    showSections: []
-                    showFields:
-                    - subject
-                    setMandatoryFields:
-                    - Description
-                modifiedTime: 1536887322000
-                fieldName: email
-                description: Rule 1 for layout
-                systemGenerated: false
-                layoutId: '4000000007723'
-                executeInHelpCentre: false
-                createdBy: '4000000015963'
-                name: Rule 11
-                createdTime: 1536887242000
-                modifiedBy: '4000000015963'
-                id: '4000000021001'
-                status: active
     layoutRuleListArray:
       description: layoutRuleListArray template definitions
       content:
@@ -404,6 +239,171 @@ components:
                   modifiedBy: '4000000015963'
                   id: '4000000021001'
                   status: active
+    layoutrulejson:
+      description: layoutrulejson template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./LayoutRules.json#/components/schemas/layoutrulejsonPayload
+            - type:
+              - 'null'
+              - object
+              properties:
+                id:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+              required:
+              - id
+          examples:
+            Valid responses Definitions:
+              value:
+                fieldConditions:
+                - name: condition 1
+                  pattern: (1and2)or3
+                  conditions:
+                  - condition: is
+                    fieldName: email
+                    value:
+                    - carol@zylker.com
+                  - condition: is
+                    fieldName: accountId
+                    value:
+                    - Ramkumar
+                  - condition: is
+                    fieldName: productId
+                    value:
+                    - Honda
+                  actions:
+                    showSections:
+                    - Additional Information
+                    showFields:
+                    - subject
+                    setMandatoryFields:
+                    - priority
+                - name: condition 2
+                  pattern: 1 and (2 or 3)
+                  conditions:
+                  - condition: is
+                    fieldName: email
+                    value:
+                    - carol@zylker.com
+                  - condition: is
+                    fieldName: accountId
+                    value:
+                    - Sundar
+                  - condition: is
+                    fieldName: productId
+                    value:
+                    - Maruthi
+                  actions:
+                    showSections: []
+                    showFields:
+                    - subject
+                    setMandatoryFields:
+                    - Description
+                modifiedTime: 1536887322000
+                fieldName: email
+                description: Rule 1 for layout
+                systemGenerated: false
+                layoutId: '4000000007723'
+                executeInHelpCentre: false
+                createdBy: '4000000015963'
+                name: Rule 11
+                createdTime: 1536887242000
+                modifiedBy: '4000000015963'
+                id: '4000000021001'
+                status: active
+  parameters:
+    executeInHelpCentre:
+      name: executeInHelpCentre
+      in: query
+      description: Get the rules that can be executed in help centre
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Get the rules that can be executed in help centre
+    searchString:
+      name: searchString
+      in: query
+      description: Get the rules that have this search term
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Get the rules that have this search term
+        maxLength: 100
+        minLength: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of rules to be fetched. Default is 50
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of rules to be fetched. Default is 50
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the rules must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the rules must be fetched
+        pattern: ([0-9]+)
+    layoutId:
+      name: layoutId
+      in: path
+      description: Get the rules of the layout
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: Get the rules of the layout
+        pattern: ([0-9]+)
+    layoutRuleId:
+      name: layoutRuleId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   requestBodies:
     editLayoutRule_layoutrulejsonPayload:
       content:

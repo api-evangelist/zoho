@@ -459,55 +459,7 @@ paths:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
   schemas:
-    _ShareViewObject:
-      type: object
-      properties:
-        viewId:
-          type: string
-        viewName:
-          type: string
-        sharedBy:
-          type: string
-        permissions:
-          type: object
-          properties:
-            read:
-              type: boolean
-            export:
-              type: boolean
-            vud:
-              type: boolean
-            addRow:
-              type: boolean
-            updateRow:
-              type: boolean
-            deleteRow:
-              type: boolean
-            deleteAllRows:
-              type: boolean
-            importAppend:
-              type: boolean
-            importAddOrUpdate:
-              type: boolean
-            importDeleteAllAdd:
-              type: boolean
-            importDeleteUpdateAdd:
-              type: boolean
-            drillDown:
-              type: boolean
-            share:
-              type: boolean
-            discussion:
-              type: boolean
-            insight:
-              type: boolean
-            drillThrough:
-              type: boolean
-            accessAdminPresets:
-              type: boolean
-            createPreset:
-              type: boolean
-    GetOrgAdminsResponse:
+    GetWorkspaceAdminsResponse:
       type: object
       properties:
         status:
@@ -517,54 +469,75 @@ components:
         data:
           type: object
           properties:
-            orgAdmins:
+            workspaceAdmins:
               type: array
               items:
-                type: string
+                type: object
+                properties:
+                  adminMembers:
+                    type: array
+                    items:
+                      type: string
       examples:
       - status: success
-        summary: Get org admins
+        summary: Get workspace admins
         data:
-          orgAdmins:
-          - user+1@zoho.com
-          - user+2@zoho.com
-    GroupMembersRemovalConfig:
+          workspaceAdmins:
+          - adminMembers:
+            - user+1@zoho.com
+            - user+2@zoho.com
+    PermissionAttributes:
       type: object
-      required:
-      - emailIds
+      properties:
+        read:
+          type: boolean
+        export:
+          type: boolean
+        vud:
+          type: boolean
+        addRow:
+          type: boolean
+        updateRow:
+          type: boolean
+        deleteRow:
+          type: boolean
+        deleteAllRows:
+          type: boolean
+        importAppend:
+          type: boolean
+        importAddOrUpdate:
+          type: boolean
+        importDeleteAllAdd:
+          type: boolean
+        importDeleteUpdateAdd:
+          type: boolean
+        drillDown:
+          type: boolean
+        share:
+          type: boolean
+        discussion:
+          type: boolean
+        insight:
+          type: boolean
+    AddWorkspaceAdminConfig:
+      type: object
       properties:
         emailIds:
           type: array
           items:
             type: string
-            format: email
-          description: Email IDs of users to be removed.
-        notifyMail:
-          type: boolean
-          description: Whether to send notification mails. Default is false.
         domainName:
           type: string
-          description: Domain name used for white-labeling.
+        inviteMail:
+          type: boolean
+      required:
+      - emailIds
       examples:
       - emailIds:
         - user1@zoho.com
         - user2@zoho.com
-        notifyMail: true
-        domainName: zoho.com
-    GetSharedDetailsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            sharedDetails:
-              type: array
-              items:
-                $ref: '#/components/schemas/SharedDetail'
+        domainName: zylker.com
+        inviteMail: true
     UpdateSharedDetailsConfig:
       type: object
       properties:
@@ -600,165 +573,6 @@ components:
           type: boolean
       required:
       - permissions
-    RenameGroupConfig:
-      type: object
-      properties:
-        groupName:
-          type: string
-        groupDesc:
-          type: string
-      required:
-      - groupName
-    GetGroupDetailsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            groups:
-              $ref: '#/components/schemas/Group'
-    PermissionAttributes:
-      type: object
-      properties:
-        read:
-          type: boolean
-        export:
-          type: boolean
-        vud:
-          type: boolean
-        addRow:
-          type: boolean
-        updateRow:
-          type: boolean
-        deleteRow:
-          type: boolean
-        deleteAllRows:
-          type: boolean
-        importAppend:
-          type: boolean
-        importAddOrUpdate:
-          type: boolean
-        importDeleteAllAdd:
-          type: boolean
-        importDeleteUpdateAdd:
-          type: boolean
-        drillDown:
-          type: boolean
-        share:
-          type: boolean
-        discussion:
-          type: boolean
-        insight:
-          type: boolean
-    GetGroupsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          $ref: '#/components/schemas/Groups'
-    CreateGroupConfig:
-      type: object
-      required:
-      - groupName
-      - emailIds
-      properties:
-        groupName:
-          type: string
-          description: Name of the group to be created.
-        groupDesc:
-          type: string
-          description: Description of the group.
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-          description: List of email addresses to be added to the group.
-        inviteMail:
-          type: boolean
-          description: Whether to send invitation mails. Default is false.
-        mailSubject:
-          type: string
-          description: Subject of the invitation mail.
-        mailMessage:
-          type: string
-          description: Message body of the invitation mail.
-        domainName:
-          type: string
-          description: Domain name used for white-labeling.
-      examples:
-      - groupName: Marketing Group
-        groupDesc: Group for marketing team users
-        emailIds:
-        - user1@zoho.com
-        - user2@zoho.com
-        inviteMail: true
-        mailSubject: Join the Group
-        mailMessage: You're invited to join the Zoho Analytics group.
-        domainName: zoho.com
-    SharedDetail:
-      type: object
-      properties:
-        viewId:
-          type: string
-        shareInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/SharedInfo'
-    ColumnPermissionObject:
-      type: object
-      properties:
-        tableName:
-          type: string
-        columnNames:
-          type: array
-          items:
-            type: string
-    GetMyPermissionsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            permissions:
-              $ref: '#/components/schemas/PermissionAttributes'
-    RemoveShareConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        viewIds:
-          type: array
-          items:
-            type: string
-        removeAllViews:
-          type: boolean
-        domainName:
-          type: string
-        groupIds:
-          type: array
-          items:
-            type: string
-      examples:
-      - emailIds:
-        - <email-id1>
-        - <email-id2>
-        removeAllViews: 'true'
-      required:
-      - emailIds
     ShareViewsConfig:
       type: object
       properties:
@@ -871,7 +685,53 @@ components:
       - emailIds
       - viewIds
       - permissions
-    GetWorkspaceAdminsResponse:
+    Group:
+      type: object
+      properties:
+        groupName:
+          type: string
+        groupId:
+          type: string
+        groupDesc:
+          type: string
+        groupMembers:
+          type: array
+          items:
+            type: string
+            format: email
+    SharedDetail:
+      type: object
+      properties:
+        viewId:
+          type: string
+        shareInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedInfo'
+    GroupMembersRemovalConfig:
+      type: object
+      required:
+      - emailIds
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+          description: Email IDs of users to be removed.
+        notifyMail:
+          type: boolean
+          description: Whether to send notification mails. Default is false.
+        domainName:
+          type: string
+          description: Domain name used for white-labeling.
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        notifyMail: true
+        domainName: zoho.com
+    GetGroupDetailsResponse:
       type: object
       properties:
         status:
@@ -881,49 +741,8 @@ components:
         data:
           type: object
           properties:
-            workspaceAdmins:
-              type: array
-              items:
-                type: object
-                properties:
-                  adminMembers:
-                    type: array
-                    items:
-                      type: string
-      examples:
-      - status: success
-        summary: Get workspace admins
-        data:
-          workspaceAdmins:
-          - adminMembers:
-            - user+1@zoho.com
-            - user+2@zoho.com
-    RemoveWorkspaceAdminConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        domainName:
-          type: string
-        notifyMail:
-          type: boolean
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - user1@zoho.com
-        - user2@zoho.com
-        domainName: zylker.com
-        notifyMail: false
-    Groups:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
+            groups:
+              $ref: '#/components/schemas/Group'
     GroupMembersConfig:
       type: object
       required:
@@ -947,6 +766,145 @@ components:
         - user2@zoho.com
         inviteMail: false
         domainName: zoho.com
+    RemoveWorkspaceAdminConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        domainName:
+          type: string
+        notifyMail:
+          type: boolean
+      required:
+      - emailIds
+      examples:
+      - emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        domainName: zylker.com
+        notifyMail: false
+    _ShareViewObject:
+      type: object
+      properties:
+        viewId:
+          type: string
+        viewName:
+          type: string
+        sharedBy:
+          type: string
+        permissions:
+          type: object
+          properties:
+            read:
+              type: boolean
+            export:
+              type: boolean
+            vud:
+              type: boolean
+            addRow:
+              type: boolean
+            updateRow:
+              type: boolean
+            deleteRow:
+              type: boolean
+            deleteAllRows:
+              type: boolean
+            importAppend:
+              type: boolean
+            importAddOrUpdate:
+              type: boolean
+            importDeleteAllAdd:
+              type: boolean
+            importDeleteUpdateAdd:
+              type: boolean
+            drillDown:
+              type: boolean
+            share:
+              type: boolean
+            discussion:
+              type: boolean
+            insight:
+              type: boolean
+            drillThrough:
+              type: boolean
+            accessAdminPresets:
+              type: boolean
+            createPreset:
+              type: boolean
+    SharedInfo:
+      type: object
+      properties:
+        sharedTo:
+          type: string
+        sharedBy:
+          type: string
+        sharedToZuId:
+          type: string
+        permissionString:
+          type: string
+        permissions:
+          $ref: '#/components/schemas/PermissionAttributes'
+        criteria:
+          type: string
+        inheritParentFilterCriteria:
+          type: string
+        isInvalidCriteria:
+          type: boolean
+        sharedColumns:
+          type: array
+          items:
+            type: string
+        vudColumns:
+          type: array
+          items:
+            type: string
+        drillColumns:
+          type: array
+          items:
+            type: string
+        isGroupShare:
+          type: boolean
+        publicPermLevel:
+          type: integer
+        isROUser:
+          type: boolean
+    RemoveShareConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+        viewIds:
+          type: array
+          items:
+            type: string
+        removeAllViews:
+          type: boolean
+        domainName:
+          type: string
+        groupIds:
+          type: array
+          items:
+            type: string
+      examples:
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+        removeAllViews: 'true'
+      required:
+      - emailIds
+    ColumnPermissionObject:
+      type: object
+      properties:
+        tableName:
+          type: string
+        columnNames:
+          type: array
+          items:
+            type: string
     CreateGroupResponse:
       type: object
       properties:
@@ -968,6 +926,118 @@ components:
         summary: Group created successfully
         data:
           groupId: '1767024000015303004'
+    CreateGroupConfig:
+      type: object
+      required:
+      - groupName
+      - emailIds
+      properties:
+        groupName:
+          type: string
+          description: Name of the group to be created.
+        groupDesc:
+          type: string
+          description: Description of the group.
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+          description: List of email addresses to be added to the group.
+        inviteMail:
+          type: boolean
+          description: Whether to send invitation mails. Default is false.
+        mailSubject:
+          type: string
+          description: Subject of the invitation mail.
+        mailMessage:
+          type: string
+          description: Message body of the invitation mail.
+        domainName:
+          type: string
+          description: Domain name used for white-labeling.
+      examples:
+      - groupName: Marketing Group
+        groupDesc: Group for marketing team users
+        emailIds:
+        - user1@zoho.com
+        - user2@zoho.com
+        inviteMail: true
+        mailSubject: Join the Group
+        mailMessage: You're invited to join the Zoho Analytics group.
+        domainName: zoho.com
+    GetOrgAdminsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            orgAdmins:
+              type: array
+              items:
+                type: string
+      examples:
+      - status: success
+        summary: Get org admins
+        data:
+          orgAdmins:
+          - user+1@zoho.com
+          - user+2@zoho.com
+    GetSharedDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            sharedDetails:
+              type: array
+              items:
+                $ref: '#/components/schemas/SharedDetail'
+    Groups:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    GetGroupsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          $ref: '#/components/schemas/Groups'
+    RenameGroupConfig:
+      type: object
+      properties:
+        groupName:
+          type: string
+        groupDesc:
+          type: string
+      required:
+      - groupName
+    GetMyPermissionsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            permissions:
+              $ref: '#/components/schemas/PermissionAttributes'
     GetWorkspaceSharedDetailsResponse:
       type: object
       properties:
@@ -1106,91 +1176,7 @@ components:
                 drillThrough: false
                 accessAdminPresets: true
                 createPreset: true
-    SharedInfo:
-      type: object
-      properties:
-        sharedTo:
-          type: string
-        sharedBy:
-          type: string
-        sharedToZuId:
-          type: string
-        permissionString:
-          type: string
-        permissions:
-          $ref: '#/components/schemas/PermissionAttributes'
-        criteria:
-          type: string
-        inheritParentFilterCriteria:
-          type: string
-        isInvalidCriteria:
-          type: boolean
-        sharedColumns:
-          type: array
-          items:
-            type: string
-        vudColumns:
-          type: array
-          items:
-            type: string
-        drillColumns:
-          type: array
-          items:
-            type: string
-        isGroupShare:
-          type: boolean
-        publicPermLevel:
-          type: integer
-        isROUser:
-          type: boolean
-    Group:
-      type: object
-      properties:
-        groupName:
-          type: string
-        groupId:
-          type: string
-        groupDesc:
-          type: string
-        groupMembers:
-          type: array
-          items:
-            type: string
-            format: email
-    AddWorkspaceAdminConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        domainName:
-          type: string
-        inviteMail:
-          type: boolean
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - user1@zoho.com
-        - user2@zoho.com
-        domainName: zylker.com
-        inviteMail: true
   parameters:
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
-    group-id:
-      name: group-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the group.
     org-id:
       name: ZANALYTICS-ORGID
       in: header
@@ -1198,6 +1184,13 @@ components:
       schema:
         type: string
       description: Organization ID (can be obtained using Get Organizations API).
+    group-id:
+      name: group-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the group.
     view-id:
       name: view-id
       in: path
@@ -1205,6 +1198,13 @@ components:
       schema:
         type: string
       description: ID of the view.
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

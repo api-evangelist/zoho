@@ -164,6 +164,24 @@ components:
         format: int64
         description: ID of the department
         pattern: ([0-9]+)
+    billStatus:
+      name: billStatus
+      in: query
+      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
+        enum:
+        - nonBillable
+        - billable
+        - billed
+        maxLength: 100
+        minLength: 0
     module:
       name: module
       in: query
@@ -183,75 +201,7 @@ components:
         - events
         maxLength: 100
         minLength: 0
-    billStatus:
-      name: billStatus
-      in: query
-      description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@'
-        enum:
-        - nonBillable
-        - billable
-        - billed
-        maxLength: 100
-        minLength: 0
   responses:
-    getSummationOfTimeEntryForContactResponse:
-      description: getSummationOfTimeEntryForContactResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              totalMins:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalHours:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalCosts:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              totalSeconds:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - totalCosts
-            - totalHours
-            - totalMins
-            - totalSeconds
-          examples:
-            Valid responses Definitions:
-              value:
-                totalMins: 5
-                totalHours: 12
-                totalCosts: 1000
-                totalSeconds: 24
     getTimeEntryByContactIdResponse:
       description: getTimeEntryByContactIdResponse template definitions
       content:
@@ -394,6 +344,56 @@ components:
                   requestChargeType: Customer Service
                   additionalCost: '10.0'
                   totalCost: '657.46'
+    getSummationOfTimeEntryForContactResponse:
+      description: getSummationOfTimeEntryForContactResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              totalMins:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalHours:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalCosts:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalSeconds:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - totalCosts
+            - totalHours
+            - totalMins
+            - totalSeconds
+          examples:
+            Valid responses Definitions:
+              value:
+                totalMins: 5
+                totalHours: 12
+                totalCosts: 1000
+                totalSeconds: 24
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

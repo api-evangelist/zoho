@@ -370,7 +370,7 @@ paths:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
   schemas:
-    ActivateUsersConfig:
+    DeactivateUsersConfig:
       type: object
       properties:
         emailIds:
@@ -386,59 +386,6 @@ components:
       - emailIds:
         - emailId1
         - emailId2
-    DeleteWorkspaceUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain name to remove users from
-      required:
-      - emailIds
-    AddWorkspaceUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Name of the domain to which users are added
-        role:
-          type: string
-          description: Role to assign (USER, WORKSPACEADMIN or custom role)
-      required:
-      - emailIds
-    ChangeUserRoleConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        role:
-          type: string
-          enum:
-          - USER
-          - VIEWER
-          - ORGADMIN
-        domainName:
-          type: string
-      required:
-      - emailIds
-      - role
-      examples:
-      - emailIds:
-        - emailId1
-        - emailId2
-        role: USER
     RemoveUsersConfig:
       type: object
       properties:
@@ -454,24 +401,7 @@ components:
       - emailIds:
         - <email-id1>
         - <email-id2>
-    ChangeWorkspaceUsersRoleConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain of users whose role is being changed
-        role:
-          type: string
-          description: New role to assign (USER, WORKSPACEADMIN, or custom)
-      required:
-      - emailIds
-      - role
-    GetWorkspaceUsersResponse:
+    GetUsersResponse:
       type: object
       properties:
         status:
@@ -492,30 +422,77 @@ components:
                     type: boolean
                   role:
                     type: string
-                required:
-                - emailId
-                - status
-                - role
-          required:
-          - users
-      required:
-      - status
-      - summary
-      - data
       examples:
       - status: success
-        summary: Get workspace users
+        summary: Get users
         data:
           users:
-          - emailId: user101@zoho.com
+          - emailId: user1@gmail.com
             status: true
-            role: Account Admin
-          - emailId: user1@zoho.com
+            role: Organization Admin
+          - emailId: user2@gmail.com
             status: true
-            role: Workspace Admin
-          - emailId: user2@zoho.com
-            status: true
-            role: Workspace Admin
+            role: User
+    ChangeWorkspaceUsersRoleConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain of users whose role is being changed
+        role:
+          type: string
+          description: New role to assign (USER, WORKSPACEADMIN, or custom)
+      required:
+      - emailIds
+      - role
+    DeleteWorkspaceUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain name to remove users from
+      required:
+      - emailIds
+    GetSubscriptionDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            subscription:
+              type: object
+              properties:
+                planName:
+                  type: string
+                addOns:
+                  type: string
+                billingDate:
+                  type: string
+                trialStatus:
+                  type: boolean
+      examples:
+      - status: success
+        summary: Get subscription details
+        data:
+          subscription:
+            planName: Premium
+            addOns: Zoho Recruit Connector,Zoho Books Connector
+            billingDate: ' - '
+            trialStatus: false
     ChangeWorkspaceUsersStatusConfig:
       type: object
       properties:
@@ -536,7 +513,7 @@ components:
       required:
       - emailIds
       - operation
-    DeactivateUsersConfig:
+    ActivateUsersConfig:
       type: object
       properties:
         emailIds:
@@ -597,26 +574,7 @@ components:
               used: '1'
               remaining: '24'
               remarks: ''
-    AddUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        role:
-          type: string
-          description: 'Supported roles: USER, VIEWER, ORGADMIN'
-        domainName:
-          type: string
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - <email-id1>
-        - <email-id2>
-        role: USER
-    GetUsersResponse:
+    GetWorkspaceUsersResponse:
       type: object
       properties:
         status:
@@ -637,55 +595,90 @@ components:
                     type: boolean
                   role:
                     type: string
+                required:
+                - emailId
+                - status
+                - role
+          required:
+          - users
+      required:
+      - status
+      - summary
+      - data
       examples:
       - status: success
-        summary: Get users
+        summary: Get workspace users
         data:
           users:
-          - emailId: user1@gmail.com
+          - emailId: user101@zoho.com
             status: true
-            role: Organization Admin
-          - emailId: user2@gmail.com
+            role: Account Admin
+          - emailId: user1@zoho.com
             status: true
-            role: User
-    GetSubscriptionDetailsResponse:
+            role: Workspace Admin
+          - emailId: user2@zoho.com
+            status: true
+            role: Workspace Admin
+    AddUsersConfig:
       type: object
       properties:
-        status:
+        emailIds:
+          type: array
+          items:
+            type: string
+        role:
           type: string
-        summary:
+          description: 'Supported roles: USER, VIEWER, ORGADMIN'
+        domainName:
           type: string
-        data:
-          type: object
-          properties:
-            subscription:
-              type: object
-              properties:
-                planName:
-                  type: string
-                addOns:
-                  type: string
-                billingDate:
-                  type: string
-                trialStatus:
-                  type: boolean
+      required:
+      - emailIds
       examples:
-      - status: success
-        summary: Get subscription details
-        data:
-          subscription:
-            planName: Premium
-            addOns: Zoho Recruit Connector,Zoho Books Connector
-            billingDate: ' - '
-            trialStatus: false
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+        role: USER
+    AddWorkspaceUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Name of the domain to which users are added
+        role:
+          type: string
+          description: Role to assign (USER, WORKSPACEADMIN or custom role)
+      required:
+      - emailIds
+    ChangeUserRoleConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        role:
+          type: string
+          enum:
+          - USER
+          - VIEWER
+          - ORGADMIN
+        domainName:
+          type: string
+      required:
+      - emailIds
+      - role
+      examples:
+      - emailIds:
+        - emailId1
+        - emailId2
+        role: USER
   parameters:
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
     org-id:
       name: ZANALYTICS-ORGID
       in: header
@@ -693,6 +686,13 @@ components:
       schema:
         type: string
       description: Organization ID (can be obtained using Get Organizations API).
+    workspace-id:
+      name: workspace-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the workspace.
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

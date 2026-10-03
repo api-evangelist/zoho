@@ -153,6 +153,63 @@ paths:
           $ref: ./Common.json#/components/responses/multipleUnprocessEntityResponse
 components:
   schemas:
+    SimpleLicenseUnit:
+      type: object
+      description: Simple license unit with only max value
+      properties:
+        unitCode:
+          type: string
+          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
+          example: ORG
+        maxValue:
+          type: integer
+          description: Maximum allowed value for this unit
+          example: 33
+      required:
+      - unitCode
+      - maxValue
+      additionalProperties: false
+    IsAllowedResponse:
+      type: object
+      properties:
+        isAllowed:
+          type: boolean
+          description: Indicates whether the requested license feature is available/allowed.
+          example: true
+      required:
+      - isAllowed
+    FeatureAllowed:
+      type: object
+      description: Details of an allowed feature with flexible limit information.
+      properties:
+        featureCode:
+          type: string
+          description: The unique code of the feature.
+          example: AGNT01
+        featureName:
+          type: string
+          description: The display name of the feature.
+          example: Agent
+        isAllowed:
+          type: boolean
+          description: Indicates if the feature is currently allowed under the license.
+          example: true
+        limits:
+          type: array
+          description: Array of license limits per applicable unit. Structure varies based on includeDetailedLimits parameter.
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/SimpleLicenseUnit'
+            - $ref: '#/components/schemas/LicenseUnitValue'
+          example:
+          - unitCode: ORG
+            maxValue: 33
+            freeValue: 5
+            addOnValue: 3
+      required:
+      - featureCode
+      - featureName
+      - isAllowed
     PlanInfoResponse:
       type: object
       description: Detailed information about the current license plan.
@@ -192,6 +249,13 @@ components:
           - 'null'
           description: The code of the previous plan, if applicable.
           example: PRO01
+    LicenseFeatureListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureAllowed'
     LicenseUnitValue:
       type: object
       description: Detailed license unit value information
@@ -215,70 +279,6 @@ components:
       required:
       - unitCode
       - maxValue
-    LicenseFeatureListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/FeatureAllowed'
-    SimpleLicenseUnit:
-      type: object
-      description: Simple license unit with only max value
-      properties:
-        unitCode:
-          type: string
-          description: Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)
-          example: ORG
-        maxValue:
-          type: integer
-          description: Maximum allowed value for this unit
-          example: 33
-      required:
-      - unitCode
-      - maxValue
-      additionalProperties: false
-    FeatureAllowed:
-      type: object
-      description: Details of an allowed feature with flexible limit information.
-      properties:
-        featureCode:
-          type: string
-          description: The unique code of the feature.
-          example: AGNT01
-        featureName:
-          type: string
-          description: The display name of the feature.
-          example: Agent
-        isAllowed:
-          type: boolean
-          description: Indicates if the feature is currently allowed under the license.
-          example: true
-        limits:
-          type: array
-          description: Array of license limits per applicable unit. Structure varies based on includeDetailedLimits parameter.
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/SimpleLicenseUnit'
-            - $ref: '#/components/schemas/LicenseUnitValue'
-          example:
-          - unitCode: ORG
-            maxValue: 33
-            freeValue: 5
-            addOnValue: 3
-      required:
-      - featureCode
-      - featureName
-      - isAllowed
-    IsAllowedResponse:
-      type: object
-      properties:
-        isAllowed:
-          type: boolean
-          description: Indicates whether the requested license feature is available/allowed.
-          example: true
-      required:
-      - isAllowed
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

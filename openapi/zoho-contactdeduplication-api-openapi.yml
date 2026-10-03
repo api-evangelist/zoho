@@ -182,63 +182,58 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: Number of contacts to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of contacts to fetch
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
-    fieldName:
-      name: fieldName
-      in: query
-      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
-        enum:
-        - firstName
-        - lastName
-        - email
-        - secondaryEmail
-        - phone
-        - fullName
-        - bothEmail
-        maxLength: 100
-        minLength: 0
-    from:
-      name: from
-      in: query
-      description: Index number starting from which the contacts must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number starting from which the contacts must be fetched
-        minimum: 0
-        pattern: ([0-9]+)
   responses:
+    listDuplicateContactCountResponse:
+      description: listDuplicateContactCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./ContactDeduplication.json#/components/schemas/counts
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - count: 16
+                  fieldValue: Jade
+                - count: 2
+                  fieldValue: saran
+    getDefaultField:
+      description: getDefaultField template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              fieldName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - firstName
+                - lastName
+                - email
+                - secondaryEmail
+                - phone
+                - fullName
+                - bothEmail
+                - null
+            required:
+            - fieldName
+          examples:
+            Valid responses Definitions:
+              value:
+                fieldName: email
     listDuplicateContactResponse:
       description: listDuplicateContactResponse template definitions
       content:
@@ -376,57 +371,62 @@ components:
                       okPercentage: '31'
                       goodPercentage: '47'
                     email: jade@zylker.com
-    getDefaultField:
-      description: getDefaultField template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              fieldName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - firstName
-                - lastName
-                - email
-                - secondaryEmail
-                - phone
-                - fullName
-                - bothEmail
-                - null
-            required:
-            - fieldName
-          examples:
-            Valid responses Definitions:
-              value:
-                fieldName: email
-    listDuplicateContactCountResponse:
-      description: listDuplicateContactCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./ContactDeduplication.json#/components/schemas/counts
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - count: 16
-                  fieldValue: Jade
-                - count: 2
-                  fieldValue: saran
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of contacts to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of contacts to fetch
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number starting from which the contacts must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number starting from which the contacts must be fetched
+        minimum: 0
+        pattern: ([0-9]+)
+    fieldName:
+      name: fieldName
+      in: query
+      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
+        enum:
+        - firstName
+        - lastName
+        - email
+        - secondaryEmail
+        - phone
+        - fullName
+        - bothEmail
+        maxLength: 100
+        minLength: 0
   requestBodies:
     setDefaultField:
       content:

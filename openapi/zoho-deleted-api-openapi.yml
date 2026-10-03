@@ -502,33 +502,6 @@ components:
       schema:
         type: string
         maxLength: 100
-    Fields:
-      name: fields
-      in: query
-      required: true
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
-        maxLength: 1000
-    RelatedList:
-      name: relatedList
-      in: path
-      required: true
-      description: The name of the related list (module) containing the records to retrieve or modify
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-        maxLength: 100
-    ParentRecordModule:
-      name: parentRecordModule
-      in: path
-      required: true
-      description: The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-        maxLength: 100
     ParentRecord:
       name: parentRecord
       in: path
@@ -538,6 +511,24 @@ components:
         type: string
         pattern: ^[0-9]+$
         maxLength: 20
+    RelatedList:
+      name: relatedList
+      in: path
+      required: true
+      description: The name of the related list (module) containing the records to retrieve or modify
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
+    Fields:
+      name: fields
+      in: query
+      required: true
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
+        maxLength: 1000
     Page:
       name: page
       in: query
@@ -560,6 +551,15 @@ components:
         minimum: 1
         maximum: 200
         default: 200
+    ParentRecordModule:
+      name: parentRecordModule
+      in: path
+      required: true
+      description: The module name of the parent record (e.g., Contacts, Leads, Deals, Accounts, Services__s, Price_Books)
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
   schemas:
     OAuthScopeMismatchError:
       type: object
@@ -570,6 +570,60 @@ components:
           description: Error code.
           enum:
           - OAUTH_SCOPE_MISMATCH
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InternalError:
+      type: object
+      description: Error response for internal server error.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INTERNAL_ERROR
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RecordNotFoundError:
+      type: object
+      description: Error response for record not found.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_DATA
         message:
           type: string
           description: Error message.
@@ -620,6 +674,74 @@ components:
       - message
       - status
       additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Error response for invalid module name.
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error.
+          enum:
+          - INVALID_MODULE
+        message:
+          type: string
+          description: Detailed error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionError:
+      type: object
+      description: Error response for permission denied.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - NO_PERMISSION
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            permissions:
+              type: array
+              description: Missing/required permissions for the requested operation
+              maxItems: 100
+              items:
+                type: string
+                description: Permission identifier string.
+                maxLength: 200
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
     InvalidRequestMethodError:
       type: object
       description: Error response for invalid HTTP request method.
@@ -646,6 +768,48 @@ components:
       - code
       - message
       - status
+      additionalProperties: false
+    InvalidDataError:
+      type: object
+      description: Error response for INVALID_DATA (invalid IDs, invalid related list/relation name, hidden related list in layout, invalid input, etc.).
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - INVALID_DATA
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details. Can be empty depending on the error.
+          properties:
+            id:
+              type: string
+              description: Record/related record ID involved in the error (if applicable).
+              pattern: ^[0-9]+$
+              maxLength: 20
+            api_name:
+              type: string
+              description: API name of the field/module/related list involved (if applicable).
+              maxLength: 100
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index/position in the request resource path or payload where the error occurred (if applicable).
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      - details
       additionalProperties: false
     InvalidUrlPatternError:
       type: object
@@ -701,111 +865,6 @@ components:
       - message
       - status
       additionalProperties: false
-    InternalError:
-      type: object
-      description: Error response for internal server error.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INTERNAL_ERROR
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    NoPermissionError:
-      type: object
-      description: Error response for permission denied.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - NO_PERMISSION
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            permissions:
-              type: array
-              description: Missing/required permissions for the requested operation
-              maxItems: 100
-              items:
-                type: string
-                description: Permission identifier string.
-                maxLength: 200
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidDataError:
-      type: object
-      description: Error response for INVALID_DATA (invalid IDs, invalid related list/relation name, hidden related list in layout, invalid input, etc.).
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_DATA
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details. Can be empty depending on the error.
-          properties:
-            id:
-              type: string
-              description: Record/related record ID involved in the error (if applicable).
-              pattern: ^[0-9]+$
-              maxLength: 20
-            api_name:
-              type: string
-              description: API name of the field/module/related list involved (if applicable).
-              maxLength: 100
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index/position in the request resource path or payload where the error occurred (if applicable).
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      - details
-      additionalProperties: false
     InvalidTokenError:
       type: object
       description: Error response for invalid authentication token.
@@ -827,65 +886,6 @@ components:
         details:
           type: object
           description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    RecordNotFoundError:
-      type: object
-      description: Error response for record not found.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_DATA
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidModuleError:
-      type: object
-      description: Error response for invalid module name.
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error.
-          enum:
-          - INVALID_MODULE
-        message:
-          type: string
-          description: Detailed error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that caused the error (0-based).
           additionalProperties: true
       required:
       - code

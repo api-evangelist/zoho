@@ -210,46 +210,6 @@ paths:
       - external-public
 components:
   schemas:
-    commonMentionJson:
-      type: object
-      additionalProperties: false
-      properties:
-        offSet:
-          type:
-          - string
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        length:
-          type:
-          - string
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        name:
-          type: string
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        type:
-          type: string
-          enum:
-          - END_USER
-          - AGENT
-          - TEAM
-          - TICKET
-          - ACTIVITY
-      required:
-      - id
-      - length
-      - name
-      - offSet
-      - type
     attachment:
       type:
       - 'null'
@@ -368,6 +328,193 @@ components:
       - photoURL
       - roleName
       - type
+    impersonatedUser:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        roleName:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - END_USER
+          - AGENT
+          - TEAM
+          - TICKET
+          - ACTIVITY
+          maxLength: 100
+          minLength: 0
+        email:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - name
+      - photoURL
+      - roleName
+      - type
+    commonMentionJson:
+      type: object
+      additionalProperties: false
+      properties:
+        offSet:
+          type:
+          - string
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        length:
+          type:
+          - string
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        name:
+          type: string
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        type:
+          type: string
+          enum:
+          - END_USER
+          - AGENT
+          - TEAM
+          - TICKET
+          - ACTIVITY
+      required:
+      - id
+      - length
+      - name
+      - offSet
+      - type
+    commentData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commentResponse'
+    mention:
+      type:
+      - array
+      - 'null'
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/commonMentionJson'
+        - allOf:
+          - $ref: '#/components/schemas/commonMentionJson'
+          - type: object
+            properties:
+              photoURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 200
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              email:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              zuid:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - email
+            - photoURL
+            - zuid
+        - allOf:
+          - $ref: '#/components/schemas/commonMentionJson'
+          - type: object
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              entityNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+            - entityNumber
+    attachmentResponse:
+      type:
+      - 'null'
+      - array
+      items:
+        oneOf:
+        - $ref: '#/components/schemas/attachment'
+        - type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
     commentResponse:
       type:
       - 'null'
@@ -445,12 +592,6 @@ components:
       - impersonatedUser
       - isPublic
       - modifiedTime
-    commentData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/commentResponse'
     historyCommentData:
       type:
       - 'null'
@@ -508,163 +649,7 @@ components:
       - content
       - contentType
       - isPublic
-    mention:
-      type:
-      - array
-      - 'null'
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/commonMentionJson'
-        - allOf:
-          - $ref: '#/components/schemas/commonMentionJson'
-          - type: object
-            properties:
-              photoURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 200
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              email:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              zuid:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - email
-            - photoURL
-            - zuid
-        - allOf:
-          - $ref: '#/components/schemas/commonMentionJson'
-          - type: object
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              entityNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - departmentId
-            - entityNumber
-    impersonatedUser:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        roleName:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - END_USER
-          - AGENT
-          - TEAM
-          - TICKET
-          - ACTIVITY
-          maxLength: 100
-          minLength: 0
-        email:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-      required:
-      - email
-      - firstName
-      - id
-      - lastName
-      - name
-      - photoURL
-      - roleName
-      - type
-    attachmentResponse:
-      type:
-      - 'null'
-      - array
-      items:
-        oneOf:
-        - $ref: '#/components/schemas/attachment'
-        - type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
   parameters:
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the comment activities must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the comment activities must be fetched
-        pattern: ([0-9]+)
     ticketId:
       name: ticketId
       in: path
@@ -680,6 +665,31 @@ components:
         format: int64
         description: ''
         pattern: ([0-9]+)
+    parentConversationId:
+      name: parentConversationId
+      in: query
+      required: false
+      schema:
+        type:
+        - string
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the comment activities must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the comment activities must be fetched
+        pattern: ([0-9]+)
     limit:
       name: limit
       in: query
@@ -694,16 +704,6 @@ components:
         - integer
         format: int32
         description: Number of comment activities to fetch
-        pattern: ([0-9]+)
-    parentConversationId:
-      name: parentConversationId
-      in: query
-      required: false
-      schema:
-        type:
-        - string
-        - integer
-        format: int64
         pattern: ([0-9]+)
     commentId:
       name: commentId
@@ -721,97 +721,35 @@ components:
         description: ''
         pattern: ([0-9]+)
   responses:
-    listOfComments:
-      description: listOfComments template definitions
+    commentResponse:
+      description: commentResponse template definitions
       content:
         application/json:
           schema:
-            allOf:
-            - type: object
-              properties:
-                plainText:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 16777215
-                  minLength: 0
-                mention:
-                  $ref: '#/components/schemas/mention'
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: '#/components/schemas/commentData'
-              required:
-              - data
+            $ref: '#/components/schemas/commentResponse'
           examples:
             Valid responses Definitions:
               value:
-                data:
-                - modifiedTime: 1485267165000
-                  attachments:
-                  - size: '12734'
-                    name: Attachment_edited.png
-                    id: '4000000008994'
-                    href: https://desk.zoho.com/api/v1/tickets/4000000528005/comments/4000000529001/attachments/4000000008994/content
-                  commentedTime: 1485266818000
-                  isPublic: true
-                  plainText: Sample zsu[@user:55616589]zsu and zsu[@team:31138000001254025_new team]zsu testing
-                  id: '4000000529001'
-                  contentType: html
-                  content: <div>Sample zsu[@user:55616589]zsu and zsu[@team:31138000001254025_new team]zsu testing</div>
-                  commenterId: '4000000008692'
-                  mention:
-                  - firstName: ''
-                    lastName: pandees
-                    photoURL: null
-                    offSet: '7'
-                    length: '28'
-                    id: '31138000000573164'
-                    type: AGENT
-                    email: carol@zylker.com
-                    zuid: '55616589'
-                  - offSet: '39'
-                    length: '46'
-                    name: new team
-                    id: '31138000001254025'
-                    type: TEAM
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: LightAgent
-                    type: AGENT
-                    email: jade12tywin@zylker.com
-                - modifiedTime: null
-                  commentedTime: 1485267277000
-                  isPublic: false
-                  plainText: zsu[@user:55616589]zsu Please fix this ASAP
-                  id: '4000000529007'
-                  contentType: html
-                  content: <div>zsu[@user:55616589]zsu Please fix this ASAP</div>
-                  commenterId: '4000000008692'
-                  mention:
-                  - firstName: ''
-                    lastName: pandees
-                    photoURL: null
-                    offSet: '0'
-                    length: '28'
-                    id: '31138000000573164'
-                    type: AGENT
-                    email: carol@zylker.com
-                    zuid: '55616589'
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: PortalUser
-                    type: END_USER
-                    email: jade12tywin@zylker.com
+                modifiedTime: null
+                attachments:
+                - size: '12734'
+                  name: Attachment.png
+                  id: '4000000008892'
+                  href: https://desk.zoho.com/api/v1/tickets/4000000528005/comments/4000000529001/attachments/4000000008892/content
+                commentedTime: 1485266818193
+                isPublic: true
+                id: '4000000529001'
+                contentType: html
+                content: zsu[@user:11550965]zsu Please fix this ASAP
+                commenterId: '4000000008692'
+                commenter:
+                  firstName: Jade
+                  lastName: Tywin
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                  name: Jade Tywin
+                  roleName: LightAgent
+                  type: AGENT
+                  email: jade12tywin@zylker.com
     getTicketCommentHistory:
       description: getTicketCommentHistory template definitions
       content:
@@ -1111,56 +1049,98 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-    commentResponse:
-      description: commentResponse template definitions
+    listOfComments:
+      description: listOfComments template definitions
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/commentResponse'
+            allOf:
+            - type: object
+              properties:
+                plainText:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 16777215
+                  minLength: 0
+                mention:
+                  $ref: '#/components/schemas/mention'
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: '#/components/schemas/commentData'
+              required:
+              - data
           examples:
             Valid responses Definitions:
               value:
-                modifiedTime: null
-                attachments:
-                - size: '12734'
-                  name: Attachment.png
-                  id: '4000000008892'
-                  href: https://desk.zoho.com/api/v1/tickets/4000000528005/comments/4000000529001/attachments/4000000008892/content
-                commentedTime: 1485266818193
-                isPublic: true
-                id: '4000000529001'
-                contentType: html
-                content: zsu[@user:11550965]zsu Please fix this ASAP
-                commenterId: '4000000008692'
-                commenter:
-                  firstName: Jade
-                  lastName: Tywin
-                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                  name: Jade Tywin
-                  roleName: LightAgent
-                  type: AGENT
-                  email: jade12tywin@zylker.com
+                data:
+                - modifiedTime: 1485267165000
+                  attachments:
+                  - size: '12734'
+                    name: Attachment_edited.png
+                    id: '4000000008994'
+                    href: https://desk.zoho.com/api/v1/tickets/4000000528005/comments/4000000529001/attachments/4000000008994/content
+                  commentedTime: 1485266818000
+                  isPublic: true
+                  plainText: Sample zsu[@user:55616589]zsu and zsu[@team:31138000001254025_new team]zsu testing
+                  id: '4000000529001'
+                  contentType: html
+                  content: <div>Sample zsu[@user:55616589]zsu and zsu[@team:31138000001254025_new team]zsu testing</div>
+                  commenterId: '4000000008692'
+                  mention:
+                  - firstName: ''
+                    lastName: pandees
+                    photoURL: null
+                    offSet: '7'
+                    length: '28'
+                    id: '31138000000573164'
+                    type: AGENT
+                    email: carol@zylker.com
+                    zuid: '55616589'
+                  - offSet: '39'
+                    length: '46'
+                    name: new team
+                    id: '31138000001254025'
+                    type: TEAM
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: LightAgent
+                    type: AGENT
+                    email: jade12tywin@zylker.com
+                - modifiedTime: null
+                  commentedTime: 1485267277000
+                  isPublic: false
+                  plainText: zsu[@user:55616589]zsu Please fix this ASAP
+                  id: '4000000529007'
+                  contentType: html
+                  content: <div>zsu[@user:55616589]zsu Please fix this ASAP</div>
+                  commenterId: '4000000008692'
+                  mention:
+                  - firstName: ''
+                    lastName: pandees
+                    photoURL: null
+                    offSet: '0'
+                    length: '28'
+                    id: '31138000000573164'
+                    type: AGENT
+                    email: carol@zylker.com
+                    zuid: '55616589'
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: PortalUser
+                    type: END_USER
+                    email: jade12tywin@zylker.com
   requestBodies:
-    updateCommentInput:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value: null
     addCommentInput:
       content:
         application/json:
@@ -1212,6 +1192,26 @@ components:
                 - '4000000008892'
                 contentType: html
                 content: zsu[@user:11550965]zsu Please fix this ASAP
+    updateCommentInput:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value: null
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

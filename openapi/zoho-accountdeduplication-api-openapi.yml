@@ -166,8 +166,8 @@ paths:
       - external-public
 components:
   responses:
-    listDuplicateAccountResponse:
-      description: listDuplicateAccountResponse template definitions
+    getDefaultFieldResponse:
+      description: getDefaultFieldResponse template definitions
       content:
         application/json:
           schema:
@@ -176,52 +176,23 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: ./AccountDeduplication.json#/components/schemas/duplicateResponseData
+              fieldName:
+                type:
+                - string
+                - 'null'
+                enum:
+                - email
+                - phone
+                - accountName
+                - null
+                maxLength: 100
+                minLength: 0
             required:
-            - data
+            - fieldName
           examples:
             Valid responses Definitions:
               value:
-                data:
-                - accounts:
-                  - website: '112121'
-                    accountName: Admin Account
-                    phone: '121212'
-                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                    createdTime: 1424105864000
-                    zohoCRMAccount: null
-                    id: '1892000000052077'
-                    email: admin@zylker.com
-                  - website: '112121'
-                    accountName: Admin Account
-                    phone: '121212'
-                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                    createdTime: 1424105864000
-                    zohoCRMAccount: null
-                    id: '1892000000052077'
-                    email: admin@zylker.com
-                  fieldValue: Admin Account
-                - accounts:
-                  - website: '112121'
-                    accountName: Agent Account
-                    phone: '121212'
-                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                    createdTime: 1424105864000
-                    zohoCRMAccount:
-                      id: '32754000000537001'
-                    id: '1892000000052077'
-                    email: agent@zylker.com
-                  - website: '112121'
-                    accountName: Agent Account
-                    phone: '121212'
-                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
-                    createdTime: 1424105864000
-                    zohoCRMAccount:
-                      id: '32754000000537001'
-                    id: '1892000000052077'
-                    email: agent@zylker.com
-                  fieldValue: Agent Account
+                fieldName: email
     listDuplicateAccountsCountsResponse:
       description: listDuplicateAccountsCountsResponse template definitions
       content:
@@ -282,8 +253,8 @@ components:
                   fieldValue: Admin Account
                 - count: 2
                   fieldValue: Agent Account
-    getDefaultFieldResponse:
-      description: getDefaultFieldResponse template definitions
+    listDuplicateAccountResponse:
+      description: listDuplicateAccountResponse template definitions
       content:
         application/json:
           schema:
@@ -292,24 +263,69 @@ components:
             - object
             additionalProperties: false
             properties:
-              fieldName:
-                type:
-                - string
-                - 'null'
-                enum:
-                - email
-                - phone
-                - accountName
-                - null
-                maxLength: 100
-                minLength: 0
+              data:
+                $ref: ./AccountDeduplication.json#/components/schemas/duplicateResponseData
             required:
-            - fieldName
+            - data
           examples:
             Valid responses Definitions:
               value:
-                fieldName: email
+                data:
+                - accounts:
+                  - website: '112121'
+                    accountName: Admin Account
+                    phone: '121212'
+                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                    createdTime: 1424105864000
+                    zohoCRMAccount: null
+                    id: '1892000000052077'
+                    email: admin@zylker.com
+                  - website: '112121'
+                    accountName: Admin Account
+                    phone: '121212'
+                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                    createdTime: 1424105864000
+                    zohoCRMAccount: null
+                    id: '1892000000052077'
+                    email: admin@zylker.com
+                  fieldValue: Admin Account
+                - accounts:
+                  - website: '112121'
+                    accountName: Agent Account
+                    phone: '121212'
+                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                    createdTime: 1424105864000
+                    zohoCRMAccount:
+                      id: '32754000000537001'
+                    id: '1892000000052077'
+                    email: agent@zylker.com
+                  - website: '112121'
+                    accountName: Agent Account
+                    phone: '121212'
+                    webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/d126330fb061247d9ebddaeb9d93ba74750b0284bc703b38
+                    createdTime: 1424105864000
+                    zohoCRMAccount:
+                      id: '32754000000537001'
+                    id: '1892000000052077'
+                    email: agent@zylker.com
+                  fieldValue: Agent Account
   parameters:
+    fieldName:
+      name: fieldName
+      in: query
+      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
+        enum:
+        - email
+        - phone
+        - accountName
     limit:
       name: limit
       in: query
@@ -343,22 +359,6 @@ components:
         description: Index number starting from which the accounts must be fetched
         minimum: 0
         pattern: ([0-9]+)
-    fieldName:
-      name: fieldName
-      in: query
-      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@email,@! !@phone,@! and !@accountName@!'
-        enum:
-        - email
-        - phone
-        - accountName
   requestBodies:
     setDefaultField:
       content:

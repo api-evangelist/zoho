@@ -1,0 +1,1772 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-field-schema-schema.json",
+  "title": "FieldSchema",
+  "description": "Schema representing a field in the module.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-settings-api-openapi.yml#/components/schemas/FieldSchema",
+  "type": "object",
+  "properties": {
+    "associated_module": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Gives detail related to the associated module LIKE subform",
+          "properties": {
+            "module": {
+              "$ref": "#/$defs/ModuleName"
+            },
+            "id": {
+              "$ref": "#/$defs/Id"
+            }
+          },
+          "required": [
+            "module",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "webhook": {
+      "type": "boolean",
+      "description": "Wether webhook is enabled for the field"
+    },
+    "operation_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Operation types allowed for the field",
+      "properties": {
+        "web_update": {
+          "type": "boolean",
+          "description": "Wether any operation is allowed through web update"
+        },
+        "api_create": {
+          "type": "boolean",
+          "description": "Wether any operation is allowed through API create"
+        },
+        "web_create": {
+          "type": "boolean",
+          "description": "Wether any operation is allowed through web create"
+        },
+        "api_update": {
+          "type": "boolean",
+          "description": "Wether any operation is allowed through API update"
+        }
+      },
+      "required": [
+        "web_update",
+        "api_create",
+        "web_create",
+        "api_update"
+      ]
+    },
+    "colour_code_enabled_by_system": {
+      "type": "boolean",
+      "description": "Wether any colour code is enabled by system"
+    },
+    "field_label": {
+      "type": "string",
+      "description": "Plural label of the module.",
+      "maxLength": 50
+    },
+    "tooltip": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if tool tip is enabled then it will return the information",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "it gives the name of the tool tip",
+              "maxLength": 25
+            },
+            "value": {
+              "type": "string",
+              "description": "Text for the tool tip",
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "name",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "display_format_properties": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if display format properties is available then it will return the information",
+          "properties": {
+            "split": {
+              "type": "number",
+              "description": "for phone it will return the split value",
+              "format": "int32"
+            },
+            "radio_display_type": {
+              "type": "string",
+              "description": "for radiobutton it will return the display type",
+              "maxLength": 25
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of the field used or unused.",
+      "maxLength": 25
+    },
+    "field_read_only": {
+      "type": "boolean",
+      "description": "Wether field is read only"
+    },
+    "customizable_properties": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "Customizable properties of the field",
+          "items": {
+            "type": "string",
+            "description": "A customizable property of the field",
+            "maxLength": 50
+          },
+          "maxItems": 100
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "display_label": {
+      "type": "string",
+      "description": "Display label of the field.",
+      "maxLength": 50
+    },
+    "read_only": {
+      "type": "boolean",
+      "description": "Wether field is read only"
+    },
+    "association_details": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if association details is available then it will return the information",
+          "properties": {
+            "related_field": {
+              "type": "object",
+              "description": "Details of the related field",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "lookup_field": {
+              "type": "object",
+              "description": "Details of the lookup field",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "related_field",
+            "lookup_field"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "businesscard_supported": {
+      "type": "boolean",
+      "description": "Wether business card is supported for the field"
+    },
+    "multi_module_lookup": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if multi module lookup is available then it will return the information",
+          "properties": {
+            "display_label": {
+              "type": "string",
+              "description": "Display label of the multi module lookup",
+              "maxLength": 50
+            },
+            "api_name": {
+              "$ref": "#/$defs/ApiName"
+            },
+            "modules": {
+              "type": "array",
+              "description": "List of modules associated with the multi module lookup",
+              "items": {
+                "type": "object",
+                "description": "Details of the module",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  },
+                  "module_name": {
+                    "type": "string",
+                    "description": "Name of the module",
+                    "maxLength": 50
+                  },
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  }
+                },
+                "required": [
+                  "api_name",
+                  "module_name",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "id": {
+      "$ref": "#/$defs/Id"
+    },
+    "created_time": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The time when the record was created.",
+          "format": "date-time"
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "filterable": {
+      "type": "boolean",
+      "description": "Indicates if the field is filterable"
+    },
+    "visible": {
+      "type": "boolean",
+      "description": "Indicates if the field is visible"
+    },
+    "profiles": {
+      "type": "array",
+      "description": "List of profiles associated with the field",
+      "items": {
+        "type": "object",
+        "description": "Profile details",
+        "properties": {
+          "permission_type": {
+            "type": "string",
+            "description": "Type of permission granted",
+            "maxLength": 25
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the profile",
+            "maxLength": 60
+          },
+          "id": {
+            "$ref": "#/$defs/Id"
+          }
+        },
+        "required": [
+          "permission_type",
+          "name",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 50
+    },
+    "view_type": {
+      "type": "object",
+      "description": "View type details of the field",
+      "properties": {
+        "view": {
+          "type": "boolean",
+          "description": "Indicates if the field is viewable"
+        },
+        "edit": {
+          "type": "boolean",
+          "description": "Indicates if the field is editable"
+        },
+        "quick_create": {
+          "type": "boolean",
+          "description": "Indicates if the field supports quick create"
+        },
+        "create": {
+          "type": "boolean",
+          "description": "Indicates if the field supports create"
+        }
+      },
+      "required": [
+        "view",
+        "edit",
+        "quick_create",
+        "create"
+      ],
+      "additionalProperties": false
+    },
+    "separator": {
+      "type": "boolean",
+      "description": "Indicates if the field is a separator"
+    },
+    "searchable": {
+      "type": "boolean",
+      "description": "Indicates if the field is searchable"
+    },
+    "history_tracking_enabled": {
+      "type": "boolean",
+      "description": "Indicates if history tracking is enabled for the field"
+    },
+    "external": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if external is available then it will return the information",
+          "properties": {
+            "show": {
+              "type": "boolean",
+              "description": "Indicates if the external field is shown"
+            },
+            "type": {
+              "type": "string",
+              "description": "Indicates the type of the external field",
+              "maxLength": 50
+            }
+          },
+          "required": [
+            "show",
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "api_name": {
+      "$ref": "#/$defs/ApiName"
+    },
+    "parent_field": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if parent field is available then it will return the information",
+          "properties": {
+            "api_name": {
+              "$ref": "#/$defs/ApiName"
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of the parent field",
+              "maxLength": 50
+            },
+            "id": {
+              "$ref": "#/$defs/Id"
+            }
+          },
+          "required": [
+            "api_name",
+            "name",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "unique": {
+      "type": "object",
+      "description": "Uniqueness details of the field",
+      "properties": {
+        "case_sensitive": {
+          "type": "boolean",
+          "description": "Indicates if the uniqueness is case sensitive"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "enable_colour_code": {
+      "type": "boolean",
+      "description": "Indicates if colour code is enabled for the field"
+    },
+    "child_fields": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "List of child fields associated with the Address field ",
+          "items": {
+            "type": "object",
+            "description": "Details of a child Address fields",
+            "properties": {
+              "sequence_number": {
+                "type": "number",
+                "description": "Sequence number of the child field present in the Address field",
+                "format": "int32"
+              },
+              "field": {
+                "type": "object",
+                "description": "Details of the child Address field",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the child Address field",
+                    "maxLength": 100
+                  },
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  }
+                },
+                "required": [
+                  "api_name",
+                  "name",
+                  "id"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "sequence_number",
+              "field"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "pick_list_values": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "List of pick list values for the field",
+          "items": {
+            "type": "object",
+            "description": "Details of a pick list value",
+            "properties": {
+              "display_value": {
+                "type": "string",
+                "description": "The display value of the pick list option",
+                "maxLength": 120
+              },
+              "sequence_number": {
+                "type": "number",
+                "description": "The sequence number of the pick list option",
+                "format": "int32"
+              },
+              "reference_value": {
+                "type": "string",
+                "description": "The reference value of the pick list option",
+                "maxLength": 120
+              },
+              "colour_code": {
+                "type": "string",
+                "description": "The colour code associated with the pick list option",
+                "maxLength": 20
+              },
+              "actual_value": {
+                "type": "string",
+                "description": "The actual value of the pick list option",
+                "maxLength": 120
+              },
+              "id": {
+                "$ref": "#/$defs/Id"
+              },
+              "type": {
+                "type": "string",
+                "description": "The type of the pick list option",
+                "maxLength": 50
+              }
+            },
+            "required": [
+              "display_value",
+              "sequence_number",
+              "reference_value",
+              "actual_value",
+              "id",
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 100
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "system_mandatory": {
+      "type": "boolean",
+      "description": "Indicates if the field is system mandatory"
+    },
+    "private": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If the field is private, it will return the information",
+          "properties": {
+            "restricted": {
+              "type": "boolean",
+              "description": "Indicates if the field is restricted"
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of privacy",
+              "maxLength": 25
+            },
+            "export": {
+              "type": "boolean",
+              "description": "Indicates if the field is exportable"
+            }
+          },
+          "required": [
+            "restricted",
+            "type",
+            "export"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "virtual_field": {
+      "type": "boolean",
+      "description": "Indicates if the field is a virtual field"
+    },
+    "json_type": {
+      "type": "string",
+      "description": "JSON type of the field",
+      "maxLength": 25
+    },
+    "crypt": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If encryption is enabled for the field, it will return the information",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "description": "The encryption mode used",
+              "maxLength": 25
+            },
+            "encrypt_case": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "description": "Details of the encryption case",
+                  "maxLength": 25
+                },
+                {
+                  "$ref": "#/$defs/TypeNull"
+                }
+              ]
+            },
+            "status": {
+              "type": "number",
+              "description": "The status of the encryption",
+              "format": "int32"
+            }
+          },
+          "required": [
+            "mode",
+            "status"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "range": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "if range is available then it will return the information",
+          "properties": {
+            "from": {
+              "type": "number",
+              "description": "The starting value of the range",
+              "format": "double"
+            },
+            "to": {
+              "type": "number",
+              "description": "The ending value of the range",
+              "format": "double"
+            }
+          },
+          "required": [
+            "from",
+            "to"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "created_source": {
+      "type": "string",
+      "description": "The source from which the field was created",
+      "maxLength": 60
+    },
+    "display_type": {
+      "type": "number",
+      "description": "The display type of the field",
+      "format": "int32"
+    },
+    "ui_type": {
+      "type": "number",
+      "description": "The UI type of the field",
+      "format": "int32"
+    },
+    "modified_time": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The time when the record was last modified.",
+          "format": "date-time"
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "public": {
+      "type": "boolean",
+      "description": "Indicates if the field is public"
+    },
+    "email_parser": {
+      "type": "object",
+      "description": "Email parser details of the field",
+      "properties": {
+        "fields_update_supported": {
+          "type": "boolean",
+          "description": "Indicates if field updates are supported by email parser"
+        },
+        "record_operations_supported": {
+          "type": "boolean",
+          "description": "Indicates if record operations are supported by email parser"
+        }
+      },
+      "required": [
+        "fields_update_supported",
+        "record_operations_supported"
+      ],
+      "additionalProperties": false
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If currency details are available, it will return the information",
+          "properties": {
+            "rounding_option": {
+              "type": "string",
+              "description": "Rounding option for the currency",
+              "maxLength": 25
+            },
+            "precision": {
+              "type": "number",
+              "description": "Precision of the currency",
+              "format": "int32"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "custom_field": {
+      "type": "boolean",
+      "description": "Indicates if the field is a custom field"
+    },
+    "lookup": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Lookup field details",
+          "properties": {
+            "display_label": {
+              "type": "string",
+              "description": "Display label of the lookup field",
+              "maxLength": 50
+            },
+            "revalidate_filter_during_edit": {
+              "type": "boolean",
+              "description": "Indicates if the filter should be revalidated during edit"
+            },
+            "api_name": {
+              "$ref": "#/$defs/ApiName"
+            },
+            "module": {
+              "type": "object",
+              "description": "Module details for the lookup field",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "crypt": {
+                  "type": "boolean",
+                  "description": "Indicates if the module is encrypted"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "crypt",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "id": {
+              "$ref": "#/$defs/Id"
+            },
+            "query_details": {
+              "type": "object",
+              "description": "Query details for the lookup field",
+              "properties": {
+                "system_query_id": {
+                  "oneOf": [
+                    {
+                      "type": "string",
+                      "description": "System query ID for the lookup field",
+                      "format": "int64",
+                      "maxLength": 30
+                    },
+                    {
+                      "$ref": "#/$defs/TypeNull"
+                    }
+                  ]
+                },
+                "query_id": {
+                  "type": "string",
+                  "description": "Query ID for the lookup field",
+                  "format": "int64",
+                  "maxLength": 30
+                }
+              },
+              "required": [
+                "system_query_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "hipaa_compliance": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If HIPAA compliance is enabled for the field, it will return the information",
+          "properties": {
+            "restricted_in_export": {
+              "type": "boolean",
+              "description": "Indicates if the field is restricted in export"
+            },
+            "restricted": {
+              "type": "boolean",
+              "description": "Indicates if the field is restricted"
+            }
+          },
+          "required": [
+            "restricted_in_export",
+            "restricted"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "convert_mapping": {
+      "type": "object",
+      "description": "Convert mapping details of the field",
+      "properties": {
+        "Contacts": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Mapping details for Contacts field name",
+              "maxLength": 100
+            },
+            {
+              "$ref": "#/$defs/TypeNull"
+            }
+          ]
+        },
+        "Deals": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Mapping details for Contacts field name",
+              "maxLength": 100
+            },
+            {
+              "$ref": "#/$defs/TypeNull"
+            }
+          ]
+        },
+        "Accounts": {
+          "oneOf": [
+            {
+              "type": "string",
+              "description": "Mapping details for Contacts field name",
+              "maxLength": 100
+            },
+            {
+              "$ref": "#/$defs/TypeNull"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "address": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If address details are available, it will return the information",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of address",
+              "maxLength": 25
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "rollup_summary": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If rollup summary details are available, it will return the information",
+          "properties": {
+            "return_type": {
+              "type": "string",
+              "description": "The return type of the rollup summary",
+              "maxLength": 50
+            },
+            "expression": {
+              "type": "object",
+              "description": "Expression details of the rollup summary",
+              "properties": {
+                "function_parameters": {
+                  "type": "array",
+                  "description": "List of function parameters for the rollup summary",
+                  "items": {
+                    "type": "object",
+                    "description": "Details of a function parameter",
+                    "properties": {
+                      "api_name": {
+                        "$ref": "#/$defs/ApiName"
+                      }
+                    },
+                    "required": [
+                      "api_name"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100
+                },
+                "criteria": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "description": "Criteria details for the rollup summary",
+                      "properties": {
+                        "comparator": {
+                          "type": "string",
+                          "description": "The comparator used in the criteria",
+                          "maxLength": 25
+                        },
+                        "field": {
+                          "type": "object",
+                          "description": "Details of the field used in the criteria",
+                          "properties": {
+                            "api_name": {
+                              "type": "string",
+                              "description": "API name of the field",
+                              "maxLength": 100
+                            },
+                            "id": {
+                              "$ref": "#/$defs/Id"
+                            }
+                          },
+                          "required": [
+                            "api_name",
+                            "id"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "The type of the criteria",
+                          "maxLength": 25
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "The value used in the criteria",
+                          "maxLength": 100
+                        }
+                      },
+                      "required": [
+                        "comparator",
+                        "field",
+                        "type",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "$ref": "#/$defs/TypeNull"
+                    }
+                  ]
+                },
+                "function": {
+                  "type": "string",
+                  "description": "The function used in the rollup summary",
+                  "maxLength": 25
+                }
+              },
+              "required": [
+                "function_parameters",
+                "function"
+              ],
+              "additionalProperties": false
+            },
+            "based_on_module": {
+              "type": "object",
+              "description": "Module on which the rollup summary is based",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "related_list": {
+              "type": "object",
+              "description": "Related list details for the rollup summary",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "rollup_based_on": {
+              "type": "string",
+              "description": "Indicates what the rollup is based on",
+              "maxLength": 50
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "length": {
+      "type": "number",
+      "description": "The length of the field",
+      "format": "int32"
+    },
+    "column_name": {
+      "type": "string",
+      "description": "The column name of the field",
+      "maxLength": 100
+    },
+    "display_field": {
+      "type": "boolean",
+      "description": "Indicates if the field is a display field"
+    },
+    "pick_list_values_sorted_lexically": {
+      "type": "boolean",
+      "description": "Indicates if the pick list values are sorted lexically"
+    },
+    "sortable": {
+      "type": "boolean",
+      "description": "Indicates if the field is sortable"
+    },
+    "global_picklist": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "If global picklist details are available, it will return the information",
+          "properties": {
+            "api_name": {
+              "$ref": "#/$defs/ApiName"
+            },
+            "id": {
+              "$ref": "#/$defs/Id"
+            }
+          },
+          "required": [
+            "api_name",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "display_format": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "If display format is available, it will return the information",
+          "maxLength": 50
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "history_tracking": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "History tracking details of the field",
+          "properties": {
+            "related_list_name": {
+              "type": "string",
+              "description": "The name of the related list for history tracking",
+              "maxLength": 100
+            },
+            "module": {
+              "type": "object",
+              "description": "Module details for history tracking",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "duration_configured_field": {
+              "type": "object",
+              "description": "Duration configured field details for history tracking",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "duration_configuration": {
+              "type": "string",
+              "description": "Duration configuration for history tracking",
+              "maxLength": 120
+            },
+            "followed_fields": {
+              "type": "array",
+              "description": "List of fields being followed for history tracking",
+              "items": {
+                "type": "object",
+                "description": "Details of a followed field",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  },
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  }
+                },
+                "required": [
+                  "api_name",
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "related_list_name",
+            "module",
+            "duration_configured_field",
+            "duration_configuration",
+            "followed_fields"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "data_type": {
+      "type": "string",
+      "description": "The data type of the field",
+      "maxLength": 25
+    },
+    "formula": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Formula details of the field",
+          "properties": {
+            "return_type": {
+              "type": "string",
+              "description": "The return type of the formula",
+              "maxLength": 50
+            },
+            "sub_return_type": {
+              "type": "string",
+              "description": "The string return type of the formula will be split values,",
+              "maxLength": 50
+            },
+            "dynamic": {
+              "type": "boolean",
+              "description": "Indicates if the formula is dynamic"
+            },
+            "stop_compute_conditionally": {
+              "type": "boolean",
+              "description": "Indicates if the formula computation should stop conditionally"
+            },
+            "assume_default": {
+              "type": "boolean",
+              "description": "Indicates if the formula should assume default values"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "additional_column": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The additional column of the field",
+          "maxLength": 100
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "hipaa_compliance_enabled": {
+      "type": "boolean",
+      "description": "Indicates if HIPAA compliance is enabled for the field"
+    },
+    "decimal_place": {
+      "oneOf": [
+        {
+          "type": "number",
+          "description": "The number of decimal places for the field",
+          "format": "int32"
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "mass_update": {
+      "type": "boolean",
+      "description": "Indicates if mass update is enabled for the field"
+    },
+    "multiselectlookup": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Multi-module lookup details of the field",
+          "properties": {
+            "linking_details": {
+              "type": "object",
+              "description": "Linking details for the multi-module lookup",
+              "properties": {
+                "module": {
+                  "type": "object",
+                  "description": "Module details for the multi-module lookup",
+                  "properties": {
+                    "visibility": {
+                      "type": "number",
+                      "description": "The visibility of the module",
+                      "format": "int32"
+                    },
+                    "plural_label": {
+                      "type": "string",
+                      "description": "The plural label of the module",
+                      "maxLength": 25
+                    },
+                    "api_name": {
+                      "$ref": "#/$defs/ApiName"
+                    },
+                    "id": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "visibility",
+                    "plural_label",
+                    "api_name",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                "lookup_field": {
+                  "type": "object",
+                  "description": "Lookup field details for the multi-module lookup",
+                  "properties": {
+                    "api_name": {
+                      "$ref": "#/$defs/ApiName"
+                    },
+                    "field_label": {
+                      "type": "string",
+                      "description": "The field label of the lookup field",
+                      "maxLength": 25
+                    },
+                    "id": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "api_name",
+                    "field_label",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                "connected_lookup_field": {
+                  "type": "object",
+                  "description": "Connected lookup field details for the multi-module lookup",
+                  "properties": {
+                    "api_name": {
+                      "$ref": "#/$defs/ApiName"
+                    },
+                    "field_label": {
+                      "type": "string",
+                      "description": "The field label of the connected lookup field",
+                      "maxLength": 25
+                    },
+                    "id": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "api_name",
+                    "field_label",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "module",
+                "lookup_field",
+                "connected_lookup_field"
+              ],
+              "additionalProperties": false
+            },
+            "connected_details": {
+              "type": "object",
+              "description": "Connected details for the multi-module lookup",
+              "properties": {
+                "field": {
+                  "type": "object",
+                  "description": "Field details for the multi-module lookup",
+                  "properties": {
+                    "api_name": {
+                      "$ref": "#/$defs/ApiName"
+                    },
+                    "field_label": {
+                      "type": "string",
+                      "description": "The field label of the field",
+                      "maxLength": 25
+                    },
+                    "id": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "api_name",
+                    "field_label",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                "module": {
+                  "type": "object",
+                  "description": "Module details for the multi-module lookup",
+                  "properties": {
+                    "plural_label": {
+                      "type": "string",
+                      "description": "The plural label of the module",
+                      "maxLength": 25
+                    },
+                    "api_name": {
+                      "$ref": "#/$defs/ApiName"
+                    },
+                    "id": {
+                      "$ref": "#/$defs/Id"
+                    }
+                  },
+                  "required": [
+                    "plural_label",
+                    "api_name",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                "layouts": {
+                  "type": "array",
+                  "description": "List of layouts associated with the multi-module lookup",
+                  "items": {
+                    "type": "object",
+                    "description": "Layout details for the multi-module lookup",
+                    "properties": {
+                      "api_name": {
+                        "$ref": "#/$defs/ApiName"
+                      },
+                      "id": {
+                        "$ref": "#/$defs/Id"
+                      }
+                    },
+                    "required": [
+                      "api_name",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 100
+                }
+              },
+              "required": [
+                "field",
+                "module",
+                "layouts"
+              ],
+              "additionalProperties": false
+            },
+            "related_list": {
+              "type": "object",
+              "description": "Related list details for the multi-module lookup",
+              "properties": {
+                "display_label": {
+                  "type": "string",
+                  "description": "Display label of the related list",
+                  "maxLength": 25
+                },
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "display_label",
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "auto_number": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Auto number details of the field",
+          "properties": {
+            "starting_number_length": {
+              "type": "number",
+              "description": "The length of the starting number",
+              "format": "int32"
+            },
+            "prefix": {
+              "type": "string",
+              "description": "The prefix for the auto number",
+              "maxLength": 25
+            },
+            "start_number": {
+              "type": "number",
+              "description": "The starting number for the auto number",
+              "format": "int32"
+            },
+            "suffix": {
+              "type": "string",
+              "description": "The suffix for the auto number",
+              "maxLength": 25
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        {
+          "$ref": "#/$defs/TypeNull"
+        }
+      ]
+    },
+    "layout_associations": {
+      "type": "array",
+      "description": "List of layout associations for the field",
+      "items": {
+        "type": "object",
+        "description": "Layout association details",
+        "properties": {
+          "api_name": {
+            "type": "string",
+            "description": "API name of the layout",
+            "maxLength": 25
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the layout",
+            "maxLength": 25
+          },
+          "id": {
+            "$ref": "#/$defs/Id"
+          }
+        },
+        "required": [
+          "api_name",
+          "name",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 100
+    },
+    "quick_sequence_number": {
+      "type": "string",
+      "description": "The quick sequence number of the field",
+      "maxLength": 10
+    },
+    "blueprint_supported": {
+      "type": "boolean",
+      "description": "Indicates if the field supports blueprint"
+    },
+    "textarea": {
+      "type": "object",
+      "description": "Textarea field details",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the textarea",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "sharing_properties": {
+      "type": "object",
+      "description": "Sharing properties of the field",
+      "properties": {
+        "scheduler_status": {
+          "type": "string",
+          "description": "The scheduler status for sharing",
+          "maxLength": 50
+        },
+        "share_permission": {
+          "type": "string",
+          "description": "The share permission for the field",
+          "maxLength": 50
+        },
+        "share_preference_enabled": {
+          "type": "boolean",
+          "description": "Indicates if share preference is enabled"
+        }
+      },
+      "required": [
+        "scheduler_status",
+        "share_permission",
+        "share_preference_enabled"
+      ],
+      "additionalProperties": false
+    },
+    "multiuserlookup": {
+      "type": "object",
+      "description": "Multi-user lookup details of the field",
+      "properties": {
+        "linking_details": {
+          "type": "object",
+          "description": "Linking details for the multi-user lookup",
+          "properties": {
+            "module": {
+              "type": "object",
+              "description": "Module details for the multi-user lookup",
+              "properties": {
+                "plural_label": {
+                  "type": "string",
+                  "description": "The plural label of the module",
+                  "maxLength": 25
+                },
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "plural_label",
+                "api_name",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "lookup_field": {
+              "type": "object",
+              "description": "Lookup field details for the multi-user lookup",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "field_label": {
+                  "type": "string",
+                  "description": "The label of the lookup field",
+                  "maxLength": 25
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "field_label",
+                "id"
+              ],
+              "additionalProperties": false
+            },
+            "connected_lookup_field": {
+              "type": "object",
+              "description": "Connected lookup field details for the multi-user lookup",
+              "properties": {
+                "api_name": {
+                  "$ref": "#/$defs/ApiName"
+                },
+                "field_label": {
+                  "type": "string",
+                  "description": "The label of the connected lookup field",
+                  "maxLength": 25
+                },
+                "id": {
+                  "$ref": "#/$defs/Id"
+                }
+              },
+              "required": [
+                "api_name",
+                "field_label",
+                "id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "module",
+            "lookup_field",
+            "connected_lookup_field"
+          ],
+          "additionalProperties": false
+        },
+        "record_access": {
+          "type": "boolean",
+          "description": "Indicates if record access is enabled for the multi-user lookup"
+        }
+      },
+      "required": [
+        "linking_details",
+        "record_access"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "webhook",
+    "operation_type",
+    "colour_code_enabled_by_system",
+    "field_label",
+    "type",
+    "field_read_only",
+    "display_label",
+    "read_only",
+    "association_details",
+    "businesscard_supported",
+    "multi_module_lookup",
+    "id",
+    "filterable",
+    "visible",
+    "profiles",
+    "view_type",
+    "separator",
+    "searchable",
+    "history_tracking_enabled",
+    "external",
+    "api_name",
+    "unique",
+    "enable_colour_code",
+    "pick_list_values",
+    "system_mandatory",
+    "virtual_field",
+    "range",
+    "created_source",
+    "display_type",
+    "ui_type",
+    "public",
+    "email_parser",
+    "currency",
+    "custom_field",
+    "lookup",
+    "convert_mapping",
+    "rollup_summary",
+    "display_field",
+    "pick_list_values_sorted_lexically",
+    "sortable",
+    "data_type",
+    "formula",
+    "mass_update",
+    "multiselectlookup",
+    "auto_number"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ApiName": {
+      "type": "string",
+      "description": "API name of the resource. It will start with alphabets and can contain alphanumeric characters and underscores.",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+      "maxLength": 50
+    },
+    "Id": {
+      "type": "string",
+      "description": "Id of the resource.",
+      "format": "int64"
+    },
+    "ModuleName": {
+      "type": "string",
+      "description": "Name of the module",
+      "maxLength": 100
+    },
+    "TypeNull": {
+      "type": "null",
+      "description": "Null if no information is available."
+    }
+  }
+}

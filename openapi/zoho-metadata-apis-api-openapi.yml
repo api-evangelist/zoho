@@ -932,6 +932,62 @@ paths:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
   schemas:
+    GetOrganizationsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            orgs:
+              type: array
+              items:
+                type: object
+                properties:
+                  orgId:
+                    type: string
+                  orgName:
+                    type: string
+                  orgDesc:
+                    type: string
+                  createdBy:
+                    type: string
+                  createdByZuId:
+                    type: string
+                  planName:
+                    type: string
+                  isDefault:
+                    type: boolean
+                  numberOfworkspaces:
+                    type: integer
+                  role:
+                    type: string
+      examples:
+      - status: success
+        summary: Get organizations
+        data:
+          orgs:
+          - orgId: '671712892'
+            orgName: bruce.wn
+            orgDesc: ''
+            createdBy: bruce.wn@zoho.com
+            createdByZuId: '671546307'
+            planName: Premium
+            isDefault: true
+            numberOfworkspaces: 27
+            role: Account Admin
+          - orgId: '647668523'
+            orgName: clark.nt
+            orgDesc: ''
+            createdBy: clark.nt@zoho.com
+            createdByZuId: '647310528'
+            planName: Premium
+            isDefault: false
+            numberOfworkspaces: 2
+            role: User
     GetEmailSchedulesResponse:
       type: object
       properties:
@@ -985,7 +1041,7 @@ components:
             createdBy: user_1@zoho.com
             views:
             - '176702400010503569'
-    GetRecentViewsResponse:
+    GetTableMetadataResponse:
       type: object
       properties:
         status:
@@ -995,69 +1051,161 @@ components:
         data:
           type: object
           properties:
-            views:
+            columns:
               type: array
               items:
                 type: object
                 properties:
-                  viewId:
+                  columnId:
                     type: string
-                  viewName:
+                  columnName:
                     type: string
-                  viewType:
+                  dataType:
                     type: string
+                  dataTypeId:
+                    type: integer
+                  dataTypeName:
+                    type: string
+                  columnIndex:
+                    type: integer
+                  columnDesc:
+                    type: string
+                  columnMaxSize:
+                    type: integer
+                  isNullable:
+                    type: boolean
+                  defaultValue:
+                    type: string
+                  pkTableName:
+                    type: string
+                  pkColumnName:
+                    type: string
+                  formulaDisplayName:
+                    type: string
+                  isHidden:
+                    type: boolean
+                  sortedOrder:
+                    type: integer
+                  sortedIndex:
+                    type: integer
+                  currencyFormat:
+                    type: string
+                  thousandSeparator:
+                    type: string
+                  decimalSeparator:
+                    type: string
+                  decimalPlaces:
+                    type: integer
+      examples:
+      - status: success
+        summary: Get table metadata
+        data:
+          columns:
+          - columnId: '466206000000069003'
+            columnName: Product
+            dataType: PLAIN
+            dataTypeId: 1
+            dataTypeName: Plain Text
+            columnIndex: 1
+            columnDesc: ''
+            columnMaxSize: 253
+            isNullable: true
+            defaultValue: ''
+            pkTableName: ''
+            pkColumnName: ''
+            formulaDisplayName: ''
+            isHidden: false
+            sortedOrder: 0
+            sortedIndex: -1
+          - columnId: '466206000000073014'
+            columnName: precol
+            dataType: PLAIN
+            dataTypeId: 1
+            dataTypeName: Plain Text
+            columnIndex: 2
+            columnDesc: ''
+            columnMaxSize: 253
+            isNullable: true
+            defaultValue: ''
+            pkTableName: ''
+            pkColumnName: ''
+            formulaDisplayName: ''
+            isHidden: false
+            sortedOrder: 0
+            sortedIndex: -1
+          - columnId: '466206000000073013'
+            columnName: Sales
+            dataType: CURRENCY
+            dataTypeId: 7
+            dataTypeName: Currency
+            columnIndex: 3
+            columnDesc: ''
+            columnMaxSize: 22
+            isNullable: true
+            defaultValue: ''
+            pkTableName: ''
+            pkColumnName: ''
+            formulaDisplayName: ''
+            currencyFormat: en;US;
+            thousandSeparator: ','
+            decimalSeparator: .
+            decimalPlaces: 2
+            isHidden: false
+            sortedOrder: 0
+            sortedIndex: -1
+    GetAutoMLAnalysisResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            analysis:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  predictionType:
+                    type: string
+                  trainingTable:
+                    type: string
+                  trainingTableId:
+                    type: string
+                  isDraft:
+                    type: boolean
                   workspaceId:
                     type: string
                   workspaceName:
                     type: string
-                  viewLastAccessedTime:
-                    type: string
       examples:
       - status: success
-        summary: Get recent views
+        summary: Get autoML analysis in organization
         data:
-          views:
-          - viewId: '1767024000003145011'
-            viewName: Accounts
-            viewType: Table
-            workspaceId: '1767024000003145002'
-            workspaceName: Zoho CRM Reports
-            viewLastAccessedTime: '1623746630303'
-          - viewId: '1767024000003145052'
-            viewName: Sales
-            viewType: Table
-            workspaceId: '1767024000003145002'
-            workspaceName: Zoho CRM Reports
-            viewLastAccessedTime: '1623746622479'
-    GetCustomFormulaListResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            customFormulas:
-              type: array
-              items:
-                type: object
-                properties:
-                  formulaId:
-                    type: string
-                  formulaName:
-                    type: string
-      examples:
-      - status: success
-        summary: Get formula columns
-        data:
-          customFormulas:
-          - formulaId: '1767024000009066006'
-            formulaName: C1
-          - formulaId: '1767024000009121001'
-            formulaName: Formula 2
-    GetViewDependentsResponse:
+          analysis:
+          - id: '466206000000061115'
+            name: New Analysis-1
+            predictionType: Classification
+            trainingTable: Sales
+            trainingTableId: '466206000000061002'
+            isDraft: false
+            workspaceId: '466206000000061012'
+            workspaceName: AML Analysis
+          - id: '466206000000073001'
+            name: Sales Analysis
+            predictionType: Classification
+            trainingTable: Olympics
+            trainingTableId: '466206000000021004'
+            isDraft: false
+            workspaceId: '466206000000081014'
+            workspaceName: Olympic Records
+    GetSharedDashboardsResponse:
       type: object
       properties:
         status:
@@ -1076,23 +1224,66 @@ components:
                     type: string
                   viewName:
                     type: string
-                  viewTypeId:
-                    type: integer
+                  viewDesc:
+                    type: string
                   viewType:
+                    type: string
+                  parentViewId:
+                    type: string
+                  folderId:
+                    type: string
+                  createdTime:
+                    type: string
+                  createdBy:
+                    type: string
+                  lastModifiedTime:
+                    type: string
+                  lastModifiedBy:
+                    type: string
+                  isFavorite:
+                    type: boolean
+                  sharedBy:
+                    type: string
+                  workspaceId:
+                    type: string
+                  orgId:
                     type: string
       examples:
       - status: success
-        summary: Get view dependents
+        summary: Get shared dashboards
         data:
           views:
-          - viewId: '1767024000009120004'
-            viewName: Go_QT
-            viewTypeId: 6
-            viewType: Query Table
-          - viewId: '1767024000009129004'
-            viewName: QT_CURL
-            viewTypeId: 6
-            viewType: Query Table
+          - viewId: '1770174000000672854'
+            viewName: Sales VS Cost Dashboard
+            viewDesc: Comparison between Sales and Cost
+            viewType: Dashboard
+            parentViewId: ''
+            folderId: '1770174000000674175'
+            createdTime: '1553245755646'
+            createdBy: clark.nt@zoho.com
+            lastModifiedTime: '1554441829143'
+            lastModifiedBy: clark.nt@zoho.com
+            isFavorite: false
+            sharedBy: ''
+            workspaceId: '1770174000000670320'
+            orgId: '671711195'
+    WorkspaceSummary:
+      type: object
+      properties:
+        workspaceId:
+          type: string
+        workspaceName:
+          type: string
+        workspaceDesc:
+          type: string
+        orgId:
+          type: string
+        createdTime:
+          type: string
+        createdBy:
+          type: string
+        isDefault:
+          type: boolean
     GetLastImportDetailsResponse:
       type: object
       properties:
@@ -1191,23 +1382,137 @@ components:
                 isDefault: false
                 createdBy: bruce.wn@zoho.com
                 createdTime: '1548914379156'
-    WorkspaceSummary:
+    GetOwnedWorkspacesResponse:
       type: object
       properties:
-        workspaceId:
+        status:
           type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaces:
+              type: array
+              items:
+                $ref: '#/components/schemas/WorkspaceSummary'
+      examples:
+      - status: success
+        summary: Get owned workspaces
+        data:
+          workspaces:
+          - workspaceId: '1038728000004459012'
+            workspaceName: Sales Data
+            workspaceDesc: ''
+            orgId: '67510920'
+            createdTime: '1614961625207'
+            createdBy: clark.nt@zoho.com
+            isDefault: false
+    GetMetaDetailsConfig:
+      type: object
+      properties:
         workspaceName:
           type: string
-        workspaceDesc:
+          description: The name of the workspace.
+        viewName:
           type: string
-        orgId:
+          description: The name of the view.
+      examples:
+      - workspaceName: Sales Workspace
+      required:
+      - workspaceName
+    GetAggregateFormulaListResponse:
+      type: object
+      properties:
+        status:
           type: string
-        createdTime:
+        summary:
           type: string
-        createdBy:
+        data:
+          type: object
+          properties:
+            aggregateFormulas:
+              type: array
+              items:
+                type: object
+                properties:
+                  formulaId:
+                    type: string
+                  formulaName:
+                    type: string
+      examples:
+      - status: success
+        summary: Get aggregate formulas
+        data:
+          aggregateFormulas:
+          - formulaId: '1767024000009120001'
+            formulaName: SumOfSales
+    GetMetaDetailsResponse:
+      type: object
+      properties:
+        status:
           type: string
-        isDefault:
-          type: boolean
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaces:
+              type: object
+              properties:
+                workspaceId:
+                  type: string
+                workspaceName:
+                  type: string
+                workspaceDesc:
+                  type: string
+                orgId:
+                  type: string
+      examples:
+      - status: success
+        summary: Get meta details
+        data:
+          workspaces:
+            workspaceId: '1767024000003145002'
+            workspaceName: Account details
+            workspaceDesc: ''
+            orgId: '671712892'
+    GetViewDependentsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            views:
+              type: array
+              items:
+                type: object
+                properties:
+                  viewId:
+                    type: string
+                  viewName:
+                    type: string
+                  viewTypeId:
+                    type: integer
+                  viewType:
+                    type: string
+      examples:
+      - status: success
+        summary: Get view dependents
+        data:
+          views:
+          - viewId: '1767024000009120004'
+            viewName: Go_QT
+            viewTypeId: 6
+            viewType: Query Table
+          - viewId: '1767024000009129004'
+            viewName: QT_CURL
+            viewTypeId: 6
+            viewType: Query Table
     GetDeploymentsForModelResponse:
       type: object
       properties:
@@ -1267,6 +1572,91 @@ components:
             predictionColumn: Sales_Pred
             stack: 8 GB
             importType: truncateadd
+    GetTrashViewsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            views:
+              type: array
+              items:
+                type: object
+                properties:
+                  viewId:
+                    type: string
+                  viewName:
+                    type: string
+                  viewType:
+                    type: string
+                  deletedTime:
+                    type: string
+                  deletedBy:
+                    type: string
+      examples:
+      - status: success
+        summary: get trash view list
+        data:
+          views:
+          - viewId: '1763024000008429063'
+            viewName: SalesTable
+            viewType: Table
+            deletedTime: '1694183082211'
+            deletedBy: admin@finepick.com
+          - viewId: '1763024000008429061'
+            viewName: Untitled-1
+            viewType: Table
+            deletedTime: '1694183082211'
+            deletedBy: admin@finepick.com
+    GetCustomFormulaListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            customFormulas:
+              type: array
+              items:
+                type: object
+                properties:
+                  formulaId:
+                    type: string
+                  formulaName:
+                    type: string
+      examples:
+      - status: success
+        summary: Get formula columns
+        data:
+          customFormulas:
+          - formulaId: '1767024000009066006'
+            formulaName: C1
+          - formulaId: '1767024000009121001'
+            formulaName: Formula 2
+    GetWorkspaceSecretKeyResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaceKey:
+              type: string
+      examples:
+      - status: success
+        summary: Get workspace secretkey
+        data:
+          workspaceKey: dc0543fc624210a5e4f578adabe07369
     GetColumnDependentsResponse:
       type: object
       properties:
@@ -1335,6 +1725,50 @@ components:
             formulaName: F2
             parentViewName: CS_1
             parentViewId: '1767024000008793002'
+    GetRecentViewsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            views:
+              type: array
+              items:
+                type: object
+                properties:
+                  viewId:
+                    type: string
+                  viewName:
+                    type: string
+                  viewType:
+                    type: string
+                  workspaceId:
+                    type: string
+                  workspaceName:
+                    type: string
+                  viewLastAccessedTime:
+                    type: string
+      examples:
+      - status: success
+        summary: Get recent views
+        data:
+          views:
+          - viewId: '1767024000003145011'
+            viewName: Accounts
+            viewType: Table
+            workspaceId: '1767024000003145002'
+            workspaceName: Zoho CRM Reports
+            viewLastAccessedTime: '1623746630303'
+          - viewId: '1767024000003145052'
+            viewName: Sales
+            viewType: Table
+            workspaceId: '1767024000003145002'
+            workspaceName: Zoho CRM Reports
+            viewLastAccessedTime: '1623746622479'
     DashboardSummary:
       type: object
       properties:
@@ -1366,6 +1800,107 @@ components:
           type: string
         orgId:
           type: string
+    GetAllWorkspacesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            ownedWorkspaces:
+              type: array
+              items:
+                $ref: '#/components/schemas/WorkspaceSummary'
+            sharedWorkspaces:
+              type: array
+              items:
+                $ref: '#/components/schemas/WorkspaceSummary'
+      examples:
+      - status: success
+        summary: Get all workspaces
+        data:
+          ownedWorkspaces:
+          - workspaceId: '1767024000000060001'
+            workspaceName: Zoho CRM Reports
+            workspaceDesc: ''
+            orgId: '671712892'
+            createdTime: '1548914379156'
+            createdBy: bruce.wn@zoho.com
+            isDefault: false
+          - workspaceId: '1767024000000004900'
+            workspaceName: Zoho Sales reports
+            workspaceDesc: ''
+            orgId: '671712892'
+            createdTime: '1533642916942'
+            createdBy: bruce.wn@zoho.com
+            isDefault: false
+          sharedWorkspaces:
+          - workspaceId: '1038728000004459012'
+            workspaceName: Sales Data
+            workspaceDesc: ''
+            orgId: '67510920'
+            createdTime: '1614961625207'
+            createdBy: clark.nt@zoho.com
+            isDefault: false
+    GetAggregateFormulasInWorkspaceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            aggregateFormulas:
+              type: array
+              items:
+                type: object
+                properties:
+                  formulaId:
+                    type: string
+                  formulaName:
+                    type: string
+      examples:
+      - status: success
+        summary: Get aggregate formulas in workspace
+        data:
+          aggregateFormulas:
+          - formulaId: '1768024000011672001'
+            formulaName: Sum
+          - formulaId: '1768024000011672003'
+            formulaName: Average
+          - formulaId: '1768024000011672005'
+            formulaName: Mode
+    GetSharedWorkspacesResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            workspaces:
+              type: array
+              items:
+                $ref: '#/components/schemas/WorkspaceSummary'
+      examples:
+      - status: success
+        summary: Get shared workspaces
+        data:
+          workspaces:
+          - workspaceId: '1038728000004459012'
+            workspaceName: Sales Data
+            workspaceDesc: ''
+            orgId: '67510920'
+            createdTime: '1614961625207'
+            createdBy: clark.nt@zoho.com
+            isDefault: false
     GetAutoMLAnalysisDetailsResponse:
       type: object
       properties:
@@ -1461,7 +1996,7 @@ components:
                   maximumDepth: '6'
                   numberOfTrees: '25'
               isDeployed: false
-    GetAllWorkspacesResponse:
+    GetDashboardsResponse:
       type: object
       properties:
         status:
@@ -1471,42 +2006,49 @@ components:
         data:
           type: object
           properties:
-            ownedWorkspaces:
+            ownedViews:
               type: array
               items:
-                $ref: '#/components/schemas/WorkspaceSummary'
-            sharedWorkspaces:
+                $ref: '#/components/schemas/DashboardSummary'
+            sharedViews:
               type: array
               items:
-                $ref: '#/components/schemas/WorkspaceSummary'
+                $ref: '#/components/schemas/DashboardSummary'
       examples:
       - status: success
-        summary: Get all workspaces
+        summary: Get all dashboards
         data:
-          ownedWorkspaces:
-          - workspaceId: '1767024000000060001'
-            workspaceName: Zoho CRM Reports
-            workspaceDesc: ''
-            orgId: '671712892'
-            createdTime: '1548914379156'
+          ownedViews:
+          - viewId: '1767024000000060095'
+            viewName: Closed Revenue
+            viewDesc: Dashboard capturing the  highlights of closed revenue
+            viewType: Dashboard
+            parentViewId: ''
+            folderId: '1767024000000060002'
+            createdTime: '1548914379158'
             createdBy: bruce.wn@zoho.com
-            isDefault: false
-          - workspaceId: '1767024000000004900'
-            workspaceName: Zoho Sales reports
-            workspaceDesc: ''
+            lastModifiedTime: '1548914399837'
+            lastModifiedBy: bruce.wn@zoho.com
+            isFavorite: false
+            sharedBy: ''
+            workspaceId: '1767024000000060001'
             orgId: '671712892'
-            createdTime: '1533642916942'
-            createdBy: bruce.wn@zoho.com
-            isDefault: false
-          sharedWorkspaces:
-          - workspaceId: '1038728000004459012'
-            workspaceName: Sales Data
-            workspaceDesc: ''
-            orgId: '67510920'
-            createdTime: '1614961625207'
+          sharedViews:
+          - viewId: '1770174000000672854'
+            viewName: Sales VS Cost Dashboard
+            viewDesc: Comparison between Sales and Cost
+            viewType: Dashboard
+            parentViewId: ''
+            folderId: '1770174000000674175'
+            createdTime: '1553245755646'
             createdBy: clark.nt@zoho.com
-            isDefault: false
-    GetViewDetailsResponse:
+            lastModifiedTime: '1554441829143'
+            lastModifiedBy: clark.nt@zoho.com
+            isFavorite: false
+            sharedBy: ''
+            workspaceId: '1770174000000670320'
+            orgId: '671711195'
+    GetAggregateFormulaDependentsResponse:
       type: object
       properties:
         status:
@@ -1516,133 +2058,56 @@ components:
         data:
           type: object
           properties:
-            views:
-              type: object
-              properties:
-                viewId:
-                  type: string
-                viewName:
-                  type: string
-                viewDesc:
-                  type: string
-                viewType:
-                  type: string
-                workspaceId:
-                  type: string
-                orgId:
-                  type: string
-      examples:
-      - status: success
-        summary: Get view details
-        data:
-          views:
-            viewId: '1767024000003145011'
-            viewName: Accounts
-            viewDesc: Description
-            viewType: Table
-            workspaceId: '1767024000003145002'
-            orgId: '671712892'
-    GetAggregateFormulaListResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
+            childViews:
+              type: array
+              items:
+                type: object
+                properties:
+                  viewId:
+                    type: string
+                  viewName:
+                    type: string
+                  viewType:
+                    type: string
+                  viewTypeId:
+                    type: integer
+            parentTables:
+              type: array
+              items:
+                type: object
+                properties:
+                  viewId:
+                    type: string
+                  viewName:
+                    type: string
+                  viewType:
+                    type: string
+                  viewTypeId:
+                    type: integer
             aggregateFormulas:
               type: array
               items:
                 type: object
-                properties:
-                  formulaId:
-                    type: string
-                  formulaName:
-                    type: string
-      examples:
-      - status: success
-        summary: Get aggregate formulas
-        data:
-          aggregateFormulas:
-          - formulaId: '1767024000009120001'
-            formulaName: SumOfSales
-    GetAggregateFormulaValueResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            formulaId:
-              type: string
-            formulaName:
-              type: string
-            formulaValue:
-              type: string
-      examples:
-      - status: success
-        summary: Get aggregate formula value
-        data:
-          formulaId: '1768024000011672001'
-          formulaName: Sum
-          formulaValue: '348700'
-    GetAutoMLAnalysisResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            analysis:
+            childDashboards:
               type: array
               items:
                 type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  predictionType:
-                    type: string
-                  trainingTable:
-                    type: string
-                  trainingTableId:
-                    type: string
-                  isDraft:
-                    type: boolean
-                  workspaceId:
-                    type: string
-                  workspaceName:
-                    type: string
       examples:
       - status: success
-        summary: Get autoML analysis in organization
+        summary: Get aggregate formula dependents
         data:
-          analysis:
-          - id: '466206000000061115'
-            name: New Analysis-1
-            predictionType: Classification
-            trainingTable: Sales
-            trainingTableId: '466206000000061002'
-            isDraft: false
-            workspaceId: '466206000000061012'
-            workspaceName: AML Analysis
-          - id: '466206000000073001'
-            name: Sales Analysis
-            predictionType: Classification
-            trainingTable: Olympics
-            trainingTableId: '466206000000021004'
-            isDraft: false
-            workspaceId: '466206000000081014'
-            workspaceName: Olympic Records
+          childViews:
+          - viewName: Chart-1
+            viewId: '1767026000011512009'
+            viewType: Chart View
+            viewTypeId: 2
+          parentTables:
+          - viewId: '1767026000011211001'
+            viewName: Sales Table
+            viewType: Table
+            viewTypeId: 0
+          aggregateFormulas: []
+          childDashboards: []
     GetWorkspaceDetailsResponse:
       type: object
       properties:
@@ -1679,20 +2144,7 @@ components:
             createdTime: '1623743494151'
             createdBy: bruce.wn@zoho.com
             orgId: '671712892'
-    GetMetaDetailsConfig:
-      type: object
-      properties:
-        workspaceName:
-          type: string
-          description: The name of the workspace.
-        viewName:
-          type: string
-          description: The name of the view.
-      examples:
-      - workspaceName: Sales Workspace
-      required:
-      - workspaceName
-    GetDatasourcesResponse:
+    GetAutoMLAnalysisInWorkspaceResponse:
       type: object
       properties:
         status:
@@ -1702,164 +2154,41 @@ components:
         data:
           type: object
           properties:
-            dataSources:
+            analysis:
               type: array
               items:
                 type: object
                 properties:
-                  datasourceName:
+                  id:
                     type: string
-                  datasourceId:
+                  name:
                     type: string
-                  source:
+                  predictionType:
                     type: string
-                  fileType:
+                  trainingTable:
                     type: string
-                  lastDataSyncStatus:
+                  trainingTableId:
                     type: string
-                  lastDataSyncTime:
-                    type: string
-                  schedule:
-                    type: string
-                  nextScheduleTime:
-                    type: string
-                  syncUsed:
-                    type: string
-                  totalSyncAllowed:
-                    type: string
-                  syncIntervalId:
-                    type: string
-                  syncIntervals:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        syncIntervalId:
-                          type: string
-                        lastDataSyncStatus:
-                          type: string
-                        lastDataSyncTime:
-                          type: string
-                        schedule:
-                          type: string
-                        nextScheduleTime:
-                          type: string
-                        syncUsed:
-                          type: string
-                        tableDetails:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              viewName:
-                                type: string
-                              viewId:
-                                type: string
-                              sourceName:
-                                type: string
-                              lastSyncTime:
-                                type: string
-                              syncStatus:
-                                type: string
-                  tableDetails:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        viewName:
-                          type: string
-                        viewId:
-                          type: string
-                        sourceName:
-                          type: string
-                        lastSyncTime:
-                          type: string
-                        syncStatus:
-                          type: string
-      examples:
-      - status: success
-        summary: Fetch Datasources
-        data:
-          dataSources:
-          - datasourceName: Amazon RDS MySQL
-            datasourceId: '100003000000032016'
-            source: relmodel
-            lastDataSyncStatus: Not Applicable
-            lastDataSyncTime: 03 August, 2024 03:39:16 PM IST
-            schedule: Every 15 Minutes
-            nextScheduleTime: 03 August, 2024 03:52:56 PM IST
-            syncUsed: '0'
-            syncIntervalId: '100003000000032134'
-            totalSyncAllowed: '5'
-            tableDetails:
-            - viewName: Check_3
-              viewId: '100003000000032019'
-              sourceName: Check_3
-              lastSyncTime: 03 August, 2024 03:39:13 PM IST
-              syncStatus: Success
-    GetOwnedDashboardsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            views:
-              type: array
-              items:
-                type: object
-                properties:
-                  viewId:
-                    type: string
-                  viewName:
-                    type: string
-                  viewDesc:
-                    type: string
-                  viewType:
-                    type: string
-                  parentViewId:
-                    type: string
-                  folderId:
-                    type: string
-                  createdTime:
-                    type: string
-                  createdBy:
-                    type: string
-                  lastModifiedTime:
-                    type: string
-                  lastModifiedBy:
-                    type: string
-                  isFavorite:
+                  isDraft:
                     type: boolean
-                  sharedBy:
-                    type: string
-                  workspaceId:
-                    type: string
-                  orgId:
-                    type: string
       examples:
       - status: success
-        summary: Get owned dashboards
+        summary: Get autoML analysis in workspace
         data:
-          views:
-          - viewId: '1767024000000060095'
-            viewName: Closed Revenue
-            viewDesc: Dashboard capturing the  highlights of closed revenue
-            viewType: Dashboard
-            parentViewId: ''
-            folderId: '1767024000000060002'
-            createdTime: '1548914379158'
-            createdBy: bruce.wn@zoho.com
-            lastModifiedTime: '1548914399837'
-            lastModifiedBy: bruce.wn@zoho.com
-            isFavorite: false
-            sharedBy: ''
-            workspaceId: '1767024000000060001'
-            orgId: '671712892'
-    GetOwnedWorkspacesResponse:
+          analysis:
+          - id: '466206000000061115'
+            name: New Analysis-1
+            predictionType: Classification
+            trainingTable: Sales
+            trainingTableId: '466206000000061002'
+            isDraft: false
+          - id: '466206000000073001'
+            name: Sales Analysis
+            predictionType: Classification
+            trainingTable: Sales
+            trainingTableId: '466206000000061002'
+            isDraft: false
+    GetAggregateFormulaValueResponse:
       type: object
       properties:
         status:
@@ -1869,84 +2198,19 @@ components:
         data:
           type: object
           properties:
-            workspaces:
-              type: array
-              items:
-                $ref: '#/components/schemas/WorkspaceSummary'
+            formulaId:
+              type: string
+            formulaName:
+              type: string
+            formulaValue:
+              type: string
       examples:
       - status: success
-        summary: Get owned workspaces
+        summary: Get aggregate formula value
         data:
-          workspaces:
-          - workspaceId: '1038728000004459012'
-            workspaceName: Sales Data
-            workspaceDesc: ''
-            orgId: '67510920'
-            createdTime: '1614961625207'
-            createdBy: clark.nt@zoho.com
-            isDefault: false
-    GetSharedDashboardsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            views:
-              type: array
-              items:
-                type: object
-                properties:
-                  viewId:
-                    type: string
-                  viewName:
-                    type: string
-                  viewDesc:
-                    type: string
-                  viewType:
-                    type: string
-                  parentViewId:
-                    type: string
-                  folderId:
-                    type: string
-                  createdTime:
-                    type: string
-                  createdBy:
-                    type: string
-                  lastModifiedTime:
-                    type: string
-                  lastModifiedBy:
-                    type: string
-                  isFavorite:
-                    type: boolean
-                  sharedBy:
-                    type: string
-                  workspaceId:
-                    type: string
-                  orgId:
-                    type: string
-      examples:
-      - status: success
-        summary: Get shared dashboards
-        data:
-          views:
-          - viewId: '1770174000000672854'
-            viewName: Sales VS Cost Dashboard
-            viewDesc: Comparison between Sales and Cost
-            viewType: Dashboard
-            parentViewId: ''
-            folderId: '1770174000000674175'
-            createdTime: '1553245755646'
-            createdBy: clark.nt@zoho.com
-            lastModifiedTime: '1554441829143'
-            lastModifiedBy: clark.nt@zoho.com
-            isFavorite: false
-            sharedBy: ''
-            workspaceId: '1770174000000670320'
-            orgId: '671711195'
+          formulaId: '1768024000011672001'
+          formulaName: Sum
+          formulaValue: '348700'
     GetQueryTableDetailsResponse:
       type: object
       properties:
@@ -2121,7 +2385,7 @@ components:
             isHidden: false
             sortedOrder: 0
             sortedIndex: -1
-    GetOrganizationsResponse:
+    GetDatasourcesResponse:
       type: object
       properties:
         status:
@@ -2131,156 +2395,101 @@ components:
         data:
           type: object
           properties:
-            orgs:
+            dataSources:
               type: array
               items:
                 type: object
                 properties:
-                  orgId:
+                  datasourceName:
                     type: string
-                  orgName:
+                  datasourceId:
                     type: string
-                  orgDesc:
+                  source:
                     type: string
-                  createdBy:
+                  fileType:
                     type: string
-                  createdByZuId:
+                  lastDataSyncStatus:
                     type: string
-                  planName:
+                  lastDataSyncTime:
                     type: string
-                  isDefault:
-                    type: boolean
-                  numberOfworkspaces:
-                    type: integer
-                  role:
+                  schedule:
                     type: string
+                  nextScheduleTime:
+                    type: string
+                  syncUsed:
+                    type: string
+                  totalSyncAllowed:
+                    type: string
+                  syncIntervalId:
+                    type: string
+                  syncIntervals:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        syncIntervalId:
+                          type: string
+                        lastDataSyncStatus:
+                          type: string
+                        lastDataSyncTime:
+                          type: string
+                        schedule:
+                          type: string
+                        nextScheduleTime:
+                          type: string
+                        syncUsed:
+                          type: string
+                        tableDetails:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              viewName:
+                                type: string
+                              viewId:
+                                type: string
+                              sourceName:
+                                type: string
+                              lastSyncTime:
+                                type: string
+                              syncStatus:
+                                type: string
+                  tableDetails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        viewName:
+                          type: string
+                        viewId:
+                          type: string
+                        sourceName:
+                          type: string
+                        lastSyncTime:
+                          type: string
+                        syncStatus:
+                          type: string
       examples:
       - status: success
-        summary: Get organizations
+        summary: Fetch Datasources
         data:
-          orgs:
-          - orgId: '671712892'
-            orgName: bruce.wn
-            orgDesc: ''
-            createdBy: bruce.wn@zoho.com
-            createdByZuId: '671546307'
-            planName: Premium
-            isDefault: true
-            numberOfworkspaces: 27
-            role: Account Admin
-          - orgId: '647668523'
-            orgName: clark.nt
-            orgDesc: ''
-            createdBy: clark.nt@zoho.com
-            createdByZuId: '647310528'
-            planName: Premium
-            isDefault: false
-            numberOfworkspaces: 2
-            role: User
-    GetAutoMLAnalysisInWorkspaceResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            analysis:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  predictionType:
-                    type: string
-                  trainingTable:
-                    type: string
-                  trainingTableId:
-                    type: string
-                  isDraft:
-                    type: boolean
-      examples:
-      - status: success
-        summary: Get autoML analysis in workspace
-        data:
-          analysis:
-          - id: '466206000000061115'
-            name: New Analysis-1
-            predictionType: Classification
-            trainingTable: Sales
-            trainingTableId: '466206000000061002'
-            isDraft: false
-          - id: '466206000000073001'
-            name: Sales Analysis
-            predictionType: Classification
-            trainingTable: Sales
-            trainingTableId: '466206000000061002'
-            isDraft: false
-    GetAggregateFormulaDependentsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            childViews:
-              type: array
-              items:
-                type: object
-                properties:
-                  viewId:
-                    type: string
-                  viewName:
-                    type: string
-                  viewType:
-                    type: string
-                  viewTypeId:
-                    type: integer
-            parentTables:
-              type: array
-              items:
-                type: object
-                properties:
-                  viewId:
-                    type: string
-                  viewName:
-                    type: string
-                  viewType:
-                    type: string
-                  viewTypeId:
-                    type: integer
-            aggregateFormulas:
-              type: array
-              items:
-                type: object
-            childDashboards:
-              type: array
-              items:
-                type: object
-      examples:
-      - status: success
-        summary: Get aggregate formula dependents
-        data:
-          childViews:
-          - viewName: Chart-1
-            viewId: '1767026000011512009'
-            viewType: Chart View
-            viewTypeId: 2
-          parentTables:
-          - viewId: '1767026000011211001'
-            viewName: Sales Table
-            viewType: Table
-            viewTypeId: 0
-          aggregateFormulas: []
-          childDashboards: []
+          dataSources:
+          - datasourceName: Amazon RDS MySQL
+            datasourceId: '100003000000032016'
+            source: relmodel
+            lastDataSyncStatus: Not Applicable
+            lastDataSyncTime: 03 August, 2024 03:39:16 PM IST
+            schedule: Every 15 Minutes
+            nextScheduleTime: 03 August, 2024 03:52:56 PM IST
+            syncUsed: '0'
+            syncIntervalId: '100003000000032134'
+            totalSyncAllowed: '5'
+            tableDetails:
+            - viewName: Check_3
+              viewId: '100003000000032019'
+              sourceName: Check_3
+              lastSyncTime: 03 August, 2024 03:39:13 PM IST
+              syncStatus: Success
     GetViewsResponse:
       type: object
       properties:
@@ -2335,218 +2544,7 @@ components:
                 folderName: Default
                 createdBy: bruce.wn@zoho.com
                 createdTime: '1548914714322'
-    GetMetaDetailsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            workspaces:
-              type: object
-              properties:
-                workspaceId:
-                  type: string
-                workspaceName:
-                  type: string
-                workspaceDesc:
-                  type: string
-                orgId:
-                  type: string
-      examples:
-      - status: success
-        summary: Get meta details
-        data:
-          workspaces:
-            workspaceId: '1767024000003145002'
-            workspaceName: Account details
-            workspaceDesc: ''
-            orgId: '671712892'
-    GetTableMetadataResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            columns:
-              type: array
-              items:
-                type: object
-                properties:
-                  columnId:
-                    type: string
-                  columnName:
-                    type: string
-                  dataType:
-                    type: string
-                  dataTypeId:
-                    type: integer
-                  dataTypeName:
-                    type: string
-                  columnIndex:
-                    type: integer
-                  columnDesc:
-                    type: string
-                  columnMaxSize:
-                    type: integer
-                  isNullable:
-                    type: boolean
-                  defaultValue:
-                    type: string
-                  pkTableName:
-                    type: string
-                  pkColumnName:
-                    type: string
-                  formulaDisplayName:
-                    type: string
-                  isHidden:
-                    type: boolean
-                  sortedOrder:
-                    type: integer
-                  sortedIndex:
-                    type: integer
-                  currencyFormat:
-                    type: string
-                  thousandSeparator:
-                    type: string
-                  decimalSeparator:
-                    type: string
-                  decimalPlaces:
-                    type: integer
-      examples:
-      - status: success
-        summary: Get table metadata
-        data:
-          columns:
-          - columnId: '466206000000069003'
-            columnName: Product
-            dataType: PLAIN
-            dataTypeId: 1
-            dataTypeName: Plain Text
-            columnIndex: 1
-            columnDesc: ''
-            columnMaxSize: 253
-            isNullable: true
-            defaultValue: ''
-            pkTableName: ''
-            pkColumnName: ''
-            formulaDisplayName: ''
-            isHidden: false
-            sortedOrder: 0
-            sortedIndex: -1
-          - columnId: '466206000000073014'
-            columnName: precol
-            dataType: PLAIN
-            dataTypeId: 1
-            dataTypeName: Plain Text
-            columnIndex: 2
-            columnDesc: ''
-            columnMaxSize: 253
-            isNullable: true
-            defaultValue: ''
-            pkTableName: ''
-            pkColumnName: ''
-            formulaDisplayName: ''
-            isHidden: false
-            sortedOrder: 0
-            sortedIndex: -1
-          - columnId: '466206000000073013'
-            columnName: Sales
-            dataType: CURRENCY
-            dataTypeId: 7
-            dataTypeName: Currency
-            columnIndex: 3
-            columnDesc: ''
-            columnMaxSize: 22
-            isNullable: true
-            defaultValue: ''
-            pkTableName: ''
-            pkColumnName: ''
-            formulaDisplayName: ''
-            currencyFormat: en;US;
-            thousandSeparator: ','
-            decimalSeparator: .
-            decimalPlaces: 2
-            isHidden: false
-            sortedOrder: 0
-            sortedIndex: -1
-    GetWorkspaceSecretKeyResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            workspaceKey:
-              type: string
-      examples:
-      - status: success
-        summary: Get workspace secretkey
-        data:
-          workspaceKey: dc0543fc624210a5e4f578adabe07369
-    GetDashboardsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            ownedViews:
-              type: array
-              items:
-                $ref: '#/components/schemas/DashboardSummary'
-            sharedViews:
-              type: array
-              items:
-                $ref: '#/components/schemas/DashboardSummary'
-      examples:
-      - status: success
-        summary: Get all dashboards
-        data:
-          ownedViews:
-          - viewId: '1767024000000060095'
-            viewName: Closed Revenue
-            viewDesc: Dashboard capturing the  highlights of closed revenue
-            viewType: Dashboard
-            parentViewId: ''
-            folderId: '1767024000000060002'
-            createdTime: '1548914379158'
-            createdBy: bruce.wn@zoho.com
-            lastModifiedTime: '1548914399837'
-            lastModifiedBy: bruce.wn@zoho.com
-            isFavorite: false
-            sharedBy: ''
-            workspaceId: '1767024000000060001'
-            orgId: '671712892'
-          sharedViews:
-          - viewId: '1770174000000672854'
-            viewName: Sales VS Cost Dashboard
-            viewDesc: Comparison between Sales and Cost
-            viewType: Dashboard
-            parentViewId: ''
-            folderId: '1770174000000674175'
-            createdTime: '1553245755646'
-            createdBy: clark.nt@zoho.com
-            lastModifiedTime: '1554441829143'
-            lastModifiedBy: clark.nt@zoho.com
-            isFavorite: false
-            sharedBy: ''
-            workspaceId: '1770174000000670320'
-            orgId: '671711195'
-    GetTrashViewsResponse:
+    GetOwnedDashboardsResponse:
       type: object
       properties:
         status:
@@ -2565,28 +2563,50 @@ components:
                     type: string
                   viewName:
                     type: string
+                  viewDesc:
+                    type: string
                   viewType:
                     type: string
-                  deletedTime:
+                  parentViewId:
                     type: string
-                  deletedBy:
+                  folderId:
+                    type: string
+                  createdTime:
+                    type: string
+                  createdBy:
+                    type: string
+                  lastModifiedTime:
+                    type: string
+                  lastModifiedBy:
+                    type: string
+                  isFavorite:
+                    type: boolean
+                  sharedBy:
+                    type: string
+                  workspaceId:
+                    type: string
+                  orgId:
                     type: string
       examples:
       - status: success
-        summary: get trash view list
+        summary: Get owned dashboards
         data:
           views:
-          - viewId: '1763024000008429063'
-            viewName: SalesTable
-            viewType: Table
-            deletedTime: '1694183082211'
-            deletedBy: admin@finepick.com
-          - viewId: '1763024000008429061'
-            viewName: Untitled-1
-            viewType: Table
-            deletedTime: '1694183082211'
-            deletedBy: admin@finepick.com
-    GetAggregateFormulasInWorkspaceResponse:
+          - viewId: '1767024000000060095'
+            viewName: Closed Revenue
+            viewDesc: Dashboard capturing the  highlights of closed revenue
+            viewType: Dashboard
+            parentViewId: ''
+            folderId: '1767024000000060002'
+            createdTime: '1548914379158'
+            createdBy: bruce.wn@zoho.com
+            lastModifiedTime: '1548914399837'
+            lastModifiedBy: bruce.wn@zoho.com
+            isFavorite: false
+            sharedBy: ''
+            workspaceId: '1767024000000060001'
+            orgId: '671712892'
+    GetViewDetailsResponse:
       type: object
       properties:
         status:
@@ -2596,67 +2616,47 @@ components:
         data:
           type: object
           properties:
-            aggregateFormulas:
-              type: array
-              items:
-                type: object
-                properties:
-                  formulaId:
-                    type: string
-                  formulaName:
-                    type: string
+            views:
+              type: object
+              properties:
+                viewId:
+                  type: string
+                viewName:
+                  type: string
+                viewDesc:
+                  type: string
+                viewType:
+                  type: string
+                workspaceId:
+                  type: string
+                orgId:
+                  type: string
       examples:
       - status: success
-        summary: Get aggregate formulas in workspace
+        summary: Get view details
         data:
-          aggregateFormulas:
-          - formulaId: '1768024000011672001'
-            formulaName: Sum
-          - formulaId: '1768024000011672003'
-            formulaName: Average
-          - formulaId: '1768024000011672005'
-            formulaName: Mode
-    GetSharedWorkspacesResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            workspaces:
-              type: array
-              items:
-                $ref: '#/components/schemas/WorkspaceSummary'
-      examples:
-      - status: success
-        summary: Get shared workspaces
-        data:
-          workspaces:
-          - workspaceId: '1038728000004459012'
-            workspaceName: Sales Data
-            workspaceDesc: ''
-            orgId: '67510920'
-            createdTime: '1614961625207'
-            createdBy: clark.nt@zoho.com
-            isDefault: false
+          views:
+            viewId: '1767024000003145011'
+            viewName: Accounts
+            viewDesc: Description
+            viewType: Table
+            workspaceId: '1767024000003145002'
+            orgId: '671712892'
   parameters:
-    org-id:
-      name: ZANALYTICS-ORGID
-      in: header
-      required: true
-      schema:
-        type: string
-      description: Organization ID (can be obtained using Get Organizations API).
-    analysis-id:
-      name: analysis-id
+    workspace-id:
+      name: workspace-id
       in: path
       required: true
       schema:
         type: string
-      description: ID of the AutoML analysis.
+      description: ID of the workspace.
+    view-id:
+      name: view-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the view.
     datasource-id:
       name: datasource-id
       in: path
@@ -2671,20 +2671,13 @@ components:
       schema:
         type: string
       description: ID of the column.
-    view-id:
-      name: view-id
-      in: path
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
       required: true
       schema:
         type: string
-      description: ID of the view.
-    workspace-id:
-      name: workspace-id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: ID of the workspace.
+      description: Organization ID (can be obtained using Get Organizations API).
     model-id:
       name: model-id
       in: path
@@ -2692,6 +2685,13 @@ components:
       schema:
         type: string
       description: ID of the AutoML analysis model.
+    analysis-id:
+      name: analysis-id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID of the AutoML analysis.
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-attachment-success-response-schema.json",
+  "title": "AttachmentSuccessResponse",
+  "description": "Successful attachment operation response",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-attachments-api-openapi.yml#/components/schemas/AttachmentSuccessResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of upload results",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "description": "Upload status details",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Response code",
+            "enum": [
+              "SUCCESS"
+            ]
+          },
+          "details": {
+            "type": "object",
+            "description": "Details of the uploaded attachment",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Attachment identifier",
+                "pattern": "^[0-9]+$",
+                "maxLength": 50
+              },
+              "Modified_Time": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Last modification timestamp"
+              },
+              "Created_Time": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Creation timestamp"
+              },
+              "Modified_By": {
+                "type": "object",
+                "description": "User who last modified the attachment",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "User identifier",
+                    "pattern": "^[0-9]+$",
+                    "maxLength": 50
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "maxLength": 250
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              },
+              "Created_By": {
+                "type": "object",
+                "description": "User who created the attachment",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "User identifier",
+                    "pattern": "^[0-9]+$",
+                    "maxLength": 50
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User name",
+                    "maxLength": 250
+                  }
+                },
+                "required": [
+                  "id",
+                  "name"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "Modified_Time",
+              "Created_Time",
+              "Modified_By",
+              "Created_By"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "Success message",
+            "enum": [
+              "attachment uploaded successfully"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "Operation status",
+            "enum": [
+              "success"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "details",
+          "message",
+          "status"
+        ]
+      }
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-conversion-request-wrapper-schema.json",
+  "title": "ConversionRequestWrapper",
+  "description": "Wrapper object containing array of conversion requests",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-leads-api-openapi.yml#/components/schemas/ConversionRequestWrapper",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of lead conversion configurations",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/ConversionRequest"
+      }
+    }
+  },
+  "$defs": {
+    "ConversionRequest": {
+      "type": "object",
+      "description": "Configuration for converting a single lead",
+      "additionalProperties": false,
+      "properties": {
+        "overwrite": {
+          "type": "boolean",
+          "description": "If true, overwrites existing Account or Contact data when add_to_existing_record is enabled. Default is false.",
+          "default": false
+        },
+        "notify_lead_owner": {
+          "type": "boolean",
+          "description": "If true, sends email notification to the Lead owner about the conversion. Default is false.",
+          "default": false
+        },
+        "notify_new_entity_owner": {
+          "type": "boolean",
+          "description": "If true, notifies the owner(s) of newly created Contact, Account, or Deal records. Default is false.",
+          "default": false
+        },
+        "add_to_existing_record": {
+          "type": "boolean",
+          "description": "When true, associates the Lead with an existing Account or Contact instead of creating duplicates."
+        },
+        "assign_to": {
+          "type": "object",
+          "description": "Specifies the user to assign the converted records to. If omitted, records are assigned to the current Lead owner.",
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Zoho CRM user ID (int64 as string)",
+              "maxLength": 20
+            }
+          }
+        },
+        "Deals": {
+          "$ref": "#/$defs/DealConversion"
+        },
+        "carry_over_tags": {
+          "type": "object",
+          "description": "Configuration for carrying over tags from the Lead to converted records",
+          "additionalProperties": false,
+          "properties": {
+            "Contacts": {
+              "type": "object",
+              "description": "Tag carryover settings for Contact records",
+              "additionalProperties": true
+            },
+            "Accounts": {
+              "type": "object",
+              "description": "Tag carryover settings for Account records",
+              "additionalProperties": true
+            },
+            "Deals": {
+              "type": "object",
+              "description": "Tag carryover settings for Deal records",
+              "additionalProperties": true
+            }
+          }
+        }
+      }
+    },
+    "DealConversion": {
+      "type": "object",
+      "description": "Deal record configuration for lead conversion",
+      "required": [
+        "Deal_Name",
+        "Pipeline",
+        "Stage",
+        "Closing_Date"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "Deal_Name": {
+          "type": "string",
+          "description": "Name of the Deal",
+          "maxLength": 120
+        },
+        "Campaign_Source": {
+          "type": "string",
+          "description": "Campaign source associated with this Deal",
+          "maxLength": 100
+        },
+        "Amount": {
+          "type": "number",
+          "format": "double",
+          "description": "Expected revenue amount for the Deal"
+        },
+        "Contact_Role": {
+          "type": "string",
+          "description": "Role of the Contact in this Deal",
+          "maxLength": 50
+        },
+        "Pipeline": {
+          "type": "string",
+          "description": "Sales pipeline for the Deal. Must match an existing pipeline in the CRM.",
+          "maxLength": 100
+        },
+        "$move_attachments": {
+          "type": "boolean",
+          "description": "If true, moves attachments from the Lead to the Deal"
+        },
+        "Stage": {
+          "type": "string",
+          "description": "Current stage of the Deal within the specified Pipeline. Must be valid for the chosen Pipeline.",
+          "maxLength": 100
+        },
+        "Closing_Date": {
+          "type": "string",
+          "format": "date",
+          "description": "Expected closing date for the Deal (ISO 8601 date format: YYYY-MM-DD)"
+        },
+        "Type": {
+          "type": "string",
+          "description": "Type of Deal (e.g., New Business, Existing Business)",
+          "maxLength": 50
+        },
+        "Probability": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Win probability percentage (0-100)"
+        },
+        "Lead_Source": {
+          "type": "string",
+          "description": "Source from which the Lead originated",
+          "maxLength": 100
+        },
+        "Next_Step": {
+          "type": "string",
+          "description": "Next action or milestone for the Deal",
+          "maxLength": 200
+        },
+        "Description": {
+          "type": "string",
+          "description": "Detailed description of the Deal",
+          "maxLength": 32000
+        }
+      }
+    }
+  }
+}

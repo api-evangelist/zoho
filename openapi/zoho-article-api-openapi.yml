@@ -285,6 +285,25 @@ paths:
       - external-public
 components:
   requestBodies:
+    trashArticles_articleIdsJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                $ref: ./Article.json#/components/schemas/articleIdsData
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '2345678987654323'
+                - '3456789087654567'
     validatePermalinkRequestBody:
       content:
         application/json:
@@ -371,7 +390,7 @@ components:
             Valid requestBody Definitions:
               value:
                 permalink: how-to-open-account-2
-    trashArticles_articleIdsJson:
+    previewJson:
       content:
         application/json:
           schema:
@@ -380,16 +399,28 @@ components:
             - object
             additionalProperties: false
             properties:
-              ids:
-                $ref: ./Article.json#/components/schemas/articleIdsData
+              answer:
+                type:
+                - string
+                - 'null'
+                description: The answer part of article
+                maxLength: 16777215
+                minLength: 0
+              title:
+                type:
+                - string
+                - 'null'
+                description: The title of article
+                maxLength: 500
+                minLength: 0
             required:
-            - ids
+            - answer
+            - title
           examples:
             Valid requestBody Definitions:
               value:
-                ids:
-                - '2345678987654323'
-                - '3456789087654567'
+                answer: <div>Demo for article preview<br /></div><div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /></div>
+                title: Demo for article preview
     updateArticleJson:
       content:
         application/json:
@@ -523,37 +554,6 @@ components:
                 tags:
                 - helpcenter
                 - knowledge base
-    previewJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              answer:
-                type:
-                - string
-                - 'null'
-                description: The answer part of article
-                maxLength: 16777215
-                minLength: 0
-              title:
-                type:
-                - string
-                - 'null'
-                description: The title of article
-                maxLength: 500
-                minLength: 0
-            required:
-            - answer
-            - title
-          examples:
-            Valid requestBody Definitions:
-              value:
-                answer: <div>Demo for article preview<br /></div><div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /></div>
-                title: Demo for article preview
     addArticleJson:
       content:
         application/json:
@@ -709,402 +709,7 @@ components:
                 permalink: knowledgebase
                 categoryId: 22372000000094160
                 status: Draft
-  parameters:
-    permission:
-      name: permission
-      in: query
-      description: Permission of the article.Values allowed are <br>ALL</br><br>REGISTEREDUSERS</br><br>AGENTS
-      required: false
-      style: simple
-      explode: true
-      schema:
-        type: array
-        description: 'Access permission for the article. Values allowed are: @ALL@, @REGISTEREDUSERS@, and @AGENTS@'
-        items:
-          type: string
-          enum:
-          - ALL
-          - REGISTEREDUSERS
-          - AGENTS
-        uniqueItems: true
-    from:
-      name: from
-      in: query
-      description: Index number starting from which the tags must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number starting from which the articles must be fetched.
-        minimum: 1
-        pattern: ([0-9]+)
-    templateId:
-      name: templateId
-      in: header
-      description: ID of the template mapped with the article
-      required: false
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    authorId:
-      name: authorId
-      in: query
-      description: ID of article owner
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of article owner
-        pattern: ([0-9]+)
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of tags to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of articles to fetch
-        maximum: 50
-        minimum: 1
-        pattern: ([0-9]+)
-    status:
-      name: status
-      in: query
-      description: Publishing status of the article. Values allowed are Draft, Published, Review, Expired, Unpublished
-      required: false
-      style: simple
-      explode: true
-      schema:
-        type: array
-        description: Publishing status of the article. Values allowed are @Draft@, @Published@, @Review@, @Expired@, @Unpublished@
-        items:
-          type: string
-          enum:
-          - Draft
-          - Published
-          - Review
-          - Expired
-          - Unpublished
-        uniqueItems: true
-    categoryId:
-      name: categoryId
-      in: query
-      description: ID of the category to which the article belongs
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the category to which the article belongs
-        pattern: ([0-9]+)
   responses:
-    articleCUDJson:
-      description: articleCUDJson template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Article.json#/components/schemas/getArticleNewJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                quickEdit:
-                  $ref: ./ArticleTranslation.json#/components/schemas/quickEditResponseTemplate
-              required:
-              - quickEdit
-          examples:
-            Valid responses Definitions:
-              value:
-                isTemplate: false
-                modifiedTime: 1592999203000
-                departmentId: '24073000000006907'
-                dislikeCount: '0'
-                modifierId: '4000000000059'
-                likeCount: '0'
-                latestVersionModifierId: '4000000000060'
-                ownerId: '4000000000059'
-                translationState: UP-TO-DATE
-                isTrashed: false
-                quickEdit:
-                  modifierId: null
-                  modifiedBy: null
-                createdTime: 1592999203000
-                id: '4000000019059'
-                translationSource: null
-                latestVersionStatus: Published
-                author:
-                  photoURL: null
-                  name: Hill
-                  id: '4000000000059'
-                  status: ACTIVE
-                  zuid: '234543'
-                reviewedBy:
-                  photoURL: null
-                  name: Hill
-                  id: '4000000000059'
-                  status: ACTIVE
-                  zuid: '234543'
-                currentVersion: '1.0'
-                commentCount: '0'
-                tags:
-                - first ticket
-                sourceLocale: en
-                translationId: '4000000017294'
-                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/4000000019059/en
-                feedbackCount: '0'
-                latestPublishedVersion: '1.0'
-                metrics:
-                  feedbackCount: '0'
-                  unlikeCount: '0'
-                  dislikeCount: '0'
-                  lastUsageTime: null
-                  likeCount: '0'
-                  viewCount: '0'
-                  lastActivityTime: null
-                  usageCount: '0'
-                position: '28'
-                permalink: answering-your-first-ticket
-                latestVersionModifiedBy:
-                  photoURL: null
-                  name: will smith
-                  id: '4000000000060'
-                  status: ACTIVE
-                  zuid: '234544'
-                status: Draft
-                attachments: []
-                reviewedTime: 1592999203000
-                creatorId: '4000000000059'
-                locale: en
-                title: Answering your first ticket.
-                expiryDate: null
-                modifiedBy:
-                  photoURL: null
-                  name: Hill
-                  id: '4000000000059'
-                  status: ACTIVE
-                  zuid: '234543'
-                viewCount: '0'
-                seo:
-                  keywords: helpcenter, knowledge base
-                  isEnabled: true
-                  description: Knowledge base
-                  title: Helpcenter and knowledge base
-                owner:
-                  photoURL: null
-                  name: Hill
-                  id: '4000000000059'
-                  status: ACTIVE
-                  zuid: '234543'
-                summary: 'Zoho Desk packs a bunch of features that are expressly there to help you respond to tickets smartly. The first of these, you''ve already discovered: Auto-Suggest Articles. Zoho Desk pulls up relevant articles on the ticket''s content—so you can save ...'
-                isFollowing: true
-                myVote: null
-                permission: AGENTS
-                authorId: '22372000000094004'
-                usageCount: '0'
-                rootCategoryId: '4000000017276'
-                answer: The knowledge base is a key component of a good help center. This is where you can share the basics of using your products or services to your customers. Help articles and FAQs are great assets when it comes to answering the most fundamental questions your customers might have regarding your offerings. Help articles also ease the burden of your customer support agents by enabling self-service.
-                createdBy:
-                  photoURL: null
-                  name: Hill
-                  id: '4000000000059'
-                  status: ACTIVE
-                  zuid: '234543'
-                latestVersion: '1.0'
-                portalUrl: https://desk.zoho.com/portal/zylker/en/kb/articles/answering-your-first-ticket
-                attachmentCount: '0'
-                availableLocaleTranslations:
-                - latestVersionStatus: Published
-                  translationId: '24073000007814015'
-                  isTrashed: false
-                  latestVersion: '1.0'
-                  isLocked: false
-                  latestPublishedVersion: '1.0'
-                  href: https://desk.zoho.com/api/v1/articles/24073000007814013/translations/en?orgId=54325703
-                  authorId: '24073000000095005'
-                  locale: en
-                  translationState: UP-TO-DATE
-                  status: Published
-                category:
-                  name: General
-                  id: '4000000017287'
-                  locale: en
-                categoryId: '22372000000094160'
-                templateUsageCount: '2'
-                templateUsedUsersCount: '2'
-                templateLastUpdatedTime: '2019-12-31T09:45:52.000Z'
-    listAllNewArticle:
-      description: listAllNewArticle template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      secondaryTitles:
-                        type:
-                        - 'null'
-                        - object
-                        additionalProperties: false
-                        maxProperties: 1
-                        minProperties: 1
-                        properties:
-                          secondaryTitles:
-                            type:
-                            - 'null'
-                            - array
-                            items:
-                              type:
-                              - string
-                              - 'null'
-                              maxLength: 500
-                              minLength: 0
-                            uniqueItems: false
-                        required:
-                        - secondaryTitles
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./Article.json#/components/schemas/datanew
-              required:
-              - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1592999203000
-                  departmentId: '24073000000006907'
-                  creatorId: '4000000000059'
-                  dislikeCount: '0'
-                  modifierId: '4000000000059'
-                  likeCount: '0'
-                  locale: en
-                  latestVersionModifierId: '4000000000060'
-                  ownerId: '4000000000059'
-                  title: Answering your first ticket.
-                  translationState: UP-TO-DATE
-                  isTrashed: false
-                  isTemplate: false
-                  createdTime: 1592999203000
-                  modifiedBy:
-                    photoURL: https://desk.zoho.com/api/v1/agents/24073000000095005/photo?orgId=54325703
-                    name: Hill
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  id: '4000000019059'
-                  viewCount: '0'
-                  translationSource: null
-                  owner:
-                    photoURL: null
-                    name: Hill
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  summary: 'Zoho Desk packs a bunch of features that are expressly there to help you respond to tickets smartly. The first of these, you''ve already discovered: Auto-Suggest Articles. Zoho Desk pulls up relevant articles on the ticket''s content—so you can save ...'
-                  latestVersionStatus: Published
-                  author:
-                    photoURL: null
-                    name: Hill
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  permission: AGENTS
-                  authorId: '4000000000059'
-                  usageCount: '0'
-                  templateUsageCount: '2'
-                  templateUsedUsersCount: '2'
-                  templateLastUpdatedTime: '2019-12-31T09:45:52.000Z'
-                  commentCount: '0'
-                  rootCategoryId: '4000000017276'
-                  sourceLocale: en
-                  translationId: '4000000017294'
-                  createdBy:
-                    photoURL: null
-                    name: Hill
-                    id: '4000000000059'
-                    status: ACTIVE
-                    zuid: '234543'
-                  latestVersion: '1.0'
-                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/4000000019059/en
-                  feedbackCount: '0'
-                  portalUrl: https://desk.zoho.com/portal/zylker/en/kb/articles/answering-your-first-ticket
-                  attachmentCount: '0'
-                  latestPublishedVersion: '1.0'
-                  position: '1'
-                  availableLocaleTranslations:
-                  - latestVersionStatus: Published
-                    translationId: '24073000000095164'
-                    isTrashed: false
-                    latestVersion: '1.0'
-                    isLocked: false
-                    latestPublishedVersion: '1.0'
-                    href: https://desk.zoho.com/api/v1/articles/24073000002823830/translations/en?orgId=54325703
-                    authorId: '24073000000095005'
-                    locale: en
-                    translationState: UP-TO-DATE
-                    status: Published
-                  category:
-                    name: General
-                    id: '4000000017287'
-                    locale: en
-                  permalink: answering-your-first-ticket
-                  categoryId: '4000000017287'
-                  latestVersionModifiedBy:
-                    photoURL: null
-                    name: will smith
-                    id: '4000000000060'
-                    status: ACTIVE
-                    zuid: '234544'
-                  status: Published
     getArticleNewJson:
       description: getArticleNewJson template definitions
       content:
@@ -1871,29 +1476,6 @@ components:
                   id: '4000000017287'
                   locale: en
                 categoryId: '4000000017287'
-    articlesCountJson:
-      description: articlesCountJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: '5'
     validatePermalinkResponse:
       description: validatePermalinkResponse template definitions
       content:
@@ -1923,6 +1505,29 @@ components:
               value:
                 isAvailable: false
                 suggestion: how-to-open-account-2-18-12-2017
+    articlesCountJson:
+      description: articlesCountJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: '5'
     previewJson:
       description: previewJson template definitions
       content:
@@ -1953,6 +1558,401 @@ components:
               value:
                 answer: <div>Demo for article preview<br /></div><div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. <br /></div>
                 title: Demo for article preview
+    articleCUDJson:
+      description: articleCUDJson template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./Article.json#/components/schemas/getArticleNewJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                quickEdit:
+                  $ref: ./ArticleTranslation.json#/components/schemas/quickEditResponseTemplate
+              required:
+              - quickEdit
+          examples:
+            Valid responses Definitions:
+              value:
+                isTemplate: false
+                modifiedTime: 1592999203000
+                departmentId: '24073000000006907'
+                dislikeCount: '0'
+                modifierId: '4000000000059'
+                likeCount: '0'
+                latestVersionModifierId: '4000000000060'
+                ownerId: '4000000000059'
+                translationState: UP-TO-DATE
+                isTrashed: false
+                quickEdit:
+                  modifierId: null
+                  modifiedBy: null
+                createdTime: 1592999203000
+                id: '4000000019059'
+                translationSource: null
+                latestVersionStatus: Published
+                author:
+                  photoURL: null
+                  name: Hill
+                  id: '4000000000059'
+                  status: ACTIVE
+                  zuid: '234543'
+                reviewedBy:
+                  photoURL: null
+                  name: Hill
+                  id: '4000000000059'
+                  status: ACTIVE
+                  zuid: '234543'
+                currentVersion: '1.0'
+                commentCount: '0'
+                tags:
+                - first ticket
+                sourceLocale: en
+                translationId: '4000000017294'
+                webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/4000000019059/en
+                feedbackCount: '0'
+                latestPublishedVersion: '1.0'
+                metrics:
+                  feedbackCount: '0'
+                  unlikeCount: '0'
+                  dislikeCount: '0'
+                  lastUsageTime: null
+                  likeCount: '0'
+                  viewCount: '0'
+                  lastActivityTime: null
+                  usageCount: '0'
+                position: '28'
+                permalink: answering-your-first-ticket
+                latestVersionModifiedBy:
+                  photoURL: null
+                  name: will smith
+                  id: '4000000000060'
+                  status: ACTIVE
+                  zuid: '234544'
+                status: Draft
+                attachments: []
+                reviewedTime: 1592999203000
+                creatorId: '4000000000059'
+                locale: en
+                title: Answering your first ticket.
+                expiryDate: null
+                modifiedBy:
+                  photoURL: null
+                  name: Hill
+                  id: '4000000000059'
+                  status: ACTIVE
+                  zuid: '234543'
+                viewCount: '0'
+                seo:
+                  keywords: helpcenter, knowledge base
+                  isEnabled: true
+                  description: Knowledge base
+                  title: Helpcenter and knowledge base
+                owner:
+                  photoURL: null
+                  name: Hill
+                  id: '4000000000059'
+                  status: ACTIVE
+                  zuid: '234543'
+                summary: 'Zoho Desk packs a bunch of features that are expressly there to help you respond to tickets smartly. The first of these, you''ve already discovered: Auto-Suggest Articles. Zoho Desk pulls up relevant articles on the ticket''s content—so you can save ...'
+                isFollowing: true
+                myVote: null
+                permission: AGENTS
+                authorId: '22372000000094004'
+                usageCount: '0'
+                rootCategoryId: '4000000017276'
+                answer: The knowledge base is a key component of a good help center. This is where you can share the basics of using your products or services to your customers. Help articles and FAQs are great assets when it comes to answering the most fundamental questions your customers might have regarding your offerings. Help articles also ease the burden of your customer support agents by enabling self-service.
+                createdBy:
+                  photoURL: null
+                  name: Hill
+                  id: '4000000000059'
+                  status: ACTIVE
+                  zuid: '234543'
+                latestVersion: '1.0'
+                portalUrl: https://desk.zoho.com/portal/zylker/en/kb/articles/answering-your-first-ticket
+                attachmentCount: '0'
+                availableLocaleTranslations:
+                - latestVersionStatus: Published
+                  translationId: '24073000007814015'
+                  isTrashed: false
+                  latestVersion: '1.0'
+                  isLocked: false
+                  latestPublishedVersion: '1.0'
+                  href: https://desk.zoho.com/api/v1/articles/24073000007814013/translations/en?orgId=54325703
+                  authorId: '24073000000095005'
+                  locale: en
+                  translationState: UP-TO-DATE
+                  status: Published
+                category:
+                  name: General
+                  id: '4000000017287'
+                  locale: en
+                categoryId: '22372000000094160'
+                templateUsageCount: '2'
+                templateUsedUsersCount: '2'
+                templateLastUpdatedTime: '2019-12-31T09:45:52.000Z'
+    listAllNewArticle:
+      description: listAllNewArticle template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      secondaryTitles:
+                        type:
+                        - 'null'
+                        - object
+                        additionalProperties: false
+                        maxProperties: 1
+                        minProperties: 1
+                        properties:
+                          secondaryTitles:
+                            type:
+                            - 'null'
+                            - array
+                            items:
+                              type:
+                              - string
+                              - 'null'
+                              maxLength: 500
+                              minLength: 0
+                            uniqueItems: false
+                        required:
+                        - secondaryTitles
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./Article.json#/components/schemas/datanew
+              required:
+              - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1592999203000
+                  departmentId: '24073000000006907'
+                  creatorId: '4000000000059'
+                  dislikeCount: '0'
+                  modifierId: '4000000000059'
+                  likeCount: '0'
+                  locale: en
+                  latestVersionModifierId: '4000000000060'
+                  ownerId: '4000000000059'
+                  title: Answering your first ticket.
+                  translationState: UP-TO-DATE
+                  isTrashed: false
+                  isTemplate: false
+                  createdTime: 1592999203000
+                  modifiedBy:
+                    photoURL: https://desk.zoho.com/api/v1/agents/24073000000095005/photo?orgId=54325703
+                    name: Hill
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  id: '4000000019059'
+                  viewCount: '0'
+                  translationSource: null
+                  owner:
+                    photoURL: null
+                    name: Hill
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  summary: 'Zoho Desk packs a bunch of features that are expressly there to help you respond to tickets smartly. The first of these, you''ve already discovered: Auto-Suggest Articles. Zoho Desk pulls up relevant articles on the ticket''s content—so you can save ...'
+                  latestVersionStatus: Published
+                  author:
+                    photoURL: null
+                    name: Hill
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  permission: AGENTS
+                  authorId: '4000000000059'
+                  usageCount: '0'
+                  templateUsageCount: '2'
+                  templateUsedUsersCount: '2'
+                  templateLastUpdatedTime: '2019-12-31T09:45:52.000Z'
+                  commentCount: '0'
+                  rootCategoryId: '4000000017276'
+                  sourceLocale: en
+                  translationId: '4000000017294'
+                  createdBy:
+                    photoURL: null
+                    name: Hill
+                    id: '4000000000059'
+                    status: ACTIVE
+                    zuid: '234543'
+                  latestVersion: '1.0'
+                  webUrl: https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/4000000019059/en
+                  feedbackCount: '0'
+                  portalUrl: https://desk.zoho.com/portal/zylker/en/kb/articles/answering-your-first-ticket
+                  attachmentCount: '0'
+                  latestPublishedVersion: '1.0'
+                  position: '1'
+                  availableLocaleTranslations:
+                  - latestVersionStatus: Published
+                    translationId: '24073000000095164'
+                    isTrashed: false
+                    latestVersion: '1.0'
+                    isLocked: false
+                    latestPublishedVersion: '1.0'
+                    href: https://desk.zoho.com/api/v1/articles/24073000002823830/translations/en?orgId=54325703
+                    authorId: '24073000000095005'
+                    locale: en
+                    translationState: UP-TO-DATE
+                    status: Published
+                  category:
+                    name: General
+                    id: '4000000017287'
+                    locale: en
+                  permalink: answering-your-first-ticket
+                  categoryId: '4000000017287'
+                  latestVersionModifiedBy:
+                    photoURL: null
+                    name: will smith
+                    id: '4000000000060'
+                    status: ACTIVE
+                    zuid: '234544'
+                  status: Published
+  parameters:
+    from:
+      name: from
+      in: query
+      description: Index number starting from which the tags must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number starting from which the articles must be fetched.
+        minimum: 1
+        pattern: ([0-9]+)
+    permission:
+      name: permission
+      in: query
+      description: Permission of the article.Values allowed are <br>ALL</br><br>REGISTEREDUSERS</br><br>AGENTS
+      required: false
+      style: simple
+      explode: true
+      schema:
+        type: array
+        description: 'Access permission for the article. Values allowed are: @ALL@, @REGISTEREDUSERS@, and @AGENTS@'
+        items:
+          type: string
+          enum:
+          - ALL
+          - REGISTEREDUSERS
+          - AGENTS
+        uniqueItems: true
+    authorId:
+      name: authorId
+      in: query
+      description: ID of article owner
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of article owner
+        pattern: ([0-9]+)
+    templateId:
+      name: templateId
+      in: header
+      description: ID of the template mapped with the article
+      required: false
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    status:
+      name: status
+      in: query
+      description: Publishing status of the article. Values allowed are Draft, Published, Review, Expired, Unpublished
+      required: false
+      style: simple
+      explode: true
+      schema:
+        type: array
+        description: Publishing status of the article. Values allowed are @Draft@, @Published@, @Review@, @Expired@, @Unpublished@
+        items:
+          type: string
+          enum:
+          - Draft
+          - Published
+          - Review
+          - Expired
+          - Unpublished
+        uniqueItems: true
+    limit:
+      name: limit
+      in: query
+      description: Number of tags to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of articles to fetch
+        maximum: 50
+        minimum: 1
+        pattern: ([0-9]+)
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    categoryId:
+      name: categoryId
+      in: query
+      description: ID of the category to which the article belongs
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the category to which the article belongs
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

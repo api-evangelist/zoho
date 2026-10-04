@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-conversion-scheduled-wrapper-schema.json",
+  "title": "ConversionScheduledWrapper",
+  "description": "Wrapper for scheduled conversion response",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-leads-api-openapi.yml#/components/schemas/ConversionScheduledWrapper",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array containing the scheduled job information",
+      "maxItems": 1,
+      "items": {
+        "$ref": "#/$defs/ConversionScheduled"
+      }
+    }
+  },
+  "$defs": {
+    "ConversionScheduled": {
+      "type": "object",
+      "description": "Lead conversion scheduled for background processing",
+      "required": [
+        "code",
+        "message",
+        "status",
+        "details"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "SCHEDULED"
+          ],
+          "description": "Status code indicating conversion was scheduled"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable message",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "success"
+          ],
+          "description": "Overall status"
+        },
+        "details": {
+          "type": "object",
+          "description": "Job details",
+          "required": [
+            "job_id"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "job_id": {
+              "type": "string",
+              "description": "Unique job identifier",
+              "maxLength": 20
+            }
+          }
+        }
+      }
+    }
+  }
+}

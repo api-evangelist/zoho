@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-record-getsucess-response-schema.json",
+  "title": "RecordGETSucessResponse",
+  "description": "Successful response schema returned for GET record or GET records API operations.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-records-api-openapi.yml#/components/schemas/RecordGETSucessResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "List of records retrieved from the module.",
+      "items": {
+        "type": "object",
+        "description": "Represents a single record. This object may include both standard and custom fields.",
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "int64",
+            "description": "Unique identifier of the record."
+          },
+          "Owner": {
+            "type": "object",
+            "description": "Details of the user who owns the record.",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Name of the record owner."
+              },
+              "id": {
+                "type": "string",
+                "format": "int64",
+                "description": "Unique identifier of the record owner."
+              },
+              "email": {
+                "type": "string",
+                "maxLength": 256,
+                "description": "Email address of the record owner."
+              }
+            }
+          },
+          "Created_Time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the record was created."
+          },
+          "Modified_Time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the record was last modified."
+          },
+          "Created_By": {
+            "type": "object",
+            "description": "Details of the user who created the record.",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Name of the user who created the record."
+              },
+              "id": {
+                "type": "string",
+                "format": "int64",
+                "description": "Unique identifier of the user who created the record."
+              }
+            }
+          },
+          "Modified_By": {
+            "type": "object",
+            "description": "Details of the user who last modified the record.",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "maxLength": 100,
+                "description": "Name of the user who last modified the record."
+              },
+              "id": {
+                "type": "string",
+                "format": "int64",
+                "description": "Unique identifier of the user who last modified the record."
+              }
+            }
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "info": {
+      "type": "object",
+      "description": "Pagination and metadata information for the GET records response.",
+      "additionalProperties": false,
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current page number."
+        },
+        "call": {
+          "type": "boolean",
+          "description": "Indicates whether call fields are included in the response."
+        },
+        "per_page": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of records returned per page."
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of records returned in the current page."
+        },
+        "more_records": {
+          "type": "boolean",
+          "description": "Indicates whether more records are available for retrieval."
+        },
+        "email": {
+          "type": "boolean",
+          "description": "Indicates whether email-related fields are included in the response."
+        },
+        "sort_by": {
+          "type": "string",
+          "maxLength": 1024,
+          "description": "Field name used to sort the records."
+        },
+        "sort_order": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "description": "Sort order applied to the results (ascending or descending)."
+        },
+        "next_page_token": {
+          "maxLength": 1024,
+          "type": "string",
+          "description": "Token used to fetch the next page of results."
+        },
+        "previous_page_token": {
+          "maxLength": 1024,
+          "type": "string",
+          "description": "Token used to fetch the previous page of results."
+        },
+        "page_token_expiry": {
+          "maxLength": 1024,
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp indicating when the page tokens will expire."
+        }
+      }
+    }
+  }
+}

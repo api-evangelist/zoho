@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-conversion-success-wrapper-schema.json",
+  "title": "ConversionSuccessWrapper",
+  "description": "Wrapper for successful conversion response",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-leads-api-openapi.yml#/components/schemas/ConversionSuccessWrapper",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of conversion results",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/ConversionSuccess"
+      }
+    }
+  },
+  "$defs": {
+    "ConversionSuccess": {
+      "type": "object",
+      "description": "Successful lead conversion result",
+      "required": [
+        "code",
+        "message",
+        "status",
+        "details"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "SUCCESS"
+          ],
+          "description": "Status code indicating successful conversion"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable message describing the conversion result",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "success"
+          ],
+          "description": "Overall status of the conversion operation"
+        },
+        "details": {
+          "type": "object",
+          "description": "Details of created records including their IDs and names",
+          "required": [
+            "Contacts",
+            "Deals",
+            "Accounts"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "Contacts": {
+              "$ref": "#/$defs/EntityReference"
+            },
+            "Deals": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/EntityReference"
+                },
+                {
+                  "type": "null",
+                  "description": "No Deal was created during conversion"
+                }
+              ],
+              "description": "Deal record information, or null if no Deal was created"
+            },
+            "Accounts": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/EntityReference"
+                },
+                {
+                  "type": "null",
+                  "description": "No Account was created during conversion"
+                }
+              ],
+              "description": "Account record information, or null if no Account was created"
+            }
+          }
+        }
+      }
+    },
+    "EntityReference": {
+      "type": "object",
+      "description": "Reference to a CRM entity with ID and name",
+      "required": [
+        "name",
+        "id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the entity",
+          "maxLength": 200
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the entity record (int64 as string)",
+          "maxLength": 20
+        }
+      }
+    }
+  }
+}

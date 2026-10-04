@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-territory-get-response-schema.json",
+  "title": "TerritoryGetResponse",
+  "description": "Response schema for getting territories of a user",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-users-api-openapi.yml#/components/schemas/TerritoryGetResponse",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "territories": {
+      "type": "array",
+      "description": "List of territories assigned to the user",
+      "minItems": 0,
+      "maxItems": 200,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "description": "Territory details",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Territory ID",
+            "format": "int64"
+          },
+          "Manager": {
+            "type": "object",
+            "description": "Territory manager details",
+            "additionalProperties": false,
+            "properties": {
+              "Name": {
+                "type": "string",
+                "description": "Manager name",
+                "maxLength": 255
+              },
+              "id": {
+                "type": "string",
+                "description": "Manager ID",
+                "format": "int64"
+              }
+            }
+          },
+          "Reporting_To": {
+            "type": "object",
+            "description": "Reporting manager details",
+            "additionalProperties": false,
+            "properties": {
+              "Name": {
+                "type": "string",
+                "description": "Reporting manager name",
+                "maxLength": 255
+              },
+              "id": {
+                "type": "string",
+                "description": "Reporting manager ID",
+                "format": "int64"
+              }
+            },
+            "required": [
+              "Name",
+              "id"
+            ]
+          },
+          "Name": {
+            "type": "string",
+            "description": "Territory name",
+            "maxLength": 255
+          }
+        },
+        "required": [
+          "id",
+          "Manager",
+          "Reporting_To",
+          "Name"
+        ]
+      }
+    },
+    "info": {
+      "type": "object",
+      "description": "Pagination information",
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "type": "integer",
+          "description": "Number of records returned",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "description": "Current page number",
+          "format": "int32"
+        },
+        "per_page": {
+          "type": "integer",
+          "description": "Records per page",
+          "format": "int32"
+        },
+        "more_records": {
+          "type": "boolean",
+          "description": "Whether more records exist"
+        }
+      },
+      "required": [
+        "count",
+        "page",
+        "per_page",
+        "more_records"
+      ]
+    }
+  },
+  "required": [
+    "territories",
+    "info"
+  ]
+}

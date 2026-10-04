@@ -112,6 +112,93 @@ paths:
       - external-public
 components:
   schemas:
+    author:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 200
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        firstName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        email:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+      required:
+      - email
+      - firstName
+      - id
+      - lastName
+      - photoURL
+    smtpDetails:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        port:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        host:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+        userName:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        connectionType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - PLAIN
+          - SSL
+          - TLS
+          maxLength: 100
+          minLength: 0
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/secondListViewJson'
     secondListViewJson:
       type:
       - 'null'
@@ -200,93 +287,6 @@ components:
       - modifiedTime
       - serviceProviderType
       - smtpDetails
-    smtpDetails:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        port:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        host:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        userName:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        connectionType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - PLAIN
-          - SSL
-          - TLS
-          maxLength: 100
-          minLength: 0
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/secondListViewJson'
-    author:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 200
-          minLength: 0
-          pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-        firstName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        lastName:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        email:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-      required:
-      - email
-      - firstName
-      - id
-      - lastName
-      - photoURL
   responses:
     getReplyMailAddressesResponse:
       description: getReplyMailAddressesResponse template definitions

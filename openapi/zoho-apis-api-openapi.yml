@@ -127,8 +127,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: Unexpected server error.
       content:
         application/json:
           schema:
@@ -145,12 +145,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Unexpected server error.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    Filters:
+      name: filters
+      in: query
+      required: false
+      description: Filter APIs by OAuth scope.
+      schema:
+        type: string
+        maxLength: 2048
   schemas:
     ErrorResponse:
       type: object
@@ -172,15 +181,6 @@ components:
       required:
       - code
       - message
-  parameters:
-    Filters:
-      name: filters
-      in: query
-      required: false
-      description: Filter APIs by OAuth scope.
-      schema:
-        type: string
-        maxLength: 2048
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

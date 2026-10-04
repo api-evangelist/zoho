@@ -176,6 +176,119 @@ paths:
       x-audience:
       - external-public
 components:
+  parameters:
+    ticketTemplateId:
+      name: ticketTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  responses:
+    addUpdateGetTicketTemplateResponse:
+      description: addUpdateGetTicketTemplateResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              showInCustomerPortal:
+                type:
+                - boolean
+                - 'null'
+              ticketTemplateName:
+                type:
+                - string
+                - 'null'
+                maxLength: 200
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              ticketTemplateValues:
+                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValuesResponse
+              layoutId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - id
+            - layoutId
+            - showInCustomerPortal
+            - ticketTemplateName
+            - ticketTemplateValues
+          examples:
+            Valid responses Definitions:
+              value:
+                showInCustomerPortal: true
+                ticketTemplateName: temptest
+                id: '4000000020001'
+                layoutId: '4000000020012'
+                ticketTemplateValues:
+                  subCategory: null
+                  cf:
+                    cf_severity_percentage: '0.0'
+                  productId: '4000000009012'
+                  contactId: null
+                  subject: UrgentProblem
+                  departmentId: '4000000007073'
+                  dueDate: null
+                  channel: null
+                  description: null
+                  secondaryContacts:
+                  - '4000000009076'
+                  - '4000000009062'
+                  priority: null
+                  classification: null
+                  assigneeId: null
+                  accountId: null
+                  phone: '9876545645'
+                  category: null
+                  email: jacks@zylker.com
+                  status: null
+    listTicketTemplateResponse:
+      description: listTicketTemplateResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./TicketTemplate.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - showInCustomerPortal: true
+                  ticketTemplateName: Template1
+                  id: '4000000020001'
+                  layoutId: '4000000020121'
+                - showInCustomerPortal: false
+                  ticketTemplateName: Template2
+                  id: '4000000020063'
+                  layoutId: '4000000020431'
   requestBodies:
     updateTicketTemplate_addTicketTemplateRequest:
       content:
@@ -298,119 +411,6 @@ components:
                 ids:
                 - '4000000083313'
                 - '4000000082105'
-  parameters:
-    ticketTemplateId:
-      name: ticketTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  responses:
-    listTicketTemplateResponse:
-      description: listTicketTemplateResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./TicketTemplate.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - showInCustomerPortal: true
-                  ticketTemplateName: Template1
-                  id: '4000000020001'
-                  layoutId: '4000000020121'
-                - showInCustomerPortal: false
-                  ticketTemplateName: Template2
-                  id: '4000000020063'
-                  layoutId: '4000000020431'
-    addUpdateGetTicketTemplateResponse:
-      description: addUpdateGetTicketTemplateResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              showInCustomerPortal:
-                type:
-                - boolean
-                - 'null'
-              ticketTemplateName:
-                type:
-                - string
-                - 'null'
-                maxLength: 200
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              ticketTemplateValues:
-                $ref: ./TicketTemplate.json#/components/schemas/ticketTemplateValuesResponse
-              layoutId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - id
-            - layoutId
-            - showInCustomerPortal
-            - ticketTemplateName
-            - ticketTemplateValues
-          examples:
-            Valid responses Definitions:
-              value:
-                showInCustomerPortal: true
-                ticketTemplateName: temptest
-                id: '4000000020001'
-                layoutId: '4000000020012'
-                ticketTemplateValues:
-                  subCategory: null
-                  cf:
-                    cf_severity_percentage: '0.0'
-                  productId: '4000000009012'
-                  contactId: null
-                  subject: UrgentProblem
-                  departmentId: '4000000007073'
-                  dueDate: null
-                  channel: null
-                  description: null
-                  secondaryContacts:
-                  - '4000000009076'
-                  - '4000000009062'
-                  priority: null
-                  classification: null
-                  assigneeId: null
-                  accountId: null
-                  phone: '9876545645'
-                  category: null
-                  email: jacks@zylker.com
-                  status: null
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

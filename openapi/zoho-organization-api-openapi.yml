@@ -251,29 +251,6 @@ paths:
       - external-public
 components:
   responses:
-    orgLogoData:
-      description: orgLogoData template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              logoURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 500
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-            required:
-            - logoURL
-          examples:
-            Valid responses Definitions:
-              value:
-                companyLogoURL: https://desk.zoho.com/api/v1/organizations/3981311/logo?no-cache=ffc59c3ba6585c12fb306f5174948ff6
     organizationListArray:
       description: organizationListArray template definitions
       content:
@@ -569,38 +546,52 @@ components:
                 primaryContact: steve@zylker.com
                 currencyCode: USD
                 isSandboxPortal: 'false'
-  parameters:
-    organizationId:
-      name: organizationId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    fileSize:
-      name: fileSize
-      in: query
-      description: Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.
-        enum:
-        - THUMBNAIL
-        - ACTUAL
-        maxLength: 100
-        minLength: 0
+    orgLogoData:
+      description: orgLogoData template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              logoURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 500
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+            required:
+            - logoURL
+          examples:
+            Valid responses Definitions:
+              value:
+                companyLogoURL: https://desk.zoho.com/api/v1/organizations/3981311/logo?no-cache=ffc59c3ba6585c12fb306f5174948ff6
   requestBodies:
+    updateDefaultOrgJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - id
+          examples:
+            Valid requestBody Definitions:
+              value:
+                id: '3981311'
     updateOrganization:
       content:
         application/json:
@@ -751,28 +742,37 @@ components:
                 primaryContact: kelvin@zylker.com
                 mobile: '9848022338'
                 employeeCount: '10'
-    updateDefaultOrgJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - id
-          examples:
-            Valid requestBody Definitions:
-              value:
-                id: '3981311'
+  parameters:
+    organizationId:
+      name: organizationId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    fileSize:
+      name: fileSize
+      in: query
+      description: Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.
+        enum:
+        - THUMBNAIL
+        - ACTUAL
+        maxLength: 100
+        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

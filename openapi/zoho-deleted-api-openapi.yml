@@ -502,44 +502,6 @@ components:
       schema:
         type: string
         maxLength: 100
-    ParentRecord:
-      name: parentRecord
-      in: path
-      required: true
-      description: The unique identifier of the parent record. Must be a valid numeric record ID.
-      schema:
-        type: string
-        pattern: ^[0-9]+$
-        maxLength: 20
-    RelatedList:
-      name: relatedList
-      in: path
-      required: true
-      description: The name of the related list (module) containing the records to retrieve or modify
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-        maxLength: 100
-    Fields:
-      name: fields
-      in: query
-      required: true
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
-        maxLength: 1000
-    Page:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (starting from 1)
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 10000
-        default: 1
     PerPage:
       name: perPage
       in: query
@@ -551,6 +513,44 @@ components:
         minimum: 1
         maximum: 200
         default: 200
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (starting from 1)
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 10000
+        default: 1
+    ParentRecord:
+      name: parentRecord
+      in: path
+      required: true
+      description: The unique identifier of the parent record. Must be a valid numeric record ID.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        maxLength: 20
+    Fields:
+      name: fields
+      in: query
+      required: true
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
+        maxLength: 1000
+    RelatedList:
+      name: relatedList
+      in: path
+      required: true
+      description: The name of the related list (module) containing the records to retrieve or modify
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 100
     ParentRecordModule:
       name: parentRecordModule
       in: path
@@ -561,15 +561,15 @@ components:
         pattern: ^[A-Za-z_][A-Za-z0-9_]*$
         maxLength: 100
   schemas:
-    OAuthScopeMismatchError:
+    RecordNotFoundError:
       type: object
-      description: Error response when the access token does not have the required OAuth scope for this API call.
+      description: Error response for record not found.
       properties:
         code:
           type: string
           description: Error code.
           enum:
-          - OAUTH_SCOPE_MISMATCH
+          - INVALID_DATA
         message:
           type: string
           description: Error message.
@@ -615,74 +615,15 @@ components:
       - message
       - status
       additionalProperties: false
-    RecordNotFoundError:
+    NotSupportedError:
       type: object
-      description: Error response for record not found.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - INVALID_DATA
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    RequiredParamMissingError:
-      type: object
-      description: Error response for missing required parameter.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - REQUIRED_PARAM_MISSING
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            param_name:
-              type: string
-              description: Name of the missing required parameter.
-              maxLength: 100
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    InvalidModuleError:
-      type: object
-      description: Error response for invalid module name.
+      description: Error response for modules not supported in the API.
       properties:
         code:
           type: string
           description: Error code indicating the type of error.
           enum:
-          - INVALID_MODULE
+          - NOT_SUPPORTED
         message:
           type: string
           description: Detailed error message.
@@ -700,42 +641,6 @@ components:
               type: integer
               format: int32
               description: Index of the path parameter that caused the error (0-based).
-          additionalProperties: true
-      required:
-      - code
-      - message
-      - status
-      additionalProperties: false
-    NoPermissionError:
-      type: object
-      description: Error response for permission denied.
-      properties:
-        code:
-          type: string
-          description: Error code.
-          enum:
-          - NO_PERMISSION
-        message:
-          type: string
-          description: Error message.
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the error.
-          enum:
-          - error
-        details:
-          type: object
-          description: Additional error details.
-          properties:
-            permissions:
-              type: array
-              description: Missing/required permissions for the requested operation
-              maxItems: 100
-              items:
-                type: string
-                description: Permission identifier string.
-                maxLength: 200
           additionalProperties: true
       required:
       - code
@@ -811,15 +716,15 @@ components:
       - status
       - details
       additionalProperties: false
-    InvalidUrlPatternError:
+    OAuthScopeMismatchError:
       type: object
-      description: Error response when the request URL pattern is incorrect.
+      description: Error response when the access token does not have the required OAuth scope for this API call.
       properties:
         code:
           type: string
           description: Error code.
           enum:
-          - INVALID_URL_PATTERN
+          - OAUTH_SCOPE_MISMATCH
         message:
           type: string
           description: Error message.
@@ -832,6 +737,106 @@ components:
         details:
           type: object
           description: Additional error details.
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionError:
+      type: object
+      description: Error response for permission denied.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - NO_PERMISSION
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            permissions:
+              type: array
+              description: Missing/required permissions for the requested operation
+              maxItems: 100
+              items:
+                type: string
+                description: Permission identifier string.
+                maxLength: 200
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    RequiredParamMissingError:
+      type: object
+      description: Error response for missing required parameter.
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - REQUIRED_PARAM_MISSING
+        message:
+          type: string
+          description: Error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            param_name:
+              type: string
+              description: Name of the missing required parameter.
+              maxLength: 100
+          additionalProperties: true
+      required:
+      - code
+      - message
+      - status
+      additionalProperties: false
+    InvalidModuleError:
+      type: object
+      description: Error response for invalid module name.
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error.
+          enum:
+          - INVALID_MODULE
+        message:
+          type: string
+          description: Detailed error message.
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the error.
+          enum:
+          - error
+        details:
+          type: object
+          description: Additional error details.
+          properties:
+            resource_path_index:
+              type: integer
+              format: int32
+              description: Index of the path parameter that caused the error (0-based).
           additionalProperties: true
       required:
       - code
@@ -892,18 +897,18 @@ components:
       - message
       - status
       additionalProperties: false
-    NotSupportedError:
+    InvalidUrlPatternError:
       type: object
-      description: Error response for modules not supported in the API.
+      description: Error response when the request URL pattern is incorrect.
       properties:
         code:
           type: string
-          description: Error code indicating the type of error.
+          description: Error code.
           enum:
-          - NOT_SUPPORTED
+          - INVALID_URL_PATTERN
         message:
           type: string
-          description: Detailed error message.
+          description: Error message.
           maxLength: 500
         status:
           type: string
@@ -913,11 +918,6 @@ components:
         details:
           type: object
           description: Additional error details.
-          properties:
-            resource_path_index:
-              type: integer
-              format: int32
-              description: Index of the path parameter that caused the error (0-based).
           additionalProperties: true
       required:
       - code

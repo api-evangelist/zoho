@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-update-report-config-schema.json",
+  "title": "UpdateReportConfig",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-modeling-apis-api-openapi.yml#/components/schemas/UpdateReportConfig",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "New name for the report."
+    },
+    "description": {
+      "type": "string",
+      "description": "New description for the report."
+    },
+    "reportType": {
+      "type": "string",
+      "enum": [
+        "chart",
+        "pivot",
+        "summary"
+      ],
+      "description": "Updated type of the report."
+    },
+    "axisColumns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AxisColumn"
+      }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FilterColumn"
+      }
+    },
+    "userFilters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FilterColumn"
+      }
+    },
+    "isAxisMerge": {
+      "type": "string",
+      "enum": [
+        "true",
+        "false"
+      ]
+    },
+    "mergeAxisInfo": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "axisColumns"
+  ],
+  "$defs": {
+    "AxisColumn": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Defines the role of the column in the report.",
+          "enum": [
+            "xAxis",
+            "yAxis",
+            "textAxis",
+            "colorAxis",
+            "toolTip",
+            "row",
+            "column",
+            "data",
+            "groupBy",
+            "summarize"
+          ]
+        },
+        "columnName": {
+          "type": "string",
+          "description": "Name of the column used in the report."
+        },
+        "operation": {
+          "type": "string",
+          "description": "Function applied to the column. Options vary by data type."
+        }
+      },
+      "required": [
+        "type",
+        "columnName",
+        "operation"
+      ]
+    },
+    "FilterColumn": {
+      "type": "object",
+      "properties": {
+        "tableName": {
+          "type": "string",
+          "description": "Name of the table the filter column belongs to."
+        },
+        "columnName": {
+          "type": "string",
+          "description": "Name of the column used for filtering."
+        },
+        "operation": {
+          "type": "string",
+          "description": "Function applied to the column in the filter."
+        }
+      },
+      "required": [
+        "tableName",
+        "columnName",
+        "operation"
+      ]
+    }
+  }
+}

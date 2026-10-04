@@ -374,6 +374,21 @@ paths:
       - external-public
 components:
   schemas:
+    Rule:
+      type: object
+      properties:
+        name:
+          type: string
+        order:
+          type: integer
+        criteria:
+          type:
+          - object
+          - 'null'
+        clusters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cluster'
     Engine:
       type: object
       properties:
@@ -381,221 +396,6 @@ components:
           type: string
         id:
           type: string
-    Module:
-      type: object
-      properties:
-        displayLabel:
-          type: string
-        apiName:
-          type: string
-        id:
-          type: string
-    RuleGroupCreateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: ''
-        description:
-          type: string
-          description: ''
-        engine:
-          type: object
-          description: ''
-          properties:
-            id:
-              type: string
-              description: ''
-            systemName:
-              type: string
-              description: ''
-        departmentProperties:
-          type: array
-          description: ''
-          items:
-            type: object
-            description: ''
-            properties:
-              id:
-                type: string
-                description: ''
-              ruleGroupStatus:
-                type: string
-                description: ''
-              ruleGroupOrder:
-                type: string
-                description: ''
-              ruleGroupExecutionType:
-                type: string
-                description: ''
-        module:
-          type: object
-          description: ''
-          properties:
-            id:
-              type: string
-              description: ''
-            apiName:
-              type: string
-              description: ''
-          required:
-          - apiName
-          - id
-        events:
-          type: array
-          description: ''
-          items:
-            type: object
-            description: ''
-            properties:
-              sysName:
-                type: string
-                description: ''
-              userCriteria:
-                type: object
-                description: ''
-                properties:
-                  moduleMapping:
-                    type: object
-                    description: ''
-                    properties:
-                      primaryModule:
-                        type: object
-                        description: ''
-                        properties:
-                          apiName:
-                            type: string
-                            description: ''
-                  criteria:
-                    type: object
-                    description: ''
-        rules:
-          type: array
-          description: ''
-          items:
-            type: object
-            description: ''
-            properties:
-              name:
-                type: string
-                description: ''
-              order:
-                type: integer
-                description: ''
-              criteria:
-                type: object
-                description: ''
-              clusters:
-                type: array
-                description: ''
-                items:
-                  type: object
-                  description: ''
-                  properties:
-                    id:
-                      type: string
-                      description: ''
-                    name:
-                      type: string
-                      description: ''
-                    type:
-                      type: string
-                      description: ''
-                    nodes:
-                      type: array
-                      description: ''
-                      items:
-                        type: object
-                        description: ''
-                        properties:
-                          id:
-                            type: string
-                            description: ''
-                          name:
-                            type: string
-                            description: ''
-                          executionType:
-                            type: string
-                            description: ''
-                          type:
-                            type: string
-                            description: ''
-                          propertyType:
-                            type: string
-                            description: ''
-                          propertyId:
-                            type: string
-                            description: ''
-                          childNodes:
-                            type: array
-                            description: ''
-                            items:
-                              type: object
-                              description: ''
-                              properties:
-                                id:
-                                  type: string
-                                  description: ''
-                                name:
-                                  type: string
-                                  description: ''
-                                executionType:
-                                  type: string
-                                  description: ''
-                                type:
-                                  type: string
-                                  description: ''
-                                propertyType:
-                                  type: string
-                                  description: ''
-                                entityInfo:
-                                  type: object
-                                  description: ''
-                                childNodes:
-                                  type: array
-                                  description: ''
-                                  items:
-                                    $ref: '#/components/schemas/RuleGroupCreateRequest/properties/rules/items/properties/clusters/items/properties/nodes/items'
-      required:
-      - departmentProperties
-      - engine
-      - name
-      - rules
-    RuleGroup:
-      type: object
-      properties:
-        modifiedTime:
-          type: string
-          format: date-time
-        departmentProperties:
-          type: array
-          items:
-            $ref: '#/components/schemas/DepartmentProperty'
-        createdBy:
-          $ref: '#/components/schemas/Agent'
-        engine:
-          $ref: '#/components/schemas/Engine'
-        module:
-          $ref: '#/components/schemas/Module'
-        name:
-          type: string
-        createdTime:
-          type: string
-          format: date-time
-        description:
-          type: string
-        modifiedBy:
-          $ref: '#/components/schemas/Agent'
-        id:
-          type: string
-        events:
-          type: array
-          items:
-            $ref: '#/components/schemas/RuleGroupEvent'
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/Rule'
     RuleGroupEvent:
       type: object
       properties:
@@ -611,175 +411,26 @@ components:
           type:
           - object
           - 'null'
-    RuleGroupResponse:
+    DepartmentProperty:
       type: object
-      description: Rulegroup Response template
       properties:
+        ruleGroupStatus:
+          type: string
+        ruleGroupOrder:
+          type: string
         id:
+          type: string
+        ruleGroupExecutionType:
+          type: string
+    Agent:
+      type: object
+      properties:
+        photoURL:
           type: string
         name:
           type: string
-        description:
+        id:
           type: string
-        createdTime:
-          type: string
-          format: date-time
-        modifiedTime:
-          type: string
-          format: date-time
-        createdBy:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            photoURL:
-              type:
-              - string
-              - 'null'
-        modifiedBy:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            photoURL:
-              type:
-              - string
-              - 'null'
-        engine:
-          type: object
-          properties:
-            id:
-              type: string
-            systemName:
-              type: string
-        module:
-          type: object
-          properties:
-            id:
-              type: string
-            apiName:
-              type: string
-            displayLabel:
-              type: string
-        events:
-          type: array
-          items:
-            type: object
-            properties:
-              sysName:
-                type: string
-              displayLabel:
-                type: string
-              userCriteria:
-                type: object
-                properties:
-                  moduleMapping:
-                    type: object
-                    properties:
-                      primaryModule:
-                        type: object
-                        properties:
-                          apiName:
-                            type: string
-                  criteria:
-                    $ref: ./Criteria.json#/components/schemas/criteriaFieldsObject
-        departmentProperties:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              ruleGroupStatus:
-                type: string
-              ruleGroupOrder:
-                type: string
-              ruleGroupExecutionType:
-                type: string
-            required:
-            - id
-            - ruleGroupExecutionType
-            - ruleGroupOrder
-            - ruleGroupStatus
-        rules:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              order:
-                type: integer
-              criteria:
-                type: object
-              cluster:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    type:
-                      type: string
-                    name:
-                      type: string
-                    source:
-                      type: string
-                    createdBy:
-                      type: string
-                    createdTime:
-                      type: string
-                      format: date-time
-                    modifiedBy:
-                      type: string
-                    modifiedTime:
-                      type: string
-                      format: date-time
-                    nodes:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          id:
-                            type: string
-                          name:
-                            type: string
-                          executionType:
-                            type: string
-                          type:
-                            type: string
-                          propertyType:
-                            type: string
-                          propertyId:
-                            type: string
-                          entityInfo:
-                            type: object
-                            properties:
-                              actionMappingId:
-                                type: string
-                              actionId:
-                                type: string
-                              actionType:
-                                type: string
-                              actionParamMappings:
-                                type: object
-                          childNodes:
-                            type: array
-                            items:
-                              $ref: '#/components/schemas/RuleGroupResponse/properties/rules/items/properties/cluster/items/properties/nodes/items'
-    GetAllRuleGroupsResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/RuleGroup'
     RuleGroupUpdateRequest:
       type: object
       properties:
@@ -969,19 +620,355 @@ components:
       - id
       - module
       - rules
-    Cluster:
+    RuleGroupResponse:
       type: object
+      description: Rulegroup Response template
       properties:
         id:
           type: string
         name:
           type: string
-        type:
+        description:
           type: string
-        nodes:
+        createdTime:
+          type: string
+          format: date-time
+        modifiedTime:
+          type: string
+          format: date-time
+        createdBy:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            photoURL:
+              type:
+              - string
+              - 'null'
+        modifiedBy:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            photoURL:
+              type:
+              - string
+              - 'null'
+        engine:
+          type: object
+          properties:
+            id:
+              type: string
+            systemName:
+              type: string
+        module:
+          type: object
+          properties:
+            id:
+              type: string
+            apiName:
+              type: string
+            displayLabel:
+              type: string
+        events:
           type: array
           items:
-            $ref: '#/components/schemas/Node'
+            type: object
+            properties:
+              sysName:
+                type: string
+              displayLabel:
+                type: string
+              userCriteria:
+                type: object
+                properties:
+                  moduleMapping:
+                    type: object
+                    properties:
+                      primaryModule:
+                        type: object
+                        properties:
+                          apiName:
+                            type: string
+                  criteria:
+                    $ref: ./Criteria.json#/components/schemas/criteriaFieldsObject
+        departmentProperties:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              ruleGroupStatus:
+                type: string
+              ruleGroupOrder:
+                type: string
+              ruleGroupExecutionType:
+                type: string
+            required:
+            - id
+            - ruleGroupExecutionType
+            - ruleGroupOrder
+            - ruleGroupStatus
+        rules:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              order:
+                type: integer
+              criteria:
+                type: object
+              cluster:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    name:
+                      type: string
+                    source:
+                      type: string
+                    createdBy:
+                      type: string
+                    createdTime:
+                      type: string
+                      format: date-time
+                    modifiedBy:
+                      type: string
+                    modifiedTime:
+                      type: string
+                      format: date-time
+                    nodes:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          executionType:
+                            type: string
+                          type:
+                            type: string
+                          propertyType:
+                            type: string
+                          propertyId:
+                            type: string
+                          entityInfo:
+                            type: object
+                            properties:
+                              actionMappingId:
+                                type: string
+                              actionId:
+                                type: string
+                              actionType:
+                                type: string
+                              actionParamMappings:
+                                type: object
+                          childNodes:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/RuleGroupResponse/properties/rules/items/properties/cluster/items/properties/nodes/items'
+    RuleGroupCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ''
+        description:
+          type: string
+          description: ''
+        engine:
+          type: object
+          description: ''
+          properties:
+            id:
+              type: string
+              description: ''
+            systemName:
+              type: string
+              description: ''
+        departmentProperties:
+          type: array
+          description: ''
+          items:
+            type: object
+            description: ''
+            properties:
+              id:
+                type: string
+                description: ''
+              ruleGroupStatus:
+                type: string
+                description: ''
+              ruleGroupOrder:
+                type: string
+                description: ''
+              ruleGroupExecutionType:
+                type: string
+                description: ''
+        module:
+          type: object
+          description: ''
+          properties:
+            id:
+              type: string
+              description: ''
+            apiName:
+              type: string
+              description: ''
+          required:
+          - apiName
+          - id
+        events:
+          type: array
+          description: ''
+          items:
+            type: object
+            description: ''
+            properties:
+              sysName:
+                type: string
+                description: ''
+              userCriteria:
+                type: object
+                description: ''
+                properties:
+                  moduleMapping:
+                    type: object
+                    description: ''
+                    properties:
+                      primaryModule:
+                        type: object
+                        description: ''
+                        properties:
+                          apiName:
+                            type: string
+                            description: ''
+                  criteria:
+                    type: object
+                    description: ''
+        rules:
+          type: array
+          description: ''
+          items:
+            type: object
+            description: ''
+            properties:
+              name:
+                type: string
+                description: ''
+              order:
+                type: integer
+                description: ''
+              criteria:
+                type: object
+                description: ''
+              clusters:
+                type: array
+                description: ''
+                items:
+                  type: object
+                  description: ''
+                  properties:
+                    id:
+                      type: string
+                      description: ''
+                    name:
+                      type: string
+                      description: ''
+                    type:
+                      type: string
+                      description: ''
+                    nodes:
+                      type: array
+                      description: ''
+                      items:
+                        type: object
+                        description: ''
+                        properties:
+                          id:
+                            type: string
+                            description: ''
+                          name:
+                            type: string
+                            description: ''
+                          executionType:
+                            type: string
+                            description: ''
+                          type:
+                            type: string
+                            description: ''
+                          propertyType:
+                            type: string
+                            description: ''
+                          propertyId:
+                            type: string
+                            description: ''
+                          childNodes:
+                            type: array
+                            description: ''
+                            items:
+                              type: object
+                              description: ''
+                              properties:
+                                id:
+                                  type: string
+                                  description: ''
+                                name:
+                                  type: string
+                                  description: ''
+                                executionType:
+                                  type: string
+                                  description: ''
+                                type:
+                                  type: string
+                                  description: ''
+                                propertyType:
+                                  type: string
+                                  description: ''
+                                entityInfo:
+                                  type: object
+                                  description: ''
+                                childNodes:
+                                  type: array
+                                  description: ''
+                                  items:
+                                    $ref: '#/components/schemas/RuleGroupCreateRequest/properties/rules/items/properties/clusters/items/properties/nodes/items'
+      required:
+      - departmentProperties
+      - engine
+      - name
+      - rules
+    GetAllRuleGroupsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleGroup'
+    Module:
+      type: object
+      properties:
+        displayLabel:
+          type: string
+        apiName:
+          type: string
+        id:
+          type: string
     Node:
       type: object
       properties:
@@ -1005,41 +992,54 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Node'
-    DepartmentProperty:
+    Cluster:
       type: object
       properties:
-        ruleGroupStatus:
-          type: string
-        ruleGroupOrder:
-          type: string
         id:
           type: string
-        ruleGroupExecutionType:
-          type: string
-    Rule:
-      type: object
-      properties:
         name:
           type: string
-        order:
-          type: integer
-        criteria:
-          type:
-          - object
-          - 'null'
-        clusters:
+        type:
+          type: string
+        nodes:
           type: array
           items:
-            $ref: '#/components/schemas/Cluster'
-    Agent:
+            $ref: '#/components/schemas/Node'
+    RuleGroup:
       type: object
       properties:
-        photoURL:
+        modifiedTime:
           type: string
+          format: date-time
+        departmentProperties:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentProperty'
+        createdBy:
+          $ref: '#/components/schemas/Agent'
+        engine:
+          $ref: '#/components/schemas/Engine'
+        module:
+          $ref: '#/components/schemas/Module'
         name:
           type: string
+        createdTime:
+          type: string
+          format: date-time
+        description:
+          type: string
+        modifiedBy:
+          $ref: '#/components/schemas/Agent'
         id:
           type: string
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleGroupEvent'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

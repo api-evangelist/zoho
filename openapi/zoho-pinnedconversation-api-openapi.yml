@@ -90,6 +90,106 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    pinAConversationRequest:
+      description: pinConversationRequest Payload template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isPublic:
+                type:
+                - boolean
+                - 'null'
+              entityId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - COMMENTS
+                - THREADS
+                maxLength: 100
+                minLength: 0
+            required:
+            - entityId
+            - type
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isPublic: false
+                entityId: '1235000000013468'
+                type: comments
+    unPinConversationRequest:
+      description: unPinConversationRequest Payload template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                $ref: ./PinnedConversation.json#/components/schemas/long_array
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - 1235000000013295
+                - 1235000000013345
+  schemas:
+    unPinConversationData:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        success:
+          type:
+          - boolean
+          - 'null'
+        errors:
+          type:
+          - 'null'
+          - string
+      required:
+      - errors
+      - id
+      - success
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
     getPinnedConversationsResponse:
       description: getPinnedConversationsResponse template definitions
@@ -462,6 +562,22 @@ components:
                     fromEmailAddress: '"kamelesh sn"<kamelsh.sn@zylker.com>'
                     actions: []
                     status: SUCCESS
+    unPinAConversationResponse:
+      description: getUnPinnedConversationsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              results:
+                type:
+                - 'null'
+                - array
+                items:
+                  $ref: '#/components/schemas/unPinConversationData'
     pinAConversationResponse:
       description: pinAConversationResponse template definitions
       content:
@@ -791,122 +907,6 @@ components:
                     type: AGENT
                     email: kamalesh.sn@zylker.com
                     zuid: '76260187'
-    unPinAConversationResponse:
-      description: getUnPinnedConversationsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              results:
-                type:
-                - 'null'
-                - array
-                items:
-                  $ref: '#/components/schemas/unPinConversationData'
-  requestBodies:
-    pinAConversationRequest:
-      description: pinConversationRequest Payload template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isPublic:
-                type:
-                - boolean
-                - 'null'
-              entityId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - COMMENTS
-                - THREADS
-                maxLength: 100
-                minLength: 0
-            required:
-            - entityId
-            - type
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isPublic: false
-                entityId: '1235000000013468'
-                type: comments
-    unPinConversationRequest:
-      description: unPinConversationRequest Payload template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                $ref: ./PinnedConversation.json#/components/schemas/long_array
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - 1235000000013295
-                - 1235000000013345
-  parameters:
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  schemas:
-    unPinConversationData:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        success:
-          type:
-          - boolean
-          - 'null'
-        errors:
-          type:
-          - 'null'
-          - string
-      required:
-      - errors
-      - id
-      - success
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

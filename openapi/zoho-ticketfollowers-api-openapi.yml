@@ -82,77 +82,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    addFollowers:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              followerIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-            required:
-            - followerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                followerIds:
-                - 5000000013292
-    removeFollowers:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              followerIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-            required:
-            - followerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                followerIds:
-                - 5000000013292
-  parameters:
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   responses:
     getFollowersResponse:
       description: getFollowersResponse template definitions
@@ -222,6 +151,77 @@ components:
                   following: contact
                   id: '5000000012902'
                   email: deskagent@zylker.com
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  requestBodies:
+    removeFollowers:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              followerIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+            required:
+            - followerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                followerIds:
+                - 5000000013292
+    addFollowers:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              followerIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+            required:
+            - followerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                followerIds:
+                - 5000000013292
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

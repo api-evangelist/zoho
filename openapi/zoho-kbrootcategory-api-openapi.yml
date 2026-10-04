@@ -332,6 +332,41 @@ paths:
       - external-public
 components:
   schemas:
+    childArrayOfTree:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTreeResponse'
+    addReviewOwnerArray:
+      type:
+      - 'null'
+      - array
+      items:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    rootTreeTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/rootTreeTranslationResponse'
+    childTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/childTranslationResponse'
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commonCategoryResponse'
     childTreeResponse:
       type:
       - 'null'
@@ -518,7 +553,7 @@ components:
       - status
       - translations
       - visibility
-    feedbackPreferenceResponseObj:
+    feedbackPreferenceObj:
       type:
       - 'null'
       - object
@@ -530,102 +565,30 @@ components:
           - 'null'
           - integer
           format: int64
+          description: ID of the department in which the tickets must be created
           pattern: ([0-9]+)
-        assignee:
-          $ref: '#/components/schemas/assigneeObj'
+        assigneeId:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          description: ID of the user to whom the tickets must be assigned. If you do not pass a value for this key, the ticket remains unassigned.
+          pattern: ([0-9]+)
         status:
           type:
           - string
           - 'null'
+          description: 'Activation status of auto-conversion for the category. Values allowed are: ENABLED and DISABLED'
           enum:
           - ENABLED
           - DISABLED
           maxLength: 100
           minLength: 0
       required:
-      - assignee
+      - assigneeId
       - departmentId
       - status
-    addReviewOwnerArray:
-      type:
-      - 'null'
-      - array
-      items:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    assigneeObj:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        photoURL:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 50
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ACTIVE
-          - DISABLED
-          - LICENSE_DOWNGRADED
-          - DELETED
-          - ANONYMIZED
-          - CLOSED
-          maxLength: 100
-          minLength: 0
-        zuid:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - photoURL
-      - status
-      - zuid
-    childTranslationResponse:
-      additionalProperties: false
-      allOf:
-      - $ref: '#/components/schemas/rootTreeTranslationResponse'
-      - type:
-        - 'null'
-        - object
-        properties:
-          description:
-            type:
-            - string
-            - 'null'
-            maxLength: 100
-            minLength: 0
-            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
-        required:
-        - description
     reviewOwners:
       type:
       - 'null'
@@ -664,24 +627,23 @@ components:
       - id
       - name
       - photoURL
-    rootTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
-    reviewOwnersArray:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/reviewOwners'
-    childTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTranslationResponse'
+    childTranslationResponse:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/rootTreeTranslationResponse'
+      - type:
+        - 'null'
+        - object
+        properties:
+          description:
+            type:
+            - string
+            - 'null'
+            maxLength: 100
+            minLength: 0
+            pattern: '[0-9a-zA-Z_\-\.\$@\?\,\:\''\/\!\P{InBasicLatin}\s]*'
+        required:
+        - description
     commonCategoryResponse:
       type:
       - 'null'
@@ -908,13 +870,25 @@ components:
       - translations
       - visibility
       - workspaceId
+    reviewOwnersArray:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/reviewOwners'
     addRootTranslationJsonArray:
       type:
       - 'null'
       - array
       items:
         $ref: ./KBRootCategoryTranslation.json#/components/schemas/addRootTranslationJson
-    feedbackPreferenceObj:
+    rootTranslationResponseJsonArr:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./KBRootCategoryTranslation.json#/components/schemas/rootTranslationResponse
+    feedbackPreferenceResponseObj:
       type:
       - 'null'
       - object
@@ -926,30 +900,74 @@ components:
           - 'null'
           - integer
           format: int64
-          description: ID of the department in which the tickets must be created
           pattern: ([0-9]+)
-        assigneeId:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          description: ID of the user to whom the tickets must be assigned. If you do not pass a value for this key, the ticket remains unassigned.
-          pattern: ([0-9]+)
+        assignee:
+          $ref: '#/components/schemas/assigneeObj'
         status:
           type:
           - string
           - 'null'
-          description: 'Activation status of auto-conversion for the category. Values allowed are: ENABLED and DISABLED'
           enum:
           - ENABLED
           - DISABLED
           maxLength: 100
           minLength: 0
       required:
-      - assigneeId
+      - assignee
       - departmentId
       - status
+    assigneeObj:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        photoURL:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 50
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ACTIVE
+          - DISABLED
+          - LICENSE_DOWNGRADED
+          - DELETED
+          - ANONYMIZED
+          - CLOSED
+          maxLength: 100
+          minLength: 0
+        zuid:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - photoURL
+      - status
+      - zuid
     rootTreeTranslationResponse:
       type:
       - 'null'
@@ -1050,407 +1068,7 @@ components:
       - locale
       - name
       - permalink
-    rootTreeTranslationResponseJsonArr:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/rootTreeTranslationResponse'
-    childArrayOfTree:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/childTreeResponse'
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/commonCategoryResponse'
-  requestBodies:
-    removeModerators_addModeratorJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              moderatorIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - moderatorIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                moderatorIds:
-                - '5000000015867'
-    addModeratorJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              moderatorIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - moderatorIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                moderatorIds:
-                - '5000000015867'
-    addPermalink_addPermalinkJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isOldPermalinkNeeded:
-                type:
-                - boolean
-                - 'null'
-                description: The variable that defines if permalink needs to be added to redirect list. By default, it is true
-              permalink:
-                type:
-                - string
-                - 'null'
-                description: The permalink of Solution
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
-            required:
-            - isOldPermalinkNeeded
-            - permalink
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isOldPermalinkNeeded: true
-                permalink: new-permalink
-    removePermalink_removePermalinkJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              permalink:
-                type:
-                - string
-                - 'null'
-                description: The permalink of Solution
-                maxLength: 100
-                minLength: 0
-                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
-            required:
-            - permalink
-          examples:
-            Valid requestBody Definitions:
-              value:
-                permalink: permalink-2
-    addReviewOwners_addReviewOwnerJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reviewOwnerIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - reviewOwnerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reviewOwnerIds:
-                - '5000000015867'
-    createCategoryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              articleViewType:
-                type:
-                - string
-                - 'null'
-                description: 'View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.'
-                enum:
-                - LISTVIEW
-                - OVERVIEW
-                maxLength: 100
-                minLength: 0
-              visibility:
-                type:
-                - string
-                - 'null'
-                description: 'Visibility setting of the category. Values allowed are: AGENTS, GROUP_USERS, ALL_USERS, NONE, and PRIVATE_IP.'
-                enum:
-                - ALL_USERS
-                - AGENTS
-                - GROUP_USERS
-                - PRIVATE_IP
-                - NONE
-                maxLength: 100
-                minLength: 0
-              description:
-                type:
-                - string
-                - 'null'
-                description: A brief description of the category
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              feedbackTicketConversionPreference:
-                $ref: '#/components/schemas/feedbackPreferenceObj'
-              associatedDepartmentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: true
-              isReviewEnabled:
-                type:
-                - boolean
-                - 'null'
-                description: Key that specifies whether the category must be reviewed or not
-              translations:
-                $ref: '#/components/schemas/addRootTranslationJsonArray'
-              moderationType:
-                type:
-                - string
-                - 'null'
-                description: 'Type of moderation applied to the category. Values allowed are: @NONE@, @ALL_ACTION@, @FIRST_ACTION@'
-                enum:
-                - FIRST_ACTION
-                - ALL_ACTION
-                - NONE
-                maxLength: 100
-                minLength: 0
-              groupIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              name:
-                type:
-                - string
-                - 'null'
-                description: Name of the category
-                maxLength: 100
-                minLength: 0
-              ipAddresses:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                uniqueItems: false
-              primaryDepartmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the department to which the category belongs
-                pattern: ([0-9]+)
-              logoId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the logo to set for the category
-                pattern: ([0-9]+)
-              status:
-                type:
-                - string
-                - 'null'
-                description: Activation status of the category
-                enum:
-                - SHOW_IN_HELPCENTER
-                - HIDE_IN_HELPCENTER
-                maxLength: 100
-                minLength: 0
-            required:
-            - articleViewType
-            - description
-            - groupIds
-            - ipAddresses
-            - isReviewEnabled
-            - logoId
-            - name
-            - primaryDepartmentId
-            - status
-            - translations
-            - visibility
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isReviewEnabled: false
-                articleViewType: LISTVIEW
-                visibility: ALL_USERS
-                moderationType: ALL_ACTION
-                translations:
-                - name: Zoho Desk
-                  description: A helpdesk software
-                  permalink: zoho-desk
-                  locale: en
-                name: Zoho Desk
-                primaryDepartmentId: '5000000063894'
-                logoId: '25'
-                feedbackTicketConversionPreference:
-                  departmentId: '5000000063895'
-                  assigneeId: '5000000000059'
-                  status: ENABLED
-                status: SHOW_IN_HELPCENTER
-                associatedDepartmentIds:
-                - '5000000063895'
-    addReviewOwnerJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              reviewOwnerIds:
-                $ref: '#/components/schemas/addReviewOwnerArray'
-            required:
-            - reviewOwnerIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                reviewOwnerIds:
-                - '5000000015867'
   responses:
-    rootCategoryResponse:
-      description: rootCategoryResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonCategoryResponse'
-            - type:
-              - 'null'
-              - object
-              properties:
-                ipAddresses:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
-                  uniqueItems: false
-              required:
-              - ipAddresses
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1577978811000
-                helpcenterId: '5000000015871'
-                isReviewEnabled: true
-                isTrashed: false
-                translations:
-                - modifiedTime: 1577978682000
-                  createdBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  name: Root category name
-                  description: description of root
-                  createdTime: 1577978682000
-                  modifiedBy:
-                    photoURL: null
-                    name: Zylker
-                    id: '5000000015867'
-                    status: ACTIVE
-                    zuid: '343224'
-                  id: '5000000336004'
-                  permalink: root-category-name
-                  locale: en
-                  categoryId: '5000000319037'
-                moderationType: ALL_ACTION
-                createdTime: 1577707830000
-                modifiedBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                primaryDepartmentId: '5000000063894'
-                id: '5000000319037'
-                order: '3'
-                workspaceId: asadasda
-                isFollowing: true
-                visibility: ALL_USERS
-                articleViewType: LISTVIEW
-                canCurrentUserModerate: true
-                groups: []
-                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
-                feedbackTicketConversionPreference:
-                  departmentId: '5000000063895'
-                  assignee:
-                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
-                    name: Charlie Marlie
-                    id: '5000000000059'
-                    status: ACTIVE
-                    zuid: '15224545'
-                  status: ENABLED
-                associatedDepartmentIds:
-                - '5000000063895'
-                encryptedWorkspaceId: uhahsdhada
-                createdBy:
-                  photoURL: null
-                  name: Zylker
-                  id: '5000000015867'
-                  status: ACTIVE
-                  zuid: '343224'
-                name: Root category name
-                ipAddresses: []
-                status: SHOW_IN_HELPCENTER
     reviewOwnersDataJson:
       description: reviewOwnersDataJson template definitions
       content:
@@ -1556,6 +1174,99 @@ components:
                     zuid: '343224'
                   name: Zoho Desk
                   status: SHOW_IN_HELPCENTER
+    rootCategoryResponse:
+      description: rootCategoryResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonCategoryResponse'
+            - type:
+              - 'null'
+              - object
+              properties:
+                ipAddresses:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                  uniqueItems: false
+              required:
+              - ipAddresses
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1577978811000
+                helpcenterId: '5000000015871'
+                isReviewEnabled: true
+                isTrashed: false
+                translations:
+                - modifiedTime: 1577978682000
+                  createdBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  name: Root category name
+                  description: description of root
+                  createdTime: 1577978682000
+                  modifiedBy:
+                    photoURL: null
+                    name: Zylker
+                    id: '5000000015867'
+                    status: ACTIVE
+                    zuid: '343224'
+                  id: '5000000336004'
+                  permalink: root-category-name
+                  locale: en
+                  categoryId: '5000000319037'
+                moderationType: ALL_ACTION
+                createdTime: 1577707830000
+                modifiedBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
+                primaryDepartmentId: '5000000063894'
+                id: '5000000319037'
+                order: '3'
+                workspaceId: asadasda
+                isFollowing: true
+                visibility: ALL_USERS
+                articleViewType: LISTVIEW
+                canCurrentUserModerate: true
+                groups: []
+                logoUrl: https://desk.zoho.com/support/App/build/fonts/certificate.svg
+                feedbackTicketConversionPreference:
+                  departmentId: '5000000063895'
+                  assignee:
+                    photoURL: https://desk.zoho.com/api/v1/agents/5000000000059/photo?orgId=15114553
+                    name: Charlie Marlie
+                    id: '5000000000059'
+                    status: ACTIVE
+                    zuid: '15224545'
+                  status: ENABLED
+                associatedDepartmentIds:
+                - '5000000063895'
+                encryptedWorkspaceId: uhahsdhada
+                createdBy:
+                  photoURL: null
+                  name: Zylker
+                  id: '5000000015867'
+                  status: ACTIVE
+                  zuid: '343224'
+                name: Root category name
+                ipAddresses: []
+                status: SHOW_IN_HELPCENTER
     rootCategoryTreeResponse:
       description: rootCategoryTreeResponse template definitions
       content:
@@ -1823,6 +1534,295 @@ components:
                 id: '5000000066427'
                 status: SHOW_IN_HELPCENTER
                 order: '1'
+  requestBodies:
+    createCategoryJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              articleViewType:
+                type:
+                - string
+                - 'null'
+                description: 'View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.'
+                enum:
+                - LISTVIEW
+                - OVERVIEW
+                maxLength: 100
+                minLength: 0
+              visibility:
+                type:
+                - string
+                - 'null'
+                description: 'Visibility setting of the category. Values allowed are: AGENTS, GROUP_USERS, ALL_USERS, NONE, and PRIVATE_IP.'
+                enum:
+                - ALL_USERS
+                - AGENTS
+                - GROUP_USERS
+                - PRIVATE_IP
+                - NONE
+                maxLength: 100
+                minLength: 0
+              description:
+                type:
+                - string
+                - 'null'
+                description: A brief description of the category
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              feedbackTicketConversionPreference:
+                $ref: '#/components/schemas/feedbackPreferenceObj'
+              associatedDepartmentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: true
+              isReviewEnabled:
+                type:
+                - boolean
+                - 'null'
+                description: Key that specifies whether the category must be reviewed or not
+              translations:
+                $ref: '#/components/schemas/addRootTranslationJsonArray'
+              moderationType:
+                type:
+                - string
+                - 'null'
+                description: 'Type of moderation applied to the category. Values allowed are: @NONE@, @ALL_ACTION@, @FIRST_ACTION@'
+                enum:
+                - FIRST_ACTION
+                - ALL_ACTION
+                - NONE
+                maxLength: 100
+                minLength: 0
+              groupIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              name:
+                type:
+                - string
+                - 'null'
+                description: Name of the category
+                maxLength: 100
+                minLength: 0
+              ipAddresses:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\*)(/(?:[012]?[0-9]|3[012]))?)|\*)$
+                uniqueItems: false
+              primaryDepartmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the department to which the category belongs
+                pattern: ([0-9]+)
+              logoId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the logo to set for the category
+                pattern: ([0-9]+)
+              status:
+                type:
+                - string
+                - 'null'
+                description: Activation status of the category
+                enum:
+                - SHOW_IN_HELPCENTER
+                - HIDE_IN_HELPCENTER
+                maxLength: 100
+                minLength: 0
+            required:
+            - articleViewType
+            - description
+            - groupIds
+            - ipAddresses
+            - isReviewEnabled
+            - logoId
+            - name
+            - primaryDepartmentId
+            - status
+            - translations
+            - visibility
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isReviewEnabled: false
+                articleViewType: LISTVIEW
+                visibility: ALL_USERS
+                moderationType: ALL_ACTION
+                translations:
+                - name: Zoho Desk
+                  description: A helpdesk software
+                  permalink: zoho-desk
+                  locale: en
+                name: Zoho Desk
+                primaryDepartmentId: '5000000063894'
+                logoId: '25'
+                feedbackTicketConversionPreference:
+                  departmentId: '5000000063895'
+                  assigneeId: '5000000000059'
+                  status: ENABLED
+                status: SHOW_IN_HELPCENTER
+                associatedDepartmentIds:
+                - '5000000063895'
+    addPermalink_addPermalinkJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isOldPermalinkNeeded:
+                type:
+                - boolean
+                - 'null'
+                description: The variable that defines if permalink needs to be added to redirect list. By default, it is true
+              permalink:
+                type:
+                - string
+                - 'null'
+                description: The permalink of Solution
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
+            required:
+            - isOldPermalinkNeeded
+            - permalink
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isOldPermalinkNeeded: true
+                permalink: new-permalink
+    addReviewOwnerJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              reviewOwnerIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - reviewOwnerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                reviewOwnerIds:
+                - '5000000015867'
+    addReviewOwners_addReviewOwnerJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              reviewOwnerIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - reviewOwnerIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                reviewOwnerIds:
+                - '5000000015867'
+    removePermalink_removePermalinkJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              permalink:
+                type:
+                - string
+                - 'null'
+                description: The permalink of Solution
+                maxLength: 100
+                minLength: 0
+                pattern: '[a-zA-Z0-9%\-_\P{InBasicLatin}]+'
+            required:
+            - permalink
+          examples:
+            Valid requestBody Definitions:
+              value:
+                permalink: permalink-2
+    addModeratorJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              moderatorIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - moderatorIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                moderatorIds:
+                - '5000000015867'
+    removeModerators_addModeratorJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              moderatorIds:
+                $ref: '#/components/schemas/addReviewOwnerArray'
+            required:
+            - moderatorIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                moderatorIds:
+                - '5000000015867'
   parameters:
     locale:
       name: locale

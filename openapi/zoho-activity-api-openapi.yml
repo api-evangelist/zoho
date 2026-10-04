@@ -108,11 +108,35 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    emptyActivitiesSpamResponse:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the department to which the activities belong
+                pattern: ([0-9]+)
+            required:
+            - departmentId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                departmentId: '4000000025121'
   parameters:
-    isSpam:
-      name: isSpam
+    isCompleted:
+      name: isCompleted
       in: query
-      description: Key that denotes whether to fetch spam activities or not
+      description: Key that denotes whether the activity is completed or not
       required: false
       style: form
       explode: true
@@ -120,7 +144,7 @@ components:
         type:
         - boolean
         - 'null'
-        description: Key that denotes whether to fetch spam activities or not
+        description: Key that denotes whether the activity is completed or not
     limit:
       name: limit
       in: query
@@ -138,6 +162,18 @@ components:
         maximum: 99
         minimum: 1
         pattern: ([0-9]+)
+    isSpam:
+      name: isSpam
+      in: query
+      description: Key that denotes whether to fetch spam activities or not
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes whether to fetch spam activities or not
     from:
       name: from
       in: query
@@ -153,18 +189,6 @@ components:
         format: int32
         description: Index number, starting from which the activities must be fetched
         pattern: ([0-9]+)
-    isCompleted:
-      name: isCompleted
-      in: query
-      description: Key that denotes whether the activity is completed or not
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes whether the activity is completed or not
   responses:
     getActivitiesByRequestIdResponse:
       description: getActivitiesByRequestIdResponse template definitions
@@ -599,30 +623,6 @@ components:
                   ticketId: '5000000016294'
                   direction: inbound
                   status: Not Started
-  requestBodies:
-    emptyActivitiesSpamResponse:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the department to which the activities belong
-                pattern: ([0-9]+)
-            required:
-            - departmentId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                departmentId: '4000000025121'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

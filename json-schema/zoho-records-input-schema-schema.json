@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-records-input-schema-schema.json",
+  "title": "RecordsInputSchema",
+  "description": "Input schema for create, update, or upsert record requests.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-actions-api-openapi.yml#/components/schemas/RecordsInputSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "Request body containing one or more records to be created or updated.",
+      "items": {
+        "type": "object",
+        "description": "Payload representing a single record to be created or updated.",
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Unique identifier of the record. Required when modifying an existing record."
+          },
+          "$append_values": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Controls whether values in a multi-select picklist field should be appended or replaced during an update operation."
+          }
+        }
+      }
+    },
+    "apply_feature_execution": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "List of features that should be executed on demand during record processing.",
+      "items": {
+        "type": "object",
+        "description": "Feature execution configuration object.",
+        "additionalProperties": true
+      }
+    },
+    "skip_feature_execution": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "List of features that should be skipped during record processing.",
+      "items": {
+        "type": "object",
+        "description": "Feature skip configuration object.",
+        "additionalProperties": true
+      }
+    },
+    "trigger": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "List of automation triggers to invoke during the record operation.",
+      "items": {
+        "type": "string",
+        "description": "Type of automation trigger to be executed.",
+        "enum": [
+          "approval",
+          "workflow",
+          "blueprint",
+          "pathfinder",
+          "orchestration"
+        ]
+      }
+    }
+  }
+}

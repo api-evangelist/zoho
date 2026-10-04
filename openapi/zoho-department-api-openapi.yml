@@ -481,7 +481,399 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    updateDepartmentJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isAssignToTeamEnabled:
+                type:
+                - boolean
+                - 'null'
+                description: Key that denotes if the assign to team functionality is enabled or not
+              nameInCustomerPortal:
+                type:
+                - string
+                - 'null'
+                description: Display name of the department in the help center
+                maxLength: 200
+                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isAssignToTeamEnabled: true
+                nameInCustomerPortal: zPhone Support
+    dissociateAgents_agentIdsArray:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              agentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - agentIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                agentIds:
+                - '1892000000056007'
+    disableTransfer:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              emailNewDepartment:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              agentNewDepartment:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - agentNewDepartment
+          examples:
+            Valid requestBody Definitions:
+              value:
+                emailNewDepartment: '1892000000082069'
+                agentNewDepartment: '1892000000082069'
+    addDepartmentJson:
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/updateDepartmentJson'
+            - type:
+              - 'null'
+              - object
+              properties:
+                isVisibleInCustomerPortal:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: Key that denotes if the department is visible in the help center or not
+                name:
+                  type:
+                  - string
+                  - 'null'
+                  description: Name of the department
+                  maxLength: 200
+                  minLength: 0
+                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                description:
+                  type:
+                  - string
+                  - 'null'
+                  description: A short description of the department
+                  maxLength: 100
+                  minLength: 0
+                associatedAgentIds:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+            - type: object
+              required:
+              - associatedAgentIds
+              - name
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isAssignToTeamEnabled: false
+                isVisibleInCustomerPortal: true
+                name: zPhone
+                description: With the most advanced technology, the zPhone is the world’s largest selling smartphone.
+                associatedAgentIds:
+                - '1892000000042001'
+                - '1892000000056007'
+                nameInCustomerPortal: zPhone
+    associateAgents_agentIdsArray:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              agentIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - agentIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                agentIds:
+                - '1892000000042001'
+                - '1892000000056007'
+  responses:
+    deptCountResponse:
+      description: deptCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: 5
+    departmentListViewArray:
+      description: departmentListViewArray template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/data'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - isAssignToTeamEnabled: true
+                  chatStatus: AVAILABLE
+                  isDefault: true
+                  hasLogo: true
+                  isVisibleInCustomerPortal: true
+                  isEnabled: true
+                  name: Zylker
+                  creatorId: '1892000000042001'
+                  description: Zylker Inc. is a multinational technology company that designs, develops, and sells consumer electronics.
+                  createdTime: 1564146662000
+                  id: '1892000000082069'
+                  nameInCustomerPortal: ZylCares
+                - isAssignToTeamEnabled: true
+                  chatStatus: AVAILABLE
+                  isDefault: false
+                  hasLogo: true
+                  isVisibleInCustomerPortal: true
+                  isEnabled: true
+                  name: zPad
+                  creatorId: '1892000000042001'
+                  description: zPad is the most advanced tablet that brings you the never-experienced-before processing power.
+                  createdTime: 1566904321000
+                  id: '1892000000082085'
+                  nameInCustomerPortal: zPad
+    checkNameResponse:
+      description: checkNameResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isDepartmentNameExist:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - isDepartmentNameExist
+          examples:
+            Valid responses Definitions:
+              value:
+                isDepartmentNameExist: true
+    getDepartmentResponse:
+      description: getDepartmentResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/commonDepartmentResponse'
+            - type:
+              - 'null'
+              - object
+              properties:
+                associatedAgentIds:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+              required:
+              - associatedAgentIds
+          examples:
+            Valid responses Definitions:
+              value:
+                isAssignToTeamEnabled: false
+                chatStatus: NOT_CREATED
+                hasLogo: false
+                isVisibleInCustomerPortal: true
+                creatorId: '1892000000042001'
+                description: With the most advanced technology, the zPhone is the world’s largest selling smartphone.
+                associatedAgentIds:
+                - '1892000000042001'
+                - '1892000000056007'
+                isDefault: false
+                isEnabled: true
+                name: zPhone
+                createdTime: 1564146662000
+                id: '1892000000082085'
+                nameInCustomerPortal: zPhone
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of agents to fetch; default value is 10 and maximum value is 200
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of agents to fetch; default value is 10 and maximum value is 200
+        maximum: 200
+        minimum: 0
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    searchStr:
+      name: searchStr
+      in: query
+      description: 'String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string'
+        maxLength: 100
+        minLength: 0
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the agents must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the agents must be listed
+        minimum: 0
+        pattern: ([0-9]+)
   schemas:
+    updateDepartmentJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        isAssignToTeamEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Key that denotes if the assign to team functionality is enabled or not
+        nameInCustomerPortal:
+          type:
+          - string
+          - 'null'
+          description: Display name of the department in the help center
+          maxLength: 200
+          minLength: 0
+          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+      required:
+      - isAssignToTeamEnabled
+      - nameInCustomerPortal
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/commonDepartmentResponse'
     commonDepartmentResponse:
       type:
       - 'null'
@@ -579,398 +971,6 @@ components:
       - name
       - nameInCustomerPortal
       - sanitizedName
-    updateDepartmentJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        isAssignToTeamEnabled:
-          type:
-          - boolean
-          - 'null'
-          description: Key that denotes if the assign to team functionality is enabled or not
-        nameInCustomerPortal:
-          type:
-          - string
-          - 'null'
-          description: Display name of the department in the help center
-          maxLength: 200
-          minLength: 0
-          pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-      required:
-      - isAssignToTeamEnabled
-      - nameInCustomerPortal
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/commonDepartmentResponse'
-  parameters:
-    departmentId:
-      name: departmentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of agents to fetch; default value is 10 and maximum value is 200
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of agents to fetch; default value is 10 and maximum value is 200
-        maximum: 200
-        minimum: 0
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the agents must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the agents must be listed
-        minimum: 0
-        pattern: ([0-9]+)
-    searchStr:
-      name: searchStr
-      in: query
-      description: 'String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string'
-        maxLength: 100
-        minLength: 0
-  requestBodies:
-    dissociateAgents_agentIdsArray:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              agentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - agentIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                agentIds:
-                - '1892000000056007'
-    associateAgents_agentIdsArray:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              agentIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - agentIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                agentIds:
-                - '1892000000042001'
-                - '1892000000056007'
-    disableTransfer:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              emailNewDepartment:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              agentNewDepartment:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - agentNewDepartment
-          examples:
-            Valid requestBody Definitions:
-              value:
-                emailNewDepartment: '1892000000082069'
-                agentNewDepartment: '1892000000082069'
-    addDepartmentJson:
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/updateDepartmentJson'
-            - type:
-              - 'null'
-              - object
-              properties:
-                isVisibleInCustomerPortal:
-                  type:
-                  - boolean
-                  - 'null'
-                  description: Key that denotes if the department is visible in the help center or not
-                name:
-                  type:
-                  - string
-                  - 'null'
-                  description: Name of the department
-                  maxLength: 200
-                  minLength: 0
-                  pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                description:
-                  type:
-                  - string
-                  - 'null'
-                  description: A short description of the department
-                  maxLength: 100
-                  minLength: 0
-                associatedAgentIds:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-            - type: object
-              required:
-              - associatedAgentIds
-              - name
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isAssignToTeamEnabled: false
-                isVisibleInCustomerPortal: true
-                name: zPhone
-                description: With the most advanced technology, the zPhone is the world’s largest selling smartphone.
-                associatedAgentIds:
-                - '1892000000042001'
-                - '1892000000056007'
-                nameInCustomerPortal: zPhone
-    updateDepartmentJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isAssignToTeamEnabled:
-                type:
-                - boolean
-                - 'null'
-                description: Key that denotes if the assign to team functionality is enabled or not
-              nameInCustomerPortal:
-                type:
-                - string
-                - 'null'
-                description: Display name of the department in the help center
-                maxLength: 200
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isAssignToTeamEnabled: true
-                nameInCustomerPortal: zPhone Support
-  responses:
-    checkNameResponse:
-      description: checkNameResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isDepartmentNameExist:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - isDepartmentNameExist
-          examples:
-            Valid responses Definitions:
-              value:
-                isDepartmentNameExist: true
-    getDepartmentResponse:
-      description: getDepartmentResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: '#/components/schemas/commonDepartmentResponse'
-            - type:
-              - 'null'
-              - object
-              properties:
-                associatedAgentIds:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-              required:
-              - associatedAgentIds
-          examples:
-            Valid responses Definitions:
-              value:
-                isAssignToTeamEnabled: false
-                chatStatus: NOT_CREATED
-                hasLogo: false
-                isVisibleInCustomerPortal: true
-                creatorId: '1892000000042001'
-                description: With the most advanced technology, the zPhone is the world’s largest selling smartphone.
-                associatedAgentIds:
-                - '1892000000042001'
-                - '1892000000056007'
-                isDefault: false
-                isEnabled: true
-                name: zPhone
-                createdTime: 1564146662000
-                id: '1892000000082085'
-                nameInCustomerPortal: zPhone
-    deptCountResponse:
-      description: deptCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: 5
-    departmentListViewArray:
-      description: departmentListViewArray template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/data'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - isAssignToTeamEnabled: true
-                  chatStatus: AVAILABLE
-                  isDefault: true
-                  hasLogo: true
-                  isVisibleInCustomerPortal: true
-                  isEnabled: true
-                  name: Zylker
-                  creatorId: '1892000000042001'
-                  description: Zylker Inc. is a multinational technology company that designs, develops, and sells consumer electronics.
-                  createdTime: 1564146662000
-                  id: '1892000000082069'
-                  nameInCustomerPortal: ZylCares
-                - isAssignToTeamEnabled: true
-                  chatStatus: AVAILABLE
-                  isDefault: false
-                  hasLogo: true
-                  isVisibleInCustomerPortal: true
-                  isEnabled: true
-                  name: zPad
-                  creatorId: '1892000000042001'
-                  description: zPad is the most advanced tablet that brings you the never-experienced-before processing power.
-                  createdTime: 1566904321000
-                  id: '1892000000082085'
-                  nameInCustomerPortal: zPad
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

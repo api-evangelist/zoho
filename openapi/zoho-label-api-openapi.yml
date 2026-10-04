@@ -254,68 +254,38 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    labelId:
-      name: labelId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of users to list. The default value is 50 and the maximum value allowed is 100
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of users to list. The default value is 50 and the maximum value allowed is 100
-        maximum: 50
-        minimum: 1
-        pattern: ([0-9]+)
-    searchBy:
-      name: searchBy
-      in: query
-      description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
-        maxLength: 100
-        minLength: 0
-    from:
-      name: from
-      in: query
-      description: 'Index number, starting from which the users must be fetched. The default value is 1. '
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: 'Index number, starting from which the users must be fetched. The default value is 1. '
-        minimum: 1
-        pattern: ([0-9]+)
   requestBodies:
+    removeLabelsFromUsers_userIdsPayLoad:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              userIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+            required:
+            - userIds
+          examples:
+            Valid requestBody Definitions:
+              value:
+                userIds:
+                - '3109751143253'
+                - '310975131231'
+                - '310975133141'
+                - '310975101849'
     updateLabelPayloadJSON:
       content:
         application/json:
@@ -352,37 +322,6 @@ components:
                   textColor: '#FFEE'
                 name: Pro Customer
                 logoId: '310975130121'
-    removeLabelsFromUsers_userIdsPayLoad:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              userIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - userIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                userIds:
-                - '3109751143253'
-                - '310975131231'
-                - '310975133141'
-                - '310975101849'
     createLabelPayloadJson:
       content:
         application/json:
@@ -521,35 +460,6 @@ components:
                 id: '310975130110'
                 helpCenterId: '310975130119'
                 logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
-    userLabelListResponse:
-      description: userLabelListResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Label.json#/components/schemas/userLabelData
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - photoUrl: null
-                  emailAddress: carol@zylker.com
-                  name: svega RM
-                  userType: ENDUSER
-                  assignee:
-                    photoUrl: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
-                    name: Chris
-                    id: '6000000015895'
-                  id: '6000000032907'
-                  assignedTime: 1565336864000
-                  status: ACTIVE
     labelListViewResponse:
       description: labelListViewResponse template definitions
       content:
@@ -587,6 +497,96 @@ components:
                   id: '310975130110'
                   helpCenterId: '310975130119'
                   logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
+    userLabelListResponse:
+      description: userLabelListResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Label.json#/components/schemas/userLabelData
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - photoUrl: null
+                  emailAddress: carol@zylker.com
+                  name: svega RM
+                  userType: ENDUSER
+                  assignee:
+                    photoUrl: https://desk.zoho.com/portal/api/user/6000000015895/photo?orgId=143315
+                    name: Chris
+                    id: '6000000015895'
+                  id: '6000000032907'
+                  assignedTime: 1565336864000
+                  status: ACTIVE
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of users to list. The default value is 50 and the maximum value allowed is 100
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of users to list. The default value is 50 and the maximum value allowed is 100
+        maximum: 50
+        minimum: 1
+        pattern: ([0-9]+)
+    labelId:
+      name: labelId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    searchBy:
+      name: searchBy
+      in: query
+      description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: Search keyword to use for finding a particular user. The keyword must contain at least two characters.
+        maxLength: 100
+        minLength: 0
+    from:
+      name: from
+      in: query
+      description: 'Index number, starting from which the users must be fetched. The default value is 1. '
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: 'Index number, starting from which the users must be fetched. The default value is 1. '
+        minimum: 1
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

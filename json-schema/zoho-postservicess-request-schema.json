@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-postservicess-request-schema.json",
+  "title": "PostservicessRequest",
+  "description": "Request body schema",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-services-s-api-openapi.yml#/components/schemas/PostservicessRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "data array  (Required)",
+      "items": {
+        "$ref": "#/$defs/DataNested"
+      },
+      "maxItems": 5
+    },
+    "skip_mandatory": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "boolean"
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "$defs": {
+    "AvailableTimingsNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "contains the service availability timing",
+      "properties": {
+        "From": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "service starts from time",
+          "maxLength": 5
+        },
+        "To": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "service end time ",
+          "maxLength": 5
+        }
+      }
+    },
+    "DataNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "data array ",
+      "properties": {
+        "Job_Sheet_Required": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "is job sheet required for the service",
+          "maxLength": 3
+        },
+        "Owner": {
+          "$ref": "#/$defs/OwnerNested",
+          "description": "owner of the service"
+        },
+        "Available_Timings": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "contains the service availability timing",
+          "items": {
+            "$ref": "#/$defs/AvailableTimingsNested"
+          },
+          "maxItems": 4
+        },
+        "Description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Represents the description of the service",
+          "maxLength": 32000
+        },
+        "Available_From": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "service availability start time (this field is mandatory when service availability type is specific date range)",
+          "maxLength": 100
+        },
+        "Service_Name": {
+          "type": "string",
+          "description": "name of the service (Required)",
+          "maxLength": 120
+        },
+        "Available_Till": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date",
+          "description": "service availability end time (this field is mandatory when service availability type is specific date range)",
+          "maxLength": 100
+        },
+        "Available_Days": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "contains days (this field is mandatory when availability type is set to specific days)",
+          "items": {
+            "type": "string",
+            "maxLength": 225,
+            "description": "service available days"
+          },
+          "maxItems": 7
+        },
+        "Duration": {
+          "type": "integer",
+          "format": "int32",
+          "description": "duration of the service (Required)"
+        },
+        "Tax": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Contains the ID and value of the tax applied to the service cost",
+          "items": {
+            "$ref": "#/$defs/TaxNested"
+          },
+          "maxItems": 2
+        },
+        "Price": {
+          "type": "integer",
+          "format": "int32",
+          "description": "price of the service (Required)"
+        },
+        "Layout": {
+          "$ref": "#/$defs/LayoutNested",
+          "description": "Layout id"
+        },
+        "zia_suggested_users": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "description": "zia"
+        },
+        "Availability_Type": {
+          "type": "string",
+          "description": "service availability type i.e specific date range or specific days  (Required)",
+          "maxLength": 100
+        },
+        "$zia_owner_assignment": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "zia",
+          "maxLength": 32
+        },
+        "Members": {
+          "type": "array",
+          "description": "members who does this service (contains multiple members) (Required)",
+          "items": {
+            "$ref": "#/$defs/MembersNested"
+          },
+          "maxItems": 5
+        },
+        "Available_Dates": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "contains available date (this field is mandatory when availability type is specific dates )",
+          "items": {
+            "description": "service available dates",
+            "type": "string",
+            "maxLength": 255
+          },
+          "maxItems": 3
+        },
+        "Location": {
+          "type": "string",
+          "description": "Location where the service held (Required)",
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "Availability_Type",
+        "Duration",
+        "Location",
+        "Members",
+        "Price",
+        "Service_Name"
+      ]
+    },
+    "LayoutNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Layout id",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "id",
+          "maxLength": 18
+        }
+      }
+    },
+    "MembersNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "contains member details",
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "name of the member",
+          "maxLength": 8
+        },
+        "Members": {
+          "$ref": "#/$defs/MembersNested",
+          "description": "contains member details"
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "id of the member",
+          "maxLength": 18
+        }
+      }
+    },
+    "OwnerNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "owner of the service",
+      "properties": {
+        "full_name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "full name of the owner",
+          "maxLength": 8
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "name of the owner",
+          "maxLength": 8
+        },
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "id of the owner",
+          "maxLength": 18
+        }
+      }
+    },
+    "TaxNested": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Contains the ID and value of the tax applied to the service cost",
+      "properties": {
+        "id": {
+          "type": "null",
+          "description": "id"
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "value to be applied",
+          "maxLength": 100
+        }
+      }
+    }
+  }
+}

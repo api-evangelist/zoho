@@ -1,0 +1,945 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-field-request-body-schema-schema.json",
+  "title": "FieldRequestBodySchema",
+  "description": "Request body for creating custom fields. Maximum of 5 fields can be created in a single call.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-settings-api-openapi.yml#/components/schemas/FieldRequestBodySchema",
+  "type": "object",
+  "properties": {
+    "fields": {
+      "type": "array",
+      "description": "List of fields to be created",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "description": " list of field need to be created",
+        "properties": {
+          "field_label": {
+            "type": "string",
+            "description": "Unique display label of the field",
+            "maxLength": 25
+          },
+          "data_type": {
+            "type": "string",
+            "description": "Data type of the field",
+            "enum": [
+              "text",
+              "textarea",
+              "email",
+              "phone",
+              "picklist",
+              "multiselectpicklist",
+              "date",
+              "datetime",
+              "integer",
+              "autonumber",
+              "currency",
+              "percent",
+              "bigint",
+              "double",
+              "website",
+              "boolean",
+              "fileupload",
+              "imageupload",
+              "lookup",
+              "userlookup",
+              "multiselectlookup",
+              "multiuserlookup",
+              "formula",
+              "rollup_summary",
+              "address"
+            ],
+            "maxLength": 50
+          },
+          "length": {
+            "type": "integer",
+            "description": "Maximum number of characters allowed. Varies by data type.",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 50000
+          },
+          "filterable": {
+            "type": "boolean",
+            "description": "Indicates whether the field can be used in filters"
+          },
+          "tooltip": {
+            "type": "object",
+            "description": "Tooltip configuration for the field",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "static_text",
+                  "info_icon"
+                ],
+                "description": "Type of tooltip: static_text (shown in field box) or info_icon (shown on icon click)"
+              },
+              "value": {
+                "type": "string",
+                "description": "Tooltip content. Max 35 chars for static_text, 255 chars for info_icon",
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "profiles": {
+            "type": "array",
+            "description": "Profiles to which the field is to be assigned",
+            "items": {
+              "type": "object",
+              "description": "Profile access and permission configuration",
+              "properties": {
+                "id": {
+                  "$ref": "#/$defs/Id"
+                },
+                "permission_type": {
+                  "type": "string",
+                  "enum": [
+                    "read_write",
+                    "read_only",
+                    "hidden"
+                  ],
+                  "description": "Permission level for this profile"
+                }
+              },
+              "additionalProperties": false
+            },
+            "maxItems": 50
+          },
+          "external": {
+            "type": "object",
+            "description": "External field configuration for third-party app integration",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "user",
+                  "org",
+                  "external_lookup"
+                ],
+                "description": "user: Different ID per user. org: Common ID for organization",
+                "maxLength": 25
+              },
+              "show": {
+                "type": "boolean",
+                "description": "Display field in UI"
+              }
+            },
+            "required": [
+              "type",
+              "show"
+            ],
+            "additionalProperties": false
+          },
+          "crypt": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Field encryption configuration",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "encryption",
+                      "decryption"
+                    ],
+                    "description": "encryption: Store value encrypted. decryption: Store value unencrypted (default)"
+                  }
+                },
+                "required": [
+                  "mode"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "boolean",
+                "description": "Indicates whether field encryption is enabled"
+              }
+            ]
+          },
+          "encrypt_case": {
+            "type": "string",
+            "enum": [
+              "uppercase",
+              "lowercase"
+            ],
+            "description": "Permission case for encrypted field"
+          },
+          "textarea": {
+            "type": "object",
+            "description": "Text area field configuration",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "small",
+                  "large",
+                  "rich_text"
+                ],
+                "description": "small: 2000 chars, large: 32000 chars, rich_text: 50000 chars"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          "unique": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Field uniqueness configuration",
+                "properties": {
+                  "case_sensitive": {
+                    "type": "boolean",
+                    "description": "Indicates whether uniqueness is case sensitive"
+                  }
+                },
+                "required": [
+                  "case_sensitive"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "boolean",
+                "description": "Indicates whether the field value must be unique across records"
+              }
+            ]
+          },
+          "hipaa_compliance_enabled": {
+            "type": "boolean",
+            "description": "Enable HIPAA compliance for this field"
+          },
+          "private": {
+            "type": "object",
+            "description": "GDPR compliance configuration",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "Low",
+                  "High"
+                ],
+                "description": "Privacy level for GDPR compliance"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          "pick_list_values": {
+            "type": "array",
+            "description": "picklist configuration ",
+            "items": {
+              "type": "object",
+              "description": "PicklistValue to be shown.",
+              "properties": {
+                "display_value": {
+                  "type": "string",
+                  "description": "Display Value to be shown",
+                  "maxLength": 25
+                },
+                "actual_value": {
+                  "type": "string",
+                  "description": "Actual Value it wolud not be changed form initial value",
+                  "maxLength": 25
+                },
+                "reference_value": {
+                  "type": "string",
+                  "description": "Reference value to be Userd Internal",
+                  "maxLength": 25
+                },
+                "colour_code": {
+                  "type": "string",
+                  "description": "Hex code for the picklist value color",
+                  "maxLength": 25
+                }
+              },
+              "required": [
+                "display_value",
+                "actual_value"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 10
+          },
+          "enable_record_state": {
+            "type": "boolean",
+            "description": "Indicates whether record state is enabled for the picklist field"
+          },
+          "default_value": {
+            "type": "string",
+            "description": "Default value for the picklist field",
+            "maxLength": 25
+          },
+          "pick_list_values_sorted_lexically": {
+            "type": "boolean",
+            "description": "Indicates whether picklist values are sorted lexically"
+          },
+          "enable_colour_code": {
+            "type": "boolean",
+            "description": "Indicates whether colour coding is enabled for the picklist field"
+          },
+          "global_picklist": {
+            "type": "object",
+            "description": "Global picklist configuration",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID of the global picklist to associate with this field",
+                "format": "int64"
+              },
+              "api_name": {
+                "type": "string",
+                "description": "API name of the global picklist",
+                "maxLength": 25
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "history_tracking_enabled": {
+            "type": "boolean",
+            "description": "Indicates whether history tracking is enabled for the field"
+          },
+          "history_tracking": {
+            "type": "object",
+            "description": "History tracking configuration",
+            "properties": {
+              "related_list_name": {
+                "type": "string",
+                "description": "Name of the related list for history tracking",
+                "maxLength": 50
+              },
+              "duration_configuration": {
+                "type": "string",
+                "description": "Duration for which history is tracked",
+                "enum": [
+                  "days",
+                  "time"
+                ],
+                "maxLength": 25
+              },
+              "followed_fields": {
+                "type": "array",
+                "description": "List of fields to be tracked",
+                "items": {
+                  "type": "object",
+                  "description": "Field to be tracked",
+                  "properties": {
+                    "api_name": {
+                      "type": "string",
+                      "description": "API name of the field to be tracked",
+                      "maxLength": 25
+                    },
+                    "id": {
+                      "type": "string",
+                      "description": "ID of the field to be tracked",
+                      "format": "int64"
+                    }
+                  },
+                  "required": [
+                    "api_name",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 10
+              }
+            },
+            "required": [
+              "related_list_name",
+              "duration_configuration",
+              "followed_fields"
+            ],
+            "additionalProperties": false
+          },
+          "separator": {
+            "type": "boolean",
+            "description": "Indicates whether to use a thousands separator for number fields"
+          },
+          "auto_number": {
+            "type": "object",
+            "description": "Configuration for auto number fields",
+            "properties": {
+              "start_number": {
+                "type": "string",
+                "description": "Starting number for the auto number field",
+                "maxLength": 16
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Prefix of the starting number",
+                "maxLength": 16
+              },
+              "suffix": {
+                "type": "string",
+                "description": "Suffix of the starting number",
+                "maxLength": 16
+              }
+            },
+            "required": [
+              "start_number",
+              "prefix",
+              "suffix"
+            ],
+            "additionalProperties": false
+          },
+          "_update_existing_records": {
+            "type": "boolean",
+            "description": "Update existing auto-number records with new format"
+          },
+          "formula": {
+            "type": "object",
+            "description": "Contains the details of the formula field, including the return type and the expression.",
+            "properties": {
+              "expression": {
+                "type": "string",
+                "description": "Formula expression",
+                "maxLength": 255
+              },
+              "return_type": {
+                "type": "string",
+                "enum": [
+                  "double",
+                  "currency",
+                  "text",
+                  "date",
+                  "datetime",
+                  "boolean"
+                ],
+                "description": "Return type of the formula"
+              },
+              "sub_return_type": {
+                "type": "string",
+                "description": "The string return type of the formula will be split values,",
+                "maxLength": 25,
+                "enum": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
+              },
+              "dynamic": {
+                "type": "boolean",
+                "description": "Indicates whether the formula is Auto Refresh"
+              },
+              "stop_compute_conditionally": {
+                "type": "boolean",
+                "description": "Indicates whether to stop computation conditionally."
+              },
+              "stop_compute_expression": {
+                "type": "string",
+                "description": "Defines the expression that determines when to stop computation",
+                "maxLength": 255
+              }
+            },
+            "required": [
+              "expression",
+              "return_type"
+            ],
+            "additionalProperties": false
+          },
+          "decimal_place": {
+            "type": "number",
+            "description": "The number of decimal places for the formula field. This is valid for double and currency return types. Possible values are from 0 to 9, both inclusive.",
+            "format": "int32"
+          },
+          "number_separator": {
+            "type": "boolean",
+            "description": "Specify whether to display the field value in formatted view. The default value is true."
+          },
+          "currency": {
+            "type": "object",
+            "description": "Currency Field Data.",
+            "properties": {
+              "rounding_option": {
+                "type": "string",
+                "enum": [
+                  "normal",
+                  "round_off",
+                  "round_up",
+                  "round_down"
+                ],
+                "description": "How to round currency values",
+                "maxLength": 25
+              },
+              "precision": {
+                "type": "string",
+                "description": "Represents the number of decimal places displayed for the currency value in the user interface. This value should be less than decimal_place",
+                "maxLength": 25
+              }
+            },
+            "required": [
+              "rounding_option",
+              "precision"
+            ],
+            "additionalProperties": false
+          },
+          "rollup_summary": {
+            "type": "object",
+            "description": "Rollup summary field configuration",
+            "properties": {
+              "return_type": {
+                "type": "string",
+                "enum": [
+                  "currency",
+                  "double",
+                  "integer"
+                ],
+                "description": "Return type of the rollup summary"
+              },
+              "expression": {
+                "type": "object",
+                "description": "Calculation expression",
+                "properties": {
+                  "function_parameters": {
+                    "type": "array",
+                    "description": "Fields to aggregate",
+                    "items": {
+                      "type": "object",
+                      "description": "Expression for the calculation need to be done.",
+                      "properties": {
+                        "api_name": {
+                          "$ref": "#/$defs/ApiName"
+                        }
+                      },
+                      "required": [
+                        "api_name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "maxItems": 10
+                  },
+                  "criteria": {
+                    "type": "object",
+                    "description": "Filter criteria for lookup fields",
+                    "properties": {
+                      "group_operator": {
+                        "type": "string",
+                        "enum": [
+                          "AND",
+                          "OR"
+                        ],
+                        "description": "Logical operator for multiple conditions"
+                      },
+                      "group": {
+                        "type": "array",
+                        "description": "Array of filter conditions",
+                        "items": {
+                          "type": "object",
+                          "description": "Filter details need to be added for validation action",
+                          "properties": {
+                            "field": {
+                              "type": "object",
+                              "description": "Field to be added in validation",
+                              "properties": {
+                                "api_name": {
+                                  "$ref": "#/$defs/ApiName"
+                                },
+                                "id": {
+                                  "$ref": "#/$defs/Id"
+                                }
+                              },
+                              "required": [
+                                "api_name"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "comparator": {
+                              "type": "string",
+                              "enum": [
+                                "equal",
+                                "not_equal",
+                                "like",
+                                "not_like",
+                                "greater_equal",
+                                "greater_than",
+                                "less_equal",
+                                "less_than",
+                                "in",
+                                "not_in",
+                                "starts_with",
+                                "ends_with",
+                                "contains",
+                                "not_contains",
+                                "between",
+                                "not_between",
+                                "include_all",
+                                "include_any",
+                                "exclude_all",
+                                "exclude_any"
+                              ],
+                              "description": "Comparison operator",
+                              "maxLength": 25
+                            },
+                            "value": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "description": "the value to be matched",
+                                  "maxLength": 125
+                                },
+                                {
+                                  "type": "array",
+                                  "description": "array list of value to be matched",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "the value to be matched",
+                                    "maxLength": 125
+                                  },
+                                  "maxItems": 10
+                                }
+                              ],
+                              "description": "Value to compare against"
+                            }
+                          },
+                          "required": [
+                            "field",
+                            "comparator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "maxItems": 10
+                      }
+                    },
+                    "required": [
+                      "group"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "function": {
+                    "type": "string",
+                    "enum": [
+                      "SUM",
+                      "COUNT",
+                      "AVG",
+                      "MIN",
+                      "MAX"
+                    ],
+                    "description": "Aggregation function"
+                  }
+                },
+                "required": [
+                  "function_parameters",
+                  "function"
+                ],
+                "additionalProperties": false
+              },
+              "based_on_module": {
+                "type": "object",
+                "description": "Source module for rollup",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  }
+                },
+                "required": [
+                  "api_name"
+                ],
+                "additionalProperties": false
+              },
+              "related_list": {
+                "type": "object",
+                "description": "Related list for rollup",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  }
+                },
+                "required": [
+                  "api_name"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "return_type",
+              "expression",
+              "based_on_module",
+              "related_list"
+            ],
+            "additionalProperties": false
+          },
+          "lookup": {
+            "type": "object",
+            "description": "Lookup field configuration",
+            "properties": {
+              "module": {
+                "type": "object",
+                "description": "Module to associate via lookup",
+                "properties": {
+                  "api_name": {
+                    "$ref": "#/$defs/ApiName"
+                  },
+                  "id": {
+                    "$ref": "#/$defs/Id"
+                  }
+                },
+                "required": [
+                  "api_name"
+                ],
+                "additionalProperties": false
+              },
+              "display_label": {
+                "type": "string",
+                "description": "Display label in related list",
+                "maxLength": 25
+              },
+              "revalidate_filter_during_edit": {
+                "type": "boolean",
+                "description": "Revalidate filters during record edit",
+                "default": false
+              },
+              "query_details": {
+                "type": "object",
+                "description": "Filter criteria for lookup records",
+                "properties": {
+                  "criteria": {
+                    "type": "object",
+                    "description": "Filter criteria for lookup fields",
+                    "properties": {
+                      "group_operator": {
+                        "type": "string",
+                        "enum": [
+                          "AND",
+                          "OR"
+                        ],
+                        "description": "Logical operator for multiple conditions"
+                      },
+                      "group": {
+                        "type": "array",
+                        "description": "Array of filter conditions",
+                        "items": {
+                          "type": "object",
+                          "description": "group criteria values",
+                          "properties": {
+                            "field": {
+                              "type": "object",
+                              "description": "field details",
+                              "properties": {
+                                "api_name": {
+                                  "$ref": "#/$defs/ApiName"
+                                },
+                                "id": {
+                                  "$ref": "#/$defs/Id"
+                                }
+                              },
+                              "required": [
+                                "api_name"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "comparator": {
+                              "type": "string",
+                              "enum": [
+                                "equal",
+                                "not_equal",
+                                "like",
+                                "not_like",
+                                "greater_equal",
+                                "greater_than",
+                                "less_equal",
+                                "less_than",
+                                "in",
+                                "not_in",
+                                "starts_with",
+                                "ends_with",
+                                "contains",
+                                "not_contains",
+                                "between",
+                                "not_between",
+                                "include_all",
+                                "include_any",
+                                "exclude_all",
+                                "exclude_any"
+                              ],
+                              "description": "Comparison operator"
+                            },
+                            "value": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "description": "the value to be matched",
+                                  "maxLength": 125
+                                },
+                                {
+                                  "type": "array",
+                                  "description": "array list of value to be matched",
+                                  "items": {
+                                    "type": "string",
+                                    "description": "the value to be matched",
+                                    "maxLength": 125
+                                  },
+                                  "maxItems": 10
+                                }
+                              ],
+                              "description": "Value to compare against"
+                            }
+                          },
+                          "required": [
+                            "field",
+                            "comparator",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "maxItems": 10
+                      }
+                    },
+                    "required": [
+                      "group"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              },
+              "sharing_properties": {
+                "type": "object",
+                "description": "Sharing configuration (for userlookup)",
+                "properties": {
+                  "share_preference_enabled": {
+                    "type": "boolean",
+                    "description": "Enable share preferences"
+                  },
+                  "share_permission": {
+                    "type": "string",
+                    "enum": [
+                      "full-access",
+                      "read-write",
+                      "read-only"
+                    ],
+                    "description": "Sharing permission level"
+                  },
+                  "share_with_superiors": {
+                    "type": "boolean",
+                    "description": "Enable share preferences"
+                  }
+                },
+                "required": [
+                  "share_preference_enabled",
+                  "share_permission"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "module"
+            ],
+            "additionalProperties": false
+          },
+          "multiselectlookup": {
+            "type": "object",
+            "description": "Multi-select lookup field configuration",
+            "properties": {
+              "connected_details": {
+                "type": "object",
+                "description": "Details of the module to connect",
+                "properties": {
+                  "module": {
+                    "type": "object",
+                    "description": "API name of module to connect",
+                    "properties": {
+                      "api_name": {
+                        "$ref": "#/$defs/ApiName"
+                      },
+                      "id": {
+                        "$ref": "#/$defs/Id"
+                      }
+                    },
+                    "required": [
+                      "api_name"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "field": {
+                    "type": "object",
+                    "description": "field details",
+                    "properties": {
+                      "field_label": {
+                        "type": "string",
+                        "description": "Field label in connected module",
+                        "maxLength": 25
+                      }
+                    },
+                    "required": [
+                      "field_label"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "module",
+                  "field"
+                ],
+                "additionalProperties": false
+              },
+              "linking_details": {
+                "type": "object",
+                "description": "Linking module details",
+                "properties": {
+                  "module": {
+                    "type": "object",
+                    "description": "Module name passed as parameter is case insensitive. For example, the module name 'Leads'.",
+                    "properties": {
+                      "plural_label": {
+                        "type": "string",
+                        "description": "Plural label for linking module",
+                        "maxLength": 25
+                      }
+                    },
+                    "required": [
+                      "plural_label"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "module"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "connected_details",
+              "linking_details"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "field_label",
+          "data_type"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "ApiName": {
+      "type": "string",
+      "description": "API name of the resource. It will start with alphabets and can contain alphanumeric characters and underscores.",
+      "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+      "maxLength": 50
+    },
+    "Id": {
+      "type": "string",
+      "description": "Id of the resource.",
+      "format": "int64"
+    }
+  }
+}

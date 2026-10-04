@@ -3052,6 +3052,16 @@ components:
         enum:
         - sources_count
         - sources
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Page number to retrieve
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        minimum: 1
     PerPage:
       name: per_page
       in: query
@@ -3063,16 +3073,30 @@ components:
         default: 200
         maximum: 200
         minimum: 1
-    Page:
-      name: page
+    PerPage_2:
+      name: per_page
       in: query
+      description: Number of records per page
       required: false
-      description: Page number to retrieve
       schema:
         type: integer
         format: int32
-        default: 1
-        minimum: 1
+    Page_2:
+      name: page
+      in: query
+      description: Current page number
+      required: false
+      schema:
+        type: integer
+        format: int32
+    User:
+      name: user
+      in: path
+      description: user Id
+      required: true
+      schema:
+        type: string
+        maxLength: 20
     Type:
       name: type
       in: query
@@ -3094,30 +3118,14 @@ components:
         - AllUsers
         - AllActiveUsers
         - ActiveLiteUser
-    Page_2:
-      name: page
-      in: query
-      description: Current page number
-      required: false
-      schema:
-        type: integer
-        format: int32
-    PerPage_2:
-      name: per_page
-      in: query
-      description: Number of records per page
-      required: false
-      schema:
-        type: integer
-        format: int32
-    User:
-      name: user
+    Territory:
+      description: The ID of the territory
+      name: territory
       in: path
-      description: user Id
       required: true
       schema:
+        format: int64
         type: string
-        maxLength: 20
     Ids:
       description: Comma-separated IDs (each ID is an int64)
       name: ids
@@ -3128,14 +3136,6 @@ components:
         description: Comma-separated IDs (digits only, separated by commas)
         pattern: ^[0-9]+(,[0-9]+)*$
         maxLength: 2000
-    Territory:
-      description: The ID of the territory
-      name: territory
-      in: path
-      required: true
-      schema:
-        format: int64
-        type: string
     User_2:
       description: The ID of the user
       name: user
@@ -3161,6 +3161,31 @@ components:
         type: string
         format: int64
   schemas:
+    Info:
+      type: object
+      description: Pagination information
+      properties:
+        per_page:
+          type: integer
+          description: Number of records per page
+          format: int32
+        count:
+          type: integer
+          description: Total number of records
+          format: int32
+        page:
+          type: integer
+          description: Current page number
+          format: int32
+        more_records:
+          type: boolean
+          description: Indicates if more records are available
+      additionalProperties: false
+      required:
+      - per_page
+      - count
+      - page
+      - more_records
     UserDetails:
       type: object
       description: User details
@@ -4205,112 +4230,6 @@ components:
               - custom
           additionalProperties: false
       additionalProperties: true
-    Info:
-      type: object
-      description: Pagination information
-      properties:
-        per_page:
-          type: integer
-          description: Number of records per page
-          format: int32
-        count:
-          type: integer
-          description: Total number of records
-          format: int32
-        page:
-          type: integer
-          description: Current page number
-          format: int32
-        more_records:
-          type: boolean
-          description: Indicates if more records are available
-      additionalProperties: false
-      required:
-      - per_page
-      - count
-      - page
-      - more_records
-    SuccessResponse:
-      type: object
-      additionalProperties: false
-      description: Response for successful association of territories to a user
-      properties:
-        territories:
-          type: array
-          description: List of per-territory result items
-          minItems: 0
-          maxItems: 200
-          uniqueItems: true
-          items:
-            type: object
-            additionalProperties: false
-            description: Per-territory result item
-            properties:
-              code:
-                type: string
-                description: Result code
-                enum:
-                - SUCCESS
-              details:
-                type: object
-                description: Details for the result item
-                additionalProperties: false
-                properties:
-                  id:
-                    type: string
-                    format: int64
-                    description: ID of the territory
-                required:
-                - id
-              message:
-                type: string
-                description: Human-readable message
-                maxLength: 1000
-              status:
-                type: string
-                description: Status of the result
-                enum:
-                - success
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - territories
-    CommonUrlErrorResponse:
-      type: object
-      additionalProperties: false
-      description: Error response for INVALID_DATA that includes a resource_path_index in details
-      properties:
-        code:
-          type: string
-          description: Error code
-          enum:
-          - INVALID_DATA
-          - NOT_ALLOWED
-        details:
-          type: object
-          description: Error details containing resource path index
-          additionalProperties: false
-          properties:
-            resource_path_index:
-              type: integer
-              description: Index of the resource path
-              format: int32
-        message:
-          type: string
-          description: Human readable error message
-          maxLength: 1000
-        status:
-          type: string
-          description: Status of the error
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - status
     TerritoryGetResponse:
       additionalProperties: false
       description: Response schema for getting territories of a user
@@ -4448,6 +4367,87 @@ components:
             - status
       required:
       - territories
+    SuccessResponse:
+      type: object
+      additionalProperties: false
+      description: Response for successful association of territories to a user
+      properties:
+        territories:
+          type: array
+          description: List of per-territory result items
+          minItems: 0
+          maxItems: 200
+          uniqueItems: true
+          items:
+            type: object
+            additionalProperties: false
+            description: Per-territory result item
+            properties:
+              code:
+                type: string
+                description: Result code
+                enum:
+                - SUCCESS
+              details:
+                type: object
+                description: Details for the result item
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    format: int64
+                    description: ID of the territory
+                required:
+                - id
+              message:
+                type: string
+                description: Human-readable message
+                maxLength: 1000
+              status:
+                type: string
+                description: Status of the result
+                enum:
+                - success
+            required:
+            - code
+            - details
+            - message
+            - status
+      required:
+      - territories
+    CommonUrlErrorResponse:
+      type: object
+      additionalProperties: false
+      description: Error response for INVALID_DATA that includes a resource_path_index in details
+      properties:
+        code:
+          type: string
+          description: Error code
+          enum:
+          - INVALID_DATA
+          - NOT_ALLOWED
+        details:
+          type: object
+          description: Error details containing resource path index
+          additionalProperties: false
+          properties:
+            resource_path_index:
+              type: integer
+              description: Index of the resource path
+              format: int32
+        message:
+          type: string
+          description: Human readable error message
+          maxLength: 1000
+        status:
+          type: string
+          description: Status of the error
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - status
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

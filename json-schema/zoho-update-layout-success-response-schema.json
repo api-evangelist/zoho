@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-update-layout-success-response-schema.json",
+  "title": "UpdateLayoutSuccessResponse",
+  "description": "Successful response for layout update operation.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-layouts-api-openapi.yml#/components/schemas/UpdateLayoutSuccessResponse",
+  "type": "object",
+  "required": [
+    "layouts"
+  ],
+  "properties": {
+    "layouts": {
+      "type": "array",
+      "description": "Array containing the result of the layout update operation.",
+      "items": {
+        "$ref": "#/$defs/LayoutUpdateSuccessResult"
+      },
+      "minItems": 1,
+      "maxItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "Id": {
+      "type": "string",
+      "format": "int64",
+      "pattern": "^[0-9]{1,19}$",
+      "minLength": 1,
+      "maxLength": 19,
+      "description": "Unique identifier (64-bit integer represented as string)"
+    },
+    "LayoutUpdateSuccessResult": {
+      "type": "object",
+      "description": "Success result for a layout update.",
+      "required": [
+        "code",
+        "details",
+        "message",
+        "status"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Success code.",
+          "enum": [
+            "SUCCESS"
+          ]
+        },
+        "details": {
+          "type": "object",
+          "description": "Details about the updated layout.",
+          "required": [
+            "id"
+          ],
+          "properties": {
+            "id": {
+              "$ref": "#/$defs/Id",
+              "description": "Unique identifier of the updated layout."
+            }
+          },
+          "additionalProperties": false
+        },
+        "message": {
+          "type": "string",
+          "description": "Success message.",
+          "maxLength": 255
+        },
+        "status": {
+          "type": "string",
+          "description": "Status indicator.",
+          "enum": [
+            "success"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

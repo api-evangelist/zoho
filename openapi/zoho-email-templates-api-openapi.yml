@@ -232,140 +232,6 @@ paths:
       - external-public
 components:
   responses:
-    cloneTemplateAttachmentsResponse:
-      description: cloneTemplateAttachmentsResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./EmailTemplates.json#/components/schemas/cloneTemplateAttachmentsArr
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - size: '10247'
-                  name: mortytwo.jpeg
-                  parentAttachmentId: '1000000211013'
-                  href: https://support.zoho.com/api/v1/uploads/1000000212005/content
-                  clonedAttachmentId: '1000000212005'
-                - size: '11682'
-                  name: 12img.png
-                  parentAttachmentId: '1000000211015'
-                  href: https://support.zoho.com/api/v1/uploads/1000000212007/content
-                  clonedAttachmentId: '1000000212007'
-    templateAttachmentResponse:
-      description: templateAttachmentResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./EmailTemplates.json#/components/schemas/templateResponse
-            - type:
-              - 'null'
-              - object
-              properties:
-                attachments:
-                  $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
-              required:
-              - attachments
-          examples:
-            Valid responses Definitions:
-              value:
-                attachments:
-                - size: '8842'
-                  name: rick.jpeg
-                  id: '1892000000132047'
-                recordType: tickets
-                subject: My New Template
-                departmentId: '4000000007039'
-                templateId: '4000000040001'
-                body: null
-                fromId: newportal<support@zylker.com>
-                folderId: '4000000007021'
-                folder:
-                  folderName: Agent Notifications
-                  folderId: '4000000007021'
-                replyToAddr: null
-                templateName: new Template
-                category: CUSTOM_TEMPLATE
-                contentType: richtext
-    templateListResponse:
-      description: templateListResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - array
-            items:
-              $ref: ./EmailTemplates.json#/components/schemas/templateResponse
-          examples:
-            Valid responses Definitions:
-              value:
-              - folder:
-                  folderName: Agent Notifications
-                  folderId: '4000000007021'
-                replyToAddr: null
-                templateName: Notify contact when a comment is added
-                recordType: tickets
-                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has commented to your ticket'
-                departmentId: '4000000007043'
-                templateId: '4000000007111'
-                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has left the following comment on your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
-                category: DEFAULT_TEMPLATE
-                fromId: null
-                contentType: richtext
-                folderId: '4000000007021'
-              - folder:
-                  folderName: Agent Notifications
-                  folderId: '4000000007021'
-                replyToAddr: null
-                templateName: Notify contact when a comment is edited
-                recordType: tickets
-                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has updated comment in your ticket'
-                departmentId: '4000000007043'
-                templateId: '4000000007113'
-                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has updated the following comment in your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
-                category: DEFAULT_TEMPLATE
-                fromId: null
-                contentType: richtext
-                folderId: '4000000007021'
-              - folder:
-                  folderName: Agent Notifications
-                  folderId: '4000000007021'
-                replyToAddr: null
-                templateName: Notify contact when a comment is deleted
-                recordType: tickets
-                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has deleted comment in your ticket'
-                departmentId: '4000000007043'
-                templateId: '4000000007115'
-                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has deleted the following comment in your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
-                category: DEFAULT_TEMPLATE
-                fromId: null
-                contentType: richtext
-                folderId: '4000000007021'
-              - folder:
-                  folderName: Agent Notifications
-                  folderId: '4000000007021'
-                replyToAddr: null
-                templateName: Notify agent when a comment is deleted
-                recordType: tickets
-                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has deleted a comment in the ticket'
-                departmentId: '4000000007043'
-                templateId: '4000000007135'
-                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">${Cases.Recent Comment By} has deleted the following comment in the ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br><br><br>${Cases.SUPPORT_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
-                category: DEFAULT_TEMPLATE
-                fromId: null
-                contentType: richtext
-                folderId: '4000000007021'
     applyTemplateResponse:
       description: applyTemplateResponse template definitions
       content:
@@ -472,58 +338,140 @@ components:
                     placeHolder: ${Organization.City}
                   i18nModule: Organization
                   module: Organization
-  parameters:
-    departmentId:
-      name: departmentId
-      in: query
-      description: the corresponding department to be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: the corresponding department to be fetched
-        pattern: ([0-9]+)
-    module:
-      name: module
-      in: query
-      description: The name of the module
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: The name of the module
-        enum:
-        - tickets
-        - tasks
-        - contacts
-        - accounts
-        - products
-        - solutions
-        - calls
-        - events
-        maxLength: 100
-        minLength: 0
-    emailTemplateId:
-      name: emailTemplateId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+    templateAttachmentResponse:
+      description: templateAttachmentResponse template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./EmailTemplates.json#/components/schemas/templateResponse
+            - type:
+              - 'null'
+              - object
+              properties:
+                attachments:
+                  $ref: ./EmailTemplates.json#/components/schemas/attachmentsResponse
+              required:
+              - attachments
+          examples:
+            Valid responses Definitions:
+              value:
+                attachments:
+                - size: '8842'
+                  name: rick.jpeg
+                  id: '1892000000132047'
+                recordType: tickets
+                subject: My New Template
+                departmentId: '4000000007039'
+                templateId: '4000000040001'
+                body: null
+                fromId: newportal<support@zylker.com>
+                folderId: '4000000007021'
+                folder:
+                  folderName: Agent Notifications
+                  folderId: '4000000007021'
+                replyToAddr: null
+                templateName: new Template
+                category: CUSTOM_TEMPLATE
+                contentType: richtext
+    cloneTemplateAttachmentsResponse:
+      description: cloneTemplateAttachmentsResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./EmailTemplates.json#/components/schemas/cloneTemplateAttachmentsArr
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - size: '10247'
+                  name: mortytwo.jpeg
+                  parentAttachmentId: '1000000211013'
+                  href: https://support.zoho.com/api/v1/uploads/1000000212005/content
+                  clonedAttachmentId: '1000000212005'
+                - size: '11682'
+                  name: 12img.png
+                  parentAttachmentId: '1000000211015'
+                  href: https://support.zoho.com/api/v1/uploads/1000000212007/content
+                  clonedAttachmentId: '1000000212007'
+    templateListResponse:
+      description: templateListResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - array
+            items:
+              $ref: ./EmailTemplates.json#/components/schemas/templateResponse
+          examples:
+            Valid responses Definitions:
+              value:
+              - folder:
+                  folderName: Agent Notifications
+                  folderId: '4000000007021'
+                replyToAddr: null
+                templateName: Notify contact when a comment is added
+                recordType: tickets
+                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has commented to your ticket'
+                departmentId: '4000000007043'
+                templateId: '4000000007111'
+                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has left the following comment on your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
+                category: DEFAULT_TEMPLATE
+                fromId: null
+                contentType: richtext
+                folderId: '4000000007021'
+              - folder:
+                  folderName: Agent Notifications
+                  folderId: '4000000007021'
+                replyToAddr: null
+                templateName: Notify contact when a comment is edited
+                recordType: tickets
+                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has updated comment in your ticket'
+                departmentId: '4000000007043'
+                templateId: '4000000007113'
+                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has updated the following comment in your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
+                category: DEFAULT_TEMPLATE
+                fromId: null
+                contentType: richtext
+                folderId: '4000000007021'
+              - folder:
+                  folderName: Agent Notifications
+                  folderId: '4000000007021'
+                replyToAddr: null
+                templateName: Notify contact when a comment is deleted
+                recordType: tickets
+                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has deleted comment in your ticket'
+                departmentId: '4000000007043'
+                templateId: '4000000007115'
+                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">Dear ${Cases.Contact Name},<br> <br>${Cases.Recent Comment By} has deleted the following comment in your ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br> <br>Regards,<br>${Organization.Organization Name} Support Team.<br><br>${Cases.CUSTOMER_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
+                category: DEFAULT_TEMPLATE
+                fromId: null
+                contentType: richtext
+                folderId: '4000000007021'
+              - folder:
+                  folderName: Agent Notifications
+                  folderId: '4000000007021'
+                replyToAddr: null
+                templateName: Notify agent when a comment is deleted
+                recordType: tickets
+                subject: '[##${Cases.Request Id}##] ${Cases.Recent Comment By} has deleted a comment in the ticket'
+                departmentId: '4000000007043'
+                templateId: '4000000007135'
+                body: '<table align="center" border="0" cellpadding="0" cellspacing="0" style="margin: 0px; background: rgb(242, 242, 242);" width="100%"><tbody><tr><td style="padding: 30.0px 20.0px;" valign="top"><table cellpadding="0" cellspacing="0" style="margin: 0.0px auto;" width="90%"><tbody><tr><td valign="top" style="border: 1.0px solid rgb(218, 218, 218); background-color: #ffffff; padding: 30px;"><div style="font-family: lucida grande, lucida sans, lucida sans unicode, arial, helvetica, verdana, sans-serif; font-size: 14px; line-height: 24px; font-weight: normal; color: rgb(34, 34, 34);">${Cases.Recent Comment By} has deleted the following comment in the ticket, #${Cases.Request Id} ${Cases.Subject}.<br> <br>${Cases.Recent Comment}<br><br><br>${Cases.SUPPORT_PORTAL_BUTTON}</div> </td> </tr> <tr> <td style="padding-top: 5.0px;" valign="top">  </td> </tr> </tbody> </table> </td> </tr> </tbody> </table>'
+                category: DEFAULT_TEMPLATE
+                fromId: null
+                contentType: richtext
+                folderId: '4000000007021'
   requestBodies:
     templatejson:
       content:
@@ -738,6 +686,58 @@ components:
             Valid requestBody Definitions:
               value:
                 source: TICKET_REPLY
+  parameters:
+    emailTemplateId:
+      name: emailTemplateId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    module:
+      name: module
+      in: query
+      description: The name of the module
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: The name of the module
+        enum:
+        - tickets
+        - tasks
+        - contacts
+        - accounts
+        - products
+        - solutions
+        - calls
+        - events
+        maxLength: 100
+        minLength: 0
+    departmentId:
+      name: departmentId
+      in: query
+      description: the corresponding department to be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: the corresponding department to be fetched
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

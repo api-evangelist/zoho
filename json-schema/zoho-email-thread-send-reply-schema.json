@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-email-thread-send-reply-schema.json",
+  "title": "emailThreadSendReply",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-thread-api-openapi.yml#/components/schemas/emailThreadSendReply",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "./Thread.json#/components/schemas/commonSendReplyJson"
+    },
+    {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {
+        "ticketStatus": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Status of the ticket. Includes the custom statuses configured in your help desk portal.",
+          "x-dynamic-enum": true
+        },
+        "attachmentIds": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64",
+            "pattern": "([0-9]+)"
+          },
+          "uniqueItems": false
+        },
+        "to": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "To email ID in the thread, applicable only for @EMAIL@ channel",
+          "maxLength": 13000,
+          "minLength": 0,
+          "pattern": "(^((.*?)((<)*?[a-zA-Z0-9]([\\w\\-.+]*)@([\\w\\-.]*)(\\.[a-zA-Z]{2,22}(.[a-zA-Z]{2}){0,2})(>)*?(\\s)*((,|;)\\s*)?))+|^$)"
+        },
+        "fromEmailAddress": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Mandatory parameter for creating an email thread. Applicable for @EMAIL@, @ONLINE_CHAT@, @OFFLINE_CHAT@, @CUSTOMERPORTAL@, and @FORUMS@ channels.",
+          "maxLength": 300,
+          "minLength": 0,
+          "pattern": "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+        },
+        "contentType": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Formatting type of the content. Applicable only for the @EMAIL@ channel. Values supported are @html@ and @plainText@ (default).",
+          "enum": [
+            "html",
+            "plainText",
+            "text/html"
+          ],
+          "maxLength": 100,
+          "minLength": 0
+        },
+        "isForward": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Key that returns if the thread was sent as a forward. Applicable only for the @EMAIL@ channel."
+        }
+      }
+    },
+    {
+      "type": "object"
+    },
+    {
+      "type": "object"
+    },
+    {
+      "type": "object",
+      "required": [
+        "channel",
+        "content",
+        "fromEmailAddress"
+      ]
+    }
+  ]
+}

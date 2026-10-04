@@ -56,6 +56,40 @@ paths:
       - Workflow Configurations
 components:
   schemas:
+    GetworkflowconfigurationsResponse200:
+      type: object
+      additionalProperties: false
+      description: Indicates that the workflow configuration was retrieved successfully for the specified module.
+      properties:
+        workflow_configurations:
+          $ref: '#/components/schemas/WorkflowConfigurationsNested'
+    TriggersNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for triggers
+      properties:
+        api_name:
+          type: string
+          description: 'Field: api_name'
+          maxLength: 255
+        deprecated:
+          type: boolean
+          description: 'Field: deprecated'
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        scheduled_actions_supported:
+          type: boolean
+          description: 'Field: scheduled_actions_supported'
+        actions:
+          type: array
+          description: 'Field: actions'
+          items:
+            type: string
+            description: 'Field: actions'
+            maxLength: 255
+          maxItems: 12
     WorkflowConfigurationsNested:
       type: object
       additionalProperties: false
@@ -79,6 +113,31 @@ components:
           items:
             $ref: '#/components/schemas/ActionsNested'
           maxItems: 12
+    ModuleNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for module
+      properties:
+        singular_label:
+          type: string
+          description: 'Field: singular_label'
+          maxLength: 255
+        plural_label:
+          type: string
+          description: 'Field: plural_label'
+          maxLength: 255
+        api_name:
+          type: string
+          description: 'Field: api_name'
+          maxLength: 255
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        id:
+          type: string
+          description: 'Field: id'
+          maxLength: 255
     ActionsNested:
       type: object
       additionalProperties: false
@@ -111,6 +170,27 @@ components:
           type: integer
           format: int32
           description: 'Field: limit'
+    RelatedTriggersDetailsNested:
+      type: object
+      additionalProperties: false
+      description: Nested schema for related_triggers_details
+      properties:
+        api_name:
+          type: string
+          description: 'Field: api_name'
+          maxLength: 255
+        module:
+          $ref: '#/components/schemas/ModuleNested'
+        name:
+          type: string
+          description: 'Field: name'
+          maxLength: 255
+        triggers:
+          type: array
+          description: 'Field: triggers'
+          items:
+            $ref: '#/components/schemas/TriggersNested'
+          maxItems: 4
     RequiredParamMissingError:
       type: object
       additionalProperties: false
@@ -146,38 +226,6 @@ components:
       - message
       - status
       title: Error Response Core
-    ModuleNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for module
-      properties:
-        singular_label:
-          type: string
-          description: 'Field: singular_label'
-          maxLength: 255
-        plural_label:
-          type: string
-          description: 'Field: plural_label'
-          maxLength: 255
-        api_name:
-          type: string
-          description: 'Field: api_name'
-          maxLength: 255
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        id:
-          type: string
-          description: 'Field: id'
-          maxLength: 255
-    GetworkflowconfigurationsResponse200:
-      type: object
-      additionalProperties: false
-      description: Indicates that the workflow configuration was retrieved successfully for the specified module.
-      properties:
-        workflow_configurations:
-          $ref: '#/components/schemas/WorkflowConfigurationsNested'
     InvalidModuleResponse:
       type: object
       additionalProperties: false
@@ -213,54 +261,6 @@ components:
       - message
       - status
       title: Error Response Core
-    RelatedTriggersDetailsNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for related_triggers_details
-      properties:
-        api_name:
-          type: string
-          description: 'Field: api_name'
-          maxLength: 255
-        module:
-          $ref: '#/components/schemas/ModuleNested'
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        triggers:
-          type: array
-          description: 'Field: triggers'
-          items:
-            $ref: '#/components/schemas/TriggersNested'
-          maxItems: 4
-    TriggersNested:
-      type: object
-      additionalProperties: false
-      description: Nested schema for triggers
-      properties:
-        api_name:
-          type: string
-          description: 'Field: api_name'
-          maxLength: 255
-        deprecated:
-          type: boolean
-          description: 'Field: deprecated'
-        name:
-          type: string
-          description: 'Field: name'
-          maxLength: 255
-        scheduled_actions_supported:
-          type: boolean
-          description: 'Field: scheduled_actions_supported'
-        actions:
-          type: array
-          description: 'Field: actions'
-          items:
-            type: string
-            description: 'Field: actions'
-            maxLength: 255
-          maxItems: 12
   parameters:
     ParamQueryModule:
       name: module

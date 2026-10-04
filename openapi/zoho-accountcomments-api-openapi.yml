@@ -187,84 +187,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    addAccountCommentRequestBody:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              contentType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - plainText
-                - html
-                maxLength: 100
-                minLength: 0
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-            required:
-            - content
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contentType: html
-                content: First account comment
-    editAccountCommentRequestBody:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                content: second account comment edit
-  parameters:
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   schemas:
     accountCommentCommonResponse:
       type:
@@ -421,7 +343,96 @@ components:
         - type
         - zuid
       uniqueItems: false
+  parameters:
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  requestBodies:
+    addAccountCommentRequestBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              contentType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - plainText
+                - html
+                maxLength: 100
+                minLength: 0
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+            required:
+            - content
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contentType: html
+                content: First account comment
+    editAccountCommentRequestBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: second account comment edit
   responses:
+    get_accountComment_Response:
+      description: get AccountComment  template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/accountCommentCommonResponse'
+            - type: object
+              properties:
+                mention:
+                  $ref: '#/components/schemas/mentions'
     getAccountComments:
       description: getAccountComments template definitions
       content:
@@ -543,17 +554,6 @@ components:
                   roleName: LightAgent
                   type: AGENT
                   email: jade12tywin@zylker.com
-    get_accountComment_Response:
-      description: get AccountComment  template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/accountCommentCommonResponse'
-            - type: object
-              properties:
-                mention:
-                  $ref: '#/components/schemas/mentions'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

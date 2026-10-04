@@ -281,77 +281,6 @@ paths:
       - external-public
 components:
   responses:
-    userListViewJson:
-      description: userListViewJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./HelpcenterGroups.json#/components/schemas/data
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - photoUrl: null
-                  creator:
-                    photoUrl: https://desk.zoho.com/portal/api/user/24073000000095005/photo?orgId=143315
-                    name: ZylCare Admin
-                    id: '24073000000095005'
-                  emailAddress: carol@zylker.com
-                  name: 'John '
-                  addedTime: 1573225059000
-                  userType: ENDUSER
-                  label:
-                    preferences:
-                      shape: RECTANGLE
-                      bgColor: '#6CD4DF'
-                      textColor: '#FFFFFF'
-                    name: Prime Customer
-                    id: '24073000002132001'
-                  id: '24073000001997453'
-                  status: ACTIVE
-    listOfGroupResponse:
-      description: listOfGroupResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./HelpcenterGroups.json#/components/schemas/groupsArray
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: 1505797130000
-                  creator:
-                    photoURL: https://desk.zoho.com/portal/api/user/310975130121/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  modifier:
-                    photoURL: https://desk.zoho.com/portal/api/user/310975130121/photo?orgId=143315
-                    name: SupportAdmin
-                    id: '310975130121'
-                  name: Pro Customer
-                  count: '353'
-                  description: Pro Customers paid customers of the org will avail 24x7 Support service
-                  createdTime: 1505797130000
-                  id: '310975130110'
-                  helpCenterId: '310975130119'
-                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130133?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
-                  status: ACTIVE
     addGroupResponse:
       description: addGroupResponse template definitions
       content:
@@ -527,22 +456,8 @@ components:
                 helpCenterId: '31097519102'
                 logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130121?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
                 status: ACTIVE
-  parameters:
-    groupId:
-      name: groupId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  requestBodies:
-    addUserInput:
+    listOfGroupResponse:
+      description: listOfGroupResponse template definitions
       content:
         application/json:
           schema:
@@ -551,61 +466,107 @@ components:
             - object
             additionalProperties: false
             properties:
-              labelIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              groupIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              users:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 1
-                  minProperties: 1
-                  properties:
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                  required:
-                  - id
-                minItems: 1
-                uniqueItems: true
+              data:
+                $ref: ./HelpcenterGroups.json#/components/schemas/groupsArray
             required:
-            - users
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: 1505797130000
+                  creator:
+                    photoURL: https://desk.zoho.com/portal/api/user/310975130121/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  modifier:
+                    photoURL: https://desk.zoho.com/portal/api/user/310975130121/photo?orgId=143315
+                    name: SupportAdmin
+                    id: '310975130121'
+                  name: Pro Customer
+                  count: '353'
+                  description: Pro Customers paid customers of the org will avail 24x7 Support service
+                  createdTime: 1505797130000
+                  id: '310975130110'
+                  helpCenterId: '310975130119'
+                  logoUrl: https://desk.zoho.com/portal/api/publicImages/310975130133?portalId=5c9470fcc808cc98932703e28221d6c302e105dc4da8b23fafb6719abeecaa48
+                  status: ACTIVE
+    userListViewJson:
+      description: userListViewJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./HelpcenterGroups.json#/components/schemas/data
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - photoUrl: null
+                  creator:
+                    photoUrl: https://desk.zoho.com/portal/api/user/24073000000095005/photo?orgId=143315
+                    name: ZylCare Admin
+                    id: '24073000000095005'
+                  emailAddress: carol@zylker.com
+                  name: 'John '
+                  addedTime: 1573225059000
+                  userType: ENDUSER
+                  label:
+                    preferences:
+                      shape: RECTANGLE
+                      bgColor: '#6CD4DF'
+                      textColor: '#FFFFFF'
+                    name: Prime Customer
+                    id: '24073000002132001'
+                  id: '24073000001997453'
+                  status: ACTIVE
+  requestBodies:
+    updateGroupInput:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              name:
+                type:
+                - string
+                - 'null'
+                description: Name of the group
+                maxLength: 100
+                minLength: 0
+                pattern: '[0-9a-zA-Z_\-\&\.\$\@\^\(\)\{\}\~\=\-\|\*\+\?\[\]\,\:\''\/\!\P{InBasicLatin}\s]+'
+              description:
+                type:
+                - string
+                - 'null'
+                description: A brief description of the group
+                maxLength: 100
+                minLength: 0
+              logoId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the logo to associate with the group
+                pattern: ([0-9]+)
           examples:
             Valid requestBody Definitions:
               value:
-                users:
-                - id: '17883000000094001'
-                - id: '17883000000094023'
+                name: MVP Customer
+                description: Prime customer will have special access to Knowledge base module and Community categories
+                logoId: '310975130133'
+                status: ACTIVE
     addGroupInput:
       content:
         application/json:
@@ -686,7 +647,7 @@ components:
                 userIds:
                 - '17883000000013101'
                 - '17883000000094023'
-    updateGroupInput:
+    addUserInput:
       content:
         application/json:
           schema:
@@ -695,36 +656,75 @@ components:
             - object
             additionalProperties: false
             properties:
-              name:
+              labelIds:
                 type:
-                - string
                 - 'null'
-                description: Name of the group
-                maxLength: 100
-                minLength: 0
-                pattern: '[0-9a-zA-Z_\-\&\.\$\@\^\(\)\{\}\~\=\-\|\*\+\?\[\]\,\:\''\/\!\P{InBasicLatin}\s]+'
-              description:
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              groupIds:
                 type:
-                - string
                 - 'null'
-                description: A brief description of the group
-                maxLength: 100
-                minLength: 0
-              logoId:
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              users:
                 type:
-                - string
                 - 'null'
-                - integer
-                format: int64
-                description: ID of the logo to associate with the group
-                pattern: ([0-9]+)
+                - array
+                items:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 1
+                  minProperties: 1
+                  properties:
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                  required:
+                  - id
+                minItems: 1
+                uniqueItems: true
+            required:
+            - users
           examples:
             Valid requestBody Definitions:
               value:
-                name: MVP Customer
-                description: Prime customer will have special access to Knowledge base module and Community categories
-                logoId: '310975130133'
-                status: ACTIVE
+                users:
+                - id: '17883000000094001'
+                - id: '17883000000094023'
+  parameters:
+    groupId:
+      name: groupId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

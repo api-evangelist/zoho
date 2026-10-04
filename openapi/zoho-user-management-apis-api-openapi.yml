@@ -370,86 +370,6 @@ paths:
           $ref: https://raw.githubusercontent.com/zoho/analytics-oas/refs/heads/main/v2.0/zoho-analytics-api-common.json#/components/responses/CommonErrorResponse
 components:
   schemas:
-    DeactivateUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - emailId1
-        - emailId2
-    RemoveUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-        domainName:
-          type: string
-      required:
-      - emailIds
-      examples:
-      - emailIds:
-        - <email-id1>
-        - <email-id2>
-    GetUsersResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            users:
-              type: array
-              items:
-                type: object
-                properties:
-                  emailId:
-                    type: string
-                  status:
-                    type: boolean
-                  role:
-                    type: string
-      examples:
-      - status: success
-        summary: Get users
-        data:
-          users:
-          - emailId: user1@gmail.com
-            status: true
-            role: Organization Admin
-          - emailId: user2@gmail.com
-            status: true
-            role: User
-    ChangeWorkspaceUsersRoleConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain of users whose role is being changed
-        role:
-          type: string
-          description: New role to assign (USER, WORKSPACEADMIN, or custom)
-      required:
-      - emailIds
-      - role
     DeleteWorkspaceUsersConfig:
       type: object
       properties:
@@ -461,6 +381,22 @@ components:
         domainName:
           type: string
           description: Domain name to remove users from
+      required:
+      - emailIds
+    AddWorkspaceUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Name of the domain to which users are added
+        role:
+          type: string
+          description: Role to assign (USER, WORKSPACEADMIN or custom role)
       required:
       - emailIds
     GetSubscriptionDetailsResponse:
@@ -493,27 +429,7 @@ components:
             addOns: Zoho Recruit Connector,Zoho Books Connector
             billingDate: ' - '
             trialStatus: false
-    ChangeWorkspaceUsersStatusConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Domain to update user status in
-        operation:
-          type: string
-          enum:
-          - activate
-          - deactivate
-          description: The status operation to perform
-      required:
-      - emailIds
-      - operation
-    ActivateUsersConfig:
+    DeactivateUsersConfig:
       type: object
       properties:
         emailIds:
@@ -529,51 +445,38 @@ components:
       - emailIds:
         - emailId1
         - emailId2
-    GetResourceDetailsResponse:
+    RemoveUsersConfig:
       type: object
       properties:
-        status:
+        emailIds:
+          type: array
+          items:
+            type: string
+        domainName:
           type: string
-        summary:
-          type: string
-        data:
-          type: object
-          properties:
-            resourceDetails:
-              type: array
-              items:
-                type: object
-                properties:
-                  resourceName:
-                    type: string
-                  resourceUsage:
-                    type: object
-                    properties:
-                      allocated:
-                        type: string
-                      used:
-                        type: string
-                      remaining:
-                        type: string
-                      remarks:
-                        type: string
+      required:
+      - emailIds
       examples:
-      - status: success
-        summary: Get resource details
-        data:
-          resourceDetails:
-          - resourceName: users
-            resourceUsage:
-              allocated: '15'
-              used: '15'
-              remaining: '0'
-              remarks: ''
-          - resourceName: roUsers
-            resourceUsage:
-              allocated: '25'
-              used: '1'
-              remaining: '24'
-              remarks: ''
+      - emailIds:
+        - <email-id1>
+        - <email-id2>
+    ChangeWorkspaceUsersRoleConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain of users whose role is being changed
+        role:
+          type: string
+          description: New role to assign (USER, WORKSPACEADMIN, or custom)
+      required:
+      - emailIds
+      - role
     GetWorkspaceUsersResponse:
       type: object
       properties:
@@ -619,6 +522,22 @@ components:
           - emailId: user2@zoho.com
             status: true
             role: Workspace Admin
+    ActivateUsersConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+      required:
+      - emailIds
+      examples:
+      - emailIds:
+        - emailId1
+        - emailId2
     AddUsersConfig:
       type: object
       properties:
@@ -638,22 +557,6 @@ components:
         - <email-id1>
         - <email-id2>
         role: USER
-    AddWorkspaceUsersConfig:
-      type: object
-      properties:
-        emailIds:
-          type: array
-          items:
-            type: string
-            format: email
-        domainName:
-          type: string
-          description: Name of the domain to which users are added
-        role:
-          type: string
-          description: Role to assign (USER, WORKSPACEADMIN or custom role)
-      required:
-      - emailIds
     ChangeUserRoleConfig:
       type: object
       properties:
@@ -678,14 +581,104 @@ components:
         - emailId1
         - emailId2
         role: USER
+    ChangeWorkspaceUsersStatusConfig:
+      type: object
+      properties:
+        emailIds:
+          type: array
+          items:
+            type: string
+            format: email
+        domainName:
+          type: string
+          description: Domain to update user status in
+        operation:
+          type: string
+          enum:
+          - activate
+          - deactivate
+          description: The status operation to perform
+      required:
+      - emailIds
+      - operation
+    GetUsersResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                type: object
+                properties:
+                  emailId:
+                    type: string
+                  status:
+                    type: boolean
+                  role:
+                    type: string
+      examples:
+      - status: success
+        summary: Get users
+        data:
+          users:
+          - emailId: user1@gmail.com
+            status: true
+            role: Organization Admin
+          - emailId: user2@gmail.com
+            status: true
+            role: User
+    GetResourceDetailsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        summary:
+          type: string
+        data:
+          type: object
+          properties:
+            resourceDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  resourceName:
+                    type: string
+                  resourceUsage:
+                    type: object
+                    properties:
+                      allocated:
+                        type: string
+                      used:
+                        type: string
+                      remaining:
+                        type: string
+                      remarks:
+                        type: string
+      examples:
+      - status: success
+        summary: Get resource details
+        data:
+          resourceDetails:
+          - resourceName: users
+            resourceUsage:
+              allocated: '15'
+              used: '15'
+              remaining: '0'
+              remarks: ''
+          - resourceName: roUsers
+            resourceUsage:
+              allocated: '25'
+              used: '1'
+              remaining: '24'
+              remarks: ''
   parameters:
-    org-id:
-      name: ZANALYTICS-ORGID
-      in: header
-      required: true
-      schema:
-        type: string
-      description: Organization ID (can be obtained using Get Organizations API).
     workspace-id:
       name: workspace-id
       in: path
@@ -693,6 +686,13 @@ components:
       schema:
         type: string
       description: ID of the workspace.
+    org-id:
+      name: ZANALYTICS-ORGID
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Organization ID (can be obtained using Get Organizations API).
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

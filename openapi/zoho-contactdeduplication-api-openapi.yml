@@ -183,28 +183,6 @@ paths:
       - external-public
 components:
   responses:
-    listDuplicateContactCountResponse:
-      description: listDuplicateContactCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./ContactDeduplication.json#/components/schemas/counts
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - count: 16
-                  fieldValue: Jade
-                - count: 2
-                  fieldValue: saran
     getDefaultField:
       description: getDefaultField template definitions
       content:
@@ -371,7 +349,51 @@ components:
                       okPercentage: '31'
                       goodPercentage: '47'
                     email: jade@zylker.com
+    listDuplicateContactCountResponse:
+      description: listDuplicateContactCountResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./ContactDeduplication.json#/components/schemas/counts
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - count: 16
+                  fieldValue: Jade
+                - count: 2
+                  fieldValue: saran
   parameters:
+    fieldName:
+      name: fieldName
+      in: query
+      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
+        enum:
+        - firstName
+        - lastName
+        - email
+        - secondaryEmail
+        - phone
+        - fullName
+        - bothEmail
+        maxLength: 100
+        minLength: 0
     limit:
       name: limit
       in: query
@@ -405,28 +427,6 @@ components:
         description: Index number starting from which the contacts must be fetched
         minimum: 0
         pattern: ([0-9]+)
-    fieldName:
-      name: fieldName
-      in: query
-      description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'Name of the field whose values must be matched for deduplication.Values allowed are: !@firstName,@! !@lastName,@! !@email,@! !@secondaryEmail,@! !@phone,@! !@fullName,@! and !@bothEmail.@!'
-        enum:
-        - firstName
-        - lastName
-        - email
-        - secondaryEmail
-        - phone
-        - fullName
-        - bothEmail
-        maxLength: 100
-        minLength: 0
   requestBodies:
     setDefaultField:
       content:

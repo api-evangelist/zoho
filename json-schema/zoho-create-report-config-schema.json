@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-create-report-config-schema.json",
+  "title": "CreateReportConfig",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-modeling-apis-api-openapi.yml#/components/schemas/CreateReportConfig",
+  "type": "object",
+  "properties": {
+    "baseTableName": {
+      "type": "string",
+      "description": "Name of the base table used to create report."
+    },
+    "title": {
+      "type": "string",
+      "description": "Name of the report."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the report."
+    },
+    "reportType": {
+      "type": "string",
+      "description": "Specifies the type of report to be created.",
+      "enum": [
+        "chart",
+        "pivot",
+        "summary"
+      ]
+    },
+    "chartType": {
+      "type": "string",
+      "description": "Specifies the type of chart to be created.",
+      "enum": [
+        "area",
+        "area with points",
+        "area without points",
+        "smooth area",
+        "smooth area with points",
+        "smooth area without points",
+        "stacked area",
+        "stacked area with points",
+        "stacked smooth area",
+        "stacked smooth area with points",
+        "stacked smooth area without points",
+        "bar",
+        "horizontal bar",
+        "stacked bar",
+        "horizontal stacked bar",
+        "bubble",
+        "packed bubble",
+        "combo",
+        "combo bar with smooth line",
+        "funnel",
+        "pyramid",
+        "line",
+        "line with points",
+        "line without points",
+        "smooth line",
+        "smooth line with points",
+        "smooth line without points",
+        "step",
+        "map area",
+        "map bubble",
+        "map filled",
+        "map pie",
+        "map pie bubble",
+        "map bubble pie",
+        "map scatter",
+        "geo heat map",
+        "pie",
+        "ring",
+        "semi pie",
+        "semi ring",
+        "scatter",
+        "web",
+        "web with fill",
+        "web without fill",
+        "heat map",
+        "butterfly",
+        "table chart"
+      ]
+    },
+    "axisColumns": {
+      "type": "array",
+      "description": "Details of the columns like type, column name, and functions used.",
+      "items": {
+        "$ref": "#/$defs/AxisColumn"
+      }
+    },
+    "filters": {
+      "type": "array",
+      "description": "Filter conditions to be applied to the report.",
+      "items": {
+        "$ref": "#/$defs/FilterColumn"
+      }
+    },
+    "userFilters": {
+      "type": "array",
+      "description": "User-defined filters for report customization.",
+      "items": {
+        "$ref": "#/$defs/FilterColumn"
+      }
+    },
+    "isAxisMerge": {
+      "type": "string",
+      "enum": [
+        "true",
+        "false"
+      ],
+      "description": "Gives information about merge axis."
+    },
+    "mergeAxisInfo": {
+      "type": "string",
+      "description": "Details about merged Y-axis. Example: {\"axisIndex\":[2,3],\"labelName\":\"Merge_axis\"}"
+    }
+  },
+  "required": [
+    "baseTableName",
+    "title",
+    "reportType",
+    "axisColumns"
+  ],
+  "$defs": {
+    "AxisColumn": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Defines the role of the column in the report.",
+          "enum": [
+            "xAxis",
+            "yAxis",
+            "textAxis",
+            "colorAxis",
+            "toolTip",
+            "row",
+            "column",
+            "data",
+            "groupBy",
+            "summarize"
+          ]
+        },
+        "columnName": {
+          "type": "string",
+          "description": "Name of the column used in the report."
+        },
+        "operation": {
+          "type": "string",
+          "description": "Function applied to the column. Options vary by data type."
+        }
+      },
+      "required": [
+        "type",
+        "columnName",
+        "operation"
+      ]
+    },
+    "FilterColumn": {
+      "type": "object",
+      "properties": {
+        "tableName": {
+          "type": "string",
+          "description": "Name of the table the filter column belongs to."
+        },
+        "columnName": {
+          "type": "string",
+          "description": "Name of the column used for filtering."
+        },
+        "operation": {
+          "type": "string",
+          "description": "Function applied to the column in the filter."
+        }
+      },
+      "required": [
+        "tableName",
+        "columnName",
+        "operation"
+      ]
+    }
+  }
+}

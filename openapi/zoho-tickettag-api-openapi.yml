@@ -271,256 +271,6 @@ paths:
       x-audience:
       - external-public
 components:
-  schemas:
-    tagJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-        tagType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SYSTEM
-          - MANUAL
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - tagType
-    getTicketTagJson:
-      type:
-      - 'null'
-      - object
-      additionalProperties: false
-      properties:
-        ticketCount:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int32
-          pattern: ([0-9]+)
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-        tagType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SYSTEM
-          - MANUAL
-          - null
-          maxLength: 100
-          minLength: 0
-        id:
-          type:
-          - string
-          - 'null'
-          - integer
-          format: int64
-          pattern: ([0-9]+)
-      required:
-      - id
-      - name
-      - tagType
-      - ticketCount
-    getTicketTagData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/getTicketTagJson'
-    data:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: '#/components/schemas/tagJson'
-    ticketData:
-      type:
-      - 'null'
-      - array
-      items:
-        $ref: ./Ticket.json#/components/schemas/ticketTags
-  parameters:
-    departmentId:
-      name: departmentId
-      in: query
-      description: ID of the department from which the tags must be fetched
-      required: true
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        description: ID of the department from which the tags must be fetched
-        pattern: ([0-9]+)
-    limit:
-      name: limit
-      in: query
-      description: Number of tags to fetch
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of tags to fetch
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the tags must be fetched
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the tags must be fetched
-        pattern: ([0-9]+)
-    ticketId:
-      name: ticketId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    tagId:
-      name: tagId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  requestBodies:
-    associateTags_tagArray:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              tags:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-                uniqueItems: false
-            required:
-            - tags
-          examples:
-            Valid requestBody Definitions:
-              value:
-                tags:
-                - sample
-                - ticket
-                - tag
-    replaceTag:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: Tag ID of the Replacing Tag
-                pattern: ([0-9]+)
-            required:
-            - id
-          examples:
-            Valid requestBody Definitions:
-              value:
-                id: '12312312312'
-    tagArray:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              tags:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
-                uniqueItems: false
-            required:
-            - tags
-          examples:
-            Valid requestBody Definitions:
-              value:
-                tags:
-                - sample
-                - ticket
-                - tag
   responses:
     getTagsByTicketResponse:
       description: getTagsByTicketResponse template definitions
@@ -546,32 +296,6 @@ components:
                 - name: sample
                   tagType: MANUAL
                   id: 123234324
-    getTicketTagResponse:
-      description: getTicketTagResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: '#/components/schemas/getTicketTagData'
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ticketCount: '10'
-                  name: sample
-                  tagType: MANUAL
-                  id: '12312312312'
-                - ticketCount: '0'
-                  name: sample
-                  tagType: MANUAL
-                  id: '12312312312'
     ticketListViewArray:
       description: ticketListViewArray template definitions
       content:
@@ -948,6 +672,282 @@ components:
                 - name: sample
                   tagType: SYSTEM
                   id: 123234324
+    getTicketTagResponse:
+      description: getTicketTagResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: '#/components/schemas/getTicketTagData'
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ticketCount: '10'
+                  name: sample
+                  tagType: MANUAL
+                  id: '12312312312'
+                - ticketCount: '0'
+                  name: sample
+                  tagType: MANUAL
+                  id: '12312312312'
+  parameters:
+    ticketId:
+      name: ticketId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    tagId:
+      name: tagId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    departmentId:
+      name: departmentId
+      in: query
+      description: ID of the department from which the tags must be fetched
+      required: true
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        description: ID of the department from which the tags must be fetched
+        pattern: ([0-9]+)
+    limit:
+      name: limit
+      in: query
+      description: Number of tags to fetch
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of tags to fetch
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the tags must be fetched
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the tags must be fetched
+        pattern: ([0-9]+)
+  schemas:
+    getTicketTagJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        ticketCount:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int32
+          pattern: ([0-9]+)
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+        tagType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SYSTEM
+          - MANUAL
+          - null
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - tagType
+      - ticketCount
+    ticketData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: ./Ticket.json#/components/schemas/ticketTags
+    data:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/tagJson'
+    tagJson:
+      type:
+      - 'null'
+      - object
+      additionalProperties: false
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+          pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+        tagType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SYSTEM
+          - MANUAL
+          maxLength: 100
+          minLength: 0
+        id:
+          type:
+          - string
+          - 'null'
+          - integer
+          format: int64
+          pattern: ([0-9]+)
+      required:
+      - id
+      - name
+      - tagType
+    getTicketTagData:
+      type:
+      - 'null'
+      - array
+      items:
+        $ref: '#/components/schemas/getTicketTagJson'
+  requestBodies:
+    associateTags_tagArray:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              tags:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+                uniqueItems: false
+            required:
+            - tags
+          examples:
+            Valid requestBody Definitions:
+              value:
+                tags:
+                - sample
+                - ticket
+                - tag
+    tagArray:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              tags:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: ^(?!^null$)[a-zA-Z0-9\_\.\-\+\%\P{InBasicLatin}\s]{3,}$
+                uniqueItems: false
+            required:
+            - tags
+          examples:
+            Valid requestBody Definitions:
+              value:
+                tags:
+                - sample
+                - ticket
+                - tag
+    replaceTag:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: Tag ID of the Replacing Tag
+                pattern: ([0-9]+)
+            required:
+            - id
+          examples:
+            Valid requestBody Definitions:
+              value:
+                id: '12312312312'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

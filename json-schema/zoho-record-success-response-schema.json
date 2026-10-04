@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-record-success-response-schema.json",
+  "title": "RecordSuccessResponse",
+  "description": "Standard success response schema for single or bulk record operations.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-actions-api-openapi.yml#/components/schemas/RecordSuccessResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "maxItems": 100,
+      "description": "List of successfully processed records with detailed metadata.",
+      "items": {
+        "type": "object",
+        "description": "Success object representing a single successfully processed record.",
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Machine-readable code indicating a successful operation.",
+            "enum": [
+              "SUCCESS"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 1024,
+            "description": "Human-readable success message describing the operation outcome."
+          },
+          "status": {
+            "type": "string",
+            "description": "Overall execution status of the operation.",
+            "enum": [
+              "success"
+            ]
+          },
+          "details": {
+            "type": "object",
+            "description": "Detailed metadata about the processed record.",
+            "additionalProperties": true,
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "int64",
+                "description": "Unique identifier of the record."
+              },
+              "Modified_Time": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp indicating when the record was last modified."
+              },
+              "Created_Time": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp indicating when the record was created."
+              },
+              "Created_By": {
+                "type": "object",
+                "description": "User who originally created the record.",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "Display name of the creating user."
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "int64",
+                    "description": "Unique identifier of the creating user."
+                  }
+                },
+                "required": [
+                  "name",
+                  "id"
+                ]
+              },
+              "Modified_By": {
+                "type": "object",
+                "description": "User who last modified the record.",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "Display name of the modifying user."
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "int64",
+                    "description": "Unique identifier of the modifying user."
+                  }
+                },
+                "required": [
+                  "name",
+                  "id"
+                ]
+              },
+              "$approval_state": {
+                "type": "string",
+                "maxLength": 1024,
+                "description": "Approval state of the record in the approval workflow."
+              }
+            },
+            "required": [
+              "id",
+              "Modified_Time",
+              "Created_Time",
+              "Created_By",
+              "Modified_By",
+              "$approval_state"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "status",
+          "details"
+        ]
+      }
+    }
+  },
+  "required": [
+    "data"
+  ]
+}

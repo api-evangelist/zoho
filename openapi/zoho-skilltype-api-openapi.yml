@@ -349,21 +349,27 @@ components:
                   createdTime: 1595507933429
                   modifiedBy: '1000000000059'
                   id: '1000000173007'
-  parameters:
-    skillTypeId:
-      name: skillTypeId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   requestBodies:
+    skillTypesUpdateJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 50
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+          examples:
+            Valid requestBody Definitions:
+              value:
+                name: Product
     skillTypesCreateJson:
       content:
         application/json:
@@ -395,26 +401,20 @@ components:
               value:
                 departmentId: '1000000013248'
                 name: Country
-    skillTypesUpdateJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 50
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-          examples:
-            Valid requestBody Definitions:
-              value:
-                name: Product
+  parameters:
+    skillTypeId:
+      name: skillTypeId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

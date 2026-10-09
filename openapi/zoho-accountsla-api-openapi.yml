@@ -121,26 +121,20 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    updateSla:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              associate:
-                type:
-                - boolean
-                - 'null'
-            required:
-            - associate
-          examples:
-            Valid requestBody Definitions:
-              value:
-                associate: true
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   responses:
     slaMetaInfoResponse:
       description: slaMetaInfoResponse template definitions
@@ -178,20 +172,26 @@ components:
                   department:
                     name: Jaguar
                     id: '45794000000586067'
-  parameters:
-    accountId:
-      name: accountId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+  requestBodies:
+    updateSla:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              associate:
+                type:
+                - boolean
+                - 'null'
+            required:
+            - associate
+          examples:
+            Valid requestBody Definitions:
+              value:
+                associate: true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

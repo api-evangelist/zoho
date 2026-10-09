@@ -217,310 +217,184 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    timeEntryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              secondsSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of seconds in the time entry.
-                pattern: ([0-9]+)
-              cf:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              executedTime:
-                type:
-                - string
-                - 'null'
-                description: Time when work related to the time entry was started.
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              customFields:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              fixedCost:
-                type:
-                - string
-                - 'null'
-                description: Fixed cost
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              minutesSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of minutes in the time entry.
-                pattern: ([0-9]+)
-              agentCostPerHour:
-                type:
-                - string
-                - 'null'
-                description: Per hour cost of an agent.
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              description:
-                type:
-                - string
-                - 'null'
-                description: Description of the time entry
-                maxLength: 100
-                minLength: 0
-              hoursSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of hours in the time entry.
-                pattern: ([0-9]+)
-              ownerId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the user associated with the time entry
-                pattern: ([0-9]+)
-              isBillable:
-                type:
-                - boolean
-                - 'null'
-                description: Billing Preference
-              mode:
-                type:
-                - string
-                - 'null'
-                description: Mode configured in time tracking. Supported values are @Manual@ and @Auto@
-                enum:
-                - MANUAL
-                - AUTO
-                maxLength: 100
-                minLength: 0
-              requestChargeType:
-                type:
-                - string
-                - 'null'
-                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
-                enum:
-                - Customer Service
-                - Upgrade Request
-                - Product Consultation
-                - Support and Maintenance
-                maxLength: 100
-                minLength: 0
-              additionalCost:
-                type:
-                - string
-                - 'null'
-                description: Additional cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              totalCost:
-                type:
-                - string
-                - 'null'
-                description: Total cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-            required:
-            - executedTime
-          examples:
-            Valid requestBody Definitions:
-              value:
-                secondsSpent: '21'
-                cf:
-                  cf_timeentryname: time2
-                executedTime: 1466627400000
-                minutesSpent: '23'
-                agentCostPerHour: '3.0'
-                description: Time Entry description
-                hoursSpent: '3'
-                ownerId: '4000000008692'
-                requestChargeType: Customer Service
-                additionalCost: '10.0'
-                totalCost: '20.17'
-    updateTimeEntryForTask_timeEntryJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              secondsSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of seconds in the time entry.
-                pattern: ([0-9]+)
-              cf:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              executedTime:
-                type:
-                - string
-                - 'null'
-                description: Time when work related to the time entry was started.
-                maxLength: 100
-                minLength: 0
-                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-              customFields:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-                patternProperties:
-                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 100
-                    minLength: 0
-                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              fixedCost:
-                type:
-                - string
-                - 'null'
-                description: Fixed cost
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              minutesSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of minutes in the time entry.
-                pattern: ([0-9]+)
-              agentCostPerHour:
-                type:
-                - string
-                - 'null'
-                description: Per hour cost of an agent.
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              description:
-                type:
-                - string
-                - 'null'
-                description: Description of the time entry
-                maxLength: 100
-                minLength: 0
-              hoursSpent:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                description: Number of hours in the time entry.
-                pattern: ([0-9]+)
-              ownerId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                description: ID of the user associated with the time entry
-                pattern: ([0-9]+)
-              isBillable:
-                type:
-                - boolean
-                - 'null'
-                description: Billing Preference
-              mode:
-                type:
-                - string
-                - 'null'
-                description: Mode configured in time tracking. Supported values are @Manual@ and @Auto@
-                enum:
-                - MANUAL
-                - AUTO
-                maxLength: 100
-                minLength: 0
-              requestChargeType:
-                type:
-                - string
-                - 'null'
-                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
-                enum:
-                - Customer Service
-                - Upgrade Request
-                - Product Consultation
-                - Support and Maintenance
-                maxLength: 100
-                minLength: 0
-              additionalCost:
-                type:
-                - string
-                - 'null'
-                description: Additional cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-              totalCost:
-                type:
-                - string
-                - 'null'
-                description: Total cost incurred
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9]{1,13}(\.[0-9]*)?)
-          examples:
-            Valid requestBody Definitions:
-              value: null
   responses:
+    getTimeEntryJson:
+      description: getTimeEntryJson template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./TaskTimeEntry.json#/components/schemas/commonTimeEntryForTaskResponse
+            - type:
+              - 'null'
+              - object
+              properties:
+                parent:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 5
+                  minProperties: 5
+                  properties:
+                    ticketNumber:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int32
+                      pattern: ([0-9]+)
+                    associatedTicketId:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    subject:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    type:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 100
+                      minLength: 0
+                  required:
+                  - associatedTicketId
+                  - id
+                  - subject
+                  - ticketNumber
+                  - type
+                isTrashed:
+                  type:
+                  - boolean
+                  - 'null'
+                createdBy:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                requestId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                taskId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                layoutDetails:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 2
+                  minProperties: 2
+                  properties:
+                    id:
+                      type:
+                      - string
+                      - 'null'
+                      - integer
+                      format: int64
+                      pattern: ([0-9]+)
+                    layoutName:
+                      type:
+                      - string
+                      - 'null'
+                      maxLength: 120
+                      minLength: 0
+                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+                  required:
+                  - id
+                  - layoutName
+              required:
+              - createdBy
+              - isTrashed
+              - layoutDetails
+              - layoutId
+              - parent
+              - requestId
+              - taskId
+          examples:
+            Valid responses Definitions:
+              value: null
+    getSummationOfTimeEntryForTaskResponse:
+      description: getSummationOfTimeEntryForTaskResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              totalMins:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalHours:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalCosts:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              totalSeconds:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - totalCosts
+            - totalHours
+            - totalMins
+            - totalSeconds
+          examples:
+            Valid responses Definitions:
+              value:
+                totalMins: 5
+                totalHours: 12
+                totalCosts: 1000
+                totalSeconds: 24
     getTimeEntryByTaskIdResponse:
       description: getTimeEntryByTaskIdResponse template definitions
       content:
@@ -695,8 +569,8 @@ components:
                   requestChargeType: Customer Service
                   additionalCost: '10.0'
                   totalCost: '657.46'
-    getSummationOfTimeEntryForTaskResponse:
-      description: getSummationOfTimeEntryForTaskResponse template definitions
+  requestBodies:
+    updateTimeEntryForTask_timeEntryJson:
       content:
         application/json:
           schema:
@@ -705,174 +579,326 @@ components:
             - object
             additionalProperties: false
             properties:
-              totalMins:
+              secondsSpent:
                 type:
                 - string
                 - 'null'
                 - integer
                 format: int32
+                description: Number of seconds in the time entry.
                 pattern: ([0-9]+)
-              totalHours:
+              cf:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              executedTime:
+                type:
+                - string
+                - 'null'
+                description: Time when work related to the time entry was started.
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              customFields:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              fixedCost:
+                type:
+                - string
+                - 'null'
+                description: Fixed cost
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              minutesSpent:
                 type:
                 - string
                 - 'null'
                 - integer
                 format: int32
+                description: Number of minutes in the time entry.
                 pattern: ([0-9]+)
-              totalCosts:
+              agentCostPerHour:
+                type:
+                - string
+                - 'null'
+                description: Per hour cost of an agent.
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              description:
+                type:
+                - string
+                - 'null'
+                description: Description of the time entry
+                maxLength: 100
+                minLength: 0
+              hoursSpent:
                 type:
                 - string
                 - 'null'
                 - integer
                 format: int32
+                description: Number of hours in the time entry.
                 pattern: ([0-9]+)
-              totalSeconds:
+              ownerId:
                 type:
                 - string
                 - 'null'
                 - integer
-                format: int32
+                format: int64
+                description: ID of the user associated with the time entry
                 pattern: ([0-9]+)
-            required:
-            - totalCosts
-            - totalHours
-            - totalMins
-            - totalSeconds
+              isBillable:
+                type:
+                - boolean
+                - 'null'
+                description: Billing Preference
+              mode:
+                type:
+                - string
+                - 'null'
+                description: Mode configured in time tracking. Supported values are @Manual@ and @Auto@
+                enum:
+                - MANUAL
+                - AUTO
+                maxLength: 100
+                minLength: 0
+              requestChargeType:
+                type:
+                - string
+                - 'null'
+                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
+                enum:
+                - Customer Service
+                - Upgrade Request
+                - Product Consultation
+                - Support and Maintenance
+                maxLength: 100
+                minLength: 0
+              additionalCost:
+                type:
+                - string
+                - 'null'
+                description: Additional cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              totalCost:
+                type:
+                - string
+                - 'null'
+                description: Total cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
           examples:
-            Valid responses Definitions:
-              value:
-                totalMins: 5
-                totalHours: 12
-                totalCosts: 1000
-                totalSeconds: 24
-    getTimeEntryJson:
-      description: getTimeEntryJson template definitions
+            Valid requestBody Definitions:
+              value: null
+    timeEntryJson:
       content:
         application/json:
           schema:
+            type:
+            - 'null'
+            - object
             additionalProperties: false
-            allOf:
-            - $ref: ./TaskTimeEntry.json#/components/schemas/commonTimeEntryForTaskResponse
-            - type:
-              - 'null'
-              - object
-              properties:
-                parent:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 5
-                  minProperties: 5
-                  properties:
-                    ticketNumber:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int32
-                      pattern: ([0-9]+)
-                    associatedTicketId:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    subject:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
+            properties:
+              secondsSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of seconds in the time entry.
+                pattern: ([0-9]+)
+              cf:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
                     type:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 100
-                      minLength: 0
-                  required:
-                  - associatedTicketId
-                  - id
-                  - subject
-                  - ticketNumber
-                  - type
-                isTrashed:
-                  type:
-                  - boolean
-                  - 'null'
-                createdBy:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                requestId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                taskId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                layoutDetails:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 2
-                  minProperties: 2
-                  properties:
-                    id:
-                      type:
-                      - string
-                      - 'null'
-                      - integer
-                      format: int64
-                      pattern: ([0-9]+)
-                    layoutName:
-                      type:
-                      - string
-                      - 'null'
-                      maxLength: 120
-                      minLength: 0
-                      pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-                  required:
-                  - id
-                  - layoutName
-              required:
-              - createdBy
-              - isTrashed
-              - layoutDetails
-              - layoutId
-              - parent
-              - requestId
-              - taskId
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              executedTime:
+                type:
+                - string
+                - 'null'
+                description: Time when work related to the time entry was started.
+                maxLength: 100
+                minLength: 0
+                pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+              customFields:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+                patternProperties:
+                  ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 100
+                    minLength: 0
+                    pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              fixedCost:
+                type:
+                - string
+                - 'null'
+                description: Fixed cost
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              minutesSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of minutes in the time entry.
+                pattern: ([0-9]+)
+              agentCostPerHour:
+                type:
+                - string
+                - 'null'
+                description: Per hour cost of an agent.
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              description:
+                type:
+                - string
+                - 'null'
+                description: Description of the time entry
+                maxLength: 100
+                minLength: 0
+              hoursSpent:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                description: Number of hours in the time entry.
+                pattern: ([0-9]+)
+              ownerId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                description: ID of the user associated with the time entry
+                pattern: ([0-9]+)
+              isBillable:
+                type:
+                - boolean
+                - 'null'
+                description: Billing Preference
+              mode:
+                type:
+                - string
+                - 'null'
+                description: Mode configured in time tracking. Supported values are @Manual@ and @Auto@
+                enum:
+                - MANUAL
+                - AUTO
+                maxLength: 100
+                minLength: 0
+              requestChargeType:
+                type:
+                - string
+                - 'null'
+                description: Type of request in the ticket. Values supported are Customer Service, Upgrade Request, Product Consultation, and Support and Maintenance.
+                enum:
+                - Customer Service
+                - Upgrade Request
+                - Product Consultation
+                - Support and Maintenance
+                maxLength: 100
+                minLength: 0
+              additionalCost:
+                type:
+                - string
+                - 'null'
+                description: Additional cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+              totalCost:
+                type:
+                - string
+                - 'null'
+                description: Total cost incurred
+                maxLength: 100
+                minLength: 0
+                pattern: ([0-9]{1,13}(\.[0-9]*)?)
+            required:
+            - executedTime
           examples:
-            Valid responses Definitions:
-              value: null
+            Valid requestBody Definitions:
+              value:
+                secondsSpent: '21'
+                cf:
+                  cf_timeentryname: time2
+                executedTime: 1466627400000
+                minutesSpent: '23'
+                agentCostPerHour: '3.0'
+                description: Time Entry description
+                hoursSpent: '3'
+                ownerId: '4000000008692'
+                requestChargeType: Customer Service
+                additionalCost: '10.0'
+                totalCost: '20.17'
   parameters:
+    taskId:
+      name: taskId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    taskTimeEntryId:
+      name: taskTimeEntryId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
     billStatus:
       name: billStatus
       in: query
@@ -891,32 +917,6 @@ components:
         - billed
         maxLength: 100
         minLength: 0
-    taskTimeEntryId:
-      name: taskTimeEntryId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    taskId:
-      name: taskId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

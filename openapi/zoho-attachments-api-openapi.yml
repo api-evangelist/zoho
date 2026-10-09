@@ -438,7 +438,248 @@ paths:
       tags:
       - Attachments
 components:
+  responses:
+    NotFound:
+      description: Not found - the specified record or attachment does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized - authentication credentials are missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PayloadTooLarge:
+      description: Request entity too large - file size exceeds 100MB limit
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BodySizeLimitError'
+    InternalServerError:
+      description: Internal server error - unexpected server failure
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden - insufficient permissions to perform the operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TooManyRequests:
+      description: Too many requests - rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServiceUnavailable:
+      description: Service unavailable - server is temporarily unable to handle the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request - invalid input parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    BodySizeLimitError:
+      type: object
+      description: Error response for body size limit exceeded
+      properties:
+        status:
+          type: string
+          description: Error status indicator
+          enum:
+          - error
+        code:
+          type: string
+          description: Error code
+          enum:
+          - BODY_SIZE_REACHED
+          - FILE_SIZE_MORE_THAN_ALLOWED_SIZE
+        message:
+          type: string
+          description: Error message
+          enum:
+          - The request body limit reached
+          - Request body size exceeds the maximum limit of 100MB
+          - Please check if the size of the file is in the correct range
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: false
+      required:
+      - status
+      - code
+      - message
+      - details
+      additionalProperties: false
+    AttachmentSuccessResponse:
+      type: object
+      description: Successful attachment operation response
+      properties:
+        data:
+          type: array
+          description: Array of upload results
+          maxItems: 100
+          items:
+            type: object
+            description: Upload status details
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Response code
+                enum:
+                - SUCCESS
+              details:
+                type: object
+                description: Details of the uploaded attachment
+                additionalProperties: false
+                properties:
+                  id:
+                    type: string
+                    description: Attachment identifier
+                    pattern: ^[0-9]+$
+                    maxLength: 50
+                  Modified_Time:
+                    type: string
+                    format: date-time
+                    description: Last modification timestamp
+                  Created_Time:
+                    type: string
+                    format: date-time
+                    description: Creation timestamp
+                  Modified_By:
+                    type: object
+                    description: User who last modified the attachment
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        description: User identifier
+                        pattern: ^[0-9]+$
+                        maxLength: 50
+                      name:
+                        type: string
+                        description: User name
+                        maxLength: 250
+                    required:
+                    - id
+                    - name
+                  Created_By:
+                    type: object
+                    description: User who created the attachment
+                    additionalProperties: false
+                    properties:
+                      id:
+                        type: string
+                        description: User identifier
+                        pattern: ^[0-9]+$
+                        maxLength: 50
+                      name:
+                        type: string
+                        description: User name
+                        maxLength: 250
+                    required:
+                    - id
+                    - name
+                required:
+                - id
+                - Modified_Time
+                - Created_Time
+                - Modified_By
+                - Created_By
+              message:
+                type: string
+                description: Success message
+                enum:
+                - attachment uploaded successfully
+              status:
+                type: string
+                description: Operation status
+                enum:
+                - success
+            required:
+            - code
+            - details
+            - message
+            - status
+      required:
+      - data
+      additionalProperties: false
+    Info:
+      type: object
+      description: Pagination information for list responses
+      properties:
+        per_page:
+          type: integer
+          format: int32
+          description: Number of records per page
+          minimum: 1
+          maximum: 200
+        next_page_token:
+          type:
+          - string
+          - 'null'
+          maxLength: 1024
+          description: Token to retrieve the next page of results
+        count:
+          type: integer
+          format: int32
+          description: Number of records returned in the current response
+          minimum: 0
+        page:
+          type: integer
+          format: int32
+          description: Current page number
+          minimum: 1
+        previous_page_token:
+          type:
+          - string
+          - 'null'
+          maxLength: 1024
+          description: Token to retrieve the previous page of results
+        page_token_expiry:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expiry timestamp for the page tokens
+        more_records:
+          type: boolean
+          description: Indicates whether more records are available
+      required:
+      - per_page
+      - next_page_token
+      - count
+      - page
+      - previous_page_token
+      - page_token_expiry
+      - more_records
+      additionalProperties: false
+    AttachmentListResponse:
+      type: object
+      description: Response containing list of attachments for a record
+      properties:
+        data:
+          type: array
+          description: Array of attachment objects
+          maxItems: 1000
+          items:
+            $ref: '#/components/schemas/AttachmentObject'
+        info:
+          $ref: '#/components/schemas/Info'
+      required:
+      - data
+      - info
+      additionalProperties: false
     AttachmentObject:
       type: object
       description: Individual attachment metadata
@@ -650,261 +891,20 @@ components:
       - message
       - details
       additionalProperties: false
-    AttachmentSuccessResponse:
-      type: object
-      description: Successful attachment operation response
-      properties:
-        data:
-          type: array
-          description: Array of upload results
-          maxItems: 100
-          items:
-            type: object
-            description: Upload status details
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Response code
-                enum:
-                - SUCCESS
-              details:
-                type: object
-                description: Details of the uploaded attachment
-                additionalProperties: false
-                properties:
-                  id:
-                    type: string
-                    description: Attachment identifier
-                    pattern: ^[0-9]+$
-                    maxLength: 50
-                  Modified_Time:
-                    type: string
-                    format: date-time
-                    description: Last modification timestamp
-                  Created_Time:
-                    type: string
-                    format: date-time
-                    description: Creation timestamp
-                  Modified_By:
-                    type: object
-                    description: User who last modified the attachment
-                    additionalProperties: false
-                    properties:
-                      id:
-                        type: string
-                        description: User identifier
-                        pattern: ^[0-9]+$
-                        maxLength: 50
-                      name:
-                        type: string
-                        description: User name
-                        maxLength: 250
-                    required:
-                    - id
-                    - name
-                  Created_By:
-                    type: object
-                    description: User who created the attachment
-                    additionalProperties: false
-                    properties:
-                      id:
-                        type: string
-                        description: User identifier
-                        pattern: ^[0-9]+$
-                        maxLength: 50
-                      name:
-                        type: string
-                        description: User name
-                        maxLength: 250
-                    required:
-                    - id
-                    - name
-                required:
-                - id
-                - Modified_Time
-                - Created_Time
-                - Modified_By
-                - Created_By
-              message:
-                type: string
-                description: Success message
-                enum:
-                - attachment uploaded successfully
-              status:
-                type: string
-                description: Operation status
-                enum:
-                - success
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - data
-      additionalProperties: false
-    AttachmentListResponse:
-      type: object
-      description: Response containing list of attachments for a record
-      properties:
-        data:
-          type: array
-          description: Array of attachment objects
-          maxItems: 1000
-          items:
-            $ref: '#/components/schemas/AttachmentObject'
-        info:
-          $ref: '#/components/schemas/Info'
-      required:
-      - data
-      - info
-      additionalProperties: false
-    Info:
-      type: object
-      description: Pagination information for list responses
-      properties:
-        per_page:
-          type: integer
-          format: int32
-          description: Number of records per page
-          minimum: 1
-          maximum: 200
-        next_page_token:
-          type:
-          - string
-          - 'null'
-          maxLength: 1024
-          description: Token to retrieve the next page of results
-        count:
-          type: integer
-          format: int32
-          description: Number of records returned in the current response
-          minimum: 0
-        page:
-          type: integer
-          format: int32
-          description: Current page number
-          minimum: 1
-        previous_page_token:
-          type:
-          - string
-          - 'null'
-          maxLength: 1024
-          description: Token to retrieve the previous page of results
-        page_token_expiry:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Expiry timestamp for the page tokens
-        more_records:
-          type: boolean
-          description: Indicates whether more records are available
-      required:
-      - per_page
-      - next_page_token
-      - count
-      - page
-      - previous_page_token
-      - page_token_expiry
-      - more_records
-      additionalProperties: false
-    BodySizeLimitError:
-      type: object
-      description: Error response for body size limit exceeded
-      properties:
-        status:
-          type: string
-          description: Error status indicator
-          enum:
-          - error
-        code:
-          type: string
-          description: Error code
-          enum:
-          - BODY_SIZE_REACHED
-          - FILE_SIZE_MORE_THAN_ALLOWED_SIZE
-        message:
-          type: string
-          description: Error message
-          enum:
-          - The request body limit reached
-          - Request body size exceeds the maximum limit of 100MB
-          - Please check if the size of the file is in the correct range
-        details:
-          type: object
-          description: Additional error details
-          additionalProperties: false
-      required:
-      - status
-      - code
-      - message
-      - details
-      additionalProperties: false
-  responses:
-    NotFound:
-      description: Not found - the specified record or attachment does not exist
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    ServiceUnavailable:
-      description: Service unavailable - server is temporarily unable to handle the request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Unauthorized - authentication credentials are missing or invalid
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequest:
-      description: Bad request - invalid input parameters or request body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    TooManyRequests:
-      description: Too many requests - rate limit exceeded
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Forbidden:
-      description: Forbidden - insufficient permissions to perform the operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    PayloadTooLarge:
-      description: Request entity too large - file size exceeds 100MB limit
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BodySizeLimitError'
-    InternalServerError:
-      description: Internal server error - unexpected server failure
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    RecordId:
+      name: recordId
+      in: path
+      required: true
+      description: The unique identifier of the record
+      schema:
+        type: string
+        maxLength: 64
     ModuleApiName:
       name: moduleApiName
       in: path
       required: true
       description: The API name of the module
-      schema:
-        type: string
-        maxLength: 64
-    Id:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the attachment
       schema:
         type: string
         maxLength: 64
@@ -916,11 +916,11 @@ components:
       schema:
         type: string
         maxLength: 100000
-    RecordId:
-      name: recordId
+    Id:
+      name: id
       in: path
       required: true
-      description: The unique identifier of the record
+      description: The unique identifier of the attachment
       schema:
         type: string
         maxLength: 64

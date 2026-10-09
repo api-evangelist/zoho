@@ -1,0 +1,1284 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-user-details-schema.json",
+  "title": "UserDetails",
+  "description": "User details",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-users-api-openapi.yml#/components/schemas/UserDetails",
+  "type": "object",
+  "properties": {
+    "$current_shift": {
+      "readOnly": true,
+      "description": "Current shift assigned to the user",
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Current shift details",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the shift",
+              "maxLength": 80
+            },
+            "id": {
+              "type": "string",
+              "maxLength": 20,
+              "description": "ID of the shift"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "id"
+          ]
+        },
+        {
+          "type": "null",
+          "description": "No current shift assigned"
+        }
+      ]
+    },
+    "$next_shift": {
+      "description": "Next shift assigned to the user",
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Next shift details",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the shift",
+              "maxLength": 80
+            },
+            "id": {
+              "type": "string",
+              "maxLength": 20,
+              "description": "ID of the shift"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "id"
+          ]
+        },
+        {
+          "type": "null",
+          "description": "No next shift assigned"
+        }
+      ]
+    },
+    "Current_Shift__s": {
+      "description": "To update current shift for the user",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "Current shift ID to be updated",
+          "maxLength": 20
+        },
+        {
+          "type": "null",
+          "description": "No current shift assigned"
+        }
+      ]
+    },
+    "$shift_effective_from": {
+      "description": "Next shift effective from date",
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date",
+          "pattern": "([0-9]{4})-([0-9]{2})-([0-9]{2})",
+          "description": "Next shift effective from date"
+        },
+        {
+          "type": "null",
+          "description": "No next shift assigned"
+        }
+      ]
+    },
+    "confirm": {
+      "type": "boolean",
+      "description": "Indicates whether the user has accepted the invitation",
+      "readOnly": true
+    },
+    "date_format": {
+      "type": "string",
+      "description": "User's preferred date format",
+      "enum": [
+        "dd-MM-yyyy",
+        "dd/MM/yyyy",
+        "dd.MM.yyyy",
+        "dd MM yyyy",
+        "dd-MM-yy",
+        "dd/MM/yy",
+        "dd.MM.yy",
+        "d.MM.yy",
+        "d-M-yy",
+        "d/M/yy",
+        "d.M.yy",
+        "d.M.yy.",
+        "d-M-yyyy",
+        "d/M/yyyy",
+        "d.M.yyyy",
+        "d. M. yyyy.",
+        "d. M. yyyy",
+        "d MMM, yyyy",
+        "dd MMM, yyyy",
+        "d. MMMM yyyy",
+        "dd.MM.yyyy.",
+        "dd.MM.yy.",
+        "yyyy-MM-dd",
+        "yyyy/MM/dd",
+        "yyyy.MM.dd",
+        "yyyy MM dd",
+        "yy/MM/dd",
+        "yy-MM-dd",
+        "yy.M.d",
+        "yy-M-d",
+        "yy. M. d",
+        "yyyy/M/d",
+        "yyyy年MM月dd日",
+        "yy年M月d日",
+        "yyyy.MM.dd.",
+        "yyyy. MM. dd",
+        "MM-dd-yyyy",
+        "MM/dd/yyyy",
+        "MM.dd.yyyy",
+        "MM dd yyyy",
+        "MM-dd-yy",
+        "MM/dd/yy",
+        "M/dd/yy",
+        "MMM-dd-yyyy",
+        "MMM dd, yyyy",
+        "MMM d, yyyy",
+        "MMMM d, yyyy",
+        "yyyy.dd.MM",
+        "yy.d.M"
+      ]
+    },
+    "decimal_separator": {
+      "type": "string",
+      "description": "User's preferred decimal separator",
+      "enum": [
+        "Comma",
+        "Period"
+      ]
+    },
+    "email": {
+      "type": "string",
+      "description": "User's email address",
+      "pattern": "^[\\+\\-\\p{L}\\p{M}\\p{N}_]([\\p{L}\\p{M}\\p{N}!#$%&'*+\\-\\/=?^_`{|}~.]*)@(?=.{4,256}$)(([\\p{L}\\p{N}\\p{M}]+)(([\\-_]*[\\p{L}\\p{M}\\p{N}])*)[.])+[\\p{L}\\p{M}]{2,22}$",
+      "maxLength": 100
+    },
+    "first_name": {
+      "type": "string",
+      "description": "User's first name",
+      "maxLength": 50
+    },
+    "full_name": {
+      "type": "string",
+      "readOnly": true,
+      "description": "User's full name",
+      "maxLength": 100
+    },
+    "id": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "User's id",
+      "readOnly": true
+    },
+    "last_name": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "User's last name",
+          "maxLength": 50
+        },
+        {
+          "type": "null",
+          "description": "No last name provided"
+        }
+      ]
+    },
+    "type__s": {
+      "type": "string",
+      "description": "Type of user",
+      "readOnly": true,
+      "enum": [
+        "Sandbox Developer User",
+        "Support User",
+        "Client Portal User",
+        "Regular User",
+        "Lite User",
+        "System User"
+      ]
+    },
+    "profile": {
+      "type": "object",
+      "description": "Profile details",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the profile",
+          "maxLength": 50
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the profile",
+          "maxLength": 20
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "id"
+      ]
+    },
+    "role": {
+      "type": "object",
+      "description": "Role details",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the role",
+          "maxLength": 200
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the role",
+          "maxLength": 20
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "id"
+      ]
+    },
+    "status": {
+      "oneOf": [
+        {
+          "readOnly": true,
+          "type": "string",
+          "description": "Status of the user in get",
+          "enum": [
+            "deleted",
+            "disabled"
+          ]
+        },
+        {
+          "type": "string",
+          "description": "Update status of the user",
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        }
+      ]
+    },
+    "zuid": {
+      "readOnly": true,
+      "description": "User's ZUID",
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "User's ZUID",
+          "maxLength": 20
+        },
+        {
+          "type": "null",
+          "description": "no zuid present"
+        }
+      ]
+    },
+    "alias": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "User's alias",
+          "maxLength": 50
+        },
+        {
+          "type": "null",
+          "description": "No alias present"
+        }
+      ]
+    },
+    "created_by": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Details of the user who created this user",
+          "readOnly": true,
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Full name of the creator",
+              "maxLength": 100
+            },
+            "id": {
+              "type": "string",
+              "description": "ID of the creator",
+              "maxLength": 20
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "id"
+          ]
+        },
+        {
+          "type": "null",
+          "description": "no created by present"
+        }
+      ]
+    },
+    "created_time": {
+      "oneOf": [
+        {
+          "type": "string",
+          "readOnly": true,
+          "description": "Time when the user was created",
+          "format": "date-time"
+        },
+        {
+          "type": "null",
+          "description": "no created time present"
+        }
+      ]
+    },
+    "locale": {
+      "type": "string",
+      "description": "User's locale.",
+      "enum": [
+        "in_ID",
+        "zh_CN",
+        "zh_TW",
+        "da_DK",
+        "de_DE",
+        "en_GB",
+        "en_US",
+        "es_ES",
+        "fr_FR",
+        "iw_IL",
+        "hr_HR",
+        "it_IT",
+        "hu_HU",
+        "nl_NL",
+        "pl_PL",
+        "pt_BR",
+        "pt_PT",
+        "sv_SE",
+        "vi_VN",
+        "tr_TR",
+        "cs_CZ",
+        "bg_BG",
+        "ru_RU",
+        "ar_EG",
+        "hi_IN",
+        "th_TH",
+        "ja_JP",
+        "ko_KR"
+      ]
+    },
+    "microsoft": {
+      "type": "boolean",
+      "description": "Indicates whether the user is a Microsoft user"
+    },
+    "Modified_By": {
+      "oneOf": [
+        {
+          "type": "object",
+          "description": "Details of the user who last modified this user details",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Full name of the creator",
+              "maxLength": 100
+            },
+            "id": {
+              "type": "string",
+              "description": "ID of the creator",
+              "maxLength": 20
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "id"
+          ]
+        },
+        {
+          "type": "null",
+          "description": "no modified by present"
+        }
+      ]
+    },
+    "Modified_Time": {
+      "oneOf": [
+        {
+          "type": "string",
+          "readOnly": true,
+          "description": "Time when the user was last modified",
+          "format": "date-time"
+        },
+        {
+          "type": "null",
+          "description": "no modified time present"
+        }
+      ]
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "User's phone number",
+      "maxLength": 30
+    },
+    "mobile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "User's mobile",
+      "maxLength": 30
+    },
+    "city": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's city"
+        },
+        {
+          "type": "null",
+          "description": "no city value present"
+        }
+      ]
+    },
+    "country": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's country"
+        },
+        {
+          "type": "null",
+          "description": "no country value present"
+        }
+      ]
+    },
+    "dob": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date",
+          "description": "User's date of birth"
+        },
+        {
+          "type": "null",
+          "description": "no dob value present"
+        }
+      ]
+    },
+    "fax": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 30,
+          "description": "fax"
+        },
+        {
+          "type": "null",
+          "description": "no fax value present"
+        }
+      ]
+    },
+    "number_separator": {
+      "type": "string",
+      "enum": [
+        "Comma",
+        "Period",
+        "Space",
+        "comma",
+        "period",
+        "space"
+      ],
+      "description": "number seperator-(no case sensitive)"
+    },
+    "state": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 100,
+          "description": "User's state"
+        },
+        {
+          "type": "null",
+          "description": "no state value present"
+        }
+      ]
+    },
+    "street": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 250,
+          "description": "User's street"
+        },
+        {
+          "type": "null",
+          "description": "no street value present"
+        }
+      ]
+    },
+    "time_format": {
+      "type": "string",
+      "description": "Time format",
+      "enum": [
+        "HH:mm",
+        "hh:mm a"
+      ]
+    },
+    "website": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 250,
+          "pattern": "^(http:\\/\\/www.|https:\\/\\/www.|ftp:\\/\\/www.|www.|http:\\/\\/|https:\\/\\/|ftp:\\/\\/|){1}[^\\x00-\\x19\\x22-\\x27\\x2A-\\x2C\\x2E-\\x2F\\x3A-\\x3F\\x5B-\\x5E\\x60\\x7B\\x7D-\\x7F]+(\\.[^\\x00-\\x19\\x22\\x24-\\x2C\\x2E-\\x2F\\x3C\\x3E\\x40\\x5B-\\x5E\\x60\\x7B\\x7D-\\x7F]+)+([\\/\\?].*)*$",
+          "description": "website"
+        },
+        {
+          "type": "null",
+          "description": "no website value present"
+        }
+      ]
+    },
+    "zip": {
+      "oneOf": [
+        {
+          "type": "string",
+          "maxLength": 30,
+          "description": "zip code"
+        },
+        {
+          "type": "null",
+          "description": "no postal code value present"
+        }
+      ]
+    },
+    "sandboxDeveloper": {
+      "type": "boolean",
+      "description": "Indicates whether the user is a sandbox developer"
+    },
+    "name_format__s": {
+      "type": "string",
+      "description": "name format",
+      "enum": [
+        "Salutation,First Name,Last Name",
+        "Salutation,Last Name,First Name",
+        "First Name,Salutation,Last Name",
+        "First Name,Last Name,Salutation",
+        "Last Name,Salutation,First Name",
+        "Last Name,First Name,Salutation"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "description": "User's language. Can be updated only by the same user",
+      "enum": [
+        "af_NA",
+        "af_ZA",
+        "ak_GH",
+        "su_ID",
+        "cy_GB",
+        "de_CH",
+        "de_AT",
+        "en_AU",
+        "en_CA",
+        "en_GB",
+        "en_IE",
+        "en_NZ",
+        "en_SG",
+        "en_US",
+        "en_ZA",
+        "ee_GH",
+        "ee_TG",
+        "fy_NL",
+        "ga_GB",
+        "ga_IE",
+        "gv_IM",
+        "ki_KE",
+        "gd_GB",
+        "ha_GH",
+        "ha_NG",
+        "ha_NE",
+        "ig_NG",
+        "rn_BI",
+        "jv_ID",
+        "rw_RW",
+        "sw_CD",
+        "sw_KE",
+        "sw_TZ",
+        "sw_UG",
+        "lg_UG",
+        "lb_LU",
+        "mg_MG",
+        "mt_MT",
+        "ms_BN",
+        "ms_ID",
+        "ms_MY",
+        "ms_SG",
+        "nl_BE",
+        "nl_BQ",
+        "om_ET",
+        "om_KE",
+        "ff_GN",
+        "ff_SN",
+        "qu_BO",
+        "qu_EC",
+        "qu_PE",
+        "so_ET",
+        "so_DJ",
+        "so_KE",
+        "so_SO",
+        "sg_CF",
+        "vi_VN",
+        "lu_CD",
+        "tr_CY",
+        "tr_TR",
+        "wo_SN",
+        "az_AZ",
+        "bm_ML",
+        "bs_BA",
+        "br_FR",
+        "ca_AD",
+        "ca_ES",
+        "ca_FR",
+        "ca_IT",
+        "sn_ZW",
+        "da_DK",
+        "da_GL",
+        "se_NO",
+        "se_SE",
+        "se_FI",
+        "et_EE",
+        "es_AR",
+        "es_BO",
+        "es_CL",
+        "es_CO",
+        "es_CR",
+        "es_EC",
+        "es_SV",
+        "es_GT",
+        "es_HN",
+        "es_NI",
+        "es_PA",
+        "es_PY",
+        "es_PE",
+        "es_PR",
+        "es_DO",
+        "es_UY",
+        "es_VE",
+        "eu_ES",
+        "fr_BE",
+        "fr_CA",
+        "fr_CH",
+        "fo_DK",
+        "fo_FO",
+        "gl_ES",
+        "hr_BA",
+        "hr_HR",
+        "nd_ZW",
+        "xh_ZA",
+        "zu_ZA",
+        "it_VA",
+        "it_IT",
+        "it_SM",
+        "it_CH",
+        "kl_GL",
+        "kw_GB",
+        "ku_TR",
+        "lv_LV",
+        "to_TO",
+        "lt_LT",
+        "ln_AO",
+        "ln_CG",
+        "ln_CF",
+        "ln_CD",
+        "hu_HU",
+        "nn_NO",
+        "no_NO",
+        "nb_NO",
+        "nb_SJ",
+        "uz_AF",
+        "uz_UZ",
+        "pl_PL",
+        "ro_MD",
+        "ro_RO",
+        "rm_CH",
+        "sq_XK",
+        "sq_MK",
+        "sq_AL",
+        "sk_SK",
+        "sl_SI",
+        "fi_FI",
+        "sv_FI",
+        "sv_SE",
+        "sv_AX",
+        "mi_NZ",
+        "tk_TM",
+        "yo_BJ",
+        "yo_NG",
+        "is_IS",
+        "cs_CZ",
+        "el_GR",
+        "el_CY",
+        "be_BY",
+        "bg_BG",
+        "os_GE",
+        "os_RU",
+        "ky_KG",
+        "mk_MK",
+        "mn_MN",
+        "ce_RU",
+        "sr_BA",
+        "sr_CS",
+        "sr_RS",
+        "sr_ME",
+        "tt_RU",
+        "tg_TJ",
+        "uk_UA",
+        "kk_KZ",
+        "hy_AM",
+        "ug_CN",
+        "ur_IN",
+        "ur_PK",
+        "ar_JO",
+        "ar_AE",
+        "ar_BH",
+        "ar_DZ",
+        "ar_SD",
+        "ar_IQ",
+        "ar_KW",
+        "ar_MA",
+        "ar_SA",
+        "ar_YE",
+        "ar_TN",
+        "ar_SY",
+        "ar_OM",
+        "ar_QA",
+        "ar_LB",
+        "ar_LY",
+        "sd_PK",
+        "sd_IN",
+        "fa_AF",
+        "fa_IR",
+        "ps_AF",
+        "ps_PK",
+        "ks_IN",
+        "ne_NP",
+        "ne_IN",
+        "mr_IN",
+        "sa_IN",
+        "hi_IN",
+        "as_IN",
+        "bn_BD",
+        "bn_IN",
+        "pa_PK",
+        "pa_IN",
+        "gu_IN",
+        "or_IN",
+        "ta_IN",
+        "ta_LK",
+        "ta_SG",
+        "ta_MY",
+        "te_IN",
+        "kn_IN",
+        "ml_IN",
+        "si_LK",
+        "th_TH",
+        "lo_LA",
+        "bo_IN",
+        "bo_CN",
+        "dz_BT",
+        "my_MM",
+        "ka_GE",
+        "ti_ET",
+        "ti_ER",
+        "am_ET",
+        "km_KH",
+        "zh_MO",
+        "zh_HK",
+        "zh_SG",
+        "zh_CN",
+        "zh_TW",
+        "ja_JP",
+        "ii_CN",
+        "ko_KR",
+        "ko_KP"
+      ]
+    },
+    "status_reason__s": {
+      "oneOf": [
+        {
+          "type": "string",
+          "enum": [
+            "disabled due to license limit reached",
+            "waiting for approval",
+            "disabled due to license downgrade",
+            "disabled due to record is in recycle bin",
+            "disabled manually",
+            "disabled on updation of email"
+          ],
+          "description": "status reason"
+        },
+        {
+          "type": "null",
+          "description": "no status reason"
+        }
+      ]
+    },
+    "country_locale": {
+      "type": "string",
+      "description": "User's country locale",
+      "enum": [
+        "ps_AF",
+        "sv_AX",
+        "sq_AL",
+        "ar_DZ",
+        "en_AS",
+        "ca_AD",
+        "pt_AO",
+        "en_AI",
+        "en_AQ",
+        "en_AG",
+        "es_AR",
+        "hy_AM",
+        "nl_AW",
+        "en_AU",
+        "de_AT",
+        "az_AZ",
+        "en_BS",
+        "ar_BH",
+        "bn_BD",
+        "en_BB",
+        "be_BY",
+        "nl_BE",
+        "fr_BE",
+        "en_BZ",
+        "fr_BJ",
+        "en_BM",
+        "en_BT",
+        "es_BO",
+        "bs_BA",
+        "en_BW",
+        "no_BV",
+        "pt_BR",
+        "en_IO",
+        "en_VG",
+        "ms_BN",
+        "bg_BG",
+        "fr_BF",
+        "fr_BI",
+        "km_KH",
+        "fr_CM",
+        "en_CA",
+        "fr_CA",
+        "pt_CV",
+        "en_KY",
+        "fr_CF",
+        "ar_TD",
+        "es_CL",
+        "zh_CN",
+        "en_CX",
+        "en_CC",
+        "es_CO",
+        "fr_KM",
+        "en_CK",
+        "es_CR",
+        "hr_HR",
+        "es_CU",
+        "el_CY",
+        "cs_CZ",
+        "fr_CD",
+        "da_DK",
+        "ar_DJ",
+        "en_DM",
+        "es_DO",
+        "es_EC",
+        "ar_EG",
+        "es_SV",
+        "es_GQ",
+        "en_ER",
+        "et_EE",
+        "en_SZ",
+        "am_ET",
+        "en_FK",
+        "fo_FO",
+        "fj_FJ",
+        "fi_FI",
+        "fr_FR",
+        "fr_GF",
+        "fr_PF",
+        "fr_TF",
+        "fr_GA",
+        "en_GM",
+        "ka_GE",
+        "de_DE",
+        "en_GH",
+        "en_GI",
+        "el_GR",
+        "kl_GL",
+        "en_GD",
+        "fr_GP",
+        "en_GU",
+        "es_GT",
+        "fr_GN",
+        "pt_GW",
+        "en_GY",
+        "fr_HT",
+        "en_HM",
+        "es_HN",
+        "zh_HK",
+        "hu_HU",
+        "is_IS",
+        "en_IN",
+        "id_ID",
+        "fa_IR",
+        "ar_IQ",
+        "en_IE",
+        "iw_IL",
+        "it_IT",
+        "en_JM",
+        "ja_JP",
+        "ar_JO",
+        "ru_KZ",
+        "sw_KE",
+        "en_KI",
+        "ar_KW",
+        "uz_KG",
+        "lo_LA",
+        "lv_LV",
+        "ar_LB",
+        "en_LS",
+        "en_LR",
+        "ar_LY",
+        "de_LI",
+        "lt_LT",
+        "fr_LU",
+        "de_LU",
+        "zh_MO",
+        "en_MG",
+        "en_MW",
+        "ms_MY",
+        "dv_MV",
+        "fr_ML",
+        "mt_MT",
+        "en_MH",
+        "fr_MQ",
+        "ar_MR",
+        "en_MU",
+        "fr_YT",
+        "es_MX",
+        "en_FM",
+        "ro_MD",
+        "fr_MC",
+        "mn_MN",
+        "sr_ME",
+        "en_MS",
+        "ar_MA",
+        "pt_MZ",
+        "my_MM",
+        "en_NA",
+        "en_NR",
+        "ne_NP",
+        "nl_NL",
+        "nl_AN",
+        "fr_NC",
+        "en_NZ",
+        "es_NI",
+        "fr_NE",
+        "en_NG",
+        "en_NU",
+        "en_NF",
+        "ko_KP",
+        "mk_MK",
+        "en_MP",
+        "no_NO",
+        "ar_OM",
+        "en_PK",
+        "en_PW",
+        "ar_PS",
+        "es_PA",
+        "en_PG",
+        "es_PY",
+        "es_PE",
+        "en_PH",
+        "en_PN",
+        "pl_PL",
+        "pt_PT",
+        "es_PR",
+        "ar_QA",
+        "fr_CG",
+        "fr_RE",
+        "ro_RO",
+        "ru_RU",
+        "rw_RW",
+        "en_SH",
+        "en_KN",
+        "en_LC",
+        "fr_PM",
+        "en_VC",
+        "en_WS",
+        "it_SM",
+        "pt_ST",
+        "ar_SA",
+        "fr_SN",
+        "sr_RS",
+        "sr_CS",
+        "en_SC",
+        "en_SL",
+        "en_SG",
+        "sk_SK",
+        "sl_SI",
+        "en_SB",
+        "so_SO",
+        "en_ZA",
+        "en_GS",
+        "ko_KR",
+        "es_ES",
+        "si_LK",
+        "ar_SD",
+        "nl_SR",
+        "no_SJ",
+        "sv_SE",
+        "fr_CH",
+        "de_CH",
+        "it_CH",
+        "ar_SY",
+        "zh_TW",
+        "fa_TJ",
+        "sw_TZ",
+        "th_TH",
+        "pt_TL",
+        "fr_TG",
+        "en_TK",
+        "to_TO",
+        "en_TT",
+        "ar_TN",
+        "tr_TR",
+        "tk_TM",
+        "en_TC",
+        "en_TV",
+        "en_UG",
+        "uk_UA",
+        "ar_AE",
+        "en_GB",
+        "en_US",
+        "en_UM",
+        "es_UY",
+        "uz_UZ",
+        "bi_VU",
+        "it_VA",
+        "es_VE",
+        "vi_VN",
+        "en_VI",
+        "fr_WF",
+        "ar_EH",
+        "ar_YE",
+        "en_ZM",
+        "en_ZW",
+        "fr_CI"
+      ]
+    },
+    "ezuid": {
+      "type": "string",
+      "description": "encrypted zuid",
+      "maxLength": 100,
+      "readOnly": true
+    },
+    "image_link": {
+      "type": "string",
+      "description": "IAM image URL",
+      "maxLength": 100
+    },
+    "sort_order_preference__s": {
+      "type": "string",
+      "description": "sort order preference",
+      "enum": [
+        "First Name,Last Name",
+        "Last Name,First Name"
+      ]
+    },
+    "Reporting_To": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "ID of the user to whom the reporting is to be assigned",
+          "maxLength": 20
+        },
+        {
+          "type": "null",
+          "description": "Null value to remove reporting to assignment"
+        }
+      ]
+    },
+    "share_among_subordinates": {
+      "type": "boolean",
+      "description": "Indicates whether to share records with subordinates"
+    },
+    "imap_status": {
+      "type": "boolean",
+      "description": "imap status"
+    },
+    "time_zone": {
+      "type": "string",
+      "description": "User's time zone. Can only be updated by the same user ",
+      "maxLength": 150
+    },
+    "distance_preference__s": {
+      "type": "string",
+      "description": "Distance preference",
+      "enum": [
+        "Kilometers",
+        "Miles"
+      ]
+    },
+    "default_tab_group": {
+      "type": "string",
+      "description": "Default tab group for the user. ",
+      "maxLength": 100
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 200,
+      "description": "User's email signature"
+    },
+    "personal_account": {
+      "type": "boolean",
+      "description": "Indicates whether the user has a personal account"
+    },
+    "customize_info": {
+      "type": "object",
+      "description": "User's customize information",
+      "properties": {
+        "notes_desc": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Indicates whether notes description is enabled"
+        },
+        "show_left_panel": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Indicates whether left panel is shown"
+        },
+        "show_detail_view": {
+          "type": "boolean",
+          "description": "Indicates whether detail view is shown"
+        }
+      },
+      "additionalProperties": true
+    },
+    "theme": {
+      "type": "object",
+      "description": "User's theme information",
+      "readOnly": true,
+      "properties": {
+        "normal_tab": {
+          "type": "object",
+          "description": "Normal tab theme",
+          "properties": {
+            "background": {
+              "type": "string",
+              "description": "Background color of normal tab",
+              "format": "hex-color"
+            },
+            "font_color": {
+              "type": "string",
+              "description": "Font color of normal tab",
+              "format": "hex-color"
+            }
+          },
+          "additionalProperties": false
+        },
+        "selected_tab": {
+          "type": "object",
+          "description": "Selected tab theme",
+          "properties": {
+            "background": {
+              "type": "string",
+              "description": "Background color of selected tab",
+              "format": "hex-color"
+            },
+            "font_color": {
+              "type": "string",
+              "description": "Font color of selected tab",
+              "format": "hex-color"
+            }
+          },
+          "additionalProperties": false
+        },
+        "header": {
+          "type": "object",
+          "description": "Header theme",
+          "properties": {
+            "background": {
+              "type": "string",
+              "description": "Background color of header",
+              "format": "hex-color"
+            },
+            "font_color": {
+              "type": "string",
+              "description": "Font color of header",
+              "format": "hex-color"
+            }
+          },
+          "additionalProperties": false
+        },
+        "new_background": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "New background color",
+          "format": "hex-color"
+        },
+        "background": {
+          "type": "string",
+          "description": "Background color",
+          "format": "hex-color"
+        },
+        "screen": {
+          "type": "string",
+          "description": "screen type",
+          "enum": [
+            "fixed"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "Theme type",
+          "enum": [
+            "default",
+            "custom"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-related-list-schema.json",
+  "title": "RelatedList",
+  "description": "Configuration metadata for a related list.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-settings-api-openapi.yml#/components/schemas/RelatedList",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier of the related list configuration.",
+      "pattern": "^[0-9]+$",
+      "minLength": 1,
+      "maxLength": 20
+    },
+    "sequence_number": {
+      "type": "string",
+      "description": "Display order position of the related list in the layout.",
+      "pattern": "^[0-9]+$",
+      "minLength": 1,
+      "maxLength": 10
+    },
+    "display_label": {
+      "type": "string",
+      "description": "User-friendly label displayed for the related list.",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "api_name": {
+      "type": "string",
+      "description": "API name identifier for the related list module.",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "module": {
+      "description": "Module information for the related list (null if not applicable).",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/RelatedListModule"
+        },
+        {
+          "type": "null",
+          "description": "Null when module information is not applicable"
+        }
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Internal name of the related list.",
+      "pattern": "^[A-Za-z0-9_ -]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "action": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Action key of the related list (null if no specific action).",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "href": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reference URL for the related list (null if not applicable).",
+      "minLength": 1,
+      "maxLength": 2048
+    },
+    "type": {
+      "type": "string",
+      "description": "Type classification of the related list.",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "connectedlookupApiName": {
+      "type": "string",
+      "description": "API name of the connected lookup field if applicable.",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "field_enabled": {
+      "type": "boolean",
+      "description": "Whether field customization is enabled for this related list."
+    },
+    "customize_sort": {
+      "type": "boolean",
+      "description": "Whether custom sorting can be applied to this related list."
+    },
+    "customize_fields": {
+      "type": "boolean",
+      "description": "Whether field selection can be customized for this related list."
+    },
+    "customize_display_label": {
+      "type": "boolean",
+      "description": "Whether the display label can be customized for this related list."
+    },
+    "status": {
+      "type": "string",
+      "description": "The visibility status of the related list.",
+      "enum": [
+        "visible",
+        "user_hidden",
+        "scheduled_for_deletion"
+      ]
+    },
+    "visibility": {
+      "type": "integer",
+      "format": "int32",
+      "description": "Visibility level setting for the related list.",
+      "minimum": 0
+    },
+    "personality_name": {
+      "type": "string",
+      "description": "Name of the personality associated with the related list.",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "record_operations": {
+      "$ref": "#/$defs/RelatedListRecordOperations"
+    },
+    "connectedmodule": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The connected module name (null if no module connection).",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 250
+    },
+    "linkingmodule": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The linking module name (null if no linking module).",
+      "pattern": "^[A-Za-z0-9_]+$",
+      "minLength": 1,
+      "maxLength": 250
+    },
+    "parent_related_lists": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "Array of parent related lists that this list depends on.",
+      "items": {
+        "$ref": "#/$defs/RelatedListParentReference"
+      },
+      "minItems": 0,
+      "maxItems": 2147483647
+    }
+  },
+  "required": [
+    "id",
+    "sequence_number",
+    "display_label",
+    "api_name",
+    "name",
+    "action",
+    "href",
+    "type",
+    "customize_sort",
+    "customize_fields",
+    "customize_display_label",
+    "status"
+  ],
+  "$defs": {
+    "RelatedListModule": {
+      "type": "object",
+      "description": "Metadata describing the module associated with the related list.",
+      "properties": {
+        "api_name": {
+          "type": "string",
+          "description": "API name of the module.",
+          "pattern": "^[A-Za-z0-9_]+$",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the module.",
+          "pattern": "^[0-9]+$",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "plural_label": {
+          "type": "string",
+          "description": "Plural label of the module.",
+          "minLength": 1,
+          "maxLength": 100
+        }
+      },
+      "required": [
+        "api_name",
+        "id"
+      ],
+      "additionalProperties": true
+    },
+    "RelatedListParentReference": {
+      "type": "object",
+      "description": "Parent related list reference required for contextual dependencies.",
+      "additionalProperties": false,
+      "properties": {
+        "api_name": {
+          "type": "string",
+          "description": "API name of the parent related list.",
+          "pattern": "^[A-Za-z0-9_]+$",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the parent related list.",
+          "pattern": "^[0-9]+$",
+          "minLength": 1,
+          "maxLength": 20
+        }
+      },
+      "required": [
+        "api_name",
+        "id"
+      ]
+    },
+    "RelatedListRecordOperations": {
+      "type": "object",
+      "description": "Flags indicating the record operations allowed on the related list.",
+      "additionalProperties": false,
+      "properties": {
+        "edit": {
+          "type": "boolean",
+          "description": "Whether edit operation is allowed on related list records."
+        },
+        "create": {
+          "type": "boolean",
+          "description": "Whether create operation is allowed on related list records."
+        },
+        "bulk_edit": {
+          "type": "boolean",
+          "description": "Whether bulk edit operation is allowed on related list records."
+        },
+        "delete": {
+          "type": "boolean",
+          "description": "Whether delete operation is allowed on related list records."
+        },
+        "disassociate": {
+          "type": "boolean",
+          "description": "Whether disassociate operation is allowed on related list records."
+        },
+        "assign": {
+          "type": "boolean",
+          "description": "Whether assign operation is allowed on related list records."
+        }
+      },
+      "required": [
+        "edit",
+        "create",
+        "bulk_edit",
+        "delete",
+        "disassociate",
+        "assign"
+      ]
+    }
+  }
+}

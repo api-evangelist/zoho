@@ -1,0 +1,289 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-attachment-list-response-schema.json",
+  "title": "AttachmentListResponse",
+  "description": "Response containing list of attachments for a record",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-attachments-api-openapi.yml#/components/schemas/AttachmentListResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of attachment objects",
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/AttachmentObject"
+      }
+    },
+    "info": {
+      "$ref": "#/$defs/Info"
+    }
+  },
+  "required": [
+    "data",
+    "info"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "AttachmentObject": {
+      "type": "object",
+      "description": "Individual attachment metadata",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique numeric identifier of the attachment",
+          "pattern": "^[0-9]+$",
+          "maxLength": 50
+        },
+        "File_Name": {
+          "type": "string",
+          "description": "Name of the attached file",
+          "maxLength": 250
+        },
+        "Size": {
+          "type": "string",
+          "description": "Size of the attachment in bytes",
+          "pattern": "^[0-9]+$",
+          "maxLength": 50000
+        },
+        "Created_Time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the attachment was created (ISO 8601 with timezone)"
+        },
+        "Created_By": {
+          "type": "object",
+          "description": "User who created the attachment",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "User ID",
+              "pattern": "^[0-9]+$",
+              "maxLength": 50
+            },
+            "name": {
+              "type": "string",
+              "description": "User display name",
+              "maxLength": 250
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "User email address",
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "Modified_Time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the attachment was last modified (ISO 8601 with timezone)"
+        },
+        "Modified_By": {
+          "type": "object",
+          "description": "User who last modified the attachment",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "User ID",
+              "pattern": "^[0-9]+$",
+              "maxLength": 50
+            },
+            "name": {
+              "type": "string",
+              "description": "User display name",
+              "maxLength": 250
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "User email address",
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "Owner": {
+          "type": "object",
+          "description": "Owner of the attachment",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Owner user ID",
+              "pattern": "^[0-9]+$",
+              "maxLength": 50
+            },
+            "name": {
+              "type": "string",
+              "description": "Owner display name",
+              "maxLength": 250
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "Owner email address",
+              "maxLength": 100
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "Parent_Id": {
+          "type": "object",
+          "description": "Parent record information",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Parent record ID",
+              "pattern": "^[0-9]+$",
+              "maxLength": 50
+            },
+            "name": {
+              "type": "string",
+              "description": "Parent record name",
+              "maxLength": 250
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ],
+          "additionalProperties": false
+        },
+        "$field_states": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Field states metadata"
+        },
+        "$editable": {
+          "type": "boolean",
+          "description": "Indicates if the attachment is editable"
+        },
+        "$file_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 255,
+          "description": "File identifier for the attachment"
+        },
+        "$type": {
+          "type": "string",
+          "description": "Type of the attachment",
+          "maxLength": 50
+        },
+        "$se_module": {
+          "type": "string",
+          "description": "Source module name",
+          "maxLength": 100
+        },
+        "$state": {
+          "type": "string",
+          "description": "Current state of the attachment",
+          "maxLength": 50
+        },
+        "$link_url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri",
+          "description": "URL for link-type attachments. Null for file attachments.",
+          "maxLength": 2000
+        },
+        "$sharing_permission": {
+          "type": "string",
+          "description": "Sharing permission level for the attachment",
+          "maxLength": 50
+        }
+      },
+      "required": [
+        "id",
+        "Created_Time",
+        "Created_By",
+        "Modified_Time",
+        "Modified_By"
+      ],
+      "additionalProperties": false
+    },
+    "Info": {
+      "type": "object",
+      "description": "Pagination information for list responses",
+      "properties": {
+        "per_page": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of records per page",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "next_page_token": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1024,
+          "description": "Token to retrieve the next page of results"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of records returned in the current response",
+          "minimum": 0
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current page number",
+          "minimum": 1
+        },
+        "previous_page_token": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1024,
+          "description": "Token to retrieve the previous page of results"
+        },
+        "page_token_expiry": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Expiry timestamp for the page tokens"
+        },
+        "more_records": {
+          "type": "boolean",
+          "description": "Indicates whether more records are available"
+        }
+      },
+      "required": [
+        "per_page",
+        "next_page_token",
+        "count",
+        "page",
+        "previous_page_token",
+        "page_token_expiry",
+        "more_records"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

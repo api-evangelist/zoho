@@ -27,6 +27,29 @@ paths:
       x-audience:
       - external-public
 components:
+  schemas:
+    module:
+      type:
+      - array
+      - 'null'
+      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
+      items:
+        type:
+        - string
+        - 'null'
+        enum:
+        - accounts
+        - contacts
+        - tickets
+        - tasks
+        - calls
+        - events
+        - products
+        - articles
+        maxLength: 100
+        minLength: 0
+      style: simple
+      explode: true
   responses:
     bulkImportSampleDataResponse:
       description: bulkImportSampleDataResponse template definitions
@@ -108,29 +131,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  schemas:
-    module:
-      type:
-      - array
-      - 'null'
-      description: Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules
-      items:
-        type:
-        - string
-        - 'null'
-        enum:
-        - accounts
-        - contacts
-        - tickets
-        - tasks
-        - calls
-        - events
-        - products
-        - articles
-        maxLength: 100
-        minLength: 0
-      style: simple
-      explode: true
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

@@ -187,143 +187,6 @@ paths:
       x-audience:
       - external-public
 components:
-  parameters:
-    contactId:
-      name: contactId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-    commentId:
-      name: commentId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  responses:
-    contactCommentCommonResponse:
-      description: contactCommentCommonResponse template definitions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/contactCommentCommonResponse'
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: null
-                commentedTime: 1485286523000
-                id: '4000000530045'
-                contentType: plainText
-                commenterId: '4000000008692'
-                content: second contact comment edit
-                commenter:
-                  firstName: Jade
-                  lastName: Tywin
-                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                  name: Jade Tywin
-                  roleName: LightAgent
-                  type: AGENT
-                  email: jade12tywin@zylker.com
-    getContactComments:
-      description: getContactComments template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      mention:
-                        $ref: '#/components/schemas/mentions'
-            - type:
-              - 'null'
-              - object
-              additionalProperties: false
-              properties:
-                data:
-                  $ref: ./ContactComments.json#/components/schemas/dataArr
-              required:
-              - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - modifiedTime: null
-                  commentedTime: 1485286523000
-                  id: '4000000530045'
-                  contentType: plainText
-                  content: second contact comment
-                  commenterId: '4000000008692'
-                  mention: []
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: PortalUser
-                    type: END_USER
-                    email: jade12tywin@zylker.com
-                - modifiedTime: null
-                  commentedTime: 1485286496000
-                  id: '4000000530043'
-                  contentType: html
-                  content: First contact comment
-                  commenterId: '4000000008692'
-                  mention: []
-                  commenter:
-                    firstName: Jade
-                    lastName: Tywin
-                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                    name: Jade Tywin
-                    roleName: CEO
-                    type: AGENT
-                    email: jade12tywin@zylker.com
-    getContactCommentResponse:
-      description: get Contact Comment Response template definitions
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/contactCommentCommonResponse'
-            - type: object
-              properties:
-                mention:
-                  $ref: '#/components/schemas/mentions'
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: null
-                commentedTime: 1485286523000
-                id: '4000000530045'
-                contentType: plainText
-                commenterId: '4000000008692'
-                content: second contact comment edit
-                commenter:
-                  firstName: Jade
-                  lastName: Tywin
-                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
-                  name: Jade Tywin
-                  roleName: LightAgent
-                  type: AGENT
-                  email: jade12tywin@zylker.com
   schemas:
     contactCommentCommonResponse:
       type:
@@ -481,6 +344,25 @@ components:
         - zuid
       uniqueItems: false
   requestBodies:
+    editContactCommentRequestBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              content:
+                type:
+                - string
+                - 'null'
+                maxLength: 32000
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                content: second contact comment edit
     addContactCommentRequestBody:
       content:
         application/json:
@@ -512,25 +394,143 @@ components:
               value:
                 contentType: html
                 content: First contact comment
-    editContactCommentRequestBody:
+  parameters:
+    contactId:
+      name: contactId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    commentId:
+      name: commentId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+  responses:
+    getContactCommentResponse:
+      description: get Contact Comment Response template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              content:
-                type:
-                - string
-                - 'null'
-                maxLength: 32000
-                minLength: 0
+            allOf:
+            - $ref: '#/components/schemas/contactCommentCommonResponse'
+            - type: object
+              properties:
+                mention:
+                  $ref: '#/components/schemas/mentions'
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
+                modifiedTime: null
+                commentedTime: 1485286523000
+                id: '4000000530045'
+                contentType: plainText
+                commenterId: '4000000008692'
                 content: second contact comment edit
+                commenter:
+                  firstName: Jade
+                  lastName: Tywin
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                  name: Jade Tywin
+                  roleName: LightAgent
+                  type: AGENT
+                  email: jade12tywin@zylker.com
+    getContactComments:
+      description: getContactComments template definitions
+      content:
+        application/json:
+          schema:
+            allOf:
+            - type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      mention:
+                        $ref: '#/components/schemas/mentions'
+            - type:
+              - 'null'
+              - object
+              additionalProperties: false
+              properties:
+                data:
+                  $ref: ./ContactComments.json#/components/schemas/dataArr
+              required:
+              - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - modifiedTime: null
+                  commentedTime: 1485286523000
+                  id: '4000000530045'
+                  contentType: plainText
+                  content: second contact comment
+                  commenterId: '4000000008692'
+                  mention: []
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/portalUser/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: PortalUser
+                    type: END_USER
+                    email: jade12tywin@zylker.com
+                - modifiedTime: null
+                  commentedTime: 1485286496000
+                  id: '4000000530043'
+                  contentType: html
+                  content: First contact comment
+                  commenterId: '4000000008692'
+                  mention: []
+                  commenter:
+                    firstName: Jade
+                    lastName: Tywin
+                    photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                    name: Jade Tywin
+                    roleName: CEO
+                    type: AGENT
+                    email: jade12tywin@zylker.com
+    contactCommentCommonResponse:
+      description: contactCommentCommonResponse template definitions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/contactCommentCommonResponse'
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: null
+                commentedTime: 1485286523000
+                id: '4000000530045'
+                contentType: plainText
+                commenterId: '4000000008692'
+                content: second contact comment edit
+                commenter:
+                  firstName: Jade
+                  lastName: Tywin
+                  photoURL: https://desk.zoho.com/api/v1/agents/4000000008692/photo?orgId=292828
+                  name: Jade Tywin
+                  roleName: LightAgent
+                  type: AGENT
+                  email: jade12tywin@zylker.com
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

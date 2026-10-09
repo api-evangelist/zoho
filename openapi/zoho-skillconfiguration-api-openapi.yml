@@ -67,50 +67,6 @@ paths:
       x-audience:
       - external-public
 components:
-  requestBodies:
-    skillConfigurationJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              autoSkillStamping:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              attachSkillsOption:
-                type:
-                - string
-                - 'null'
-                enum:
-                - AT_FIRST
-                - AT_THE_END
-                - BY_SKILL_ORDER
-                maxLength: 100
-                minLength: 0
-            required:
-            - departmentId
-          examples:
-            Valid requestBody Definitions:
-              value:
-                autoSkillStamping: INACTIVE
-                departmentId: '1000000013248'
-                attachSkillsOption: AT_FIRST
   responses:
     skillConfigurationJson:
       description: skillConfigurationJson template definitions
@@ -158,6 +114,50 @@ components:
                 autoSkillStamping: ACTIVE
                 departmentId: '1000000013248'
                 attachSkillsOption: AT_THE_END
+  requestBodies:
+    skillConfigurationJson:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              autoSkillStamping:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              attachSkillsOption:
+                type:
+                - string
+                - 'null'
+                enum:
+                - AT_FIRST
+                - AT_THE_END
+                - BY_SKILL_ORDER
+                maxLength: 100
+                minLength: 0
+            required:
+            - departmentId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                autoSkillStamping: INACTIVE
+                departmentId: '1000000013248'
+                attachSkillsOption: AT_FIRST
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

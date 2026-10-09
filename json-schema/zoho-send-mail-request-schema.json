@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-send-mail-request-schema.json",
+  "title": "SendMailRequest",
+  "description": "Root object for the send mail request.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-actions-api-openapi.yml#/components/schemas/SendMailRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of mail objects.",
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "description": "Detailed email configuration.",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "$ref": "#/$defs/EmailUser"
+          },
+          "to": {
+            "type": "array",
+            "description": "Primary recipients",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/$defs/EmailUser"
+            }
+          },
+          "cc": {
+            "type": "array",
+            "description": "CC recipients",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/$defs/EmailUser"
+            }
+          },
+          "bcc": {
+            "type": "array",
+            "description": "BCC recipients",
+            "maxItems": 50,
+            "items": {
+              "$ref": "#/$defs/EmailUser"
+            }
+          },
+          "reply_to": {
+            "$ref": "#/$defs/EmailUser"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Email subject",
+            "maxLength": 1000
+          },
+          "content": {
+            "type": "string",
+            "description": "Body content",
+            "maxLength": 100000
+          },
+          "mail_format": {
+            "type": "string",
+            "description": "Format",
+            "enum": [
+              "html",
+              "text"
+            ]
+          },
+          "org_email": {
+            "type": "boolean",
+            "description": "Send via org email"
+          },
+          "scheduled_time": {
+            "type": "string",
+            "description": "ISO8601 time",
+            "format": "date-time"
+          },
+          "consent_email": {
+            "type": "boolean",
+            "description": "GDPR consent flag"
+          },
+          "template": {
+            "type": "object",
+            "description": "Template reference",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Template ID",
+                "maxLength": 100
+              }
+            }
+          },
+          "inventory_details": {
+            "type": "object",
+            "description": "Inventory details",
+            "additionalProperties": false,
+            "properties": {
+              "inventory_template": {
+                "type": "object",
+                "description": "Inventory template object",
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID",
+                    "maxLength": 100
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Name",
+                    "maxLength": 100
+                  }
+                }
+              },
+              "paper_type": {
+                "type": "string",
+                "description": "Paper size",
+                "enum": [
+                  "default",
+                  "A4",
+                  "us_letter"
+                ]
+              },
+              "view_type": {
+                "type": "string",
+                "description": "Orientation",
+                "enum": [
+                  "portrait",
+                  "landscape"
+                ]
+              }
+            }
+          },
+          "data_subject_request": {
+            "type": "object",
+            "description": "GDPR request details",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Request ID",
+                "maxLength": 100
+              },
+              "type": {
+                "type": "string",
+                "description": "Request type",
+                "enum": [
+                  "access",
+                  "rectify",
+                  "export"
+                ]
+              }
+            }
+          },
+          "attachments": {
+            "type": "array",
+            "description": "ZFS file IDs",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "description": "File object",
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "File ID",
+                  "maxLength": 255
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "EmailUser": {
+      "type": "object",
+      "description": "User email and name details.",
+      "additionalProperties": false,
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "user_name": {
+          "type": "string",
+          "description": "Name",
+          "maxLength": 255
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address",
+          "maxLength": 255
+        }
+      }
+    }
+  }
+}

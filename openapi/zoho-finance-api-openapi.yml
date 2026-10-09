@@ -200,38 +200,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-    financeService:
-      name: financeService
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        enum:
-        - books
-        - inventory
-        - invoice
-        maxLength: 100
-        minLength: 0
-        pattern: ([a-z]+)
-    pageNumber:
-      name: pageNumber
-      in: query
-      description: page number
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: page number
-        pattern: ([0-9]+)
     status:
       name: status
       in: query
@@ -271,6 +239,21 @@ components:
         - Accounts
         maxLength: 100
         minLength: 0
+    pageNumber:
+      name: pageNumber
+      in: query
+      description: page number
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: page number
+        pattern: ([0-9]+)
     deskEntityId:
       name: deskEntityId
       in: query
@@ -286,45 +269,24 @@ components:
         format: int64
         description: To fetch invoice by desk contact or account or ticket id
         pattern: ([0-9]+)
+    financeService:
+      name: financeService
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        enum:
+        - books
+        - inventory
+        - invoice
+        maxLength: 100
+        minLength: 0
+        pattern: ([a-z]+)
   responses:
-    getTicketsForInvoiceId:
-      description: getTicketsForInvoiceId template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              data:
-                $ref: ./Finance.json#/components/schemas/dataArr
-            required:
-            - data
-          examples:
-            Valid responses Definitions:
-              value:
-                data:
-                - ticketNumber: '123'
-                  subject: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
-                  dueDate: '2018-06-21T16:16:16.000Z'
-                  id: '104202000003153007'
-                  assignee:
-                    firstName: Robert
-                    lastName: John
-                  priority: High
-                  status: Open
-                  commentCount: '5'
-                - ticketNumber: '456'
-                  subject: Problem while reset password.
-                  dueDate: '2018-07-21T16:16:16.000Z'
-                  id: '104202000003153015'
-                  assignee:
-                    firstName: Steve
-                    lastName: Smith
-                  priority: High
-                  status: Closed
-                  commentCount: '3'
     getInvoices:
       description: getInvoices template definitions
       content:
@@ -374,6 +336,44 @@ components:
                   statusFormatted: Draft
                   status: draft
                 deskModuleName: Contacts
+    getTicketsForInvoiceId:
+      description: getTicketsForInvoiceId template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              data:
+                $ref: ./Finance.json#/components/schemas/dataArr
+            required:
+            - data
+          examples:
+            Valid responses Definitions:
+              value:
+                data:
+                - ticketNumber: '123'
+                  subject: Hi. There is a sudden delay in the processing of the orders. Check this with high priority
+                  dueDate: '2018-06-21T16:16:16.000Z'
+                  id: '104202000003153007'
+                  assignee:
+                    firstName: Robert
+                    lastName: John
+                  priority: High
+                  status: Open
+                  commentCount: '5'
+                - ticketNumber: '456'
+                  subject: Problem while reset password.
+                  dueDate: '2018-07-21T16:16:16.000Z'
+                  id: '104202000003153015'
+                  assignee:
+                    firstName: Steve
+                    lastName: Smith
+                  priority: High
+                  status: Closed
+                  commentCount: '3'
     getEstimates:
       description: getEstimates template definitions
       content:

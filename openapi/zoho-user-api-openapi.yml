@@ -276,6 +276,114 @@ paths:
       - external-public
 components:
   responses:
+    userDetailViewJson:
+      description: userDetailViewJson template definitions
+      content:
+        application/json:
+          schema:
+            additionalProperties: false
+            allOf:
+            - $ref: ./User.json#/components/schemas/userDefaultJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                lastAccessedTime:
+                  type:
+                  - string
+                  - 'null'
+                  maxLength: 100
+                  minLength: 0
+                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
+                contactId:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                userType:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - ENDUSER
+                  - SUPPORTREP
+                  maxLength: 100
+                  minLength: 0
+                label:
+                  $ref: ./Label.json#/components/schemas/labelMetaResponse
+                email:
+                  $ref: ./User.json#/components/schemas/userEmailObjArray
+                status:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - ACTIVE
+                  - DISABLED
+                  - DELETED
+                  maxLength: 100
+                  minLength: 0
+              required:
+              - contactId
+              - email
+              - label
+              - lastAccessedTime
+              - status
+              - userType
+          examples:
+            Valid responses Definitions:
+              value:
+                lastAccessedTime: '2021-06-11T06:21:32.000Z'
+                photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
+                contactId: '3313135931139'
+                name: Developer
+                id: '310975130121'
+                label:
+                  preferences:
+                    shape: RECTANGLE
+                    bgColor: '#39B54A'
+                    textColor: '#FFFFFF'
+                  name: Lock Label
+                  id: '24073000002823026'
+                  logoUrl: null
+                type: ENDUSER
+                email:
+                - emailAddress: zylcare@zylker.com
+                  isVerified: 'false'
+                  isPrimary: 'true'
+                status: ACTIVE
+    massActionListViewResponse:
+      description: massActionListViewResponse template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              results:
+                $ref: ./User.json#/components/schemas/massActionJsonArray
+            required:
+            - results
+          examples:
+            Valid responses Definitions:
+              value:
+                results:
+                - success: true
+                  id: '24073000002958013'
+                  errors: null
+                - success: true
+                  id: '24073000002958023'
+                  errors: null
+                - success: false
+                  id: '24073000002152013'
+                  errors:
+                    errorCode: FORBIDDEN
+                    httpCode: 403
+                    error: Restricted
     userGroupJson:
       description: userGroupJson template definitions
       content:
@@ -360,84 +468,6 @@ components:
                   helpCenterId: '24073000002886005'
                   logoUrl: null
                   assignedTime: '2020-04-06T05:55:13.000Z'
-    userDetailViewJson:
-      description: userDetailViewJson template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./User.json#/components/schemas/userDefaultJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                lastAccessedTime:
-                  type:
-                  - string
-                  - 'null'
-                  maxLength: 100
-                  minLength: 0
-                  pattern: (((19|20)\d\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\d]{0,3})?(Z))
-                contactId:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                userType:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - ENDUSER
-                  - SUPPORTREP
-                  maxLength: 100
-                  minLength: 0
-                label:
-                  $ref: ./Label.json#/components/schemas/labelMetaResponse
-                email:
-                  $ref: ./User.json#/components/schemas/userEmailObjArray
-                status:
-                  type:
-                  - string
-                  - 'null'
-                  enum:
-                  - ACTIVE
-                  - DISABLED
-                  - DELETED
-                  maxLength: 100
-                  minLength: 0
-              required:
-              - contactId
-              - email
-              - label
-              - lastAccessedTime
-              - status
-              - userType
-          examples:
-            Valid responses Definitions:
-              value:
-                lastAccessedTime: '2021-06-11T06:21:32.000Z'
-                photoURL: https://desk.zoho.com/portal/api/portalUser/17883000000094001/photo
-                contactId: '3313135931139'
-                name: Developer
-                id: '310975130121'
-                label:
-                  preferences:
-                    shape: RECTANGLE
-                    bgColor: '#39B54A'
-                    textColor: '#FFFFFF'
-                  name: Lock Label
-                  id: '24073000002823026'
-                  logoUrl: null
-                type: ENDUSER
-                email:
-                - emailAddress: zylcare@zylker.com
-                  isVerified: 'false'
-                  isPrimary: 'true'
-                status: ACTIVE
     getUsersResponse:
       description: getUsersResponse template definitions
       content:
@@ -504,8 +534,8 @@ components:
                   type: ENDUSER
                   status: ACTIVE
                 count: '1'
-    massActionListViewResponse:
-      description: massActionListViewResponse template definitions
+  requestBodies:
+    anonymizeInpJson:
       content:
         application/json:
           schema:
@@ -514,27 +544,17 @@ components:
             - object
             additionalProperties: false
             properties:
-              results:
-                $ref: ./User.json#/components/schemas/massActionJsonArray
-            required:
-            - results
+              anonymizedName:
+                type:
+                - string
+                - 'null'
+                description: Display name of the user in tickets and community topics after anonymization
+                maxLength: 100
+                minLength: 0
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                results:
-                - success: true
-                  id: '24073000002958013'
-                  errors: null
-                - success: true
-                  id: '24073000002958023'
-                  errors: null
-                - success: false
-                  id: '24073000002152013'
-                  errors:
-                    errorCode: FORBIDDEN
-                    httpCode: 403
-                    error: Restricted
-  requestBodies:
+                anonymizedName: Guest User 001
     userGroupInputJson:
       content:
         application/json:
@@ -556,26 +576,6 @@ components:
                 - id: '24073000002732252'
                 - id: '24073000002957051'
                 - id: '24073000002793019'
-    anonymizeInpJson:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              anonymizedName:
-                type:
-                - string
-                - 'null'
-                description: Display name of the user in tickets and community topics after anonymization
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                anonymizedName: Guest User 001
     userLabelInputJson:
       content:
         application/json:

@@ -3017,6 +3017,266 @@ paths:
           default: v8
           description: API version
 components:
+  responses:
+    NotFound:
+      description: Not Found - The requested resource does not exist
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Error response for not found requests
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error
+                enum:
+                - INVALID_URL_PATTERN
+              details:
+                type: object
+                description: Additional details about the error
+                additionalProperties: false
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the response
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - message
+            - status
+    Unauthorized:
+      description: Unauthorized - Authentication failed
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Error response for authentication failures
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error
+                enum:
+                - AUTHENTICATION_FAILURE
+                - OAUTH_SCOPE_MISMATCH
+              details:
+                type: object
+                description: Additional details about the error
+                additionalProperties: false
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the response
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - message
+            - status
+    InternalServerError:
+      description: Internal Server Error - An unexpected error occurred on the server
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Error response for internal server errors
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error
+                enum:
+                - INTERNAL_ERROR
+              details:
+                type: object
+                description: Additional details about the error
+                additionalProperties: false
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the response
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - message
+            - status
+    NoContent:
+      description: No content - The request was successful but there are no records to return
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      required: false
+      description: Number of records per page
+      schema:
+        type: integer
+        format: int32
+    Ids:
+      name: ids
+      in: query
+      required: false
+      description: Comma-separated list of note IDs to retrieve specific notes
+      schema:
+        type: string
+        maxLength: 1024
+    SortBy:
+      name: sort_by
+      in: query
+      required: false
+      description: Field name to sort results by
+      schema:
+        type: string
+        enum:
+        - Modified_Time
+        - Created_Time
+        - id
+    Page:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination
+      schema:
+        type: integer
+        format: int32
+    SortOrder:
+      name: sort_order
+      in: query
+      required: false
+      description: Sort order (ascending or descending)
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Page token for fetching more than 2000 records
+      schema:
+        type: string
+        maxLength: 2000
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier of the note
+      schema:
+        type: string
+        format: int64
+    Fields:
+      name: fields
+      in: query
+      required: false
+      description: Comma-separated list of field API names to include in the response
+      schema:
+        type: string
+        maxLength: 1024
+    PerPage_2:
+      name: perPage
+      in: query
+      required: false
+      description: Number of records to return per page
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 200
+        default: 200
+    Ids_2:
+      name: ids
+      in: query
+      required: true
+      description: Comma-separated list of note record IDs to delete. Required for bulk deletion operations.
+      schema:
+        type: string
+        pattern: ^[0-9]+(,[0-9]+)*$
+        maxLength: 2000
+    SortBy_2:
+      name: sort_by
+      in: query
+      required: false
+      description: Field name to sort the notes by
+      schema:
+        type: string
+        enum:
+        - id
+        - Created_Time
+        - Modified_Time
+        maxLength: 50
+    Page_2:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (starting from 1)
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 10000
+        default: 1
+    NoteId:
+      name: noteId
+      in: path
+      required: true
+      description: The unique identifier of the specific note record. Must be a valid numeric record ID.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        format: int64
+    ParentRecordId:
+      name: parentRecordId
+      in: path
+      required: true
+      description: The unique identifier of the parent record. Must be a valid numeric record ID.
+      schema:
+        type: string
+        pattern: ^[0-9]+$
+        format: int64
+    SortOrder_2:
+      name: sort_order
+      in: query
+      required: false
+      description: Sort order for the results
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        maxLength: 10
+    Fields_2:
+      name: fields
+      in: query
+      required: false
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
+        maxLength: 1000
+    ParentRecordModule:
+      name: parentRecordModule
+      in: path
+      required: true
+      description: The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
+        maxLength: 50
   schemas:
     DiscretePaginationLimitExceededError:
       type: object
@@ -3051,44 +3311,9 @@ components:
       - details
       - message
       - status
-    ExpiredValueError:
+    FileSizeExceedsError:
       type: object
-      description: Error response when a token or value has expired
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error
-          enum:
-          - EXPIRED_VALUE
-        details:
-          type: object
-          description: Additional details about the expired value
-          additionalProperties: false
-          properties:
-            param_name:
-              type: string
-              description: Name of the parameter with expired value
-              maxLength: 100
-          required:
-          - param_name
-        message:
-          type: string
-          description: Human-readable error message
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the response
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-    InvalidDataError:
-      type: object
-      description: Error response for invalid field data
+      description: Error response when attachment file size exceeds the limit
       additionalProperties: false
       properties:
         data:
@@ -3097,18 +3322,30 @@ components:
           maxItems: 100
           items:
             type: object
-            description: Error details for invalid data
+            description: Error details for file size exceeded
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - INVALID_DATA
+                - FILE_SIZE_EXCEEDS
               details:
                 type: object
-                description: Additional details about the error, can include various constraint information
-                additionalProperties: true
+                description: Additional details about the error
+                additionalProperties: false
+                properties:
+                  api_name:
+                    type: string
+                    description: API name of the field
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: JSON path to the field
+                    maxLength: 255
+                required:
+                - api_name
+                - json_path
               message:
                 type: string
                 description: Human-readable error message
@@ -3148,6 +3385,78 @@ components:
                 type: object
                 description: Additional details about the error
                 additionalProperties: false
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the response
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - message
+            - status
+      required:
+      - data
+    RequiredParamMissingError:
+      type: object
+      description: Error response for required parameter missing
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error
+          enum:
+          - REQUIRED_PARAM_MISSING
+        details:
+          type: object
+          description: Additional details about the error
+          additionalProperties: true
+          properties:
+            param_name:
+              type: string
+              description: The name of the missing parameter
+              maxLength: 255
+        message:
+          type: string
+          description: Human-readable error message
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the response
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+    InvalidDataErrorSingle:
+      type: object
+      description: Error response for invalid data in single record operations
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          description: Array of error results for single record
+          maxItems: 1
+          items:
+            type: object
+            description: Error details for invalid data
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error
+                enum:
+                - INVALID_DATA
+              details:
+                type: object
+                description: Additional details about the error
+                additionalProperties: true
               message:
                 type: string
                 description: Human-readable error message
@@ -3226,29 +3535,29 @@ components:
             - status
       required:
       - data
-    CannotPerformActionErrorSingle:
+    InvalidDataError:
       type: object
-      description: Error response when user cannot perform action on a record in single record operations
+      description: Error response for invalid field data
       additionalProperties: false
       properties:
         data:
           type: array
-          description: Array of error results for single record
-          maxItems: 1
+          description: Array of error results
+          maxItems: 100
           items:
             type: object
-            description: Error details for cannot perform action
+            description: Error details for invalid data
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - CANNOT_PERFORM_ACTION
+                - INVALID_DATA
               details:
                 type: object
-                description: Additional details about the error
-                additionalProperties: false
+                description: Additional details about the error, can include various constraint information
+                additionalProperties: true
               message:
                 type: string
                 description: Human-readable error message
@@ -3265,9 +3574,9 @@ components:
             - status
       required:
       - data
-    FileSizeExceedsError:
+    NoPermissionError:
       type: object
-      description: Error response when attachment file size exceeds the limit
+      description: Error response when user lacks required permissions
       additionalProperties: false
       properties:
         data:
@@ -3276,30 +3585,29 @@ components:
           maxItems: 100
           items:
             type: object
-            description: Error details for file size exceeded
+            description: Error details for permission denied
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - FILE_SIZE_EXCEEDS
+                - NO_PERMISSION
               details:
                 type: object
-                description: Additional details about the error
+                description: Additional details about required permissions
                 additionalProperties: false
                 properties:
-                  api_name:
-                    type: string
-                    description: API name of the field
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: JSON path to the field
-                    maxLength: 255
+                  permissions:
+                    type: array
+                    description: List of required permissions
+                    maxItems: 10
+                    items:
+                      type: string
+                      description: Permission name
+                      maxLength: 255
                 required:
-                - api_name
-                - json_path
+                - permissions
               message:
                 type: string
                 description: Human-readable error message
@@ -3347,6 +3655,57 @@ components:
                   json_path:
                     type: string
                     description: The JSON path to the missing field
+                    maxLength: 500
+                required:
+                - api_name
+                - json_path
+              message:
+                type: string
+                description: Human-readable error message
+                maxLength: 500
+              status:
+                type: string
+                description: Status of the response
+                enum:
+                - error
+            required:
+            - code
+            - details
+            - message
+            - status
+      required:
+      - data
+    NotAllowedErrorSingle:
+      type: object
+      description: Error response when operation is not allowed in single record operations
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          description: Array of error results for single record
+          maxItems: 1
+          items:
+            type: object
+            description: Error details for not allowed operation
+            additionalProperties: false
+            properties:
+              code:
+                type: string
+                description: Error code indicating the type of error
+                enum:
+                - NOT_ALLOWED
+              details:
+                type: object
+                description: Additional details about the error
+                additionalProperties: false
+                properties:
+                  api_name:
+                    type: string
+                    description: API name of the field
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: JSON path to the field
                     maxLength: 500
                 required:
                 - api_name
@@ -3461,9 +3820,9 @@ components:
             - status
       required:
       - data
-    InvalidDataErrorSingle:
+    CannotPerformActionErrorSingle:
       type: object
-      description: Error response for invalid data in single record operations
+      description: Error response when user cannot perform action on a record in single record operations
       additionalProperties: false
       properties:
         data:
@@ -3472,18 +3831,18 @@ components:
           maxItems: 1
           items:
             type: object
-            description: Error details for invalid data
+            description: Error details for cannot perform action
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - INVALID_DATA
+                - CANNOT_PERFORM_ACTION
               details:
                 type: object
                 description: Additional details about the error
-                additionalProperties: true
+                additionalProperties: false
               message:
                 type: string
                 description: Human-readable error message
@@ -3500,6 +3859,41 @@ components:
             - status
       required:
       - data
+    ExpiredValueError:
+      type: object
+      description: Error response when a token or value has expired
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error
+          enum:
+          - EXPIRED_VALUE
+        details:
+          type: object
+          description: Additional details about the expired value
+          additionalProperties: false
+          properties:
+            param_name:
+              type: string
+              description: Name of the parameter with expired value
+              maxLength: 100
+          required:
+          - param_name
+        message:
+          type: string
+          description: Human-readable error message
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the response
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
     NotAllowedError:
       type: object
       description: Error response when operation is not allowed
@@ -3551,140 +3945,6 @@ components:
             - status
       required:
       - data
-    NoPermissionError:
-      type: object
-      description: Error response when user lacks required permissions
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          description: Array of error results
-          maxItems: 100
-          items:
-            type: object
-            description: Error details for permission denied
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error
-                enum:
-                - NO_PERMISSION
-              details:
-                type: object
-                description: Additional details about required permissions
-                additionalProperties: false
-                properties:
-                  permissions:
-                    type: array
-                    description: List of required permissions
-                    maxItems: 10
-                    items:
-                      type: string
-                      description: Permission name
-                      maxLength: 255
-                required:
-                - permissions
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the response
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - data
-    NotAllowedErrorSingle:
-      type: object
-      description: Error response when operation is not allowed in single record operations
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          description: Array of error results for single record
-          maxItems: 1
-          items:
-            type: object
-            description: Error details for not allowed operation
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error
-                enum:
-                - NOT_ALLOWED
-              details:
-                type: object
-                description: Additional details about the error
-                additionalProperties: false
-                properties:
-                  api_name:
-                    type: string
-                    description: API name of the field
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: JSON path to the field
-                    maxLength: 500
-                required:
-                - api_name
-                - json_path
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the response
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - data
-    RequiredParamMissingError:
-      type: object
-      description: Error response for required parameter missing
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error
-          enum:
-          - REQUIRED_PARAM_MISSING
-        details:
-          type: object
-          description: Additional details about the error
-          additionalProperties: true
-          properties:
-            param_name:
-              type: string
-              description: The name of the missing parameter
-              maxLength: 255
-        message:
-          type: string
-          description: Human-readable error message
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the response
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
     InvalidDataLimitExceededError:
       type: object
       description: Error response when data array exceeds maximum limit
@@ -3730,39 +3990,9 @@ components:
       - details
       - message
       - status
-    BadRequestError:
+    FileSizeExceedsError_2:
       type: object
-      description: Error response schema for bad requests (INVALID_MODULE, INVALID_DATA, NOT_SUPPORTED)
-      additionalProperties: false
-      properties:
-        code:
-          type: string
-          description: Error code indicating the type of error
-          enum:
-          - INVALID_MODULE
-          - INVALID_DATA
-          - NOT_SUPPORTED
-        details:
-          type: object
-          description: Additional details about the error
-          additionalProperties: true
-        message:
-          type: string
-          description: Human-readable error message
-          maxLength: 500
-        status:
-          type: string
-          description: Status of the response
-          enum:
-          - error
-      required:
-      - code
-      - details
-      - message
-      - status
-    InvalidDataError_2:
-      type: object
-      description: Error response for invalid data
+      description: Error response when attachment file size exceeds the limit
       additionalProperties: false
       properties:
         data:
@@ -3771,18 +4001,30 @@ components:
           maxItems: 200
           items:
             type: object
-            description: Error details for invalid data
+            description: Error details for file size exceeded
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - INVALID_DATA
+                - FILE_SIZE_EXCEEDS
               details:
                 type: object
-                description: Additional details about the error, can include various constraint information
-                additionalProperties: true
+                description: Additional details about the error
+                additionalProperties: false
+                properties:
+                  api_name:
+                    type: string
+                    description: API name of the field
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: JSON path to the field
+                    maxLength: 255
+                required:
+                - api_name
+                - json_path
               message:
                 type: string
                 description: Human-readable error message
@@ -3900,9 +4142,9 @@ components:
             - status
       required:
       - data
-    FileSizeExceedsError_2:
+    InvalidDataError_2:
       type: object
-      description: Error response when attachment file size exceeds the limit
+      description: Error response for invalid data
       additionalProperties: false
       properties:
         data:
@@ -3911,129 +4153,18 @@ components:
           maxItems: 200
           items:
             type: object
-            description: Error details for file size exceeded
+            description: Error details for invalid data
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - FILE_SIZE_EXCEEDS
+                - INVALID_DATA
               details:
                 type: object
-                description: Additional details about the error
-                additionalProperties: false
-                properties:
-                  api_name:
-                    type: string
-                    description: API name of the field
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: JSON path to the field
-                    maxLength: 255
-                required:
-                - api_name
-                - json_path
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the response
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - data
-    MandatoryNotFoundError_2:
-      type: object
-      description: Error response for mandatory field not found
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          description: Array of error results
-          maxItems: 200
-          items:
-            type: object
-            description: Error details for missing mandatory field
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error
-                enum:
-                - MANDATORY_NOT_FOUND
-              details:
-                type: object
-                description: Additional details about the error
+                description: Additional details about the error, can include various constraint information
                 additionalProperties: true
-                properties:
-                  api_name:
-                    type: string
-                    description: The API name of the missing mandatory field
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: The JSON path to the missing field
-                    maxLength: 500
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the response
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - message
-            - status
-      required:
-      - data
-    NotAllowedError_2:
-      type: object
-      description: Error response when operation is not allowed
-      additionalProperties: false
-      properties:
-        data:
-          type: array
-          description: Array of error results
-          maxItems: 200
-          items:
-            type: object
-            description: Error details for not allowed operation
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error
-                enum:
-                - NOT_ALLOWED
-              details:
-                type: object
-                description: Additional details about the error
-                additionalProperties: false
-                properties:
-                  api_name:
-                    type: string
-                    description: API name of the field
-                    maxLength: 255
-                  json_path:
-                    type: string
-                    description: JSON path to the field
-                    maxLength: 500
-                required:
-                - api_name
-                - json_path
               message:
                 type: string
                 description: Human-readable error message
@@ -4100,186 +4231,38 @@ components:
             - status
       required:
       - data
-  parameters:
-    Page:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination
-      schema:
-        type: integer
-        format: int32
-    Fields:
-      name: fields
-      in: query
-      required: false
-      description: Comma-separated list of field API names to include in the response
-      schema:
-        type: string
-        maxLength: 1024
-    PerPage:
-      name: per_page
-      in: query
-      required: false
-      description: Number of records per page
-      schema:
-        type: integer
-        format: int32
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: Page token for fetching more than 2000 records
-      schema:
-        type: string
-        maxLength: 2000
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Unique identifier of the note
-      schema:
-        type: string
-        format: int64
-    SortOrder:
-      name: sort_order
-      in: query
-      required: false
-      description: Sort order (ascending or descending)
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-    SortBy:
-      name: sort_by
-      in: query
-      required: false
-      description: Field name to sort results by
-      schema:
-        type: string
-        enum:
-        - Modified_Time
-        - Created_Time
-        - id
-    Ids:
-      name: ids
-      in: query
-      required: false
-      description: Comma-separated list of note IDs to retrieve specific notes
-      schema:
-        type: string
-        maxLength: 1024
-    Page_2:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (starting from 1)
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 10000
-        default: 1
-    Fields_2:
-      name: fields
-      in: query
-      required: false
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(,[A-Za-z_][A-Za-z0-9_]*)*$
-        maxLength: 1000
-    NoteId:
-      name: noteId
-      in: path
-      required: true
-      description: The unique identifier of the specific note record. Must be a valid numeric record ID.
-      schema:
-        type: string
-        pattern: ^[0-9]+$
-        format: int64
-    PerPage_2:
-      name: perPage
-      in: query
-      required: false
-      description: Number of records to return per page
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 200
-        default: 200
-    ParentRecordId:
-      name: parentRecordId
-      in: path
-      required: true
-      description: The unique identifier of the parent record. Must be a valid numeric record ID.
-      schema:
-        type: string
-        pattern: ^[0-9]+$
-        format: int64
-    ParentRecordModule:
-      name: parentRecordModule
-      in: path
-      required: true
-      description: The module API name of the parent record (e.g., Contacts, Leads, Deals, Accounts)
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*$
-        maxLength: 50
-    SortOrder_2:
-      name: sort_order
-      in: query
-      required: false
-      description: Sort order for the results
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        maxLength: 10
-    SortBy_2:
-      name: sort_by
-      in: query
-      required: false
-      description: Field name to sort the notes by
-      schema:
-        type: string
-        enum:
-        - id
-        - Created_Time
-        - Modified_Time
-        maxLength: 50
-    Ids_2:
-      name: ids
-      in: query
-      required: true
-      description: Comma-separated list of note record IDs to delete. Required for bulk deletion operations.
-      schema:
-        type: string
-        pattern: ^[0-9]+(,[0-9]+)*$
-        maxLength: 2000
-  responses:
-    Unauthorized:
-      description: Unauthorized - Authentication failed
-      content:
-        application/json:
-          schema:
+    MandatoryNotFoundError_2:
+      type: object
+      description: Error response for mandatory field not found
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          description: Array of error results
+          maxItems: 200
+          items:
             type: object
-            description: Error response for authentication failures
+            description: Error details for missing mandatory field
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - AUTHENTICATION_FAILURE
-                - OAUTH_SCOPE_MISMATCH
+                - MANDATORY_NOT_FOUND
               details:
                 type: object
                 description: Additional details about the error
-                additionalProperties: false
+                additionalProperties: true
+                properties:
+                  api_name:
+                    type: string
+                    description: The API name of the missing mandatory field
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: The JSON path to the missing field
+                    maxLength: 500
               message:
                 type: string
                 description: Human-readable error message
@@ -4294,26 +4277,73 @@ components:
             - details
             - message
             - status
-    NoContent:
-      description: No content - The request was successful but there are no records to return
-    NotFound:
-      description: Not Found - The requested resource does not exist
-      content:
-        application/json:
-          schema:
+      required:
+      - data
+    BadRequestError:
+      type: object
+      description: Error response schema for bad requests (INVALID_MODULE, INVALID_DATA, NOT_SUPPORTED)
+      additionalProperties: false
+      properties:
+        code:
+          type: string
+          description: Error code indicating the type of error
+          enum:
+          - INVALID_MODULE
+          - INVALID_DATA
+          - NOT_SUPPORTED
+        details:
+          type: object
+          description: Additional details about the error
+          additionalProperties: true
+        message:
+          type: string
+          description: Human-readable error message
+          maxLength: 500
+        status:
+          type: string
+          description: Status of the response
+          enum:
+          - error
+      required:
+      - code
+      - details
+      - message
+      - status
+    NotAllowedError_2:
+      type: object
+      description: Error response when operation is not allowed
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          description: Array of error results
+          maxItems: 200
+          items:
             type: object
-            description: Error response for not found requests
+            description: Error details for not allowed operation
             additionalProperties: false
             properties:
               code:
                 type: string
                 description: Error code indicating the type of error
                 enum:
-                - INVALID_URL_PATTERN
+                - NOT_ALLOWED
               details:
                 type: object
                 description: Additional details about the error
                 additionalProperties: false
+                properties:
+                  api_name:
+                    type: string
+                    description: API name of the field
+                    maxLength: 255
+                  json_path:
+                    type: string
+                    description: JSON path to the field
+                    maxLength: 500
+                required:
+                - api_name
+                - json_path
               message:
                 type: string
                 description: Human-readable error message
@@ -4328,38 +4358,8 @@ components:
             - details
             - message
             - status
-    InternalServerError:
-      description: Internal Server Error - An unexpected error occurred on the server
-      content:
-        application/json:
-          schema:
-            type: object
-            description: Error response for internal server errors
-            additionalProperties: false
-            properties:
-              code:
-                type: string
-                description: Error code indicating the type of error
-                enum:
-                - INTERNAL_ERROR
-              details:
-                type: object
-                description: Additional details about the error
-                additionalProperties: false
-              message:
-                type: string
-                description: Human-readable error message
-                maxLength: 500
-              status:
-                type: string
-                description: Status of the response
-                enum:
-                - error
-            required:
-            - code
-            - details
-            - message
-            - status
+      required:
+      - data
   securitySchemes:
     iam-oauth2-schema:
       type: oauth2

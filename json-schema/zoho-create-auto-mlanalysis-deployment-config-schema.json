@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-create-auto-mlanalysis-deployment-config-schema.json",
+  "title": "CreateAutoMLAnalysisDeploymentConfig",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-modeling-apis-api-openapi.yml#/components/schemas/CreateAutoMLAnalysisDeploymentConfig",
+  "type": "object",
+  "properties": {
+    "inputTableId": {
+      "type": "integer",
+      "description": "Unique ID of the input table from which data will be read for AutoML analysis deployment.",
+      "maxLength": 60
+    },
+    "outputTable": {
+      "type": "string",
+      "description": "Name of the output table where the prediction results will be stored."
+    },
+    "scheduleDetails": {
+      "type": "object",
+      "properties": {
+        "calendarFrequency": {
+          "type": "string",
+          "enum": [
+            "none",
+            "hourly",
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "description": "Defines the frequency at which the deployment job should run."
+        },
+        "interval": {
+          "type": "integer",
+          "description": "Specifies the interval for the schedule based on calendarFrequency."
+        },
+        "hour": {
+          "type": "integer",
+          "description": "Specifies the hour of the day (0-23) when the deployment job should be triggered."
+        },
+        "hourInterval": {
+          "type": "integer",
+          "description": "Specifies the hour interval between executions when applicable."
+        },
+        "minute": {
+          "type": "integer",
+          "description": "Specifies the minute within the hour (0-59) when the deployment job should be triggered."
+        },
+        "weekDay": {
+          "type": "integer",
+          "description": "Specifies the day of the week when the deployment job should be triggered.",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        },
+        "monthDay": {
+          "type": "integer",
+          "description": "Specifies a particular day of the month when the deployment job should be triggered.",
+          "enum": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            99
+          ]
+        }
+      },
+      "required": [
+        "calendarFrequency"
+      ]
+    },
+    "outputColumns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Each value must be a valid column name."
+      },
+      "minItems": 1,
+      "maxItems": 100,
+      "description": "List of column names that will be written to the output table as part of the prediction results."
+    },
+    "predictionColumn": {
+      "type": "string",
+      "description": "Name of the column for which predictions will be generated."
+    },
+    "serverOption": {
+      "type": "integer",
+      "enum": [
+        1,
+        2,
+        3
+      ],
+      "description": "Specifies the server memory configuration for executing the AutoML deployment job."
+    },
+    "timezone": {
+      "type": "string",
+      "description": "Timezone to be used for scheduling the deployment job."
+    },
+    "importType": {
+      "type": "string",
+      "enum": [
+        "APPEND",
+        "TRUNCATEADD",
+        "UPDATEADD"
+      ],
+      "description": "Specifies how prediction results should be imported into the output table."
+    },
+    "matchingColumns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Each value must be a valid column name."
+      },
+      "description": "List of column names used to match existing records in the output table when importType is UPDATEADD."
+    }
+  },
+  "required": [
+    "inputTableId",
+    "outputTable",
+    "scheduleDetails",
+    "outputColumns",
+    "predictionColumn",
+    "serverOption",
+    "importType"
+  ]
+}

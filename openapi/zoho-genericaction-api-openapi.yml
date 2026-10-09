@@ -61,46 +61,20 @@ components:
                           fieldId: '1000000002157'
                         name: My Action
                     entityId: 1000000048371
-  schemas:
-    executeActionRespJson:
-      type:
-      - object
-      - 'null'
-      additionalProperties: false
-      properties:
-        message:
-          type:
-          - string
-          - 'null'
-          maxLength: 100
-          minLength: 0
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - SUCCESS
-          - FAILURE
-          - OFFLOADED
-          maxLength: 100
-          minLength: 0
-        actionResult:
-          type:
-          - 'null'
-          - object
-          additionalProperties: false
-          patternProperties:
-            ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
-              type:
-              - string
-              - 'null'
-              maxLength: 100
-              minLength: 0
-              pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-      required:
-      - actionResult
-      - message
-      - status
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
   requestBodies:
     executeActionPayloadJson:
       content:
@@ -178,20 +152,46 @@ components:
                 moduleId: '1000000000581'
                 entityIds:
                 - '1000000048371'
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
+  schemas:
+    executeActionRespJson:
+      type:
+      - object
+      - 'null'
+      additionalProperties: false
+      properties:
+        message:
+          type:
+          - string
+          - 'null'
+          maxLength: 100
+          minLength: 0
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - SUCCESS
+          - FAILURE
+          - OFFLOADED
+          maxLength: 100
+          minLength: 0
+        actionResult:
+          type:
+          - 'null'
+          - object
+          additionalProperties: false
+          patternProperties:
+            ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+:
+              type:
+              - string
+              - 'null'
+              maxLength: 100
+              minLength: 0
+              pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+      required:
+      - actionResult
+      - message
+      - status
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

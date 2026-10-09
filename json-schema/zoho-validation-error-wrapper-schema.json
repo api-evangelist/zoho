@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-validation-error-wrapper-schema.json",
+  "title": "ValidationErrorWrapper",
+  "description": "Wrapper for validation error responses",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-leads-api-openapi.yml#/components/schemas/ValidationErrorWrapper",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of validation errors",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/ValidationError"
+      }
+    }
+  },
+  "$defs": {
+    "ValidationError": {
+      "type": "object",
+      "description": "Validation error details",
+      "required": [
+        "status",
+        "code",
+        "message",
+        "details"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "error"
+          ],
+          "description": "Error status indicator"
+        },
+        "code": {
+          "type": "string",
+          "enum": [
+            "MANDATORY_NOT_FOUND",
+            "MAPPING_MISMATCH",
+            "INVALID_DATA",
+            "DUPLICATE_DATA",
+            "CANNOT_PERFORM_ACTION",
+            "NOT_ALLOWED",
+            "NOT_REVIEWED"
+          ],
+          "description": "Error code identifying the type of validation failure"
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message",
+          "maxLength": 500
+        },
+        "details": {
+          "type": "object",
+          "description": "Additional error context and affected field information",
+          "additionalProperties": true,
+          "properties": {
+            "api_name": {
+              "type": "string",
+              "description": "API name of the affected field",
+              "maxLength": 100
+            },
+            "json_path": {
+              "type": "string",
+              "description": "JSONPath to the affected field in the request",
+              "maxLength": 200
+            },
+            "mapped_field": {
+              "type": "string",
+              "description": "Name of the field that has a mapping relationship",
+              "maxLength": 100
+            },
+            "expected_data_type": {
+              "type": "string",
+              "description": "Expected data type for the field",
+              "maxLength": 50
+            },
+            "maximum_length": {
+              "type": "integer",
+              "format": "int32",
+              "description": "Maximum allowed length for the field"
+            }
+          }
+        }
+      }
+    }
+  }
+}

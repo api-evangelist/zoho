@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-bulk-operation-response-schema.json",
+  "title": "BulkOperationResponse",
+  "description": "Response structure for bulk operations (update, delete)",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-zoho-crm-related-records-api-api-openapi.yml#/components/schemas/BulkOperationResponse",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "Array of operation results per record",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "description": "Individual operation result",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "status"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Result code for the operation",
+            "enum": [
+              "SUCCESS",
+              "INVALID_DATA",
+              "DUPLICATE_DATA",
+              "MANDATORY_NOT_FOUND"
+            ]
+          },
+          "details": {
+            "type": "object",
+            "description": "Operation details including affected record ID",
+            "additionalProperties": true,
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID of the affected record",
+                "pattern": "^[0-9]+$",
+                "maxLength": 20
+              },
+              "api_name": {
+                "type": "string",
+                "description": "API name of the field that caused the error (if applicable).",
+                "maxLength": 100
+              },
+              "json_path": {
+                "type": "string",
+                "description": "JSONPath to the field in request payload (if applicable).",
+                "maxLength": 500
+              },
+              "param_name": {
+                "type": "string",
+                "description": "Parameter name that caused the error (if applicable).",
+                "maxLength": 100
+              }
+            }
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable result message",
+            "maxLength": 500
+          },
+          "status": {
+            "type": "string",
+            "description": "Operation status",
+            "enum": [
+              "success",
+              "error"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

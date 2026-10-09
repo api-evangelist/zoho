@@ -128,6 +128,29 @@ paths:
       - external-public
 components:
   responses:
+    followersCountJSON:
+      description: followersCountJSON template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              count:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+            required:
+            - count
+          examples:
+            Valid responses Definitions:
+              value:
+                count: 289
     followersListJson:
       description: followersListJson template definitions
       content:
@@ -162,47 +185,7 @@ components:
                     logoUrl: https://desk.zoho.com/portal/api/publicImages/35531135311?portalId=3153815r1fnf113131rf31n9
                   userType: AGENT
                   email: deskagent@zylker.com
-    followersCountJSON:
-      description: followersCountJSON template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: 289
   parameters:
-    userType:
-      name: userType
-      in: query
-      description: 'To get the followers count based on userType allowed values !@ AGENTS@!, !@ END_USERS@!,      default value : all users will be processed'
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        description: 'To get the followers count based on userType allowed values !@ AGENTS@!, !@ END_USERS@!,      default value : all users will be processed'
-        enum:
-        - AGENT
-        - END_USER
-        maxLength: 100
-        minLength: 0
     moduleAPIName:
       name: moduleAPIName
       in: path
@@ -233,6 +216,23 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
+    userType:
+      name: userType
+      in: query
+      description: 'To get the followers count based on userType allowed values !@ AGENTS@!, !@ END_USERS@!,      default value : all users will be processed'
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        description: 'To get the followers count based on userType allowed values !@ AGENTS@!, !@ END_USERS@!,      default value : all users will be processed'
+        enum:
+        - AGENT
+        - END_USER
+        maxLength: 100
+        minLength: 0
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

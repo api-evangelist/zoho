@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-license-feature-list-response-schema.json",
+  "title": "LicenseFeatureListResponse",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-license-api-openapi.yml#/components/schemas/LicenseFeatureListResponse",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/FeatureAllowed"
+      }
+    }
+  },
+  "$defs": {
+    "FeatureAllowed": {
+      "type": "object",
+      "description": "Details of an allowed feature with flexible limit information.",
+      "properties": {
+        "featureCode": {
+          "type": "string",
+          "description": "The unique code of the feature."
+        },
+        "featureName": {
+          "type": "string",
+          "description": "The display name of the feature."
+        },
+        "isAllowed": {
+          "type": "boolean",
+          "description": "Indicates if the feature is currently allowed under the license."
+        },
+        "limits": {
+          "type": "array",
+          "description": "Array of license limits per applicable unit. Structure varies based on includeDetailedLimits parameter.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SimpleLicenseUnit"
+              },
+              {
+                "$ref": "#/$defs/LicenseUnitValue"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "featureCode",
+        "featureName",
+        "isAllowed"
+      ]
+    },
+    "LicenseUnitValue": {
+      "type": "object",
+      "description": "Detailed license unit value information",
+      "properties": {
+        "unitCode": {
+          "type": "string",
+          "description": "Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)"
+        },
+        "maxValue": {
+          "type": "integer",
+          "description": "Maximum allowed value for this unit"
+        },
+        "freeValue": {
+          "type": "integer",
+          "description": "Free value included in the base plan"
+        },
+        "addOnValue": {
+          "type": "integer",
+          "description": "Additional value from add-ons"
+        }
+      },
+      "required": [
+        "unitCode",
+        "maxValue"
+      ]
+    },
+    "SimpleLicenseUnit": {
+      "type": "object",
+      "description": "Simple license unit with only max value",
+      "properties": {
+        "unitCode": {
+          "type": "string",
+          "description": "Type of unit for which the limit applies (e.g., ORG, AGENT, TEAM)"
+        },
+        "maxValue": {
+          "type": "integer",
+          "description": "Maximum allowed value for this unit"
+        }
+      },
+      "required": [
+        "unitCode",
+        "maxValue"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

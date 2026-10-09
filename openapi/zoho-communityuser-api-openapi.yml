@@ -172,9 +172,8 @@ paths:
       x-audience:
       - external-public
 components:
-  responses:
-    listAllModeratedUserDetails:
-      description: listAllModeratedUserDetails template definitions
+  requestBodies:
+    unmoderateUsersJSON:
       content:
         application/json:
           schema:
@@ -183,36 +182,95 @@ components:
             - object
             additionalProperties: false
             properties:
-              data:
-                $ref: ./CommunityUser.json#/components/schemas/moderatedUserDetailsData
+              userIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
             required:
-            - data
+            - userIds
           examples:
-            Valid responses Definitions:
+            Valid requestBody Definitions:
               value:
-                data:
-                - moderatedBy:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
-                    name: user 2
-                    id: '7000000015972'
-                    type: AGENT
-                    status: ACTIVE
-                  photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
-                  name: user 1
-                  moderatedOn: 1539682932716
-                  id: '7000000015971'
-                  type: AGENT
-                  status: ACTIVE
-                - moderatedBy:
-                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015974/photo?orgId=123456
-                    name: user 4
-                    id: '7000000015974'
-                    type: AGENT
-                  photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
-                  name: user 3
-                  moderatedOn: 1539682932716
-                  id: '7000000015972'
-                  type: AGENT
+                userIds:
+                - '103417000000528003'
+                - '103417000000528006'
+                - '103417000000528008'
+    updateCommunityUserInfoRequestJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isModerated:
+                type:
+                - boolean
+                - 'null'
+                description: Key that defines whether the user is moderated or not
+            required:
+            - isModerated
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isModerated: 'true'
+  parameters:
+    limit:
+      name: limit
+      in: query
+      description: Number of followers to list
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Number of followers to list
+        maximum: 100
+        minimum: 1
+        pattern: ([0-9]+)
+    userId:
+      name: userId
+      in: path
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int64
+        pattern: ([0-9]+)
+    from:
+      name: from
+      in: query
+      description: Index number, starting from which the followers must be listed
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - string
+        - 'null'
+        - integer
+        format: int32
+        description: Index number, starting from which the followers must be listed
+        minimum: 0
+        pattern: ([0-9]+)
+  responses:
     listAllCommunityUserFollowers:
       description: listAllCommunityUserFollowers template definitions
       content:
@@ -351,55 +409,8 @@ components:
                 id: '7000000015971'
                 type: AGENT
                 status: ACTIVE
-  parameters:
-    limit:
-      name: limit
-      in: query
-      description: Number of followers to list
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Number of followers to list
-        maximum: 100
-        minimum: 1
-        pattern: ([0-9]+)
-    from:
-      name: from
-      in: query
-      description: Index number, starting from which the followers must be listed
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int32
-        description: Index number, starting from which the followers must be listed
-        minimum: 0
-        pattern: ([0-9]+)
-    userId:
-      name: userId
-      in: path
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type:
-        - string
-        - 'null'
-        - integer
-        format: int64
-        pattern: ([0-9]+)
-  requestBodies:
-    updateCommunityUserInfoRequestJSON:
+    listAllModeratedUserDetails:
+      description: listAllModeratedUserDetails template definitions
       content:
         application/json:
           schema:
@@ -408,47 +419,36 @@ components:
             - object
             additionalProperties: false
             properties:
-              isModerated:
-                type:
-                - boolean
-                - 'null'
-                description: Key that defines whether the user is moderated or not
+              data:
+                $ref: ./CommunityUser.json#/components/schemas/moderatedUserDetailsData
             required:
-            - isModerated
+            - data
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                isModerated: 'true'
-    unmoderateUsersJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              userIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - userIds
-          examples:
-            Valid requestBody Definitions:
-              value:
-                userIds:
-                - '103417000000528003'
-                - '103417000000528006'
-                - '103417000000528008'
+                data:
+                - moderatedBy:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
+                    name: user 2
+                    id: '7000000015972'
+                    type: AGENT
+                    status: ACTIVE
+                  photoUrl: https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456
+                  name: user 1
+                  moderatedOn: 1539682932716
+                  id: '7000000015971'
+                  type: AGENT
+                  status: ACTIVE
+                - moderatedBy:
+                    photoUrl: https://desk.zoho.com/api/v1/agents/7000000015974/photo?orgId=123456
+                    name: user 4
+                    id: '7000000015974'
+                    type: AGENT
+                  photoUrl: https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456
+                  name: user 3
+                  moderatedOn: 1539682932716
+                  id: '7000000015972'
+                  type: AGENT
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

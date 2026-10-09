@@ -60,6 +60,84 @@ paths:
       - external-public
 components:
   responses:
+    updateRoutingPreferenceJson:
+      description: updateRoutingPreferenceJson template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              assignBacklog:
+                type:
+                - boolean
+                - 'null'
+              assignToOfflineAgents:
+                type:
+                - boolean
+                - 'null'
+              thresholdLimit:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              backLogLimit:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              isThresholdEnabled:
+                type:
+                - boolean
+                - 'null'
+              departmentId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              assignBacklogsBy:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              freshTicketAssignMode:
+                type:
+                - string
+                - 'null'
+                enum:
+                - IMMEDIATE
+                - MOVE_TO_BACKLOG
+                maxLength: 100
+                minLength: 0
+            required:
+            - assignBacklog
+            - assignBacklogsBy
+            - assignToOfflineAgents
+            - backLogLimit
+            - departmentId
+            - freshTicketAssignMode
+            - isThresholdEnabled
+            - thresholdLimit
+          examples:
+            Valid responses Definitions:
+              value:
+                assignBacklog: true
+                assignToOfflineAgents: true
+                thresholdLimit: '40'
+                backLogLimit: '22'
+                isThresholdEnabled: true
+                departmentId: '1000000013248'
+                assignBacklogsBy: DUEDATE
+                freshTicketAssignMode: IMMEDIATE
     getRoutingPreferenceResponseJson:
       description: getRoutingPreferenceResponseJson template definitions
       content:
@@ -149,84 +227,6 @@ components:
                 assignToOfflineAgents: true
                 thresholdLimit: '40'
                 backLogLimit: '5'
-                isThresholdEnabled: true
-                departmentId: '1000000013248'
-                assignBacklogsBy: DUEDATE
-                freshTicketAssignMode: IMMEDIATE
-    updateRoutingPreferenceJson:
-      description: updateRoutingPreferenceJson template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              assignBacklog:
-                type:
-                - boolean
-                - 'null'
-              assignToOfflineAgents:
-                type:
-                - boolean
-                - 'null'
-              thresholdLimit:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              backLogLimit:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              isThresholdEnabled:
-                type:
-                - boolean
-                - 'null'
-              departmentId:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              assignBacklogsBy:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              freshTicketAssignMode:
-                type:
-                - string
-                - 'null'
-                enum:
-                - IMMEDIATE
-                - MOVE_TO_BACKLOG
-                maxLength: 100
-                minLength: 0
-            required:
-            - assignBacklog
-            - assignBacklogsBy
-            - assignToOfflineAgents
-            - backLogLimit
-            - departmentId
-            - freshTicketAssignMode
-            - isThresholdEnabled
-            - thresholdLimit
-          examples:
-            Valid responses Definitions:
-              value:
-                assignBacklog: true
-                assignToOfflineAgents: true
-                thresholdLimit: '40'
-                backLogLimit: '22'
                 isThresholdEnabled: true
                 departmentId: '1000000013248'
                 assignBacklogsBy: DUEDATE

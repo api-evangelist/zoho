@@ -518,7 +518,125 @@ paths:
       tags:
       - Contact Roles
 components:
+  parameters:
+    Contact:
+      name: contactId
+      in: path
+      required: true
+      description: The unique identifier of the contact record
+      schema:
+        type: string
+        format: int64
+    DealId:
+      name: dealId
+      in: path
+      required: true
+      description: The unique identifier of the deal record
+      schema:
+        type: string
+        format: int64
+    Ids:
+      name: ids
+      in: query
+      required: false
+      description: Comma-separated list of contact role relation IDs to delete
+      schema:
+        type: string
+        format: int64
+    Fields:
+      name: fields
+      in: query
+      required: true
+      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
+      schema:
+        type: string
+        pattern: ^[A-Za-z_][A-Za-z0-9_]*(?:,[A-Za-z_][A-Za-z0-9_]*)*$
+        minLength: 1
+        maxLength: 1000
+    Module:
+      name: module
+      in: path
+      required: true
+      description: The module name for the deal record
+      schema:
+        type: string
+        enum:
+        - Deals
   schemas:
+    NoPermissionDealsError:
+      type: object
+      description: No permission to view deals
+      properties:
+        code:
+          type: string
+          description: Error code indicating lack of permission
+          const: NO_PERMISSION
+        details:
+          type: object
+          description: Details about the missing permissions
+          properties:
+            permissions:
+              type: array
+              description: List of required permissions that are missing
+              items:
+                type: string
+                description: Permission identifier for viewing deals
+                const: Crm_Implied_View_Potentials
+              maxItems: 1
+          required:
+          - permissions
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating permission denial
+          const: permission denied
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
+    NoPermissionContactsError:
+      type: object
+      description: No permission to view contacts
+      properties:
+        code:
+          type: string
+          description: Error code indicating lack of permission
+          const: NO_PERMISSION
+        details:
+          type: object
+          description: Details about the missing permissions
+          properties:
+            permissions:
+              type: array
+              description: List of required permissions that are missing
+              items:
+                type: string
+                description: Permission identifier for viewing contacts
+                const: Crm_Implied_View_Contacts
+              maxItems: 1
+          required:
+          - permissions
+          additionalProperties: false
+        message:
+          type: string
+          description: Error message indicating permission denial
+          const: permission denied
+        status:
+          type: string
+          description: Response status
+          const: error
+      required:
+      - code
+      - details
+      - message
+      - status
+      additionalProperties: false
     DeleteRelationsSuccessResponse:
       type: object
       description: Response returned after deleting contact role relations
@@ -603,66 +721,30 @@ components:
       required:
       - data
       additionalProperties: false
-    NoPermissionDealsError:
+    InvalidDataError:
       type: object
-      description: No permission to view deals
+      description: Invalid related ID error
       properties:
         code:
           type: string
-          description: Error code indicating lack of permission
-          const: NO_PERMISSION
+          description: Error code indicating invalid deal ID
+          const: INVALID_DATA
         details:
           type: object
-          description: Details about the missing permissions
+          description: Error details containing the path index
           properties:
-            permissions:
-              type: array
-              description: List of required permissions that are missing
-              items:
-                type: string
-                description: Permission identifier for viewing deals
-                const: Crm_Implied_View_Potentials
-              maxItems: 1
+            resource_path_index:
+              type: integer
+              format: int64
+              description: Index of the path parameter that is invalid (1 for deal ID)
+              const: 1
           required:
-          - permissions
+          - resource_path_index
           additionalProperties: false
         message:
           type: string
-          description: Error message indicating permission denial
-          const: permission denied
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-    RequiredParamMissingError:
-      type: object
-      description: Required parameter missing error
-      properties:
-        code:
-          type: string
-          description: Error code indicating a required parameter is missing
-          const: REQUIRED_PARAM_MISSING
-        details:
-          type: object
-          description: Error details containing the missing parameter name
-          properties:
-            param_name:
-              type: string
-              description: Name of the missing required parameter
-              const: fields
-          required:
-          - param_name
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating a parameter is missing
-          const: One of the expected parameter is missing
+          description: Error message indicating the deal ID is invalid
+          const: the related id given seems to be invalid
         status:
           type: string
           description: Response status
@@ -707,30 +789,29 @@ components:
       - message
       - status
       additionalProperties: false
-    InvalidDataError:
+    RequiredParamMissingError:
       type: object
-      description: Invalid related ID error
+      description: Required parameter missing error
       properties:
         code:
           type: string
-          description: Error code indicating invalid deal ID
-          const: INVALID_DATA
+          description: Error code indicating a required parameter is missing
+          const: REQUIRED_PARAM_MISSING
         details:
           type: object
-          description: Error details containing the path index
+          description: Error details containing the missing parameter name
           properties:
-            resource_path_index:
-              type: integer
-              format: int64
-              description: Index of the path parameter that is invalid (1 for deal ID)
-              const: 1
+            param_name:
+              type: string
+              description: Name of the missing required parameter
+              const: fields
           required:
-          - resource_path_index
+          - param_name
           additionalProperties: false
         message:
           type: string
-          description: Error message indicating the deal ID is invalid
-          const: the related id given seems to be invalid
+          description: Error message indicating a parameter is missing
+          const: One of the expected parameter is missing
         status:
           type: string
           description: Response status
@@ -822,87 +903,6 @@ components:
       required:
       - data
       additionalProperties: false
-    NoPermissionContactsError:
-      type: object
-      description: No permission to view contacts
-      properties:
-        code:
-          type: string
-          description: Error code indicating lack of permission
-          const: NO_PERMISSION
-        details:
-          type: object
-          description: Details about the missing permissions
-          properties:
-            permissions:
-              type: array
-              description: List of required permissions that are missing
-              items:
-                type: string
-                description: Permission identifier for viewing contacts
-                const: Crm_Implied_View_Contacts
-              maxItems: 1
-          required:
-          - permissions
-          additionalProperties: false
-        message:
-          type: string
-          description: Error message indicating permission denial
-          const: permission denied
-        status:
-          type: string
-          description: Response status
-          const: error
-      required:
-      - code
-      - details
-      - message
-      - status
-      additionalProperties: false
-  parameters:
-    Contact:
-      name: contactId
-      in: path
-      required: true
-      description: The unique identifier of the contact record
-      schema:
-        type: string
-        format: int64
-    DealId:
-      name: dealId
-      in: path
-      required: true
-      description: The unique identifier of the deal record
-      schema:
-        type: string
-        format: int64
-    Ids:
-      name: ids
-      in: query
-      required: false
-      description: Comma-separated list of contact role relation IDs to delete
-      schema:
-        type: string
-        format: int64
-    Fields:
-      name: fields
-      in: query
-      required: true
-      description: Comma-separated list of field names to include in the response. Field names must follow API naming conventions.
-      schema:
-        type: string
-        pattern: ^[A-Za-z_][A-Za-z0-9_]*(?:,[A-Za-z_][A-Za-z0-9_]*)*$
-        minLength: 1
-        maxLength: 1000
-    Module:
-      name: module
-      in: path
-      required: true
-      description: The module name for the deal record
-      schema:
-        type: string
-        enum:
-        - Deals
   responses:
     InternalServerError:
       description: Internal Server Error

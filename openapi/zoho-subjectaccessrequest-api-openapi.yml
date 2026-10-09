@@ -332,86 +332,6 @@ paths:
       - external-public
 components:
   requestBodies:
-    sarCount:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              fieldConditions:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  maxProperties: 3
-                  minProperties: 3
-                  properties:
-                    condition:
-                      type:
-                      - string
-                      - 'null'
-                      enum:
-                      - is
-                      - starts with
-                      maxLength: 100
-                      minLength: 0
-                    fieldName:
-                      type:
-                      - string
-                      - 'null'
-                      enum:
-                      - All
-                      maxLength: 100
-                      minLength: 0
-                    value:
-                      type:
-                      - 'null'
-                      - array
-                      items:
-                        type:
-                        - string
-                        - 'null'
-                        maxLength: 100
-                        minLength: 0
-                        pattern: '[a-zA-Z0-9\_\-\+\?\!\.\P{InBasicLatin}\(\)\s]+'
-                      uniqueItems: false
-                  required:
-                  - condition
-                  - fieldName
-                  - value
-                uniqueItems: false
-              contactEmailId:
-                type:
-                - string
-                - 'null'
-                maxLength: 255
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              module:
-                type:
-                - string
-                - 'null'
-                enum:
-                - allEntities
-                - contacts
-                - tickets
-                maxLength: 100
-                minLength: 0
-            required:
-            - contactEmailId
-            - module
-          examples:
-            Valid requestBody Definitions:
-              value:
-                contactEmailId: johncarol@zylker.com
-                module: allEntities
     sarExportAll:
       content:
         application/json:
@@ -512,7 +432,7 @@ components:
                 contactEmailId: jackcarol@zylker.com
                 callBackUrl: https://test.com
                 module: contacts
-    sarErase_sarExport:
+    sarExport:
       content:
         application/json:
           schema:
@@ -638,7 +558,87 @@ components:
                   - carol
                 contactEmailId: jackcarol@zylker.com
                 module: contact
-    sarExport:
+    sarCount:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              fieldConditions:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  maxProperties: 3
+                  minProperties: 3
+                  properties:
+                    condition:
+                      type:
+                      - string
+                      - 'null'
+                      enum:
+                      - is
+                      - starts with
+                      maxLength: 100
+                      minLength: 0
+                    fieldName:
+                      type:
+                      - string
+                      - 'null'
+                      enum:
+                      - All
+                      maxLength: 100
+                      minLength: 0
+                    value:
+                      type:
+                      - 'null'
+                      - array
+                      items:
+                        type:
+                        - string
+                        - 'null'
+                        maxLength: 100
+                        minLength: 0
+                        pattern: '[a-zA-Z0-9\_\-\+\?\!\.\P{InBasicLatin}\(\)\s]+'
+                      uniqueItems: false
+                  required:
+                  - condition
+                  - fieldName
+                  - value
+                uniqueItems: false
+              contactEmailId:
+                type:
+                - string
+                - 'null'
+                maxLength: 255
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              module:
+                type:
+                - string
+                - 'null'
+                enum:
+                - allEntities
+                - contacts
+                - tickets
+                maxLength: 100
+                minLength: 0
+            required:
+            - contactEmailId
+            - module
+          examples:
+            Valid requestBody Definitions:
+              value:
+                contactEmailId: johncarol@zylker.com
+                module: allEntities
+    sarErase_sarExport:
       content:
         application/json:
           schema:
@@ -673,29 +673,6 @@ components:
                 ids:
                 - '7000000075023'
   responses:
-    sarCountResponse:
-      description: sarCountResponse template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              count:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-            required:
-            - count
-          examples:
-            Valid responses Definitions:
-              value:
-                count: '3'
     getSubjectAccessRequests:
       description: getSubjectAccessRequests template definitions
       content:
@@ -916,8 +893,8 @@ components:
                   id: '7000000091159'
                   createdById: '7000000000247'
                   status: INITIATED
-    subjectAccessRequestExportAllKeys:
-      description: subjectAccessRequestExportAllKeys template definitions
+    sarCountResponse:
+      description: sarCountResponse template definitions
       content:
         application/json:
           schema:
@@ -926,335 +903,19 @@ components:
             - object
             additionalProperties: false
             properties:
-              modifiedTime:
+              count:
                 type:
                 - string
                 - 'null'
                 maxLength: 100
                 minLength: 0
-              contactEmailId:
-                type:
-                - string
-                - 'null'
-                maxLength: 255
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              callBackUrl:
-                type:
-                - string
-                - 'null'
-                maxLength: 2000
-                minLength: 0
-                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
-              requestType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACCESS_REQUEST
-                - ERASURE_REQUEST
-                maxLength: 100
-                minLength: 0
-              recordType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ALL
-                - SPECIFIC
-                maxLength: 100
-                minLength: 0
-              query:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-              module:
-                type:
-                - string
-                - 'null'
-                enum:
-                - allEntities
-                - contacts
-                - tickets
-                maxLength: 100
-                minLength: 0
-              downloadURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ALL
-                - SPECIFIC
-                maxLength: 100
-                minLength: 0
-              modifiedById:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              referenceTicketNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              sarNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              createdTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              createdById:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - FAILED
-                - INITIATED
-                - INPROGRESS
-                - COMPLETED
-                - CANCELED
-                - EXPORTED
-                - PARTIALLY_COMPLETED
-                - PARTIALLY_EXPORTED
-                maxLength: 100
-                minLength: 0
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
             required:
-            - callBackUrl
-            - contactEmailId
-            - createdById
-            - createdTime
-            - downloadURL
-            - id
-            - modifiedById
-            - modifiedTime
-            - module
-            - query
-            - recordType
-            - referenceTicketNumber
-            - requestType
-            - sarNumber
-            - status
-            - type
+            - count
           examples:
             Valid responses Definitions:
               value:
-                modifiedTime: 1603973511890
-                contactEmailId: jackcarol@zylker.com
-                requestType: ERASURE_REQUEST
-                recordType: ALL
-                module: allEntities
-                query: null
-                downloadURL: null
-                modifiedById: '7000000000247'
-                referenceTicketNumber: null
-                sarNumber: '141'
-                createdTime: 1603973511890
-                id: '7000000092437'
-                createdById: '7000000000247'
-                status: INITIATED
-    subjectAccessRequestKeys:
-      description: subjectAccessRequestKeys template definitions
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              modifiedTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              contactEmailId:
-                type:
-                - string
-                - 'null'
-                maxLength: 255
-                minLength: 0
-                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
-              requestType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACCESS_REQUEST
-                - ERASURE_REQUEST
-                maxLength: 100
-                minLength: 0
-              recordType:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ALL
-                - SPECIFIC
-                maxLength: 100
-                minLength: 0
-              query:
-                type:
-                - 'null'
-                - object
-                additionalProperties: false
-              module:
-                type:
-                - string
-                - 'null'
-                enum:
-                - allEntities
-                - contacts
-                - tickets
-                maxLength: 100
-                minLength: 0
-              downloadURL:
-                type:
-                - string
-                - 'null'
-                maxLength: 1000
-                minLength: 0
-              type:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ALL
-                - SPECIFIC
-                maxLength: 100
-                minLength: 0
-              modifiedById:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              referenceTicketNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              sarNumber:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int32
-                pattern: ([0-9]+)
-              createdTime:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 0
-              id:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              createdById:
-                type:
-                - string
-                - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - FAILED
-                - INITIATED
-                - INPROGRESS
-                - COMPLETED
-                - CANCELED
-                - EXPORTED
-                - PARTIALLY_COMPLETED
-                - PARTIALLY_EXPORTED
-                maxLength: 100
-                minLength: 0
-            required:
-            - contactEmailId
-            - createdById
-            - createdTime
-            - downloadURL
-            - id
-            - modifiedById
-            - modifiedTime
-            - module
-            - query
-            - recordType
-            - referenceTicketNumber
-            - requestType
-            - sarNumber
-            - status
-            - type
-          examples:
-            Valid responses Definitions:
-              value:
-                modifiedTime: 1603728618930
-                contactEmailId: nirmal@zylker.com
-                requestType: ERASURE_REQUEST
-                recordType: SPECIFIC
-                module: tickets
-                query:
-                  criteriaFields:
-                  - condition: is before
-                    field:
-                      apiName: createdTime
-                      fieldLabel: Created Time
-                    value:
-                      primitive:
-                      - displayKey: ${CURRENTTIME}
-                        key: ${CURRENTTIME}
-                      type: primitive
-                  criteriaPattern: '1'
-                downloadURL: https://download.zoho.com/webdownload?x-service=desk&event-id=d7c93cfe30f48f884b41171390d582f3c0cdb2&x-cli-msg=%7B%22portalname%22%3A%22jordan%22%2C%22inline%22%3A%22false%22%7D
-                modifiedById: '7000000000247'
-                referenceTicketNumber: null
-                sarNumber: '91'
-                createdTime: 1603728618930
-                id: '7000000075001'
-                createdById: '7000000000247'
-                status: COMPLETED
+                count: '3'
     getSubjectAccessRequestResponse:
       description: getSubjectAccessRequestResponse template definitions
       content:
@@ -1709,6 +1370,345 @@ components:
                   fieldLabel: Modified Time
                   i18NLabel: Modified Time
                   type: dateTime
+    subjectAccessRequestKeys:
+      description: subjectAccessRequestKeys template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              modifiedTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              contactEmailId:
+                type:
+                - string
+                - 'null'
+                maxLength: 255
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              requestType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACCESS_REQUEST
+                - ERASURE_REQUEST
+                maxLength: 100
+                minLength: 0
+              recordType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ALL
+                - SPECIFIC
+                maxLength: 100
+                minLength: 0
+              query:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+              module:
+                type:
+                - string
+                - 'null'
+                enum:
+                - allEntities
+                - contacts
+                - tickets
+                maxLength: 100
+                minLength: 0
+              downloadURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ALL
+                - SPECIFIC
+                maxLength: 100
+                minLength: 0
+              modifiedById:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              referenceTicketNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              sarNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              createdTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              createdById:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - FAILED
+                - INITIATED
+                - INPROGRESS
+                - COMPLETED
+                - CANCELED
+                - EXPORTED
+                - PARTIALLY_COMPLETED
+                - PARTIALLY_EXPORTED
+                maxLength: 100
+                minLength: 0
+            required:
+            - contactEmailId
+            - createdById
+            - createdTime
+            - downloadURL
+            - id
+            - modifiedById
+            - modifiedTime
+            - module
+            - query
+            - recordType
+            - referenceTicketNumber
+            - requestType
+            - sarNumber
+            - status
+            - type
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1603728618930
+                contactEmailId: nirmal@zylker.com
+                requestType: ERASURE_REQUEST
+                recordType: SPECIFIC
+                module: tickets
+                query:
+                  criteriaFields:
+                  - condition: is before
+                    field:
+                      apiName: createdTime
+                      fieldLabel: Created Time
+                    value:
+                      primitive:
+                      - displayKey: ${CURRENTTIME}
+                        key: ${CURRENTTIME}
+                      type: primitive
+                  criteriaPattern: '1'
+                downloadURL: https://download.zoho.com/webdownload?x-service=desk&event-id=d7c93cfe30f48f884b41171390d582f3c0cdb2&x-cli-msg=%7B%22portalname%22%3A%22jordan%22%2C%22inline%22%3A%22false%22%7D
+                modifiedById: '7000000000247'
+                referenceTicketNumber: null
+                sarNumber: '91'
+                createdTime: 1603728618930
+                id: '7000000075001'
+                createdById: '7000000000247'
+                status: COMPLETED
+    subjectAccessRequestExportAllKeys:
+      description: subjectAccessRequestExportAllKeys template definitions
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              modifiedTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              contactEmailId:
+                type:
+                - string
+                - 'null'
+                maxLength: 255
+                minLength: 0
+                pattern: ^[a-zA-Z0-9\_]([a-zA-Z0-9\_\+\-\.\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\-\_]*[a-zA-Z0-9])*)[\.])+[a-zA-Z]{2,22}$
+              callBackUrl:
+                type:
+                - string
+                - 'null'
+                maxLength: 2000
+                minLength: 0
+                pattern: (^(ht|f)tp(s?)\://[-.\w]*(/?)([a-zA-Z0-9\-\.\?\,\:\'/\\+=&amp;%\$#_@]*)?$)
+              requestType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACCESS_REQUEST
+                - ERASURE_REQUEST
+                maxLength: 100
+                minLength: 0
+              recordType:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ALL
+                - SPECIFIC
+                maxLength: 100
+                minLength: 0
+              query:
+                type:
+                - 'null'
+                - object
+                additionalProperties: false
+              module:
+                type:
+                - string
+                - 'null'
+                enum:
+                - allEntities
+                - contacts
+                - tickets
+                maxLength: 100
+                minLength: 0
+              downloadURL:
+                type:
+                - string
+                - 'null'
+                maxLength: 1000
+                minLength: 0
+              type:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ALL
+                - SPECIFIC
+                maxLength: 100
+                minLength: 0
+              modifiedById:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              referenceTicketNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              sarNumber:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int32
+                pattern: ([0-9]+)
+              createdTime:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 0
+              id:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              createdById:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - FAILED
+                - INITIATED
+                - INPROGRESS
+                - COMPLETED
+                - CANCELED
+                - EXPORTED
+                - PARTIALLY_COMPLETED
+                - PARTIALLY_EXPORTED
+                maxLength: 100
+                minLength: 0
+            required:
+            - callBackUrl
+            - contactEmailId
+            - createdById
+            - createdTime
+            - downloadURL
+            - id
+            - modifiedById
+            - modifiedTime
+            - module
+            - query
+            - recordType
+            - referenceTicketNumber
+            - requestType
+            - sarNumber
+            - status
+            - type
+          examples:
+            Valid responses Definitions:
+              value:
+                modifiedTime: 1603973511890
+                contactEmailId: jackcarol@zylker.com
+                requestType: ERASURE_REQUEST
+                recordType: ALL
+                module: allEntities
+                query: null
+                downloadURL: null
+                modifiedById: '7000000000247'
+                referenceTicketNumber: null
+                sarNumber: '141'
+                createdTime: 1603973511890
+                id: '7000000092437'
+                createdById: '7000000000247'
+                status: INITIATED
   parameters:
     sarId:
       name: sarId

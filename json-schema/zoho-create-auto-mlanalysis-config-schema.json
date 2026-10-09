@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-create-auto-mlanalysis-config-schema.json",
+  "title": "CreateAutoMLAnalysisConfig",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-modeling-apis-api-openapi.yml#/components/schemas/CreateAutoMLAnalysisConfig",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the analysis template.",
+      "maxLength": 60
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the analysis template.",
+      "maxLength": 1000
+    },
+    "trainingTableId": {
+      "type": "integer",
+      "format": "int64",
+      "description": "Unique ID of the training table used to build the analysis model."
+    },
+    "targetColumn": {
+      "type": "string",
+      "description": "Name of the target column from the training table that the model will predict."
+    },
+    "predictionType": {
+      "type": "string",
+      "description": "Type of prediction to be performed by the model.",
+      "enum": [
+        "REGRESSION",
+        "CLASSIFICATION",
+        "CLUSTERING"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "description": "List of column names from the training table to use as input features.",
+      "items": {
+        "type": "string",
+        "description": "Each value must be a valid column name."
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "serverOption": {
+      "type": "integer",
+      "description": "Specifies the server memory option.",
+      "enum": [
+        1,
+        2,
+        3
+      ]
+    },
+    "algorithms": {
+      "type": "object",
+      "description": "Configuration for algorithms to be used for training.",
+      "properties": {
+        "decisionTreeRegression": {
+          "type": "object",
+          "properties": {
+            "minimumSampleSplit": {
+              "type": "integer"
+            },
+            "maximumDepth": {
+              "type": "integer"
+            }
+          }
+        },
+        "randomForestRegression": {
+          "type": "object",
+          "properties": {
+            "minimumSampleSplit": {
+              "type": "integer"
+            },
+            "maximumDepth": {
+              "type": "integer"
+            },
+            "numberOfTrees": {
+              "type": "integer"
+            }
+          }
+        },
+        "olsRegression": {
+          "type": "object",
+          "properties": {
+            "intercept": {
+              "type": "boolean"
+            },
+            "allowAlternateModel": {
+              "type": "boolean"
+            }
+          }
+        },
+        "lassoRegression": {
+          "type": "object",
+          "properties": {
+            "tolerance": {
+              "type": "number"
+            },
+            "shrinkage": {
+              "type": "integer"
+            },
+            "maximumIterations": {
+              "type": "integer"
+            }
+          }
+        },
+        "ridgeRegression": {
+          "type": "object",
+          "properties": {
+            "shrinkage": {
+              "type": "integer"
+            }
+          }
+        },
+        "svmRegressor": {
+          "type": "object",
+          "properties": {
+            "epsilon": {
+              "type": "number"
+            },
+            "softMargin": {
+              "type": "number"
+            },
+            "tolerance": {
+              "type": "number"
+            },
+            "epochs": {
+              "type": "integer"
+            }
+          }
+        },
+        "gradientBoostingRegression": {
+          "type": "object",
+          "properties": {
+            "lossFunction": {
+              "type": "string",
+              "enum": [
+                "LEASTSQUARES",
+                "QUANTILE",
+                "LEASTABSOLUTEDEVIATION",
+                "HUBER"
+              ]
+            },
+            "maximumDepth": {
+              "type": "integer"
+            },
+            "maximumNodes": {
+              "type": "integer"
+            },
+            "nodeSize": {
+              "type": "integer"
+            },
+            "numberOfTrees": {
+              "type": "integer"
+            },
+            "shrinkage": {
+              "type": "number"
+            },
+            "subSample": {
+              "type": "number"
+            }
+          }
+        },
+        "gradientBoostingClassification": {
+          "type": "object",
+          "properties": {
+            "lossFunction": {
+              "type": "string",
+              "enum": [
+                "LEASTSQUARES",
+                "QUANTILE",
+                "LEASTABSOLUTEDEVIATION",
+                "HUBER"
+              ]
+            },
+            "maximumDepth": {
+              "type": "integer"
+            },
+            "maximumNodes": {
+              "type": "integer"
+            },
+            "nodeSize": {
+              "type": "integer"
+            },
+            "numberOfTrees": {
+              "type": "integer"
+            },
+            "shrinkage": {
+              "type": "number"
+            },
+            "subSample": {
+              "type": "number"
+            }
+          }
+        },
+        "adaptiveBoost": {
+          "type": "object",
+          "properties": {
+            "maximumDepth": {
+              "type": "integer"
+            },
+            "maximumNodes": {
+              "type": "integer"
+            },
+            "nodeSize": {
+              "type": "integer"
+            },
+            "numberOfTrees": {
+              "type": "integer"
+            }
+          }
+        },
+        "decisionTreeClassification": {
+          "type": "object",
+          "properties": {
+            "minimumSampleSplit": {
+              "type": "integer"
+            },
+            "maximumDepth": {
+              "type": "integer"
+            }
+          }
+        },
+        "randomForestClassification": {
+          "type": "object",
+          "properties": {
+            "minimumSampleSplit": {
+              "type": "integer"
+            },
+            "maximumDepth": {
+              "type": "integer"
+            },
+            "numberOfTrees": {
+              "type": "integer"
+            }
+          }
+        },
+        "logisticRegression": {
+          "type": "object",
+          "properties": {
+            "lambda": {
+              "type": "number"
+            },
+            "maximumIterations": {
+              "type": "integer"
+            },
+            "tolerance": {
+              "type": "number"
+            }
+          }
+        },
+        "linearDiscriminantAnalysis": {
+          "type": "object",
+          "properties": {
+            "tolerance": {
+              "type": "number"
+            }
+          }
+        },
+        "maxEntropy": {
+          "type": "object",
+          "properties": {
+            "lambda": {
+              "type": "number"
+            },
+            "maximumIterations": {
+              "type": "integer"
+            },
+            "tolerance": {
+              "type": "number"
+            }
+          }
+        },
+        "kMeansPP": {
+          "type": "object",
+          "properties": {
+            "clustersCount": {
+              "type": "integer"
+            },
+            "kMax": {
+              "type": "integer"
+            },
+            "chIndexBasedOptimalK": {
+              "type": "boolean"
+            },
+            "calculatePerformanceMetrics": {
+              "type": "boolean"
+            }
+          }
+        },
+        "kModes": {
+          "type": "object",
+          "properties": {
+            "clustersCount": {
+              "type": "integer"
+            },
+            "minimumClusterCount": {
+              "type": "integer"
+            },
+            "maximumClusterCount": {
+              "type": "integer"
+            },
+            "dissimilarityMeasure": {
+              "type": "string",
+              "enum": [
+                "BINARY",
+                "GLOBAL_FREQUENCY",
+                "RELATIVE_FREQUENCY",
+                "JARO_WINKLER",
+                "LEVENSHTEIN",
+                "JACCARD"
+              ]
+            }
+          }
+        },
+        "kPrototypes": {
+          "type": "object",
+          "properties": {
+            "clustersCount": {
+              "type": "integer"
+            },
+            "kMax": {
+              "type": "integer"
+            },
+            "chIndexBasedOptimalK": {
+              "type": "boolean"
+            },
+            "gamma": {
+              "type": "number"
+            }
+          }
+        },
+        "xMeans": {
+          "type": "object",
+          "properties": {
+            "kMax": {
+              "type": "integer"
+            },
+            "maximumIterations": {
+              "type": "integer"
+            },
+            "tolerance": {
+              "type": "number"
+            }
+          }
+        },
+        "gMeans": {
+          "type": "object",
+          "properties": {
+            "kMax": {
+              "type": "integer"
+            },
+            "maximumIterations": {
+              "type": "integer"
+            },
+            "tolerance": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "name",
+    "trainingTableId",
+    "predictionType",
+    "features",
+    "serverOption",
+    "algorithms"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-upsert-relations-request-schema.json",
+  "title": "UpsertRelationsRequest",
+  "description": "Payload for adding or updating contact role relations on a deal",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-contact-roles-api-openapi.yml#/components/schemas/UpsertRelationsRequest",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "description": "List of contact role relations to upsert",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "description": "Contact role relation definition",
+        "properties": {
+          "Contact_Role": {
+            "type": "object",
+            "description": "Contact role to associate with the relation",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Contact role display name",
+                "maxLength": 255
+              },
+              "id": {
+                "type": "string",
+                "format": "int64",
+                "description": "Contact role identifier"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          },
+          "id": {
+            "type": "string",
+            "format": "int64",
+            "description": "Identifier of the contact relation for the deal"
+          }
+        },
+        "required": [
+          "Contact_Role",
+          "id"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/zoho/main/json-schema/zoho-export-job-details-response-schema.json",
+  "title": "ExportJobDetailsResponse",
+  "description": "Response for checking the status of an export job.",
+  "x-generated": "2026-10-04",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/zoho-bulk-export-asynchronous-api-openapi.yml#/components/schemas/ExportJobDetailsResponse",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "success"
+      ]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string",
+          "description": "Unique identifier for the export job."
+        },
+        "jobCode": {
+          "type": "string",
+          "description": "Numeric code indicating the job status.\n\nPossible values:\n- `1001`: JOB NOT INITIATED\n- `1002`: JOB IN PROGRESS\n- `1003`: ERROR OCCURRED\n- `1004`: JOB COMPLETED\n- `1005`: JOB NOT FOUND"
+        },
+        "jobStatus": {
+          "type": "string",
+          "description": "Human-readable status message describing the current job state."
+        },
+        "downloadUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download the exported data after job completion."
+        },
+        "expiryTime": {
+          "type": "string",
+          "description": "Epoch timestamp indicating when the download URL will expire (in milliseconds)."
+        }
+      }
+    }
+  }
+}

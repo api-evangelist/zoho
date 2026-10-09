@@ -130,6 +130,115 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    createHolidayList_holidayListInputJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              associatedBusinessHourIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              holidays:
+                $ref: ./HolidayList.json#/components/schemas/holidayList
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+            required:
+            - holidays
+            - name
+            - status
+          examples:
+            Valid requestBody Definitions:
+              value:
+                associatedBusinessHourIds:
+                - '4000000101003'
+                - '4000000101005'
+                - '4000000103001'
+                holidays:
+                - from: 02-20
+                  to: 02-21
+                  holidayName: Holiday1
+                - from: 03-26
+                  to: 03-26
+                  holidayName: Holiday2
+                - from: 12-24
+                  to: 12-25
+                  holidayName: Christmas Holidays
+                name: My Company Holidays
+                status: ACTIVE
+    holidayListInputJSON:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              associatedBusinessHourIds:
+                type:
+                - 'null'
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
+              holidays:
+                $ref: ./HolidayList.json#/components/schemas/holidayList
+              name:
+                type:
+                - string
+                - 'null'
+                maxLength: 100
+                minLength: 1
+                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
+              status:
+                type:
+                - string
+                - 'null'
+                enum:
+                - ACTIVE
+                - INACTIVE
+                maxLength: 100
+                minLength: 0
+          examples:
+            Valid requestBody Definitions:
+              value:
+                associatedBusinessHourIds:
+                - '4000000101003'
+                - '4000000103001'
+                name: My Holidays
   responses:
     holidayListLViewJSON:
       description: holidayListLViewJSON template definitions
@@ -253,115 +362,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-  requestBodies:
-    holidayListInputJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              associatedBusinessHourIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              holidays:
-                $ref: ./HolidayList.json#/components/schemas/holidayList
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-          examples:
-            Valid requestBody Definitions:
-              value:
-                associatedBusinessHourIds:
-                - '4000000101003'
-                - '4000000103001'
-                name: My Holidays
-    createHolidayList_holidayListInputJSON:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              associatedBusinessHourIds:
-                type:
-                - 'null'
-                - array
-                items:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                uniqueItems: false
-              holidays:
-                $ref: ./HolidayList.json#/components/schemas/holidayList
-              name:
-                type:
-                - string
-                - 'null'
-                maxLength: 100
-                minLength: 1
-                pattern: ([0-9a-zA-Z_\-\.\$@\?\,\:\'\/\!\P{InBasicLatin}\s])+
-              status:
-                type:
-                - string
-                - 'null'
-                enum:
-                - ACTIVE
-                - INACTIVE
-                maxLength: 100
-                minLength: 0
-            required:
-            - holidays
-            - name
-            - status
-          examples:
-            Valid requestBody Definitions:
-              value:
-                associatedBusinessHourIds:
-                - '4000000101003'
-                - '4000000101005'
-                - '4000000103001'
-                holidays:
-                - from: 02-20
-                  to: 02-21
-                  holidayName: Holiday1
-                - from: 03-26
-                  to: 03-26
-                  holidayName: Holiday2
-                - from: 12-24
-                  to: 12-25
-                  holidayName: Christmas Holidays
-                name: My Company Holidays
-                status: ACTIVE
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

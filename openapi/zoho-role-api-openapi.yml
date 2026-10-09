@@ -258,40 +258,61 @@ paths:
       - external-public
 components:
   responses:
-    roleAssociatedAgent:
-      description: roleAssociatedAgent template definitions
+    roleResponse:
+      description: roleResponse template definitions
       content:
         application/json:
           schema:
-            type:
-            - 'null'
-            - object
             additionalProperties: false
-            properties:
-              associatedAgents:
-                type:
-                - 'null'
-                - array
-                items:
+            allOf:
+            - $ref: ./Role.json#/components/schemas/roleJson
+            - type:
+              - 'null'
+              - object
+              properties:
+                isDefault:
+                  type:
+                  - boolean
+                  - 'null'
+                immediateSubRoles:
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type:
+                    - string
+                    - 'null'
+                    - integer
+                    format: int64
+                    pattern: ([0-9]+)
+                  uniqueItems: false
+                id:
                   type:
                   - string
                   - 'null'
                   - integer
                   format: int64
                   pattern: ([0-9]+)
-                uniqueItems: false
-            required:
-            - associatedAgents
+                isVisible:
+                  type:
+                  - boolean
+                  - 'null'
+              required:
+              - id
+              - immediateSubRoles
+              - isDefault
+              - isVisible
           examples:
             Valid responses Definitions:
               value:
-                associatedAgents:
-                - '50000000009163'
-                - '50000000009300'
-                - '50000000010007'
-                - '50000000010011'
-                - '50000000062391'
-                - '50000000062393'
+                isDefault: false
+                shareDataWithPeers: true
+                immediateSubRoles: []
+                name: Customer Care Associate
+                description: Can work on own tickets and can not re-assign tickets.
+                reportsTo: 5000000008807
+                id: '5000000002973'
+                isVisible: true
     roleResponseArray:
       description: roleResponseArray template definitions
       content:
@@ -386,63 +407,8 @@ components:
                   reportsTo: null
                   id: '50000565365005'
                   isVisible: false
-    roleResponse:
-      description: roleResponse template definitions
-      content:
-        application/json:
-          schema:
-            additionalProperties: false
-            allOf:
-            - $ref: ./Role.json#/components/schemas/roleJson
-            - type:
-              - 'null'
-              - object
-              properties:
-                isDefault:
-                  type:
-                  - boolean
-                  - 'null'
-                immediateSubRoles:
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type:
-                    - string
-                    - 'null'
-                    - integer
-                    format: int64
-                    pattern: ([0-9]+)
-                  uniqueItems: false
-                id:
-                  type:
-                  - string
-                  - 'null'
-                  - integer
-                  format: int64
-                  pattern: ([0-9]+)
-                isVisible:
-                  type:
-                  - boolean
-                  - 'null'
-              required:
-              - id
-              - immediateSubRoles
-              - isDefault
-              - isVisible
-          examples:
-            Valid responses Definitions:
-              value:
-                isDefault: false
-                shareDataWithPeers: true
-                immediateSubRoles: []
-                name: Customer Care Associate
-                description: Can work on own tickets and can not re-assign tickets.
-                reportsTo: 5000000008807
-                id: '5000000002973'
-                isVisible: true
-  requestBodies:
-    deleteRoleBody:
+    roleAssociatedAgent:
+      description: roleAssociatedAgent template definitions
       content:
         application/json:
           schema:
@@ -451,19 +417,31 @@ components:
             - object
             additionalProperties: false
             properties:
-              transferToRoleId:
+              associatedAgents:
                 type:
-                - string
                 - 'null'
-                - integer
-                format: int64
-                pattern: ([0-9]+)
+                - array
+                items:
+                  type:
+                  - string
+                  - 'null'
+                  - integer
+                  format: int64
+                  pattern: ([0-9]+)
+                uniqueItems: false
             required:
-            - transferToRoleId
+            - associatedAgents
           examples:
-            Valid requestBody Definitions:
+            Valid responses Definitions:
               value:
-                transferToRoleId: '5000000008807'
+                associatedAgents:
+                - '50000000009163'
+                - '50000000009300'
+                - '50000000010007'
+                - '50000000010011'
+                - '50000000062391'
+                - '50000000062393'
+  requestBodies:
     roleJson:
       content:
         application/json:
@@ -493,6 +471,28 @@ components:
                 name: Customer Care Associate
                 description: Can work on own tickets and can not re-assign tickets.
                 reportsTo: 5000000008807
+    deleteRoleBody:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              transferToRoleId:
+                type:
+                - string
+                - 'null'
+                - integer
+                format: int64
+                pattern: ([0-9]+)
+            required:
+            - transferToRoleId
+          examples:
+            Valid requestBody Definitions:
+              value:
+                transferToRoleId: '5000000008807'
     roleupdateJson:
       content:
         application/json:
@@ -538,6 +538,18 @@ components:
         - boolean
         - 'null'
         description: Key that filters roles according to their visibility in the UI
+    isDefault:
+      name: isDefault
+      in: query
+      description: Key that denotes whether the roles must be default roles or custom roles
+      required: false
+      style: form
+      explode: true
+      schema:
+        type:
+        - boolean
+        - 'null'
+        description: Key that denotes whether the roles must be default roles or custom roles
     roleId:
       name: roleId
       in: path
@@ -551,18 +563,6 @@ components:
         - integer
         format: int64
         pattern: ([0-9]+)
-    isDefault:
-      name: isDefault
-      in: query
-      description: Key that denotes whether the roles must be default roles or custom roles
-      required: false
-      style: form
-      explode: true
-      schema:
-        type:
-        - boolean
-        - 'null'
-        description: Key that denotes whether the roles must be default roles or custom roles
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

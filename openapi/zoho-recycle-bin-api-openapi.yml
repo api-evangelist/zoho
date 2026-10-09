@@ -188,6 +188,54 @@ paths:
       x-audience:
       - external-public
 components:
+  requestBodies:
+    deleteEntities:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              ids:
+                $ref: ./Recyclebin.json#/components/schemas/ids
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                ids:
+                - '232323'
+                - '3213123'
+                - '40000000561232'
+                - '4000000056156'
+    restoreEntities:
+      content:
+        application/json:
+          schema:
+            type:
+            - 'null'
+            - object
+            additionalProperties: false
+            properties:
+              isChildNeedToBeRestored:
+                type:
+                - boolean
+                - 'null'
+              ids:
+                $ref: ./Recyclebin.json#/components/schemas/ids
+            required:
+            - ids
+          examples:
+            Valid requestBody Definitions:
+              value:
+                isChildNeedToBeRestored: 'true'
+                ids:
+                - '232323'
+                - '400000005634'
+                - '232'
+                - '4000000056156'
   responses:
     getRecycleBinEntities:
       description: getRecycleBinEntities template definitions
@@ -335,54 +383,6 @@ components:
                   id: '4000000046153'
                   type: Time Entry
                   deletedTime: '2020-06-21T16:16:16.000Z'
-  requestBodies:
-    restoreEntities:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              isChildNeedToBeRestored:
-                type:
-                - boolean
-                - 'null'
-              ids:
-                $ref: ./Recyclebin.json#/components/schemas/ids
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                isChildNeedToBeRestored: 'true'
-                ids:
-                - '232323'
-                - '400000005634'
-                - '232'
-                - '4000000056156'
-    deleteEntities:
-      content:
-        application/json:
-          schema:
-            type:
-            - 'null'
-            - object
-            additionalProperties: false
-            properties:
-              ids:
-                $ref: ./Recyclebin.json#/components/schemas/ids
-            required:
-            - ids
-          examples:
-            Valid requestBody Definitions:
-              value:
-                ids:
-                - '232323'
-                - '3213123'
-                - '40000000561232'
-                - '4000000056156'
   securitySchemes:
     iam-oauth2-schema:
       $ref: ./Common.json#/components/securitySchemes/iam-oauth2-schema

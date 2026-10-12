@@ -1,0 +1,19 @@
+# DERIVED by build-integration-preconfigs.py (roadmap#949). Overlay on the PARTNER's contract:
+# where vessel's enum names zoho, and what that value is.
+overlay: 1.0.0
+info:
+  title: zoho as a processor-connection in vessel's contract
+  version: 1.0.0
+extends: https://raw.githubusercontent.com/api-evangelist/vessel/refs/heads/main/openapi/vessel-connections-api-openapi.yml
+actions:
+- target: $.components.schemas.Connection.properties.integrationId
+  update:
+    x-apievangelist-integration:
+      values:
+        zoho:
+          provider: zoho
+          relationship: processor-connection
+          evidence: https://github.com/api-evangelist/vessel/blob/main/openapi/vessel-connections-api-openapi.yml
+      method: derived
+      generated: '2026-10-12'
+      generator: build-integration-preconfigs.py

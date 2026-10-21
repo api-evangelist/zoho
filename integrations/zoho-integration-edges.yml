@@ -27,6 +27,11 @@ checked:
 - zendesk/integrations/zendesk-integration-edges.yml
 - zoom/integrations/zoom-integration-edges.yml
 - jetbrains/integrations/jetbrains-integration-edges.yml
+- https://app.hubspot.com/api/chirp-frontend-external/v1/gateway/com.hubspot.marketplace.personalization.rpc.PersonalizationPublicRpc/search
+- https://ecosystem.hubspot.com/marketplace/apps
+- https://ecosystem.hubspot.com/marketplace/explore?eco_PRODUCT_TYPE=APP&eco_CERTIFIED=true
+- https://ecosystem.hubspot.com/marketplace/solutions
+- hubspot/integrations/hubspot-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: composio
@@ -301,6 +306,39 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-compliance-assurance.py
   first_seen: '2026-10-20'
+- partner_name: HubSpot App Certification
+  partner: hubspot
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/explore?eco_PRODUCT_TYPE=APP&eco_CERTIFIED=true
+  category: HubSpot certified app publisher
+  contract_reference:
+    register: HubSpot App Marketplace Certified Apps (CERTIFIED filter on the storefront's public search JSON)
+    standard: HubSpot App Certification
+    spec_file: null
+    role: certified-app-publisher
+    registered_name: Zoho Corporation
+    matched_domain: zoho.com
+    matched_by: domain+name-among-holders
+    identity_source: the listing's own companyUrl (no lookup)
+    certified_products:
+    - product: HubSpot Certified App
+      product_type: APP
+      certifier: HubSpot (App Certification)
+      listings: 1
+      example_listing: https://ecosystem.hubspot.com/marketplace/listing/zohoanalytics
+      lapsed: false
+      lapsed_note: the certified flag is printed on a LIVE public listing card (CERTIFIED filter); HubSpot prints
+        no certification date, so the badge reads as current
+    signal_note: certified_products = ONE entry per product type (HubSpot Certified App), never per listing; listing
+      counts are context
+    detected_by: sweep-hubspot-app-marketplace.py
+    detected: '2026-10-21'
+  detected_by: sweep-hubspot-app-marketplace.py
+  first_seen: '2026-10-21'
 - partner_name: WordPress (own)
   partner: wordpress
   partner_match: mirror
@@ -443,4 +481,25 @@ edges:
   category: IDE / developer extension marketplace listing
   badges:
   - Verified vendor
+- partner_name: HubSpot (own)
+  partner: hubspot
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/zoho-mail-145912
+  mirror_of: hubspot/integrations/hubspot-integration-edges.yml
+  apps:
+  - Zoho Mail
+  - Zoho Analytics
+  - Zoho LandingPage
+  - Zoho Survey
+  - Zoho Webinar
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: EMAIL
 templates: []

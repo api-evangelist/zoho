@@ -36,6 +36,7 @@ checked:
 - https://addons.mozilla.org/api/v5/addons/search/?type=extension&app=firefox
 - https://chromewebstore.google.com/sitemap
 - https://dir.texas.gov/resource-library-item/tx-ramp-certified-cloud-products
+- intercom/integrations/intercom-integration-edges.yml
 summary: null
 marketplace_apps:
 - marketplace: composio
@@ -343,6 +344,117 @@ edges:
     detected: '2026-10-21'
   detected_by: sweep-hubspot-app-marketplace.py
   first_seen: '2026-10-21'
+- partner_name: Mozilla Firefox Add-ons (AMO)
+  partner: null
+  partner_match: null
+  type: marketplace
+  marketplace: firefox-add-ons
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://addons.mozilla.org/en-US/firefox/addon/zoho-vault/
+  app: Zoho Vault - Password Manager
+  listing_count: 13
+  category: browser extension (Firefox Add-ons)
+  partner_url: https://addons.mozilla.org/
+  contract_reference:
+    register: 'Firefox Add-ons (addons.mozilla.org public API v5 search: authors, homepage, support_url)'
+    spec_file: null
+    role: firefox-add-on-publisher
+    registered_name: Zoho Vault
+    register_id: https://addons.mozilla.org/api/v5/addons/addon/zoho-vault/
+    matched_domain: zoho.com
+    matched_by: domain+name-among-holders
+    matched_name: Zoho Vault
+    builder: publisher
+    signal_note: ONE edge per provider for the store; listing alone = participation. The AMO author name (builder
+      publisher) or homepage + support_url both on the provider's domain (builder domain-attested) identifies it;
+      extension / user counts are context, never counted. No Mozilla repo in all/*, so no platform-side edge exists
+      to mirror.
+    detected_by: sweep-browser-extension-stores.py
+    detected: '2026-10-21'
+  detected_by: sweep-browser-extension-stores.py
+  first_seen: '2026-10-21'
+  apps:
+  - Zoho Vault - Password Manager
+  - Writer - Extension & Clipper
+  - Notebook Web Clipper
+  - Zoho Annotator
+  - Zoho Mail Bookmarks
+  - Zoho Sheet - Extension & Web Clipper
+  - Zoho Meeting
+  - Zia Search from Zoho
+  - ZDialer - Zoho Voice Extension
+  - zShare
+  - Zoho Bookings
+  - Zoho QEngine Recorder
+  - Cobrowse by Zoho Assist
+- partner_name: TX-RAMP
+  partner: null
+  partner_match: register
+  partner_tier: Level 2
+  type: contract
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://dir.texas.gov/resource-library-item/tx-ramp-certified-cloud-products
+  category: Texas state cloud security certification (TX-RAMP)
+  contract_reference:
+    register: TX-RAMP Certified Cloud Products (Texas DIR)
+    standard: TX-RAMP
+    spec_file: null
+    role: tx-ramp-certified
+    register_file: https://dir.texas.gov/sites/default/files/2026-10/Copy%20of%20TX-RAMP%20Certified%20Cloud%20Products_1.xlsx
+    registrations:
+    - certification_id: TX1539241
+      product: ServiceDesk Plus Cloud
+      registered_vendor: Zoho
+      certification_level: Level 1
+      cloud_categories:
+      - SaaS
+      certification_path: TX-RAMP Fast Track
+      expires: '2027-06-20'
+      lapsed: false
+      matched_domain: zoho.com
+      matched_by: domain+name-among-holders
+    - certification_id: TX1566387
+      product: ManageEngine Endpoint Central
+      registered_vendor: Zoho
+      certification_level: Level 2
+      cloud_categories:
+      - SaaS
+      certification_path: TX-RAMP Fast Track
+      expires: '2027-11-25'
+      lapsed: false
+      matched_domain: zoho.com
+      matched_by: domain+name-among-holders
+    - certification_id: TX1602591
+      product: ManageEngine Site24x7
+      registered_vendor: Zoho
+      certification_level: Level 2
+      cloud_categories:
+      - SaaS
+      certification_path: TX-RAMP Fast Track
+      expires: '2028-01-02'
+      lapsed: false
+      matched_domain: zoho.com
+      matched_by: domain+name-among-holders
+    identity: wikidata Q8063247 'Zoho Corporation' P856 https://www.zoho.com/
+    identity_source: wikidata P856 (labelled provenance step; Kin 2026-10-15 decision 1)
+    signal_note: 'certified_products = one entry per cloud category (SaaS / PaaS / IaaS) the vendor holds a TX-RAMP
+      certification in, never per product; products are context, never counted. certification_level = the highest
+      level in that category; lapsed: true when every product in the category is past its expiry date. partner_tier
+      = the highest CURRENT level'
+    certified_products:
+    - product: SaaS
+      product_type: SaaS
+      standard: TX-RAMP
+      certification_level: Level 2
+      lapsed: false
+    detected_by: sweep-tx-ramp-certified-cloud.py
+    detected: '2026-10-22'
+  detected_by: sweep-tx-ramp-certified-cloud.py
+  first_seen: '2026-10-22'
 - partner_name: WordPress (own)
   partner: wordpress
   partner_match: mirror
@@ -506,115 +618,23 @@ edges:
   detected: '2026-10-21'
   detected_by: mirror-platform-listings.py
   category: EMAIL
-- partner_name: Mozilla Firefox Add-ons (AMO)
-  partner: null
-  partner_match: null
+- partner_name: Intercom (own)
+  partner: intercom
+  partner_match: mirror
+  mirror_match: domain+name-among-holders
   type: marketplace
-  marketplace: firefox-add-ons
-  channel: partner-built
   relationship: platform-app
   direction: third-party
-  evidence: https://addons.mozilla.org/en-US/firefox/addon/zoho-vault/
-  app: Zoho Vault - Password Manager
-  listing_count: 13
-  category: browser extension (Firefox Add-ons)
-  partner_url: https://addons.mozilla.org/
-  contract_reference:
-    register: 'Firefox Add-ons (addons.mozilla.org public API v5 search: authors, homepage, support_url)'
-    spec_file: null
-    role: firefox-add-on-publisher
-    registered_name: Zoho Vault
-    register_id: https://addons.mozilla.org/api/v5/addons/addon/zoho-vault/
-    matched_domain: zoho.com
-    matched_by: domain+name-among-holders
-    matched_name: Zoho Vault
-    builder: publisher
-    signal_note: ONE edge per provider for the store; listing alone = participation. The AMO author name (builder
-      publisher) or homepage + support_url both on the provider's domain (builder domain-attested) identifies it;
-      extension / user counts are context, never counted. No Mozilla repo in all/*, so no platform-side edge exists
-      to mirror.
-    detected_by: sweep-browser-extension-stores.py
-    detected: '2026-10-21'
-  detected_by: sweep-browser-extension-stores.py
-  first_seen: '2026-10-21'
+  channel: partner-built
+  marketplace: own
+  evidence: https://www.intercom.com/app-store/?app_package_code=zoho-page-sense
+  mirror_of: intercom/integrations/intercom-integration-edges.yml
   apps:
-  - Zoho Vault - Password Manager
-  - Writer - Extension & Clipper
-  - Notebook Web Clipper
-  - Zoho Annotator
-  - Zoho Mail Bookmarks
-  - Zoho Sheet - Extension & Web Clipper
-  - Zoho Meeting
-  - Zia Search from Zoho
-  - ZDialer - Zoho Voice Extension
-  - zShare
-  - Zoho Bookings
-  - Zoho QEngine Recorder
-  - Cobrowse by Zoho Assist
-- partner_name: TX-RAMP
-  partner: null
-  partner_match: register
-  partner_tier: Level 2
-  type: contract
-  channel: regulator-register
-  relationship: standard-participant
-  direction: partner-built
-  evidence: https://dir.texas.gov/resource-library-item/tx-ramp-certified-cloud-products
-  category: Texas state cloud security certification (TX-RAMP)
-  contract_reference:
-    register: TX-RAMP Certified Cloud Products (Texas DIR)
-    standard: TX-RAMP
-    spec_file: null
-    role: tx-ramp-certified
-    register_file: https://dir.texas.gov/sites/default/files/2026-10/Copy%20of%20TX-RAMP%20Certified%20Cloud%20Products_1.xlsx
-    registrations:
-    - certification_id: TX1539241
-      product: ServiceDesk Plus Cloud
-      registered_vendor: Zoho
-      certification_level: Level 1
-      cloud_categories:
-      - SaaS
-      certification_path: TX-RAMP Fast Track
-      expires: '2027-06-20'
-      lapsed: false
-      matched_domain: zoho.com
-      matched_by: domain+name-among-holders
-    - certification_id: TX1566387
-      product: ManageEngine Endpoint Central
-      registered_vendor: Zoho
-      certification_level: Level 2
-      cloud_categories:
-      - SaaS
-      certification_path: TX-RAMP Fast Track
-      expires: '2027-11-25'
-      lapsed: false
-      matched_domain: zoho.com
-      matched_by: domain+name-among-holders
-    - certification_id: TX1602591
-      product: ManageEngine Site24x7
-      registered_vendor: Zoho
-      certification_level: Level 2
-      cloud_categories:
-      - SaaS
-      certification_path: TX-RAMP Fast Track
-      expires: '2028-01-02'
-      lapsed: false
-      matched_domain: zoho.com
-      matched_by: domain+name-among-holders
-    identity: wikidata Q8063247 'Zoho Corporation' P856 https://www.zoho.com/
-    identity_source: wikidata P856 (labelled provenance step; Kin 2026-10-15 decision 1)
-    signal_note: 'certified_products = one entry per cloud category (SaaS / PaaS / IaaS) the vendor holds a TX-RAMP
-      certification in, never per product; products are context, never counted. certification_level = the highest
-      level in that category; lapsed: true when every product in the category is past its expiry date. partner_tier
-      = the highest CURRENT level'
-    certified_products:
-    - product: SaaS
-      product_type: SaaS
-      standard: TX-RAMP
-      certification_level: Level 2
-      lapsed: false
-    detected_by: sweep-tx-ramp-certified-cloud.py
-    detected: '2026-10-22'
-  detected_by: sweep-tx-ramp-certified-cloud.py
-  first_seen: '2026-10-22'
+  - Zoho PageSense
+  - Zoho Assist
+  - Zoho Desk
+  listing_count: 1
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Analytics
 templates: []
